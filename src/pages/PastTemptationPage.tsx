@@ -4,9 +4,12 @@ import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { useToast } from "@/hooks/use-toast";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function PastTemptationPage() {
   const [date, setDate] = useState<Date>();
+  const [time, setTime] = useState("");
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -20,14 +23,28 @@ export default function PastTemptationPage() {
       return;
     }
 
-    // Store the selected date in sessionStorage to access it in the reflection page
-    sessionStorage.setItem('pastTemptationDate', date.toISOString());
+    if (!time) {
+      toast({
+        title: "Please select a time",
+        description: "Choose what time this temptation occurred",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Combine date and time
+    const [hours, minutes] = time.split(":");
+    const datetime = new Date(date);
+    datetime.setHours(parseInt(hours), parseInt(minutes));
+
+    // Store the selected datetime in sessionStorage
+    sessionStorage.setItem('pastTemptationDate', datetime.toISOString());
     navigate('/reflection');
   };
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
-      <Mascot message="Select the date when this temptation occurred" />
+      <Mascot message="Select when this temptation occurred" />
       
       <div className="bg-card rounded-lg p-6 space-y-6">
         <h2 className="text-2xl font-bold text-center">When did this happen?</h2>
@@ -39,6 +56,17 @@ export default function PastTemptationPage() {
             onSelect={setDate}
             disabled={{ after: new Date() }}
             className="rounded-md border"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="time">Time</Label>
+          <Input
+            id="time"
+            type="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            className="w-full"
           />
         </div>
 
