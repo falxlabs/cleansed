@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
+import { Form } from "@/components/ui/form";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { OnboardingProgress } from "@/components/onboarding/OnboardingProgress";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { NameStep } from "@/components/onboarding/NameStep";
+import { AgeStep } from "@/components/onboarding/AgeStep";
+import { AccountStep } from "@/components/onboarding/AccountStep";
+import { OnboardingFormData } from "@/components/onboarding/types";
 
 const TOTAL_STEPS = 3;
 
@@ -20,14 +24,17 @@ const OnboardingMessages = {
 
 export default function Onboarding() {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    fullName: "",
-    age: "",
-    email: "",
-    password: "",
-  });
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const form = useForm<OnboardingFormData>({
+    defaultValues: {
+      first_name: "",
+      age: 0,
+      email: "",
+      password: "",
+    },
+  });
 
   const handleNext = () => {
     if (step < TOTAL_STEPS) {
@@ -41,20 +48,15 @@ export default function Onboarding() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleEmailSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleEmailSignUp = async (data: OnboardingFormData) => {
     try {
       const { error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
+        email: data.email,
+        password: data.password,
         options: {
           data: {
-            full_name: formData.fullName,
-            age: parseInt(formData.age),
+            first_name: data.first_name,
+            age: data.age,
           },
         },
       });
@@ -102,108 +104,31 @@ export default function Onboarding() {
         
         <Mascot message={OnboardingMessages[step as keyof typeof OnboardingMessages]} />
 
-        <form onSubmit={handleEmailSignUp} className="space-y-4">
-          {step === 1 && (
-            <div className="space-y-2">
-              <Label htmlFor="fullName">Full Name</Label>
-              <Input
-                id="fullName"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-                placeholder="Enter your full name"
-                required
-              />
-            </div>
-          )}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleEmailSignUp)} className="space-y-4">
+            {step === 1 && <NameStep form={form} />}
+            {step === 2 && <AgeStep form={form} />}
+            {step === 3 && <AccountStep form={form} onGoogleSignIn={handleGoogleSignIn} />}
 
-          {step === 2 && (
-            <div className="space-y-2">
-              <Label htmlFor="age">Age</Label>
-              <Input
-                id="age"
-                name="age"
-                type="number"
-                value={formData.age}
-                onChange={handleChange}
-                placeholder="Enter your age"
-                min="13"
-                required
-              />
-            </div>
-          )}
-
-          {step === 3 && (
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Enter your email"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Choose a password"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Button type="submit" className="w-full">
-                  Create Account
-                </Button>
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t" />
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">
-                      Or continue with
-                    </span>
-                  </div>
-                </div>
+            {step !== 3 && (
+              <div className="flex justify-between">
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-full"
-                  onClick={handleGoogleSignIn}
+                  onClick={handleBack}
+                  disabled={step === 1}
                 >
-                  Sign in with Google
+                  <ChevronLeft className="mr-2 h-4 w-4" />
+                  Back
+                </Button>
+                <Button type="button" onClick={handleNext}>
+                  Next
+                  <ChevronRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
-            </div>
-          )}
-
-          {step !== 3 && (
-            <div className="flex justify-between">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleBack}
-                disabled={step === 1}
-              >
-                <ChevronLeft className="mr-2 h-4 w-4" />
-                Back
-              </Button>
-              <Button type="button" onClick={handleNext}>
-                Next
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          )}
-        </form>
+            )}
+          </form>
+        </Form>
       </Card>
     </div>
   );
