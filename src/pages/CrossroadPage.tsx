@@ -36,8 +36,7 @@ export default function CrossroadPage() {
       title: "Praise God!",
       description: "You've chosen the path of righteousness.",
     });
-    // Navigate to the appropriate page
-    navigate("/");
+    navigate("/reflection", { state: { choice: "submitted" } });
   };
 
   const handleFallToSin = () => {
@@ -45,8 +44,7 @@ export default function CrossroadPage() {
       title: "Don't give up!",
       description: "Remember, God's grace is sufficient for you.",
     });
-    // Navigate to the appropriate page
-    navigate("/");
+    navigate("/reflection", { state: { choice: "fell" } });
   };
 
   const formatTime = (seconds: number) => {
