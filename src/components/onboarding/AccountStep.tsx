@@ -12,6 +12,16 @@ interface AccountStepProps {
 }
 
 export function AccountStep({ form, onGoogleSignIn, onEmailSignUp }: AccountStepProps) {
+  const formData = form.getValues();
+  
+  const handleEmailSignUp = () => {
+    if (formData.email && formData.first_name && formData.age) {
+      onEmailSignUp();
+    } else {
+      form.trigger();
+    }
+  };
+
   return (
     <div className="space-y-4">
       <FormField
@@ -35,7 +45,7 @@ export function AccountStep({ form, onGoogleSignIn, onEmailSignUp }: AccountStep
       <Button
         type="button"
         className="w-full"
-        onClick={onEmailSignUp}
+        onClick={handleEmailSignUp}
       >
         Sign up with Email
       </Button>

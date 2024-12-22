@@ -13,18 +13,21 @@ export type Database = {
         Row: {
           age: number | null
           created_at: string
+          email: string | null
           first_name: string | null
           id: string
         }
         Insert: {
           age?: number | null
           created_at?: string
+          email?: string | null
           first_name?: string | null
           id: string
         }
         Update: {
           age?: number | null
           created_at?: string
+          email?: string | null
           first_name?: string | null
           id?: string
         }

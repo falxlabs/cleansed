@@ -45,6 +45,7 @@ export default function Onboarding() {
             first_name: data.first_name,
             age: data.age,
           },
+          emailRedirectTo: `${window.location.origin}/dashboard`,
         },
       });
 
@@ -71,6 +72,14 @@ export default function Onboarding() {
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/dashboard`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+          data: {
+            first_name: form.getValues('first_name'),
+            age: form.getValues('age'),
+          }
         },
       });
 
@@ -104,7 +113,7 @@ export default function Onboarding() {
         <Mascot message={OnboardingMessages[step as keyof typeof OnboardingMessages]} />
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleEmailSignUp)} className="space-y-4">
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
             {step === 1 && <NameStep form={form} />}
             {step === 2 && <AgeStep form={form} />}
             {step === 3 && (
