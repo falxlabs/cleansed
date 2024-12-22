@@ -25,13 +25,34 @@ export function OnboardingForm() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Check initial session
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        navigate('/dashboard');
+      }
+    };
+    checkSession();
+
+    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
         navigate('/dashboard');
       }
     });
 
-    return () => subscription.unsubscribe();
+    // Add storage event listener for cross-tab communication
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === 'supabase.auth.token') {
+        checkSession();
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      subscription.unsubscribe();
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, [navigate]);
 
   const mascotMessages = {
