@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { OnboardingProgress } from "./OnboardingProgress";
 import { Mascot } from "@/components/dashboard/Mascot";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 
 interface FormData {
@@ -22,6 +22,7 @@ export function OnboardingForm() {
   });
   const [otp, setOtp] = useState("");
   const [showOTP, setShowOTP] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
   const mascotMessages = {
@@ -34,8 +35,11 @@ export function OnboardingForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (showOTP) {
-      try {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    
+    try {
+      if (showOTP) {
         const { error } = await supabase.auth.verifyOtp({
           email: formData.email,
           token: otp,
@@ -48,46 +52,46 @@ export function OnboardingForm() {
           title: "Welcome aboard!",
           description: "Your account has been created successfully.",
         });
-      } catch (error: any) {
+      } else if (step < 3) {
+        setStep(step + 1);
+      } else {
+        const { error } = await supabase.auth.signInWithOtp({
+          email: formData.email,
+          options: {
+            data: {
+              first_name: formData.firstName,
+              age: parseInt(formData.age),
+            },
+          },
+        });
+
+        if (error) {
+          if (error.message.includes('rate_limit')) {
+            toast({
+              variant: "destructive",
+              title: "Please wait",
+              description: "You can request another code in a few seconds.",
+            });
+            return;
+          }
+          throw error;
+        }
+
+        setShowOTP(true);
+        setStep(4);
         toast({
-          variant: "destructive",
-          title: "Verification failed",
-          description: error.message,
+          title: "Verification code sent!",
+          description: "Please check your email for the verification code.",
         });
       }
-      return;
-    }
-
-    if (step < 3) {
-      setStep(step + 1);
-      return;
-    }
-
-    try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email: formData.email,
-        options: {
-          data: {
-            first_name: formData.firstName,
-            age: parseInt(formData.age),
-          },
-        },
-      });
-
-      if (error) throw error;
-
-      setShowOTP(true);
-      setStep(4);
-      toast({
-        title: "Verification code sent!",
-        description: "Please check your email for the verification code.",
-      });
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error",
         description: error.message,
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -164,7 +168,7 @@ export function OnboardingForm() {
       
       <form onSubmit={handleSubmit} className="space-y-8">
         {renderFormStep()}
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
           {step < 3 ? "Next" : showOTP ? "Verify" : "Sign Up"}
         </Button>
       </form>
