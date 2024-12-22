@@ -22,7 +22,7 @@ export function DateTimePicker({
   setDate: (date: Date | undefined) => void
 }) {
   const [selectedTime, setSelectedTime] = React.useState<string>(
-    date ? format(date, "HH:mm") : ""
+    date ? format(date, "HH:mm") : format(new Date(), "HH:mm")
   )
 
   const handleTimeChange = (time: string) => {
@@ -32,6 +32,16 @@ export function DateTimePicker({
       const newDate = new Date(date)
       newDate.setHours(parseInt(hours), parseInt(minutes))
       setDate(newDate)
+    }
+  }
+
+  const handleDateSelect = (newDate: Date | undefined) => {
+    if (newDate) {
+      const [hours, minutes] = selectedTime.split(":")
+      newDate.setHours(parseInt(hours), parseInt(minutes))
+      setDate(newDate)
+    } else {
+      setDate(undefined)
     }
   }
 
@@ -57,7 +67,8 @@ export function DateTimePicker({
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={handleDateSelect}
+          disabled={{ after: new Date() }}
           initialFocus
         />
         <div className="p-3 border-t">
