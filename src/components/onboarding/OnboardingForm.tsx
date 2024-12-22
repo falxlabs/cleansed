@@ -63,7 +63,6 @@ export function OnboardingForm() {
               age: parseInt(formData.age),
             },
             shouldCreateUser: true,
-            channel: 'email',
             type: 'signup',
           },
         });
