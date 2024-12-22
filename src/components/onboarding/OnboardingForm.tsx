@@ -62,8 +62,6 @@ export function OnboardingForm() {
               first_name: formData.firstName,
               age: parseInt(formData.age),
             },
-            shouldCreateUser: true,
-            type: 'signup',
           },
         });
 
