@@ -19,6 +19,13 @@ export default function PastTemptationPage() {
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   };
 
+  const getTimeEmoji = (hour: number) => {
+    if (hour >= 5 && hour < 12) return "🌅"; // Morning
+    if (hour >= 12 && hour < 17) return "☀️"; // Afternoon
+    if (hour >= 17 && hour < 21) return "🌆"; // Evening
+    return "🌙"; // Night
+  };
+
   const handleContinue = () => {
     if (!date) {
       toast({
@@ -60,6 +67,12 @@ export default function PastTemptationPage() {
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-center">Time of day</h3>
           <div className="px-4">
+            <div className="flex justify-between mb-2 text-2xl">
+              <span>🌅</span>
+              <span>☀️</span>
+              <span>🌆</span>
+              <span>🌙</span>
+            </div>
             <Slider
               value={timeValue}
               onValueChange={setTimeValue}
@@ -67,8 +80,9 @@ export default function PastTemptationPage() {
               step={0.25}
               className="w-full"
             />
-            <div className="text-center mt-2 text-muted-foreground">
-              {formatTime(timeValue[0])}
+            <div className="text-center mt-2">
+              <span className="text-2xl mr-2">{getTimeEmoji(Math.floor(timeValue[0]))}</span>
+              <span className="text-muted-foreground">{formatTime(timeValue[0])}</span>
             </div>
           </div>
         </div>
