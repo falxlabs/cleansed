@@ -1,18 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { useToast } from "@/hooks/use-toast";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
+import { DateTimePicker } from "@/components/ui/datetime";
 
 export default function PastTemptationPage() {
   const [date, setDate] = useState<Date>();
-  const [time, setTime] = useState("");
   const navigate = useNavigate();
   const { toast } = useToast();
   const isMobile = useIsMobile();
@@ -20,29 +15,15 @@ export default function PastTemptationPage() {
   const handleContinue = () => {
     if (!date) {
       toast({
-        title: "Please select a date",
+        title: "Please select a date and time",
         description: "Choose when this temptation occurred",
         variant: "destructive",
       });
       return;
     }
 
-    if (!time) {
-      toast({
-        title: "Please select a time",
-        description: "Choose what time this temptation occurred",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Combine date and time
-    const [hours, minutes] = time.split(":");
-    const datetime = new Date(date);
-    datetime.setHours(parseInt(hours), parseInt(minutes));
-
     // Store the selected datetime in sessionStorage
-    sessionStorage.setItem('pastTemptationDate', datetime.toISOString());
+    sessionStorage.setItem('pastTemptationDate', date.toISOString());
     navigate('/reflection');
   };
 
@@ -54,34 +35,7 @@ export default function PastTemptationPage() {
         <h2 className="text-2xl font-bold text-center">When did this happen?</h2>
         
         <div className="flex flex-col items-center space-y-4">
-          {date && (
-            <p className="text-sm text-muted-foreground">
-              Selected: {format(date, 'PPP')}
-            </p>
-          )}
-          
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            disabled={{ after: new Date() }}
-            className={cn(
-              "rounded-md border",
-              isMobile ? "w-full" : "w-auto"
-            )}
-            initialFocus
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="time">Time</Label>
-          <Input
-            id="time"
-            type="time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            className="w-full text-lg p-6"
-          />
+          <DateTimePicker date={date} setDate={setDate} />
         </div>
 
         <div className="flex justify-between pt-4">
