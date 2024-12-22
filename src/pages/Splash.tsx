@@ -23,14 +23,7 @@ const Splash = () => {
           <div className="space-y-3">
             <Button
               className="w-full"
-              onClick={() => navigate("/sign-in")}
-            >
-              Sign In
-            </Button>
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate("/onboarding")}
             >
               Get Started
             </Button>

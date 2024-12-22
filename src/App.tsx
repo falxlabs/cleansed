@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import Splash from "./pages/Splash";
+import Onboarding from "./pages/Onboarding";
 
 const queryClient = new QueryClient();
 
@@ -16,9 +17,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Splash />} />
+          <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/dashboard" element={<Index />} />
-          {/* Temporarily redirect to dashboard for now */}
-          <Route path="/sign-in" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/sign-in" element={<Navigate to="/onboarding" replace />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
