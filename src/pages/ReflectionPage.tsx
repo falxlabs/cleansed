@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { Card } from "@/components/ui/card";
+import { Slider } from "@/components/ui/slider";
 
 const SINS = [
   { name: "Pride", emoji: "👑", description: "Excessive belief in own abilities" },
@@ -19,24 +20,42 @@ const SINS = [
   { name: "Sloth", emoji: "🦥", description: "Failure to act and utilize talents" }
 ] as const;
 
+type SinType = typeof SINS[number]["name"];
+
 const TEMPTATION_LEVELS = [
-  { level: "Low - I can resist easily", emoji: "🟢", description: "I feel confident in my ability to resist" },
-  { level: "Medium - It's challenging but manageable", emoji: "🟡", description: "I need to be mindful but can handle it" },
-  { level: "High - I struggle significantly", emoji: "🟠", description: "This is a serious challenge for me" },
-  { level: "Severe - Almost impossible to resist", emoji: "🔴", description: "I need immediate support and guidance" }
+  "Low - I can resist easily",
+  "Medium - It's challenging but manageable",
+  "High - I struggle significantly",
+  "Severe - Almost impossible to resist"
 ] as const;
+
+type TemptationLevel = typeof TEMPTATION_LEVELS[number];
 
 export default function ReflectionPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
   
   const [step, setStep] = useState(1);
-  const [selectedSin, setSelectedSin] = useState<typeof SINS[number]["name"] | "">("");
+  const [selectedSin, setSelectedSin] = useState<SinType | "">("");
   const [customNote, setCustomNote] = useState("");
-  const [temptationLevel, setTemptationLevel] = useState<typeof TEMPTATION_LEVELS[number]["level"] | "">("");
+  const [temptationLevel, setTemptationLevel] = useState<TemptationLevel | "">("");
+  const [sliderValue, setSliderValue] = useState([25]);
   const [trigger, setTrigger] = useState("");
 
   const progress = (step / 3) * 100;
+
+  const handleSliderChange = (value: number[]) => {
+    setSliderValue(value);
+    const levelIndex = Math.floor((value[0] / 100) * TEMPTATION_LEVELS.length);
+    setTemptationLevel(TEMPTATION_LEVELS[Math.min(levelIndex, TEMPTATION_LEVELS.length - 1)]);
+  };
+
+  const getTemptationEmoji = () => {
+    if (sliderValue[0] <= 25) return "🟢";
+    if (sliderValue[0] <= 50) return "🟡";
+    if (sliderValue[0] <= 75) return "🟠";
+    return "🔴";
+  };
 
   const handleNext = () => {
     if (step === 1) {
@@ -97,7 +116,7 @@ export default function ReflectionPage() {
             <h2 className="text-2xl font-bold">Type of Temptation</h2>
             <RadioGroup
               value={selectedSin}
-              onValueChange={(value) => setSelectedSin(value)}
+              onValueChange={(value: SinType) => setSelectedSin(value)}
               className="grid grid-cols-1 md:grid-cols-2 gap-4"
             >
               {SINS.map(({ name, emoji, description }) => (
@@ -133,33 +152,30 @@ export default function ReflectionPage() {
         )}
 
         {step === 2 && (
-          <div className="space-y-6">
+          <div className="space-y-8">
             <h2 className="text-2xl font-bold">Temptation Level</h2>
-            <RadioGroup
-              value={temptationLevel}
-              onValueChange={(value) => setTemptationLevel(value)}
-              className="space-y-4"
-            >
-              {TEMPTATION_LEVELS.map(({ level, emoji, description }) => (
-                <Card
-                  key={level}
-                  className={`relative p-4 cursor-pointer transition-all duration-200 hover:shadow-md ${
-                    temptationLevel === level ? 'ring-2 ring-primary' : ''
-                  }`}
-                >
-                  <RadioGroupItem value={level} id={level} className="absolute right-4 top-4" />
-                  <Label htmlFor={level} className="cursor-pointer">
-                    <div className="flex items-center space-x-4">
-                      <span className="text-2xl">{emoji}</span>
-                      <div>
-                        <div className="font-semibold">{level}</div>
-                        <p className="text-sm text-muted-foreground">{description}</p>
-                      </div>
-                    </div>
-                  </Label>
-                </Card>
-              ))}
-            </RadioGroup>
+            <div className="space-y-8">
+              <div className="text-center">
+                <span className="text-4xl mb-4 block">{getTemptationEmoji()}</span>
+                <h3 className="text-xl font-semibold mb-2">{temptationLevel || "Select level"}</h3>
+                <p className="text-muted-foreground">
+                  {temptationLevel ? "This helps us understand your struggle" : "Move the slider to indicate intensity"}
+                </p>
+              </div>
+              <Slider
+                value={sliderValue}
+                onValueChange={handleSliderChange}
+                max={100}
+                step={1}
+                className="w-full"
+              />
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>Low</span>
+                <span>Medium</span>
+                <span>High</span>
+                <span>Severe</span>
+              </div>
+            </div>
           </div>
         )}
 
