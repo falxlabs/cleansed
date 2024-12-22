@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Slider } from "@/components/ui/slider";
 
 const SINS = [
@@ -19,15 +19,27 @@ interface TemptationTypeSelectorProps {
 }
 
 export const TemptationTypeSelector = ({ value, onChange, showText = true }: TemptationTypeSelectorProps) => {
-  const [sliderValue, setSliderValue] = useState([SINS.findIndex(sin => sin.name === value) || 0]);
+  // Find the initial sin index, defaulting to 0 if not found
+  const initialSinIndex = SINS.findIndex(sin => sin.name === value);
+  const [sliderValue, setSliderValue] = useState([initialSinIndex >= 0 ? initialSinIndex : 0]);
   
+  // Update slider value when value prop changes
+  useEffect(() => {
+    const newIndex = SINS.findIndex(sin => sin.name === value);
+    if (newIndex >= 0 && newIndex !== sliderValue[0]) {
+      setSliderValue([newIndex]);
+    }
+  }, [value]);
+
   const handleSliderChange = (newValue: number[]) => {
-    setSliderValue(newValue);
-    const selectedSin = SINS[newValue[0]];
+    const validValue = Math.min(Math.max(newValue[0], 0), SINS.length - 1);
+    setSliderValue([validValue]);
+    const selectedSin = SINS[validValue];
     onChange(selectedSin.name);
   };
 
-  const selectedSin = SINS[sliderValue[0]];
+  // Ensure we always have a valid index
+  const selectedSin = SINS[Math.min(Math.max(sliderValue[0], 0), SINS.length - 1)];
 
   return (
     <div className="space-y-8">
