@@ -36,38 +36,20 @@ export default function Onboarding() {
     },
   });
 
-  const handleNext = () => {
-    if (step < TOTAL_STEPS) {
-      setStep(step + 1);
-    }
-  };
-
-  const handleBack = () => {
-    if (step > 1) {
-      setStep(step - 1);
-    }
-  };
-
   const handleEmailSignUp = async (data: OnboardingFormData) => {
     try {
-      // First, create the authenticated user
-      const { error: signUpError, data: authData } = await supabase.auth.signUp({
+      const { error: signUpError } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
+        options: {
+          data: {
+            first_name: data.first_name,
+            age: data.age,
+          },
+        },
       });
 
       if (signUpError) throw signUpError;
-
-      // Then update their profile with additional information
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({
-          first_name: data.first_name,
-          age: data.age,
-        })
-        .eq('id', authData.user?.id);
-
-      if (updateError) throw updateError;
 
       toast({
         title: "Account created!",
@@ -100,6 +82,18 @@ export default function Onboarding() {
         title: "Error",
         description: error.message || "There was a problem signing in with Google.",
       });
+    }
+  };
+
+  const handleNext = () => {
+    if (step < TOTAL_STEPS) {
+      setStep(step + 1);
+    }
+  };
+
+  const handleBack = () => {
+    if (step > 1) {
+      setStep(step - 1);
     }
   };
 
