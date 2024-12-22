@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -88,7 +88,13 @@ export default function ReflectionPage() {
     if (step > 1) {
       setStep(step - 1);
     } else {
-      navigate("/crossroad");
+      // Check if we came from the past-temptation page
+      const pastTemptationDate = sessionStorage.getItem('pastTemptationDate');
+      if (pastTemptationDate) {
+        navigate("/past-temptation");
+      } else {
+        navigate("/");
+      }
     }
   };
 
