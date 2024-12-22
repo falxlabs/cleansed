@@ -50,18 +50,24 @@ export default function Onboarding() {
 
   const handleEmailSignUp = async (data: OnboardingFormData) => {
     try {
-      const { error } = await supabase.auth.signUp({
+      // First, create the authenticated user
+      const { error: signUpError, data: authData } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
-        options: {
-          data: {
-            first_name: data.first_name,
-            age: data.age,
-          },
-        },
       });
 
-      if (error) throw error;
+      if (signUpError) throw signUpError;
+
+      // Then update their profile with additional information
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({
+          first_name: data.first_name,
+          age: data.age,
+        })
+        .eq('id', authData.user?.id);
+
+      if (updateError) throw updateError;
 
       toast({
         title: "Account created!",
@@ -69,11 +75,11 @@ export default function Onboarding() {
       });
       
       navigate("/dashboard");
-    } catch (error) {
+    } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "There was a problem creating your account.",
+        description: error.message || "There was a problem creating your account.",
       });
     }
   };
@@ -88,11 +94,11 @@ export default function Onboarding() {
       });
 
       if (error) throw error;
-    } catch (error) {
+    } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "There was a problem signing in with Google.",
+        description: error.message || "There was a problem signing in with Google.",
       });
     }
   };
