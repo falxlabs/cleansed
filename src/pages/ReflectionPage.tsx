@@ -7,22 +7,23 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Mascot } from "@/components/dashboard/Mascot";
+import { Card } from "@/components/ui/card";
 
 const SINS = [
-  "Pride",
-  "Greed",
-  "Lust",
-  "Envy",
-  "Gluttony",
-  "Wrath",
-  "Sloth"
+  { name: "Pride", emoji: "👑", description: "Excessive belief in own abilities" },
+  { name: "Greed", emoji: "💰", description: "Desire for material possessions" },
+  { name: "Lust", emoji: "💝", description: "Intense or uncontrolled desires" },
+  { name: "Envy", emoji: "👀", description: "Desire for others' traits or possessions" },
+  { name: "Gluttony", emoji: "🍽️", description: "Overindulgence or overconsumption" },
+  { name: "Wrath", emoji: "😠", description: "Uncontrolled feelings of anger" },
+  { name: "Sloth", emoji: "🦥", description: "Failure to act and utilize talents" }
 ] as const;
 
 const TEMPTATION_LEVELS = [
-  "Low - I can resist easily",
-  "Medium - It's challenging but manageable",
-  "High - I struggle significantly",
-  "Severe - Almost impossible to resist"
+  { level: "Low - I can resist easily", emoji: "🟢", description: "I feel confident in my ability to resist" },
+  { level: "Medium - It's challenging but manageable", emoji: "🟡", description: "I need to be mindful but can handle it" },
+  { level: "High - I struggle significantly", emoji: "🟠", description: "This is a serious challenge for me" },
+  { level: "Severe - Almost impossible to resist", emoji: "🔴", description: "I need immediate support and guidance" }
 ] as const;
 
 export default function ReflectionPage() {
@@ -30,9 +31,9 @@ export default function ReflectionPage() {
   const { toast } = useToast();
   
   const [step, setStep] = useState(1);
-  const [selectedSin, setSelectedSin] = useState<typeof SINS[number] | "">("");
+  const [selectedSin, setSelectedSin] = useState<typeof SINS[number]["name"] | "">("");
   const [customNote, setCustomNote] = useState("");
-  const [temptationLevel, setTemptationLevel] = useState<typeof TEMPTATION_LEVELS[number] | "">("");
+  const [temptationLevel, setTemptationLevel] = useState<typeof TEMPTATION_LEVELS[number]["level"] | "">("");
   const [trigger, setTrigger] = useState("");
 
   const progress = (step / 3) * 100;
@@ -96,14 +97,25 @@ export default function ReflectionPage() {
             <h2 className="text-2xl font-bold">Type of Temptation</h2>
             <RadioGroup
               value={selectedSin}
-              onValueChange={(value) => setSelectedSin(value as typeof SINS[number])}
+              onValueChange={(value) => setSelectedSin(value)}
               className="grid grid-cols-1 md:grid-cols-2 gap-4"
             >
-              {SINS.map((sin) => (
-                <div key={sin} className="flex items-center space-x-2">
-                  <RadioGroupItem value={sin} id={sin} />
-                  <Label htmlFor={sin}>{sin}</Label>
-                </div>
+              {SINS.map(({ name, emoji, description }) => (
+                <Card
+                  key={name}
+                  className={`relative p-4 cursor-pointer transition-all duration-200 hover:shadow-md ${
+                    selectedSin === name ? 'ring-2 ring-primary' : ''
+                  }`}
+                >
+                  <RadioGroupItem value={name} id={name} className="absolute right-4 top-4" />
+                  <Label htmlFor={name} className="cursor-pointer">
+                    <div className="flex flex-col space-y-2">
+                      <span className="text-3xl">{emoji}</span>
+                      <span className="font-semibold">{name}</span>
+                      <p className="text-sm text-muted-foreground">{description}</p>
+                    </div>
+                  </Label>
+                </Card>
               ))}
             </RadioGroup>
             
@@ -125,14 +137,27 @@ export default function ReflectionPage() {
             <h2 className="text-2xl font-bold">Temptation Level</h2>
             <RadioGroup
               value={temptationLevel}
-              onValueChange={(value) => setTemptationLevel(value as typeof TEMPTATION_LEVELS[number])}
+              onValueChange={(value) => setTemptationLevel(value)}
               className="space-y-4"
             >
-              {TEMPTATION_LEVELS.map((level) => (
-                <div key={level} className="flex items-center space-x-2">
-                  <RadioGroupItem value={level} id={level} />
-                  <Label htmlFor={level}>{level}</Label>
-                </div>
+              {TEMPTATION_LEVELS.map(({ level, emoji, description }) => (
+                <Card
+                  key={level}
+                  className={`relative p-4 cursor-pointer transition-all duration-200 hover:shadow-md ${
+                    temptationLevel === level ? 'ring-2 ring-primary' : ''
+                  }`}
+                >
+                  <RadioGroupItem value={level} id={level} className="absolute right-4 top-4" />
+                  <Label htmlFor={level} className="cursor-pointer">
+                    <div className="flex items-center space-x-4">
+                      <span className="text-2xl">{emoji}</span>
+                      <div>
+                        <div className="font-semibold">{level}</div>
+                        <p className="text-sm text-muted-foreground">{description}</p>
+                      </div>
+                    </div>
+                  </Label>
+                </Card>
               ))}
             </RadioGroup>
           </div>
