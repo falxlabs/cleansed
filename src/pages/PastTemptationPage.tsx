@@ -6,12 +6,15 @@ import { Mascot } from "@/components/dashboard/Mascot";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { format } from "date-fns";
 
 export default function PastTemptationPage() {
   const [date, setDate] = useState<Date>();
   const [time, setTime] = useState("");
   const navigate = useNavigate();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const handleContinue = () => {
     if (!date) {
@@ -49,13 +52,23 @@ export default function PastTemptationPage() {
       <div className="bg-card rounded-lg p-6 space-y-6">
         <h2 className="text-2xl font-bold text-center">When did this happen?</h2>
         
-        <div className="flex justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          {date && (
+            <p className="text-sm text-muted-foreground">
+              Selected: {format(date, 'PPP')}
+            </p>
+          )}
+          
           <Calendar
             mode="single"
             selected={date}
             onSelect={setDate}
             disabled={{ after: new Date() }}
-            className="rounded-md border"
+            className={cn(
+              "rounded-md border",
+              isMobile ? "w-full" : "w-auto"
+            )}
+            initialFocus
           />
         </div>
 
@@ -66,7 +79,7 @@ export default function PastTemptationPage() {
             type="time"
             value={time}
             onChange={(e) => setTime(e.target.value)}
-            className="w-full"
+            className="w-full text-lg p-6"
           />
         </div>
 
