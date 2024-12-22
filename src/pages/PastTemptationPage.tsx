@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 export default function PastTemptationPage() {
   const [date, setDate] = useState<Date>();
