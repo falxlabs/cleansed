@@ -3,24 +3,15 @@ import { ActionButton } from "@/components/dashboard/ActionButton";
 import { DailyVerse } from "@/components/dashboard/DailyVerse";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { StreakDisplay } from "@/components/dashboard/StreakDisplay";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
-  // These would typically come from your backend/state management
+  const navigate = useNavigate();
   const currentStreak = 7;
   const welcomeMessage = "Welcome back! Remember, each day is a new opportunity to grow stronger in your faith.";
   const dailyVerse = {
     verse: "No temptation has overtaken you except what is common to mankind. And God is faithful; he will not let you be tempted beyond what you can bear.",
     reference: "1 Corinthians 10:13",
-  };
-
-  const handleLogTemptation = () => {
-    // Handle temptation logging
-    console.log("Logging temptation...");
-  };
-
-  const handleLogPastTemptation = () => {
-    // Handle past temptation logging
-    console.log("Logging past temptation...");
   };
 
   return (
@@ -35,14 +26,14 @@ const Index = () => {
         <ActionButton
           icon={AlertCircle}
           label="I'm Being Tempted"
-          onClick={handleLogTemptation}
+          onClick={() => navigate('/reflection')}
           variant="destructive"
           className="w-full"
         />
         <ActionButton
           icon={Shield}
           label="Log Past Temptation"
-          onClick={handleLogPastTemptation}
+          onClick={() => navigate('/past-temptation')}
           variant="outline"
           className="w-full"
         />

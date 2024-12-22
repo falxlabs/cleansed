@@ -5,6 +5,7 @@ import Index from "./pages/Index";
 import CrossroadPage from "./pages/CrossroadPage";
 import ReflectionPage from "./pages/ReflectionPage";
 import JournalPage from "./pages/JournalPage";
+import PastTemptationPage from "./pages/PastTemptationPage";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ export default () => (
           <Route path="/crossroad" element={<CrossroadPage />} />
           <Route path="/reflection" element={<ReflectionPage />} />
           <Route path="/journal" element={<JournalPage />} />
+          <Route path="/past-temptation" element={<PastTemptationPage />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
