@@ -32,15 +32,14 @@ export default function Onboarding() {
       first_name: "",
       age: 0,
       email: "",
-      password: "",
     },
   });
 
-  const handleEmailSignUp = async (data: OnboardingFormData) => {
+  const handleEmailSignUp = async () => {
+    const data = form.getValues();
     try {
-      const { error: signUpError } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signInWithOtp({
         email: data.email,
-        password: data.password,
         options: {
           data: {
             first_name: data.first_name,
@@ -49,11 +48,11 @@ export default function Onboarding() {
         },
       });
 
-      if (signUpError) throw signUpError;
+      if (error) throw error;
 
       toast({
-        title: "Account created!",
-        description: "Please check your email to verify your account.",
+        title: "Check your email",
+        description: "We've sent you a magic link to sign in.",
       });
       
       navigate("/dashboard");
@@ -108,7 +107,13 @@ export default function Onboarding() {
           <form onSubmit={form.handleSubmit(handleEmailSignUp)} className="space-y-4">
             {step === 1 && <NameStep form={form} />}
             {step === 2 && <AgeStep form={form} />}
-            {step === 3 && <AccountStep form={form} onGoogleSignIn={handleGoogleSignIn} />}
+            {step === 3 && (
+              <AccountStep 
+                form={form} 
+                onGoogleSignIn={handleGoogleSignIn}
+                onEmailSignUp={handleEmailSignUp}
+              />
+            )}
 
             {step !== 3 && (
               <div className="flex justify-between">

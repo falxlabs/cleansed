@@ -8,9 +8,10 @@ import { OnboardingFormData } from "./types";
 interface AccountStepProps {
   form: UseFormReturn<OnboardingFormData>;
   onGoogleSignIn: () => void;
+  onEmailSignUp: () => void;
 }
 
-export function AccountStep({ form, onGoogleSignIn }: AccountStepProps) {
+export function AccountStep({ form, onGoogleSignIn, onEmailSignUp }: AccountStepProps) {
   return (
     <div className="space-y-4">
       <FormField
@@ -31,24 +32,13 @@ export function AccountStep({ form, onGoogleSignIn }: AccountStepProps) {
           </FormItem>
         )}
       />
-      <FormField
-        control={form.control}
-        name="password"
-        render={({ field }) => (
-          <FormItem>
-            <Label htmlFor="password">Password</Label>
-            <FormControl>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Choose a password"
-                {...field}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      <Button
+        type="button"
+        className="w-full"
+        onClick={onEmailSignUp}
+      >
+        Sign up with Email
+      </Button>
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
