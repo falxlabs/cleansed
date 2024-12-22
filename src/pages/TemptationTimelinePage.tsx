@@ -21,8 +21,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
-import { Check, X } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, X } from "lucide-react";
 
 // Temporary mock data - replace with actual data from your backend
 const mockEntries = [
@@ -50,6 +51,7 @@ export default function TemptationTimelinePage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [selectedEntries, setSelectedEntries] = useState(mockEntries);
   const [selectedEntry, setSelectedEntry] = useState<typeof mockEntries[0] | null>(null);
+  const [showCalendar, setShowCalendar] = useState(true);
 
   const handleDateSelect = (newDate: Date | undefined) => {
     setDate(newDate);
@@ -67,21 +69,41 @@ export default function TemptationTimelinePage() {
     setSelectedEntry(entry);
   };
 
+  const toggleCalendar = () => {
+    setShowCalendar(!showCalendar);
+  };
+
   return (
     <div className="container max-w-7xl mx-auto p-2 sm:p-4 space-y-4 sm:space-y-8">
-      <h1 className="text-2xl sm:text-3xl font-bold">Temptation Timeline</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl sm:text-3xl font-bold">Temptation Timeline</h1>
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={toggleCalendar}
+          className="flex items-center gap-2"
+        >
+          {showCalendar ? (
+            <>Hide Calendar <ChevronUp className="h-4 w-4" /></>
+          ) : (
+            <>Show Calendar <ChevronDown className="h-4 w-4" /></>
+          )}
+        </Button>
+      </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4 sm:gap-8">
-        <Card className="p-2 sm:p-4 h-fit">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={handleDateSelect}
-            className="rounded-md"
-          />
-        </Card>
+        {showCalendar && (
+          <Card className="p-2 sm:p-4 h-fit">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={handleDateSelect}
+              className="rounded-md"
+            />
+          </Card>
+        )}
 
-        <Card>
+        <Card className={showCalendar ? "" : "lg:col-span-2"}>
           <CardHeader className="p-4">
             <CardTitle>Entries</CardTitle>
             <CardDescription>
