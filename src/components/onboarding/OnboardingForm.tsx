@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { OnboardingProgress } from "./OnboardingProgress";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { useToast } from "@/hooks/use-toast";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 
 interface FormData {
   firstName: string;
@@ -20,8 +19,6 @@ export function OnboardingForm() {
     age: "",
     email: "",
   });
-  const [otp, setOtp] = useState("");
-  const [showOTP, setShowOTP] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
@@ -29,7 +26,7 @@ export function OnboardingForm() {
     1: "Hi there! Let's start with your name.",
     2: "Great! Now, how old are you?",
     3: "Almost done! What's your email address?",
-    4: "Please enter the verification code sent to your email.",
+    4: "Please check your email and click the magic link we sent you to complete the signup process!",
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -39,20 +36,7 @@ export function OnboardingForm() {
     setIsSubmitting(true);
     
     try {
-      if (showOTP) {
-        const { error } = await supabase.auth.verifyOtp({
-          email: formData.email,
-          token: otp,
-          type: 'email',
-        });
-
-        if (error) throw error;
-
-        toast({
-          title: "Welcome aboard!",
-          description: "Your account has been created successfully.",
-        });
-      } else if (step < 3) {
+      if (step < 3) {
         setStep(step + 1);
       } else {
         const { error } = await supabase.auth.signInWithOtp({
@@ -70,18 +54,17 @@ export function OnboardingForm() {
             toast({
               variant: "destructive",
               title: "Please wait",
-              description: "You can request another code in a few seconds.",
+              description: "You can request another link in a few seconds.",
             });
             return;
           }
           throw error;
         }
 
-        setShowOTP(true);
         setStep(4);
         toast({
-          title: "Verification code sent!",
-          description: "Please check your email for the verification code.",
+          title: "Magic link sent!",
+          description: "Please check your email and click the link to complete signup.",
         });
       }
     } catch (error: any) {
@@ -142,20 +125,19 @@ export function OnboardingForm() {
         );
       case 4:
         return (
-          <div className="space-y-4">
-            <label className="block text-sm font-medium">Verification Code</label>
-            <InputOTP
-              value={otp}
-              onChange={setOtp}
-              maxLength={6}
-              render={({ slots }) => (
-                <InputOTPGroup>
-                  {slots.map((slot, idx) => (
-                    <InputOTPSlot key={idx} {...slot} index={idx} />
-                  ))}
-                </InputOTPGroup>
-              )}
-            />
+          <div className="space-y-4 text-center">
+            <p className="text-muted-foreground">
+              We've sent you a magic link to complete your signup. 
+              Please check your email and click the link.
+            </p>
+            <Button
+              type="button"
+              variant="outline"
+              className="mt-4"
+              onClick={() => window.location.reload()}
+            >
+              Didn't receive the email? Click to try again
+            </Button>
           </div>
         );
     }
@@ -168,9 +150,11 @@ export function OnboardingForm() {
       
       <form onSubmit={handleSubmit} className="space-y-8">
         {renderFormStep()}
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {step < 3 ? "Next" : showOTP ? "Verify" : "Sign Up"}
-        </Button>
+        {step < 4 && (
+          <Button type="submit" className="w-full" disabled={isSubmitting}>
+            {step < 3 ? "Next" : "Sign Up"}
+          </Button>
+        )}
       </form>
     </div>
   );
