@@ -2,25 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { Card } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
-
-const SINS = [
-  { name: "Pride", emoji: "👑", description: "Excessive belief in own abilities" },
-  { name: "Greed", emoji: "💰", description: "Desire for material possessions" },
-  { name: "Lust", emoji: "💝", description: "Intense or uncontrolled desires" },
-  { name: "Envy", emoji: "👀", description: "Desire for others' traits or possessions" },
-  { name: "Gluttony", emoji: "🍽️", description: "Overindulgence or overconsumption" },
-  { name: "Wrath", emoji: "😠", description: "Uncontrolled feelings of anger" },
-  { name: "Sloth", emoji: "🦥", description: "Failure to act and utilize talents" }
-] as const;
-
-type SinType = typeof SINS[number]["name"];
+import { TemptationTypeSelector } from "@/components/reflection/TemptationTypeSelector";
 
 const TEMPTATION_LEVELS = [
   "Low - I can resist easily",
@@ -36,7 +24,7 @@ export default function ReflectionPage() {
   const { toast } = useToast();
   
   const [step, setStep] = useState(1);
-  const [selectedSin, setSelectedSin] = useState<SinType | "">("");
+  const [selectedSin, setSelectedSin] = useState<string>("");
   const [customNote, setCustomNote] = useState("");
   const [temptationLevel, setTemptationLevel] = useState<TemptationLevel | "">("");
   const [sliderValue, setSliderValue] = useState([25]);
@@ -114,29 +102,13 @@ export default function ReflectionPage() {
         {step === 1 && (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold">Type of Temptation</h2>
-            <RadioGroup
-              value={selectedSin}
-              onValueChange={(value: SinType) => setSelectedSin(value)}
-              className="grid grid-cols-1 md:grid-cols-2 gap-4"
-            >
-              {SINS.map(({ name, emoji, description }) => (
-                <Card
-                  key={name}
-                  className={`relative p-4 cursor-pointer transition-all duration-200 hover:shadow-md ${
-                    selectedSin === name ? 'ring-2 ring-primary' : ''
-                  }`}
-                >
-                  <RadioGroupItem value={name} id={name} className="absolute right-4 top-4" />
-                  <Label htmlFor={name} className="cursor-pointer">
-                    <div className="flex flex-col space-y-2">
-                      <span className="text-3xl">{emoji}</span>
-                      <span className="font-semibold">{name}</span>
-                      <p className="text-sm text-muted-foreground">{description}</p>
-                    </div>
-                  </Label>
-                </Card>
-              ))}
-            </RadioGroup>
+            <Card className="p-6">
+              <TemptationTypeSelector
+                value={selectedSin}
+                onChange={setSelectedSin}
+                showText={true}
+              />
+            </Card>
             
             <div className="space-y-2">
               <Label htmlFor="customNote">Describe the specific temptation</Label>
