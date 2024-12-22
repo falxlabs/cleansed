@@ -38,36 +38,35 @@ export default function ReflectionPage() {
   const progress = (step / 3) * 100;
 
   const handleNext = () => {
-    if (step === 1 && (!selectedSin || !customNote)) {
-      toast({
-        title: "Please complete all fields",
-        description: "Select a type of temptation and add your note",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (step === 2 && !temptationLevel) {
-      toast({
-        title: "Please select a temptation level",
-        description: "This helps us understand the intensity of the struggle",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (step === 3 && !trigger) {
-      toast({
-        title: "Please describe the trigger",
-        description: "Understanding what triggers the temptation is important",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (step < 3) {
-      setStep(step + 1);
-    } else {
+    if (step === 1) {
+      if (!selectedSin || !customNote) {
+        toast({
+          title: "Please complete all fields",
+          description: "Select a type of temptation and add your note",
+          variant: "destructive",
+        });
+        return;
+      }
+      setStep(2);
+    } else if (step === 2) {
+      if (!temptationLevel) {
+        toast({
+          title: "Please select a temptation level",
+          description: "This helps us understand the intensity of the struggle",
+          variant: "destructive",
+        });
+        return;
+      }
+      setStep(3);
+    } else if (step === 3) {
+      if (!trigger) {
+        toast({
+          title: "Please describe the trigger",
+          description: "Understanding what triggers the temptation is important",
+          variant: "destructive",
+        });
+        return;
+      }
       // Handle completion
       toast({
         title: "Reflection completed",
