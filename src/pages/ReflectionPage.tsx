@@ -47,10 +47,10 @@ export default function ReflectionPage() {
 
   const handleNext = () => {
     if (step === 1) {
-      if (!selectedSin || !customNote) {
+      if (!selectedSin) {
         toast({
-          title: "Please complete all fields",
-          description: "Select a type of temptation and add your note",
+          title: "Please complete all required fields",
+          description: "Select a type of temptation",
           variant: "destructive",
         });
         return;
@@ -111,10 +111,10 @@ export default function ReflectionPage() {
             </Card>
             
             <div className="space-y-2">
-              <Label htmlFor="customNote">Describe the specific temptation</Label>
+              <Label htmlFor="customNote">Additional details (optional)</Label>
               <Textarea
                 id="customNote"
-                placeholder="What exactly are you struggling with?"
+                placeholder="Want to add more details about what you're struggling with?"
                 value={customNote}
                 onChange={(e) => setCustomNote(e.target.value)}
                 className="min-h-[100px]"
