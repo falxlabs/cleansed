@@ -5,7 +5,6 @@ import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { ReflectionTimer } from "@/components/crossroad/ReflectionTimer";
-import { SuggestionCarousel } from "@/components/crossroad/SuggestionCarousel";
 import { ChoiceButtons } from "@/components/crossroad/ChoiceButtons";
 
 export default function CrossroadPage() {
@@ -53,8 +52,6 @@ export default function CrossroadPage() {
         />
 
         <ReflectionTimer onComplete={() => setIsTimerComplete(true)} />
-
-        <SuggestionCarousel />
       </div>
     </div>
   );
