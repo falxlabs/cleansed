@@ -35,7 +35,7 @@ const DashboardPage = () => {
       </div>
 
       <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-md p-6">
-        <div className="space-y-6">
+        <div className="space-y-8">
           <div className="space-y-4">
             <ActionButton
               icon={AlertCircle}
