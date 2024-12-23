@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
@@ -8,7 +8,6 @@ import { TemptationLevelStep } from "@/components/reflection/TemptationLevelStep
 import { TriggerStep } from "@/components/reflection/TriggerStep";
 import { ResistanceStep } from "@/components/reflection/ResistanceStep";
 import { NavigationButtons } from "@/components/reflection/NavigationButtons";
-import { Check, X } from "lucide-react";
 
 const TEMPTATION_LEVELS = [
   "Low - I can resist easily",
@@ -33,14 +32,6 @@ export default function ReflectionPage() {
   const [temptationLevel, setTemptationLevel] = useState<TemptationLevel>(TEMPTATION_LEVELS[defaultLevelIndex]);
   const [trigger, setTrigger] = useState("");
   const [resistanceStrategy, setResistanceStrategy] = useState("");
-  const [resisted, setResisted] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const resistedStatus = sessionStorage.getItem('pastTemptationResisted');
-    if (resistedStatus) {
-      setResisted(resistedStatus === 'true');
-    }
-  }, []);
 
   const progress = (step / 4) * 100;
 
@@ -114,27 +105,6 @@ export default function ReflectionPage() {
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
       <Mascot message="Let's reflect on this temptation together" />
-      
-      {resisted !== null && (
-        <div className={`flex items-center justify-center p-4 rounded-lg ${
-          resisted ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
-        }`}>
-          <div className="flex items-center gap-2">
-            {resisted ? (
-              <>
-                <Check className="h-5 w-5" />
-                <span className="font-medium">You resisted this temptation</span>
-              </>
-            ) : (
-              <>
-                <X className="h-5 w-5" />
-                <span className="font-medium">You gave in to this temptation</span>
-              </>
-            )}
-          </div>
-        </div>
-      )}
-
       <Progress value={progress} className="w-full" />
 
       <div className="space-y-6">
