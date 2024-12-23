@@ -54,13 +54,15 @@ const getSinEmoji = (type: string) => {
 };
 
 const formatEntryType = (type: string) => {
-  if (type === "Daily check-in") return { category: "Check-in", subtype: null };
+  if (type === "Daily check-in") {
+    return { category: "Check-in", subtype: null };
+  }
   
   const sins = ["Pride", "Greed", "Lust", "Envy", "Gluttony", "Wrath", "Sloth"];
   const matchedSin = sins.find(sin => type.includes(sin));
   
   return {
-    category: type === "Daily check-in" ? "Check-in" : "Temptation",
+    category: matchedSin ? "Temptation" : type,
     subtype: matchedSin || null
   };
 };
