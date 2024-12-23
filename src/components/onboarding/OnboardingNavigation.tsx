@@ -26,6 +26,7 @@ export function OnboardingNavigation({
           <Button 
             onClick={onNext}
             disabled={!isStepValid}
+            className="w-full"
           >
             Continue
           </Button>
@@ -33,6 +34,7 @@ export function OnboardingNavigation({
           <Button 
             onClick={onComplete}
             disabled={!isStepValid || loading}
+            className="w-full"
           >
             {loading ? "Signing up..." : "Complete"}
           </Button>

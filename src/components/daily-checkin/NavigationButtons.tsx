@@ -16,7 +16,7 @@ export function NavigationButtons({
       <Button 
         onClick={onNext} 
         disabled={isNextDisabled}
-        className="bg-primary hover:bg-primary/90"
+        className="w-full bg-primary hover:bg-primary/90"
       >
         {step === 4 ? "Complete" : "Next"}
       </Button>

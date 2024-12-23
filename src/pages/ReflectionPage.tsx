@@ -7,6 +7,8 @@ import { ResistanceStep } from "@/components/reflection/ResistanceStep";
 import { NavigationButtons } from "@/components/reflection/NavigationButtons";
 import { useReflectionState } from "@/hooks/useReflectionState";
 import { useReflectionDatabase } from "@/hooks/useReflectionDatabase";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 export default function ReflectionPage() {
   const {
@@ -137,6 +139,15 @@ export default function ReflectionPage() {
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
+      <Button
+        variant="ghost"
+        className="-ml-2"
+        onClick={handleBack}
+      >
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Back
+      </Button>
+
       <Mascot message={mascotMessage} />
       <Progress value={progress} className="w-full" />
 
@@ -173,7 +184,6 @@ export default function ReflectionPage() {
         )}
 
         <NavigationButtons
-          onBack={handleBack}
           onNext={handleNext}
           onSkip={handleSkip}
           step={step}

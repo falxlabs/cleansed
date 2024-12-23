@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { DateTimeStep } from "@/components/past-temptation/DateTimeStep";
 import { OutcomeStep } from "@/components/past-temptation/OutcomeStep";
 import { saveJournalEntry } from "@/utils/journalEntries";
+import { ArrowLeft } from "lucide-react";
 
 export default function PastTemptationPage() {
   const [step, setStep] = useState(1);
@@ -72,6 +73,15 @@ export default function PastTemptationPage() {
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
+      <Button
+        variant="ghost"
+        className="-ml-2"
+        onClick={() => navigate('/')}
+      >
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Back
+      </Button>
+
       <Progress value={progress} className="w-full" />
       
       <Mascot 
@@ -97,17 +107,12 @@ export default function PastTemptationPage() {
           />
         )}
 
-        <div className="flex justify-between pt-4">
-          <Button 
-            variant="outline" 
-            onClick={handleBack}
-          >
-            Back
-          </Button>
-          <Button onClick={handleContinue}>
-            Continue
-          </Button>
-        </div>
+        <Button 
+          onClick={handleContinue}
+          className="w-full"
+        >
+          Continue
+        </Button>
       </div>
     </div>
   );
