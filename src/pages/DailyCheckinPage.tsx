@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
 import { TemptationTypeSelector } from "@/components/reflection/TemptationTypeSelector";
 import { TemptationLevelStep } from "@/components/reflection/TemptationLevelStep";
+import { Mascot } from "@/components/dashboard/Mascot";
 
 export default function DailyCheckinPage() {
   const navigate = useNavigate();
@@ -36,6 +37,21 @@ export default function DailyCheckinPage() {
     if (step === 3) return temptationLevel.length === 0;
     if (step === 4) return !selectedStatement;
     return false;
+  };
+
+  const getMascotMessage = () => {
+    switch (step) {
+      case 1:
+        return "How are you feeling today? Let's start with your mood.";
+      case 2:
+        return "What challenges are you facing? I'm here to support you.";
+      case 3:
+        return "Understanding your temptation level helps us support you better.";
+      case 4:
+        return "Let's end with your daily affirmation. You're doing great!";
+      default:
+        return "Let's do your daily check-in together!";
+    }
   };
 
   const getStepContent = () => {
@@ -91,28 +107,35 @@ export default function DailyCheckinPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-primary/5 to-primary/10 p-4 sm:p-6 md:p-8">
-      <div className="max-w-2xl mx-auto space-y-6 bg-white/40 backdrop-blur-sm rounded-3xl p-6 shadow-xl border-2 border-primary/20">
-        <Progress value={(step / 4) * 100} className="w-full" />
+      <div className="max-w-2xl mx-auto space-y-6">
+        <Mascot 
+          message={getMascotMessage()} 
+          className="mb-6"
+        />
         
-        <div className="space-y-6">
-          {getStepContent()}
-        </div>
+        <div className="bg-white/40 backdrop-blur-sm rounded-3xl p-6 shadow-xl border-2 border-primary/20">
+          <Progress value={(step / 4) * 100} className="w-full" />
+          
+          <div className="space-y-6 mt-6">
+            {getStepContent()}
+          </div>
 
-        <div className="flex justify-between mt-6 pt-6 border-t border-primary/20">
-          <Button
-            variant="outline"
-            onClick={() => (step === 1 ? navigate('/') : setStep(step - 1))}
-            className="bg-white/50 hover:bg-white/80"
-          >
-            {step === 1 ? "Cancel" : "Back"}
-          </Button>
-          <Button 
-            onClick={handleNext} 
-            disabled={isNextDisabled()}
-            className="bg-primary hover:bg-primary/90"
-          >
-            {step === 4 ? "Complete" : "Next"}
-          </Button>
+          <div className="flex justify-between mt-6 pt-6 border-t border-primary/20">
+            <Button
+              variant="outline"
+              onClick={() => (step === 1 ? navigate('/') : setStep(step - 1))}
+              className="bg-white/50 hover:bg-white/80"
+            >
+              {step === 1 ? "Cancel" : "Back"}
+            </Button>
+            <Button 
+              onClick={handleNext} 
+              disabled={isNextDisabled()}
+              className="bg-primary hover:bg-primary/90"
+            >
+              {step === 4 ? "Complete" : "Next"}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
