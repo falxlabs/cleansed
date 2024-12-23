@@ -1,16 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { OnboardingContainer } from "@/components/onboarding/OnboardingContainer";
-import { useState } from "react";
 
 const Index = () => {
   const navigate = useNavigate();
-  const [showOnboarding, setShowOnboarding] = useState(false);
-
-  if (showOnboarding) {
-    return <OnboardingContainer />;
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-duo-50 px-4">

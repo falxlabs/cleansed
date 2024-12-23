@@ -8,6 +8,7 @@ import ReflectionPage from "./pages/ReflectionPage";
 import JournalPage from "./pages/JournalPage";
 import SettingsPage from "./pages/SettingsPage";
 import AchievementsPage from "./pages/AchievementsPage";
+import SignInPage from "./pages/SignInPage";
 import { BottomNav } from "./components/navigation/BottomNav";
 import { DesktopNav } from "./components/navigation/DesktopNav";
 import { Toaster } from "@/components/ui/toaster";
@@ -20,7 +21,7 @@ import SupportSettingsPage from "./pages/settings/SupportSettingsPage";
 
 const AppContent = () => {
   const location = useLocation();
-  const showNav = location.pathname !== "/";
+  const showNav = location.pathname !== "/" && location.pathname !== "/signin";
 
   return (
     <div className="min-h-screen bg-[#F5F5F5]">
@@ -30,6 +31,7 @@ const AppContent = () => {
         <main className={`${showNav ? "md:flex-1" : ""} px-4 pb-24 md:pb-6 md:px-6`}>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/signin" element={<SignInPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/daily-checkin" element={<DailyCheckinPage />} />
             <Route path="/crossroad" element={<CrossroadPage />} />
