@@ -26,10 +26,10 @@ const Index = () => {
             </div>
             <div className="flex-1 space-y-4">
               <h2 className="text-2xl font-bold text-gray-900">
-                Hi, I'm Grace Bearer
+                Hi, I'm Grace
               </h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                I'm here to walk alongside you in your journey of faith. Together, we'll track your daily victories, reflect on challenges, and grow stronger in Christ. Through daily check-ins, scripture meditation, and practical tools, we'll build habits that strengthen your walk with God.
+                Let's walk together in faith, focusing on progress, not perfection.
               </p>
             </div>
           </div>
@@ -38,16 +38,16 @@ const Index = () => {
         {/* Features Grid */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           <Card className="p-6 text-center">
-            <h3 className="text-xl font-bold mb-3">Daily Check-ins</h3>
-            <p className="text-gray-600">Track your spiritual journey and celebrate victories</p>
+            <h3 className="text-xl font-bold mb-3">Progress Over Perfection</h3>
+            <p className="text-gray-600">Daily check-ins that celebrate growth and encourage consistency</p>
           </Card>
           <Card className="p-6 text-center">
-            <h3 className="text-xl font-bold mb-3">Scripture Support</h3>
-            <p className="text-gray-600">Find strength in God's promises</p>
+            <h3 className="text-xl font-bold mb-3">Journal & Reflect</h3>
+            <p className="text-gray-600">Track your journey and learn from experiences with guided reflection</p>
           </Card>
           <Card className="p-6 text-center">
-            <h3 className="text-xl font-bold mb-3">Prayer Journal</h3>
-            <p className="text-gray-600">Document your spiritual growth</p>
+            <h3 className="text-xl font-bold mb-3">Coming Soon: AI Guide</h3>
+            <p className="text-gray-600">Bible-based AI assistance to support your spiritual journey</p>
           </Card>
         </div>
 

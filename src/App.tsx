@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
 import DashboardPage from "./pages/DashboardPage";
 import DailyCheckinPage from "./pages/DailyCheckinPage";
@@ -18,12 +18,16 @@ import TemptationSettingsPage from "./pages/settings/TemptationSettingsPage";
 import NotificationsSettingsPage from "./pages/settings/NotificationsSettingsPage";
 import SupportSettingsPage from "./pages/settings/SupportSettingsPage";
 
-function App() {
+const AppContent = () => {
+  const location = useLocation();
+  const showNav = location.pathname !== "/";
+
   return (
-    <Router>
-      <div className="flex">
-        <DesktopNav />
-        <main className="flex-1 md:ml-64">
+    <>
+      {showNav && <DesktopNav />}
+      <div className={showNav ? "flex" : ""}>
+        {showNav && <div className="w-64 shrink-0" />}
+        <main className={showNav ? "flex-1" : ""}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<DashboardPage />} />
@@ -43,8 +47,16 @@ function App() {
           </Routes>
         </main>
       </div>
-      <BottomNav />
+      {showNav && <BottomNav />}
       <Toaster />
+    </>
+  );
+};
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }
