@@ -30,9 +30,9 @@ export const TemptationLevelStep = ({
           .from('temptation_settings')
           .select('default_intensity')
           .eq('user_id', user.id)
-          .maybeSingle();
+          .single();
         
-        if (settings?.default_intensity !== null && settings?.default_intensity !== undefined) {
+        if (settings && typeof settings.default_intensity === 'number') {
           onSliderChange([settings.default_intensity]);
         }
       } catch (error) {
@@ -40,11 +40,8 @@ export const TemptationLevelStep = ({
       }
     };
 
-    // Only load default settings if we're at the initial value
-    if (sliderValue[0] === 50) {
-      loadDefaultSettings();
-    }
-  }, []);
+    loadDefaultSettings();
+  }, [onSliderChange]);
 
   const getTemptationLevelDescription = (value: number) => {
     if (value <= 25) return TEMPTATION_LEVELS[0];
