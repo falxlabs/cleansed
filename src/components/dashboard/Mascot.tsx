@@ -8,18 +8,19 @@ interface MascotProps {
   className?: string;
   onCheckIn?: () => void;
   showCheckInButton?: boolean;
+  context?: 'dashboard' | 'reflection' | 'journal' | 'crossroad' | 'settings';
 }
 
 const getUserFirstName = () => {
   return localStorage.getItem("userFirstName") || "";
 };
 
-export function Mascot({ message, className, onCheckIn, showCheckInButton = false }: MascotProps) {
+export function Mascot({ message, className, onCheckIn, showCheckInButton = false, context = 'dashboard' }: MascotProps) {
   const shouldShow = shouldShowCheckIn();
   const firstName = getUserFirstName();
   const personalizedGreeting = firstName ? `Hey ${firstName}! ` : "Hey! ";
   
-  const displayMessage = shouldShow 
+  const displayMessage = context === 'dashboard' && shouldShow 
     ? `${personalizedGreeting}It's time for your daily check-in. This helps us track your progress and support you better!`
     : message;
 
@@ -36,7 +37,7 @@ export function Mascot({ message, className, onCheckIn, showCheckInButton = fals
           </div>
           <p className="text-lg font-bold leading-relaxed text-gray-800">{displayMessage}</p>
         </div>
-        {showCheckInButton && shouldShow && onCheckIn && (
+        {showCheckInButton && shouldShow && onCheckIn && context === 'dashboard' && (
           <Button
             onClick={onCheckIn}
             className="bg-duo-100 text-duo-800 hover:bg-duo-200 w-full"

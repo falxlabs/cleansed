@@ -28,6 +28,7 @@ const Index = () => {
           className="animate-fade-in" 
           onCheckIn={() => navigate('/daily-checkin')}
           showCheckInButton={true}
+          context="dashboard"
         />
       </div>
 
