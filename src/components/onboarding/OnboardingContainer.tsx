@@ -14,6 +14,7 @@ export function OnboardingContainer() {
     formData,
     loading,
     progress,
+    totalSteps,
     handleFormDataChange,
     handleNext,
     handleBack,
@@ -59,6 +60,7 @@ export function OnboardingContainer() {
         
         <OnboardingNavigation
           currentStep={currentStep}
+          totalSteps={totalSteps}
           loading={loading}
           isStepValid={isCurrentStepValid()}
           onNext={handleNext}
