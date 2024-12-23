@@ -10,6 +10,8 @@ export function TemptationStep({
   selectedTemptation,
   onTemptationChange,
 }: TemptationStepProps) {
+  console.log("TemptationStep - Current selectedTemptation:", selectedTemptation);
+  
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-center text-primary">Today's Biggest Challenge</h2>

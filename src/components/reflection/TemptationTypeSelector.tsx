@@ -19,27 +19,37 @@ interface TemptationTypeSelectorProps {
 }
 
 export const TemptationTypeSelector = ({ value, onChange, showText = true }: TemptationTypeSelectorProps) => {
-  // Find the initial sin index, defaulting to Lust (index 2) if not found
-  const initialSinIndex = value ? SINS.findIndex(sin => sin.name === value) : 2;
-  const [sliderValue, setSliderValue] = useState([initialSinIndex >= 0 ? initialSinIndex : 2]);
+  console.log("TemptationTypeSelector - Received value:", value);
+  
+  // Find the initial sin index, defaulting to 0 (Pride) if not found
+  const initialSinIndex = value ? SINS.findIndex(sin => sin.name.toLowerCase() === value.toLowerCase()) : 0;
+  console.log("Initial sin index:", initialSinIndex, "for value:", value);
+  
+  const [sliderValue, setSliderValue] = useState([initialSinIndex >= 0 ? initialSinIndex : 0]);
   
   // Update slider value when value prop changes
   useEffect(() => {
-    const newIndex = SINS.findIndex(sin => sin.name === value);
+    console.log("Value prop changed to:", value);
+    const newIndex = SINS.findIndex(sin => sin.name.toLowerCase() === value.toLowerCase());
+    console.log("New index calculated:", newIndex);
     if (newIndex >= 0 && newIndex !== sliderValue[0]) {
+      console.log("Updating slider value to:", newIndex);
       setSliderValue([newIndex]);
     }
   }, [value]);
 
   const handleSliderChange = (newValue: number[]) => {
+    console.log("Slider changed to:", newValue);
     const validValue = Math.min(Math.max(newValue[0], 0), SINS.length - 1);
     setSliderValue([validValue]);
     const selectedSin = SINS[validValue];
-    onChange(selectedSin.name);
+    console.log("Selected sin:", selectedSin.name.toLowerCase());
+    onChange(selectedSin.name.toLowerCase());
   };
 
   // Ensure we always have a valid index
   const selectedSin = SINS[Math.min(Math.max(sliderValue[0], 0), SINS.length - 1)];
+  console.log("Currently selected sin:", selectedSin.name);
 
   return (
     <div className="space-y-8">
