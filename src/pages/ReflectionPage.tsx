@@ -7,7 +7,8 @@ import { TemptationLevelStep } from "@/components/reflection/TemptationLevelStep
 import { TriggerStep } from "@/components/reflection/TriggerStep";
 import { ResistanceStep } from "@/components/reflection/ResistanceStep";
 import { NavigationButtons } from "@/components/reflection/NavigationButtons";
-import { saveJournalEntry } from "@/utils/journalEntries";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const TEMPTATION_LEVELS = [
   "Low - I can resist easily",
@@ -21,6 +22,7 @@ type TemptationLevel = typeof TEMPTATION_LEVELS[number];
 export default function ReflectionPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { toast } = useToast();
   
   const [step, setStep] = useState(1);
   const [selectedSin, setSelectedSin] = useState<string>("");
@@ -50,7 +52,50 @@ export default function ReflectionPage() {
     setTemptationLevel(TEMPTATION_LEVELS[Math.min(levelIndex, TEMPTATION_LEVELS.length - 1)]);
   };
 
-  const handleNext = () => {
+  const saveToDatabase = async () => {
+    try {
+      // First create the journal entry
+      const { data: journalEntry, error: journalError } = await supabase
+        .from('journal_entries')
+        .insert({
+          entry_type: 'temptation',
+        })
+        .select()
+        .single();
+
+      if (journalError) throw journalError;
+
+      // Then create the temptation entry
+      const { error: temptationError } = await supabase
+        .from('temptation_entries')
+        .insert({
+          id: journalEntry.id,
+          temptation_type: selectedSin.toLowerCase(),
+          intensity_level: Math.floor((sliderValue[0] / 100) * 100),
+          trigger: trigger,
+          resisted: outcome === 'resisted',
+          resistance_strategy: outcome === 'resisted' ? resistanceStrategy : null,
+          temptation_details: customNote || null,
+        });
+
+      if (temptationError) throw temptationError;
+
+      toast({
+        title: "Entry saved",
+        description: "Your reflection has been saved successfully.",
+      });
+
+    } catch (error) {
+      console.error('Error saving entry:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save your reflection. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleNext = async () => {
     if (step === 1 && !selectedSin) {
       setMascotMessage("Please select a type of temptation first. This helps us understand your struggle better.");
       return;
@@ -69,16 +114,7 @@ export default function ReflectionPage() {
         return;
       }
       
-      saveJournalEntry({
-        date: new Date(),
-        type: selectedSin,
-        resisted: outcome === 'resisted',
-        level: temptationLevel,
-        trigger: trigger,
-        notes: outcome === 'resisted' ? resistanceStrategy : '',
-        description: customNote,
-      });
-
+      await saveToDatabase();
       setMascotMessage("Thank you for your honest reflection! Remember, every step forward, no matter how small, is progress. Keep going!");
       navigate("/");
       return;
@@ -123,7 +159,7 @@ export default function ReflectionPage() {
     }
   };
 
-  const handleSkip = () => {
+  const handleSkip = async () => {
     if (step === 2) {
       handleSliderChange([50]);
       setStep(step + 1);
@@ -131,15 +167,7 @@ export default function ReflectionPage() {
     } else if (step === 3) {
       setTrigger("Not sure / Don't remember");
       if (outcome === 'gave-in') {
-        saveJournalEntry({
-          date: new Date(),
-          type: selectedSin,
-          resisted: false,
-          level: temptationLevel,
-          trigger: "Not sure / Don't remember",
-          notes: '',
-          description: customNote,
-        });
+        await saveToDatabase();
         setMascotMessage("Thank you for your honest reflection! Remember, every step forward, no matter how small, is progress. Keep going!");
         navigate("/");
       } else {
