@@ -5,8 +5,6 @@ import { Mascot } from "@/components/dashboard/Mascot";
 import { StreakDisplay } from "@/components/dashboard/StreakDisplay";
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { DailyCheckin } from "@/components/daily-checkin/DailyCheckin";
-import { useState } from "react";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -18,8 +16,6 @@ const Index = () => {
     reference: "1 Corinthians 10:13",
   };
 
-  const [showCheckin, setShowCheckin] = useState(false);
-
   return (
     <div className={`min-h-screen bg-background p-4 sm:p-6 md:p-8 space-y-6 max-w-2xl mx-auto ${isMobile ? "pb-20" : ""}`}>
       <div className="flex justify-end">
@@ -30,7 +26,7 @@ const Index = () => {
         <Mascot 
           message={welcomeMessage} 
           className="animate-fade-in" 
-          onCheckIn={() => setShowCheckin(true)}
+          onCheckIn={() => navigate('/daily-checkin')}
         />
       </div>
 
@@ -52,8 +48,6 @@ const Index = () => {
       </div>
 
       <DailyVerse verse={dailyVerse.verse} reference={dailyVerse.reference} />
-      
-      <DailyCheckin open={showCheckin} onOpenChange={setShowCheckin} />
     </div>
   );
 };
