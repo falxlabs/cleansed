@@ -13,8 +13,22 @@ import { BottomNav } from "./components/navigation/BottomNav";
 
 const queryClient = new QueryClient();
 
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  const hasCompletedOnboarding = localStorage.getItem("hasCompletedOnboarding") === "true";
+
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (!hasCompletedOnboarding) {
+    return <Navigate to="/onboarding" replace />;
+  }
+
+  return <>{children}</>;
+};
+
 export default () => {
-  // TODO: Replace with actual auth check
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
   const hasCompletedOnboarding = localStorage.getItem("hasCompletedOnboarding") === "true";
 
@@ -40,104 +54,66 @@ export default () => {
             <Route
               path="/onboarding"
               element={
-                isAuthenticated ? (
-                  hasCompletedOnboarding ? (
-                    <Navigate to="/home" replace />
-                  ) : (
-                    <OnboardingPage />
-                  )
-                ) : (
+                !isAuthenticated ? (
                   <Navigate to="/" replace />
+                ) : hasCompletedOnboarding ? (
+                  <Navigate to="/home" replace />
+                ) : (
+                  <OnboardingPage />
                 )
               }
             />
             <Route
               path="/home"
               element={
-                isAuthenticated ? (
-                  hasCompletedOnboarding ? (
-                    <Index />
-                  ) : (
-                    <Navigate to="/onboarding" replace />
-                  )
-                ) : (
-                  <Navigate to="/" replace />
-                )
+                <ProtectedRoute>
+                  <Index />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/crossroad"
               element={
-                isAuthenticated ? (
-                  hasCompletedOnboarding ? (
-                    <CrossroadPage />
-                  ) : (
-                    <Navigate to="/onboarding" replace />
-                  )
-                ) : (
-                  <Navigate to="/" replace />
-                )
+                <ProtectedRoute>
+                  <CrossroadPage />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/reflection"
               element={
-                isAuthenticated ? (
-                  hasCompletedOnboarding ? (
-                    <ReflectionPage />
-                  ) : (
-                    <Navigate to="/onboarding" replace />
-                  )
-                ) : (
-                  <Navigate to="/" replace />
-                )
+                <ProtectedRoute>
+                  <ReflectionPage />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/journal"
               element={
-                isAuthenticated ? (
-                  hasCompletedOnboarding ? (
-                    <JournalPage />
-                  ) : (
-                    <Navigate to="/onboarding" replace />
-                  )
-                ) : (
-                  <Navigate to="/" replace />
-                )
+                <ProtectedRoute>
+                  <JournalPage />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/past-temptation"
               element={
-                isAuthenticated ? (
-                  hasCompletedOnboarding ? (
-                    <PastTemptationPage />
-                  ) : (
-                    <Navigate to="/onboarding" replace />
-                  )
-                ) : (
-                  <Navigate to="/" replace />
-                )
+                <ProtectedRoute>
+                  <PastTemptationPage />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/settings"
               element={
-                isAuthenticated ? (
-                  hasCompletedOnboarding ? (
-                    <SettingsPage />
-                  ) : (
-                    <Navigate to="/onboarding" replace />
-                  )
-                ) : (
-                  <Navigate to="/" replace />
-                )
+                <ProtectedRoute>
+                  <SettingsPage />
+                </ProtectedRoute>
               }
             />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-          <BottomNav />
+          {isAuthenticated && hasCompletedOnboarding && <BottomNav />}
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
