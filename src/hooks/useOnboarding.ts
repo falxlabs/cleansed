@@ -6,6 +6,7 @@ import { saveOnboardingData } from "@/utils/onboardingStorage";
 import { useOnboardingForm } from "./useOnboardingForm";
 import { useProfileManagement } from "./useProfileManagement";
 import type { Database } from "@/integrations/supabase/types";
+import type { AuthResponse } from "@supabase/supabase-js";
 
 export type { OnboardingFormData } from "./useOnboardingForm";
 export { TOTAL_STEPS } from "./useOnboardingForm";
@@ -101,13 +102,14 @@ export function useOnboarding() {
             age: formData.age ? parseInt(formData.age) : null,
           }
         }
-      });
+      }) as AuthResponse;
 
       if (signUpError) throw signUpError;
 
       // If we have a session (e.g., if email verification is disabled), save the data immediately
-      if (data?.session?.user?.id) {
-        await saveOnboardingDataToDatabase(data.session.user.id);
+      const userId = data.session?.user?.id;
+      if (userId) {
+        await saveOnboardingDataToDatabase(userId);
       }
 
       saveOnboardingData(formData);
