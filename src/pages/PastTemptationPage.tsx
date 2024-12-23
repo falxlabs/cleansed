@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { useToast } from "@/hooks/use-toast";
 import { Slider } from "@/components/ui/slider";
-import { format } from "date-fns";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
@@ -66,7 +65,6 @@ export default function PastTemptationPage() {
       if (outcome === "resisted") {
         navigate('/reflection');
       } else {
-        // Skip reflection for "gave in" outcome
         navigate('/');
         toast({
           title: "Entry recorded",
@@ -74,6 +72,24 @@ export default function PastTemptationPage() {
         });
       }
     }
+  };
+
+  const handleSkipReflection = () => {
+    if (!date || !outcome) return;
+    
+    const selectedDate = new Date(date);
+    const hours = Math.floor(timeValue[0]);
+    const minutes = Math.round((timeValue[0] - hours) * 60);
+    selectedDate.setHours(hours, minutes);
+
+    sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
+    sessionStorage.setItem('pastTemptationOutcome', outcome);
+
+    navigate('/');
+    toast({
+      title: "Entry recorded",
+      description: "Your past temptation has been logged without reflection",
+    });
   };
 
   const timeInfo = getTimeEmoji(Math.floor(timeValue[0]));
@@ -154,9 +170,21 @@ export default function PastTemptationPage() {
           >
             Back
           </Button>
-          <Button onClick={handleContinue}>
-            Continue
-          </Button>
+          <div className="space-x-2">
+            {step === 2 && outcome === "resisted" && (
+              <Button
+                variant="outline"
+                className="text-muted-foreground"
+                onClick={handleSkipReflection}
+                disabled={!outcome}
+              >
+                Skip Reflection
+              </Button>
+            )}
+            <Button onClick={handleContinue}>
+              Continue
+            </Button>
+          </div>
         </div>
       </div>
     </div>
