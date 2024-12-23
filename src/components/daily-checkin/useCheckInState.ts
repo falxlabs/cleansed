@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { TemptationType } from "@/types/database";
 
 export function useCheckInState() {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ export function useCheckInState() {
   const [step, setStep] = useState(1);
   const [mood, setMood] = useState<number[]>([50]);
   const [description, setDescription] = useState("");
-  const [selectedTemptation, setSelectedTemptation] = useState("");
+  const [selectedTemptation, setSelectedTemptation] = useState<TemptationType | "">("");
   const [temptationLevel, setTemptationLevel] = useState<number[]>([50]);
   const [selectedStatement, setSelectedStatement] = useState("");
 
@@ -32,11 +33,15 @@ export function useCheckInState() {
 
   const handleComplete = async () => {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("No authenticated user");
+
       // First create the journal entry
       const { data: journalEntry, error: journalError } = await supabase
         .from('journal_entries')
         .insert({
-          entry_type: 'check-in'
+          entry_type: 'check-in',
+          user_id: user.id
         })
         .select()
         .single();
@@ -60,7 +65,7 @@ export function useCheckInState() {
           .from('temptation_entries')
           .insert({
             id: journalEntry.id,
-            temptation_type: selectedTemptation,
+            temptation_type: selectedTemptation as TemptationType,
             intensity_level: temptationLevel[0],
             trigger: description,
             resisted: true
