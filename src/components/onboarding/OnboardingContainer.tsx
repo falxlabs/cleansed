@@ -87,6 +87,10 @@ export function OnboardingContainer() {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
+  const handleSkipToDashboard = () => {
+    navigate('/dashboard');
+  };
+
   return (
     <div className="max-w-xl mx-auto p-6 space-y-8">
       <Progress value={progress} className="w-full" />
@@ -115,7 +119,7 @@ export function OnboardingContainer() {
           isStepValid={isCurrentStepValid()}
           onBack={handleBack}
           onNext={handleNext}
-          onSkip={handleSkip}
+          onSkip={handleSkipToDashboard}
           onComplete={handleComplete}
         />
       </div>
