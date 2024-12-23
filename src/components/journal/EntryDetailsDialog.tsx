@@ -33,12 +33,32 @@ const getTemptationLevelText = (value: string) => {
   return "Severe - Almost impossible to resist";
 };
 
+const getMoodEmoji = (mood?: number) => {
+  if (!mood) return "😐";
+  if (mood <= 20) return "😢";
+  if (mood <= 40) return "😕";
+  if (mood <= 60) return "😐";
+  if (mood <= 80) return "🙂";
+  return "😊";
+};
+
+const getMoodText = (mood?: number) => {
+  if (!mood) return "Neutral";
+  if (mood <= 20) return "Very Low";
+  if (mood <= 40) return "Low";
+  if (mood <= 60) return "Neutral";
+  if (mood <= 80) return "Good";
+  return "Excellent";
+};
+
 export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetailsDialogProps) => {
   const { toast } = useToast();
 
   if (!entry) return null;
 
   const isCheckIn = entry.type.toLowerCase().includes("check-in");
+  const formattedDate = format(entry.date, "EEEE, MMMM d, yyyy");
+  const formattedTime = format(entry.date, "h:mm a");
 
   const handleDelete = () => {
     if (entry && onDelete) {
@@ -56,12 +76,29 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {isCheckIn ? "Daily Check-in" : "Temptation Entry"} - {format(entry.date || new Date(), "MMMM d, yyyy")}
+            {isCheckIn ? "Daily Check-in" : "Temptation Entry"}
           </DialogTitle>
+          <p className="text-sm text-muted-foreground">
+            {formattedDate} at {formattedTime}
+          </p>
         </DialogHeader>
         <div className="space-y-4">
           {isCheckIn ? (
             <>
+              <div className="bg-primary/5 p-4 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-sm font-medium text-primary">Mood</p>
+                  <span className="text-2xl" title={getMoodText(entry.mood)}>
+                    {getMoodEmoji(entry.mood)}
+                  </span>
+                </div>
+                <div className="h-2 bg-primary/20 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-primary transition-all"
+                    style={{ width: `${entry.mood || 50}%` }}
+                  />
+                </div>
+              </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Primary Challenge</p>
                 <p className="capitalize">{entry.trigger}</p>
@@ -72,7 +109,7 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Mood Description</p>
-                <p>{entry.notes}</p>
+                <p>{entry.notes || "No description provided"}</p>
               </div>
               {entry.affirmation && (
                 <div>
@@ -85,26 +122,28 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
             <>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Type of Temptation</p>
-                <p>{entry.type}</p>
+                <p className="capitalize">{entry.type}</p>
+              </div>
+              <div className="bg-primary/5 p-4 rounded-lg">
+                <p className="text-sm font-medium text-primary mb-2">Outcome</p>
+                <p className={entry.resisted ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
+                  {entry.resisted ? "✓ Successfully Resisted" : "✗ Gave in"}
+                </p>
               </div>
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Outcome</p>
-                <p>{entry.resisted ? "Resisted" : "Gave in"}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Level</p>
+                <p className="text-sm font-medium text-muted-foreground">Intensity Level</p>
                 <p>{getTemptationLevelText(entry.level)}</p>
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Trigger</p>
-                <p>{entry.trigger}</p>
+                <p>{entry.trigger || "No trigger specified"}</p>
               </div>
-              {entry.resisted && (
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">What helped me resist</p>
-                  <p>{entry.notes}</p>
-                </div>
-              )}
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">
+                  {entry.resisted ? "What helped me resist" : "Additional Notes"}
+                </p>
+                <p>{entry.notes || "No notes provided"}</p>
+              </div>
             </>
           )}
           <div className="flex justify-end pt-4">
