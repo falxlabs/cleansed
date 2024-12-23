@@ -49,12 +49,8 @@ const getSinEmoji = (type: string) => {
   // Check if it's a check-in
   if (typeLower.includes("check-in")) return "📝";
   
-  // Find matching sin
-  const matchingSin = Object.entries(SINS).find(([sin]) => 
-    typeLower === sin.toLowerCase()
-  );
-  
-  return matchingSin ? matchingSin[1] : "📝";
+  // Return the sin emoji if it's one of the 7 sins, otherwise return check-in emoji
+  return SINS[typeLower as keyof typeof SINS] || "📝";
 };
 
 export const EntryRow = ({ entry, onClick }: EntryRowProps) => {
