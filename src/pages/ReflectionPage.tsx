@@ -85,10 +85,10 @@ export default function ReflectionPage() {
         });
         return;
       }
-      // Save the reflection entry
+      // Save the reflection entry with the selected sin as the type
       saveJournalEntry({
         date: new Date(),
-        type: "Reflection",
+        type: selectedSin, // This ensures the type matches the selected sin
         resisted: outcome === 'resisted',
         level: temptationLevel,
         trigger: trigger,
