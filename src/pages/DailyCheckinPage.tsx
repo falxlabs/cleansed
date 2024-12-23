@@ -36,42 +36,49 @@ export default function DailyCheckinPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8 space-y-6 max-w-2xl mx-auto">
-      <div className="space-y-6">
-        {step === 1 && (
-          <MoodStep
-            mood={mood}
-            description={description}
-            onMoodChange={setMood}
-            onDescriptionChange={setDescription}
-          />
-        )}
-        {step === 2 && (
-          <TemptationStep
-            selectedTemptation={selectedTemptation}
-            temptationLevel={temptationLevel}
-            onTemptationChange={setSelectedTemptation}
-            onLevelChange={setTemptationLevel}
-          />
-        )}
-        {step === 3 && (
-          <MissionStep
-            selectedStatement={selectedStatement}
-            onStatementChange={setSelectedStatement}
-          />
-        )}
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-primary/5 to-primary/10 p-4 sm:p-6 md:p-8">
+      <div className="max-w-2xl mx-auto space-y-6 bg-white/40 backdrop-blur-sm rounded-3xl p-6 shadow-xl border-2 border-primary/20">
+        <div className="space-y-6">
+          {step === 1 && (
+            <MoodStep
+              mood={mood}
+              description={description}
+              onMoodChange={setMood}
+              onDescriptionChange={setDescription}
+            />
+          )}
+          {step === 2 && (
+            <TemptationStep
+              selectedTemptation={selectedTemptation}
+              temptationLevel={temptationLevel}
+              onTemptationChange={setSelectedTemptation}
+              onLevelChange={setTemptationLevel}
+            />
+          )}
+          {step === 3 && (
+            <MissionStep
+              selectedStatement={selectedStatement}
+              onStatementChange={setSelectedStatement}
+            />
+          )}
+        </div>
 
-      <div className="flex justify-between mt-6">
-        <Button
-          variant="outline"
-          onClick={() => (step === 1 ? navigate('/') : setStep(step - 1))}
-        >
-          {step === 1 ? "Cancel" : "Back"}
-        </Button>
-        <Button onClick={handleNext} disabled={isNextDisabled()}>
-          {step === 3 ? "Complete" : "Next"}
-        </Button>
+        <div className="flex justify-between mt-6 pt-6 border-t border-primary/20">
+          <Button
+            variant="outline"
+            onClick={() => (step === 1 ? navigate('/') : setStep(step - 1))}
+            className="bg-white/50 hover:bg-white/80"
+          >
+            {step === 1 ? "Cancel" : "Back"}
+          </Button>
+          <Button 
+            onClick={handleNext} 
+            disabled={isNextDisabled()}
+            className="bg-primary hover:bg-primary/90"
+          >
+            {step === 3 ? "Complete" : "Next"}
+          </Button>
+        </div>
       </div>
     </div>
   );

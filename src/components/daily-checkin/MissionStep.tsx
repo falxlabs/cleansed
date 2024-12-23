@@ -21,7 +21,7 @@ export function MissionStep({
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-center">Daily Affirmation</h2>
+      <h2 className="text-2xl font-bold text-center text-primary">Daily Affirmation</h2>
       <p className="text-center text-muted-foreground">
         Choose a statement that resonates with you today
       </p>
@@ -34,10 +34,10 @@ export function MissionStep({
         {statements.map((statement) => (
           <Card
             key={statement}
-            className={`p-4 cursor-pointer transition-all ${
+            className={`p-4 cursor-pointer transition-all bg-white/50 backdrop-blur-sm border-2 ${
               selectedStatement === statement
-                ? "border-duo-500 bg-duo-50"
-                : "hover:border-duo-200"
+                ? "border-primary bg-primary/10"
+                : "border-primary/20 hover:border-primary/40"
             }`}
             onClick={() => onStatementChange(statement)}
           >
