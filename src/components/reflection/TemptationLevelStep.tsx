@@ -23,24 +23,35 @@ export const TemptationLevelStep = ({
   useEffect(() => {
     const loadDefaultSettings = async () => {
       try {
+        console.log("Loading default temptation level settings...");
         const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        if (!user) {
+          console.log("No user found, skipping settings load");
+          return;
+        }
 
+        console.log("Fetching settings for user:", user.id);
         const { data: settings } = await supabase
           .from('temptation_settings')
           .select('default_intensity')
           .eq('user_id', user.id)
           .maybeSingle();
         
-        if (settings?.default_intensity && sliderValue[0] === 50) {
+        if (settings?.default_intensity !== null && settings?.default_intensity !== undefined) {
+          console.log("Setting default intensity to:", settings.default_intensity);
           onSliderChange([settings.default_intensity]);
+        } else {
+          console.log("No default intensity found in settings");
         }
       } catch (error) {
         console.error('Error loading default temptation level:', error);
       }
     };
 
-    loadDefaultSettings();
+    // Only load default settings if the slider is at its initial value
+    if (sliderValue[0] === 50) {
+      loadDefaultSettings();
+    }
   }, []);
 
   const getTemptationLevelDescription = (value: number) => {
