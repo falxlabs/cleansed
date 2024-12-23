@@ -6,6 +6,8 @@ import { StreakDisplay } from "@/components/dashboard/StreakDisplay";
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { calculateStreak } from "@/utils/journalEntries";
+import { useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -16,6 +18,25 @@ const DashboardPage = () => {
     verse: "No temptation has overtaken you except what is common to mankind. And God is faithful; he will not let you be tempted beyond what you can bear.",
     reference: "1 Corinthians 10:13",
   };
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        navigate('/signin');
+      }
+    };
+
+    checkAuth();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) {
+        navigate('/signin');
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
 
   return (
     <div className={`min-h-screen bg-background p-4 sm:p-6 md:p-8 space-y-6 ${isMobile ? "pb-20" : ""}`}>
