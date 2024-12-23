@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SettingsHeader } from "@/components/settings/SettingsHeader";
 import { SettingsSection } from "@/components/settings/SettingsSection";
 import { Label } from "@/components/ui/label";
@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { SettingsDetailLayout } from "@/components/settings/SettingsDetailLayout";
+import { useToast } from "@/hooks/use-toast";
 
 const predefinedAffirmations = [
   "I am a child of God, created for His purpose.",
@@ -15,14 +16,44 @@ const predefinedAffirmations = [
 ];
 
 export default function AffirmationSettingsPage() {
+  const { toast } = useToast();
   const [affirmationType, setAffirmationType] = useState("predefined");
   const [selectedAffirmation, setSelectedAffirmation] = useState(predefinedAffirmations[0]);
   const [customAffirmation, setCustomAffirmation] = useState("");
 
+  useEffect(() => {
+    // Load saved settings when component mounts
+    const savedAffirmationType = localStorage.getItem("affirmationType");
+    const savedCustomAffirmation = localStorage.getItem("customAffirmation");
+    const savedPredefinedAffirmation = localStorage.getItem("selectedAffirmation");
+
+    if (savedAffirmationType) {
+      setAffirmationType(savedAffirmationType);
+    }
+    if (savedCustomAffirmation) {
+      setCustomAffirmation(savedCustomAffirmation);
+    }
+    if (savedPredefinedAffirmation) {
+      setSelectedAffirmation(savedPredefinedAffirmation);
+    }
+  }, []);
+
   const handleSave = () => {
-    const finalAffirmation = affirmationType === "predefined" ? selectedAffirmation : customAffirmation;
-    // TODO: Save the affirmation
-    console.log("Saving affirmation:", finalAffirmation);
+    // Save affirmation type
+    localStorage.setItem("affirmationType", affirmationType);
+
+    // Save the appropriate affirmation based on type
+    if (affirmationType === "predefined") {
+      localStorage.setItem("selectedAffirmation", selectedAffirmation);
+    } else {
+      localStorage.setItem("customAffirmation", customAffirmation);
+    }
+
+    // Show success toast
+    toast({
+      title: "Settings saved",
+      description: "Your affirmation settings have been updated.",
+    });
   };
 
   return (
@@ -33,7 +64,7 @@ export default function AffirmationSettingsPage() {
           <div className="space-y-4">
             <Label>Choose your affirmation type</Label>
             <RadioGroup
-              defaultValue="predefined"
+              value={affirmationType}
               onValueChange={setAffirmationType}
               className="space-y-4"
             >
