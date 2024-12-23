@@ -42,6 +42,7 @@ export const TemptationLevelStep = ({
           max={100}
           step={1}
           className="w-full"
+          defaultValue={[Number(localStorage.getItem("defaultTemptationLevel")) || 50]}
         />
         <div className="flex justify-between text-sm text-muted-foreground">
           <span>Low</span>
