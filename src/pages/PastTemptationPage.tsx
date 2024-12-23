@@ -6,13 +6,10 @@ import { Mascot } from "@/components/dashboard/Mascot";
 import { useToast } from "@/hooks/use-toast";
 import { Slider } from "@/components/ui/slider";
 import { format } from "date-fns";
-import { Check, X } from "lucide-react";
-import { Card } from "@/components/ui/card";
 
 export default function PastTemptationPage() {
   const [date, setDate] = useState<Date>();
   const [timeValue, setTimeValue] = useState([12]); // Default to noon (12:00)
-  const [resisted, setResisted] = useState<boolean | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -39,24 +36,14 @@ export default function PastTemptationPage() {
       return;
     }
 
-    if (resisted === null) {
-      toast({
-        title: "Please select an outcome",
-        description: "Did you resist or give in to the temptation?",
-        variant: "destructive",
-      });
-      return;
-    }
-
     // Create a new date with the selected time
     const selectedDate = new Date(date);
     const hours = Math.floor(timeValue[0]);
     const minutes = Math.round((timeValue[0] - hours) * 60);
     selectedDate.setHours(hours, minutes);
 
-    // Store the selected date and resistance status in sessionStorage
+    // Store the selected date in sessionStorage to access it in the reflection page
     sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
-    sessionStorage.setItem('pastTemptationResisted', String(resisted));
     navigate('/reflection');
   };
 
@@ -96,35 +83,6 @@ export default function PastTemptationPage() {
             <div className="text-center mt-2">
               <span className="text-muted-foreground">{formatTime(timeValue[0])}</span>
             </div>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-center">What was the outcome?</h3>
-          <div className="grid grid-cols-2 gap-4">
-            <Card 
-              className={`p-6 cursor-pointer transition-all duration-200 ${
-                resisted === true ? 'ring-2 ring-green-500 bg-green-50' : 'hover:bg-muted/50'
-              }`}
-              onClick={() => setResisted(true)}
-            >
-              <div className="flex flex-col items-center space-y-2">
-                <Check className="h-8 w-8 text-green-500" />
-                <span className="font-medium">Resisted</span>
-              </div>
-            </Card>
-            
-            <Card 
-              className={`p-6 cursor-pointer transition-all duration-200 ${
-                resisted === false ? 'ring-2 ring-red-500 bg-red-50' : 'hover:bg-muted/50'
-              }`}
-              onClick={() => setResisted(false)}
-            >
-              <div className="flex flex-col items-center space-y-2">
-                <X className="h-8 w-8 text-red-500" />
-                <span className="font-medium">Gave In</span>
-              </div>
-            </Card>
           </div>
         </div>
 
