@@ -34,6 +34,10 @@ export default function SettingsPage() {
     navigate("/onboarding");
   };
 
+  const handleSignIn = () => {
+    navigate("/signin");
+  };
+
   return (
     <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8">
       <div className="max-w-2xl mx-auto">
@@ -63,7 +67,7 @@ export default function SettingsPage() {
           })}
         </div>
         
-        <div className="mt-8">
+        <div className="mt-8 space-y-2">
           {user ? (
             <Button 
               variant="destructive" 
@@ -73,13 +77,22 @@ export default function SettingsPage() {
               Sign Out
             </Button>
           ) : (
-            <Button 
-              variant="default" 
-              className="w-full"
-              onClick={handleGetStarted}
-            >
-              Get Started
-            </Button>
+            <>
+              <Button 
+                variant="default" 
+                className="w-full"
+                onClick={handleGetStarted}
+              >
+                Get Started
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={handleSignIn}
+              >
+                Sign In
+              </Button>
+            </>
           )}
         </div>
       </div>
