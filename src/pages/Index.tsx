@@ -11,10 +11,10 @@ const Index = () => {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-            Walk in Freedom with Christ
+            Cleansed
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            Your daily companion in the journey of faith and victory over temptation
+            Walk in Freedom with Christ
           </p>
         </div>
 
@@ -29,7 +29,7 @@ const Index = () => {
                 Hi, I'm Grace
               </h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                Let's walk together in faith, focusing on progress, not perfection.
+                I'm here whenever you need me, day or night, to support your journey to freedom.
               </p>
             </div>
           </div>
@@ -37,17 +37,26 @@ const Index = () => {
 
         {/* Features Grid */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
-          <Card className="p-6 text-center">
-            <h3 className="text-xl font-bold mb-3">Progress Over Perfection</h3>
-            <p className="text-gray-600">Daily check-ins that celebrate growth and encourage consistency</p>
+          <Card className="p-8 text-center hover:shadow-xl transition-shadow duration-300 bg-white/90">
+            <div className="text-4xl mb-4">📈</div>
+            <h3 className="text-xl font-bold mb-4">Long-term Progress</h3>
+            <p className="text-gray-600">
+              Track your journey with daily check-ins and reflections, celebrating every step forward in your path to freedom.
+            </p>
           </Card>
-          <Card className="p-6 text-center">
-            <h3 className="text-xl font-bold mb-3">Journal & Reflect</h3>
-            <p className="text-gray-600">Track your journey and learn from experiences with guided reflection</p>
+          <Card className="p-8 text-center hover:shadow-xl transition-shadow duration-300 bg-white/90">
+            <div className="text-4xl mb-4">💪</div>
+            <h3 className="text-xl font-bold mb-4">Practical Support</h3>
+            <p className="text-gray-600">
+              Get immediate help with temptation through guided exercises, biblical wisdom, and practical strategies.
+            </p>
           </Card>
-          <Card className="p-6 text-center">
-            <h3 className="text-xl font-bold mb-3">Coming Soon: AI Guide</h3>
-            <p className="text-gray-600">Bible-based AI assistance to support your spiritual journey</p>
+          <Card className="p-8 text-center hover:shadow-xl transition-shadow duration-300 bg-white/90">
+            <div className="text-4xl mb-4">✝️</div>
+            <h3 className="text-xl font-bold mb-4">AI Scripture Guide</h3>
+            <p className="text-gray-600">
+              Receive personalized biblical guidance based on your journey, powered by AI trained on Scripture.
+            </p>
           </Card>
         </div>
 
