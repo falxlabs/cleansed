@@ -19,11 +19,12 @@ export function CheckInTimeStep({ value, onChange }: CheckInTimeStepProps) {
         <Input
           id="checkInTime"
           type="time"
-          value={value}
+          value={value || "20:00"}
           onChange={(e) => onChange(e.target.value)}
         />
         <p className="text-sm text-muted-foreground">
-          Choose a time when you're usually free and can reflect on your day
+          We recommend setting this to your last phone check before bed (default 8:00 PM) - 
+          this helps you reflect on your day and prepare for tomorrow with a clear mind.
         </p>
       </div>
     </div>

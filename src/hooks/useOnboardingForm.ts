@@ -19,7 +19,7 @@ export function useOnboardingForm() {
     temptationType: "Pride",
     temptationLevel: [50],
     affirmation: "",
-    checkInTime: "09:00",
+    checkInTime: "20:00",
     firstName: "",
     age: "",
     email: "",
