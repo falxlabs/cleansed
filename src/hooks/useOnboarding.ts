@@ -24,6 +24,59 @@ export function useOnboarding() {
     isCurrentStepValid,
   } = useOnboardingForm();
 
+  const saveOnboardingDataToDatabase = async (userId: string) => {
+    try {
+      // Update profile
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({
+          first_name: formData.firstName,
+          age: formData.age ? parseInt(formData.age) : null,
+        })
+        .eq('id', userId);
+
+      if (profileError) throw profileError;
+
+      // Save notification settings
+      const { error: notificationError } = await supabase
+        .from('notification_settings')
+        .upsert({
+          user_id: userId,
+          check_in_time: formData.checkInTime,
+        });
+
+      if (notificationError) throw notificationError;
+
+      // Save temptation settings
+      const { error: temptationError } = await supabase
+        .from('temptation_settings')
+        .upsert({
+          user_id: userId,
+          default_type: formData.temptationType.toLowerCase(),
+          default_intensity: formData.temptationLevel[0],
+        });
+
+      if (temptationError) throw temptationError;
+
+      // Save custom affirmation if provided
+      if (formData.affirmation) {
+        const { error: affirmationError } = await supabase
+          .from('user_affirmations')
+          .insert({
+            user_id: userId,
+            content: formData.affirmation,
+          });
+
+        if (affirmationError) throw affirmationError;
+      }
+
+      console.log('Successfully saved onboarding data to database');
+    } catch (error) {
+      console.error('Error saving onboarding data:', error);
+      throw error;
+    }
+  };
+
   const handleSkip = async () => {
     saveOnboardingData(formData);
     navigate("/dashboard");
@@ -37,7 +90,7 @@ export function useOnboarding() {
 
     setLoading(true);
     try {
-      const { error: signUpError } = await supabase.auth.signInWithOtp({
+      const { data: { session }, error: signUpError } = await supabase.auth.signInWithOtp({
         email: formData.email,
         options: {
           emailRedirectTo: `${window.location.origin}/dashboard`,
@@ -49,6 +102,11 @@ export function useOnboarding() {
       });
 
       if (signUpError) throw signUpError;
+
+      // If we have a session (e.g., if email verification is disabled), save the data immediately
+      if (session?.user) {
+        await saveOnboardingDataToDatabase(session.user.id);
+      }
 
       saveOnboardingData(formData);
 

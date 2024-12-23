@@ -23,8 +23,62 @@ export function OnboardingContainer() {
   } = useOnboarding();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session) {
+        try {
+          // Save onboarding data to database when user completes email verification
+          const savedData = localStorage.getItem("defaultTemptation");
+          if (savedData) {
+            // Update profile
+            const { error: profileError } = await supabase
+              .from('profiles')
+              .update({
+                first_name: localStorage.getItem("firstName"),
+                age: localStorage.getItem("age") ? parseInt(localStorage.getItem("age")!) : null,
+              })
+              .eq('id', session.user.id);
+
+            if (profileError) throw profileError;
+
+            // Save notification settings
+            const { error: notificationError } = await supabase
+              .from('notification_settings')
+              .upsert({
+                user_id: session.user.id,
+                check_in_time: localStorage.getItem("checkInTime"),
+              });
+
+            if (notificationError) throw notificationError;
+
+            // Save temptation settings
+            const { error: temptationError } = await supabase
+              .from('temptation_settings')
+              .upsert({
+                user_id: session.user.id,
+                default_type: localStorage.getItem("defaultTemptation")?.toLowerCase(),
+                default_intensity: localStorage.getItem("defaultTemptationLevel") ? 
+                  parseInt(localStorage.getItem("defaultTemptationLevel")!) : 50,
+              });
+
+            if (temptationError) throw temptationError;
+
+            // Save custom affirmation if provided
+            const customAffirmation = localStorage.getItem("customAffirmation");
+            if (customAffirmation) {
+              const { error: affirmationError } = await supabase
+                .from('user_affirmations')
+                .insert({
+                  user_id: session.user.id,
+                  content: customAffirmation,
+                });
+
+              if (affirmationError) throw affirmationError;
+            }
+          }
+        } catch (error) {
+          console.error('Error saving onboarding data after email verification:', error);
+        }
+        
         navigate('/dashboard');
       }
     });
