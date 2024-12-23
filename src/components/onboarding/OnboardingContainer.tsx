@@ -75,7 +75,6 @@ export function OnboardingContainer() {
         return (
           <TemptationLevelStep
             sliderValue={formData.temptationLevel}
-            temptationLevel=""
             onSliderChange={(value) => setFormData({ ...formData, temptationLevel: value })}
           />
         );
