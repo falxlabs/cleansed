@@ -39,7 +39,6 @@ export const EntryRow = ({ entry, onClick }: EntryRowProps) => {
   
   return (
     <TableRow
-      key={entry.id}
       className="cursor-pointer hover:bg-muted/50"
       onClick={() => onClick(entry)}
     >
@@ -54,11 +53,9 @@ export const EntryRow = ({ entry, onClick }: EntryRowProps) => {
         </div>
       </TableCell>
       <TableCell>
-        <div className="flex flex-col">
-          <span className="font-medium">
-            {isCheckIn ? "Check-in" : "Temptation"}
-          </span>
-        </div>
+        <span className="font-medium">
+          {isCheckIn ? "Check-in" : "Temptation"}
+        </span>
       </TableCell>
       <TableCell className="text-center">
         <span className="text-xl">
@@ -66,14 +63,12 @@ export const EntryRow = ({ entry, onClick }: EntryRowProps) => {
         </span>
       </TableCell>
       <TableCell className="text-center">
-        {!isCheckIn ? (
+        {!isCheckIn && (
           entry.resisted ? (
             <Check className="inline h-5 w-5 text-green-500" />
           ) : (
             <X className="inline h-5 w-5 text-red-500" />
           )
-        ) : (
-          <span>-</span>
         )}
       </TableCell>
     </TableRow>
