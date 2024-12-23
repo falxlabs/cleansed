@@ -76,8 +76,8 @@ export default function PastTemptationPage() {
             <Slider
               value={timeValue}
               onValueChange={setTimeValue}
-              max={23.75}
-              step={0.25}
+              max={23.983333}
+              step={0.016667}
               className="w-full"
             />
             <div className="text-center mt-2">
