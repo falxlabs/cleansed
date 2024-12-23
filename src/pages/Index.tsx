@@ -33,7 +33,7 @@ const Index = () => {
                 Hi there, I'm Grace!
               </h2>
               <p className="text-lg text-gray-700">
-                Your companion in overcoming daily challenges.
+                Your companion in daily temptations through Christ.
               </p>
             </div>
           </div>
@@ -59,17 +59,17 @@ const Index = () => {
         </div>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col items-center gap-6">
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+        <div className="flex flex-col items-center gap-8">
+          <div className="flex flex-col sm:flex-row gap-6 w-full max-w-lg mx-auto">
             <Button
-              className="duo-button text-xl px-8 py-6"
+              className="duo-button text-xl px-8 py-6 flex-1 hover:scale-105 transition-transform"
               onClick={() => navigate("/onboarding")}
             >
               Start Your Journey
             </Button>
             <Button
               variant="outline"
-              className="text-xl px-8 py-6 border-2"
+              className="text-xl px-8 py-6 border-2 flex-1 hover:scale-105 transition-transform"
               onClick={() => navigate("/signin")}
             >
               Sign In
@@ -77,7 +77,7 @@ const Index = () => {
           </div>
           <button
             onClick={() => navigate("/dashboard")}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-gray-500 hover:text-gray-700 hover:underline transition-colors"
           >
             Skip for now
           </button>
