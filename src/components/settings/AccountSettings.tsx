@@ -4,27 +4,51 @@ import { Label } from "@/components/ui/label";
 import { SettingsSection } from "./SettingsSection";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 export function AccountSettings() {
   const { toast } = useToast();
   const [firstName, setFirstName] = useState("");
-  const [email, setEmail] = useState("user@example.com");
   const [age, setAge] = useState("");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
-    const savedFirstName = localStorage.getItem("userFirstName");
-    const savedAge = localStorage.getItem("userAge");
-    if (savedFirstName) {
-      setFirstName(savedFirstName);
-    }
-    if (savedAge) {
-      setAge(savedAge);
-    }
+    const loadUserData = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setEmail(user.email || "");
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('first_name, age')
+          .single();
+        
+        if (profile) {
+          setFirstName(profile.first_name || "");
+          setAge(profile.age?.toString() || "");
+        }
+      }
+    };
+    loadUserData();
   }, []);
 
-  const handleSave = () => {
-    localStorage.setItem("userFirstName", firstName);
-    localStorage.setItem("userAge", age);
+  const handleSave = async () => {
+    const { error } = await supabase
+      .from('profiles')
+      .update({
+        first_name: firstName,
+        age: age ? parseInt(age) : null,
+      })
+      .eq('id', (await supabase.auth.getUser()).data.user?.id);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to save profile data. Please try again.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     toast({
       title: "Settings saved",
       description: "Your account settings have been updated successfully.",
@@ -39,10 +63,13 @@ export function AccountSettings() {
           <Input
             id="email"
             type="email"
-            placeholder="Enter your email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            disabled
+            className="bg-muted"
           />
+          <p className="text-sm text-muted-foreground">
+            Email cannot be changed
+          </p>
         </div>
         <div className="space-y-2">
           <Label htmlFor="firstName">First Name</Label>
