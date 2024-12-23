@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { SettingsHeader } from "@/components/settings/SettingsHeader";
@@ -11,30 +11,27 @@ export default function SettingsPage() {
   const { user } = useAuth();
 
   const settingsCategories = [
-    { title: "Profile", path: "/settings/profile" },
-    { title: "Daily Check-in", path: "/settings/daily-checkin" },
-    { title: "Affirmation Message", path: "/settings/affirmation" },
-    { title: "Temptation", path: "/settings/temptation" },
-    { title: "Notifications", path: "/settings/notifications" },
-    { title: "Support", path: "/settings/support" },
+    { title: "Profile", path: "/settings/profile", requiresAuth: true },
+    { title: "Daily Check-in", path: "/settings/daily-checkin", requiresAuth: true },
+    { title: "Affirmation Message", path: "/settings/affirmation", requiresAuth: true },
+    { title: "Temptation", path: "/settings/temptation", requiresAuth: true },
+    { title: "Notifications", path: "/settings/notifications", requiresAuth: true },
+    { title: "Support", path: "/settings/support", requiresAuth: false },
   ];
 
   const handleSignOut = () => {
-    // Clear any stored user data
     localStorage.clear();
     
-    // Show success toast
     toast({
       title: "Signed out successfully",
       description: "You have been signed out of your account.",
     });
 
-    // Redirect to landing page
     navigate("/");
   };
 
-  const handleSignIn = () => {
-    navigate("/signin");
+  const handleGetStarted = () => {
+    navigate("/onboarding");
   };
 
   return (
@@ -42,20 +39,30 @@ export default function SettingsPage() {
       <div className="max-w-2xl mx-auto">
         <SettingsHeader />
         <div className="space-y-2">
-          {settingsCategories.map((category) => (
-            <Button
-              key={category.path}
-              variant="ghost"
-              className="w-full justify-between hover:bg-muted"
-              onClick={() => navigate(category.path)}
-            >
-              {category.title}
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          ))}
+          {settingsCategories.map((category) => {
+            const isLocked = !user && category.requiresAuth;
+            
+            return (
+              <Button
+                key={category.path}
+                variant="ghost"
+                className="w-full justify-between hover:bg-muted"
+                onClick={() => !isLocked && navigate(category.path)}
+                disabled={isLocked}
+              >
+                <span>{category.title}</span>
+                <div className="flex items-center">
+                  {isLocked ? (
+                    <Lock className="h-4 w-4 text-muted-foreground" />
+                  ) : (
+                    <ChevronRight className="h-4 w-4" />
+                  )}
+                </div>
+              </Button>
+            );
+          })}
         </div>
         
-        {/* Conditional rendering of Sign Out/Sign Up button */}
         <div className="mt-8">
           {user ? (
             <Button 
@@ -69,9 +76,9 @@ export default function SettingsPage() {
             <Button 
               variant="default" 
               className="w-full"
-              onClick={handleSignIn}
+              onClick={handleGetStarted}
             >
-              Sign Up
+              Get Started
             </Button>
           )}
         </div>
