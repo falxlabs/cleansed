@@ -85,14 +85,15 @@ export default function ReflectionPage() {
         });
         return;
       }
-      // Save the reflection entry with the selected sin as the type
+      
+      // Save the reflection entry
       saveJournalEntry({
         date: new Date(),
-        type: selectedSin, // This ensures the type matches the selected sin
+        type: selectedSin,
         resisted: outcome === 'resisted',
         level: temptationLevel,
         trigger: trigger,
-        notes: outcome === 'resisted' ? resistanceStrategy : customNote,
+        notes: outcome === 'resisted' ? resistanceStrategy : '',
       });
 
       toast({
@@ -102,7 +103,13 @@ export default function ReflectionPage() {
       navigate("/");
       return;
     }
-    setStep(step + 1);
+    
+    // Skip resistance strategy step if gave in
+    if (step === 3 && outcome === 'gave-in') {
+      setStep(totalSteps);
+    } else {
+      setStep(step + 1);
+    }
   };
 
   const handleBack = () => {
