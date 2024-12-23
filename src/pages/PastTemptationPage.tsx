@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
 import { DateTimeStep } from "@/components/past-temptation/DateTimeStep";
 import { OutcomeStep } from "@/components/past-temptation/OutcomeStep";
+import { saveJournalEntry } from "@/utils/journalEntries";
 
 export default function PastTemptationPage() {
   const [step, setStep] = useState(1);
@@ -42,11 +43,18 @@ export default function PastTemptationPage() {
       const minutes = Math.round((timeValue[0] - hours) * 60);
       selectedDate.setHours(hours, minutes);
 
-      // Store the selected date and outcome in sessionStorage
+      // Save the past temptation entry
+      saveJournalEntry({
+        date: selectedDate,
+        type: "Past Temptation",
+        resisted: outcome === 'resisted',
+        notes: "Logged without reflection",
+      });
+
+      // Store data for reflection if needed
       sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
       sessionStorage.setItem('pastTemptationOutcome', outcome);
 
-      // Navigate to reflection for both outcomes
       navigate('/reflection');
     }
   };

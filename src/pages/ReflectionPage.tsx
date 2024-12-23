@@ -8,6 +8,7 @@ import { TemptationLevelStep } from "@/components/reflection/TemptationLevelStep
 import { TriggerStep } from "@/components/reflection/TriggerStep";
 import { ResistanceStep } from "@/components/reflection/ResistanceStep";
 import { NavigationButtons } from "@/components/reflection/NavigationButtons";
+import { saveJournalEntry } from "@/utils/journalEntries";
 
 const TEMPTATION_LEVELS = [
   "Low - I can resist easily",
@@ -84,6 +85,16 @@ export default function ReflectionPage() {
         });
         return;
       }
+      // Save the reflection entry
+      saveJournalEntry({
+        date: new Date(),
+        type: "Reflection",
+        resisted: outcome === 'resisted',
+        level: temptationLevel,
+        trigger: trigger,
+        notes: outcome === 'resisted' ? resistanceStrategy : customNote,
+      });
+
       toast({
         title: "Reflection completed",
         description: "Thank you for your honest reflection",

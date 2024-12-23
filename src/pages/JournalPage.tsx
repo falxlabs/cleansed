@@ -13,60 +13,36 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { loadJournalEntries } from "@/utils/journalEntries";
 
-// Temporary mock data - replace with actual data from your backend
-const mockEntries = [
-  {
-    id: 1,
-    date: new Date(2024, 3, 15),
-    type: "Anger",
-    resisted: true,
-    level: "Medium",
-    trigger: "Work stress",
-    notes: "Felt overwhelmed with deadlines",
-  },
-  {
-    id: 2,
-    date: new Date(2024, 3, 14),
-    type: "Pride",
-    resisted: false,
-    level: "High",
-    trigger: "Social media",
-    notes: "Comparing achievements with others",
-  },
-];
-
-export default function TemptationTimelinePage() {
+export default function JournalPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
-  const [selectedEntries, setSelectedEntries] = useState(mockEntries);
-  const [selectedEntry, setSelectedEntry] = useState<typeof mockEntries[0] | null>(null);
+  const [selectedEntries, setSelectedEntries] = useState(loadJournalEntries());
+  const [selectedEntry, setSelectedEntry] = useState<typeof selectedEntries[0] | null>(null);
   const [showCalendar, setShowCalendar] = useState(true);
   const isMobile = useIsMobile();
 
   const handleDateSelect = (newDate: Date | undefined) => {
     setDate(newDate);
     if (newDate) {
-      const filtered = mockEntries.filter(
+      const entries = loadJournalEntries();
+      const filtered = entries.filter(
         (entry) => format(entry.date, "yyyy-MM-dd") === format(newDate, "yyyy-MM-dd")
       );
       setSelectedEntries(filtered);
     } else {
-      setSelectedEntries(mockEntries);
+      setSelectedEntries(loadJournalEntries());
     }
-  };
-
-  const toggleCalendar = () => {
-    setShowCalendar(!showCalendar);
   };
 
   return (
     <div className={`container max-w-7xl mx-auto p-2 sm:p-4 space-y-4 sm:space-y-8 ${isMobile ? "pb-20" : ""}`}>
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl sm:text-3xl font-bold">Temptation Timeline</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold">Journal</h1>
         <Button 
           variant="outline" 
           size="sm"
-          onClick={toggleCalendar}
+          onClick={() => setShowCalendar(!showCalendar)}
           className="flex items-center gap-2"
         >
           {showCalendar ? (

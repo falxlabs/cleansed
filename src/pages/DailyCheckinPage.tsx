@@ -7,6 +7,7 @@ import { TemptationTypeSelector } from "@/components/reflection/TemptationTypeSe
 import { TemptationLevelStep } from "@/components/reflection/TemptationLevelStep";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { CheckInContainer } from "@/components/daily-checkin/CheckInContainer";
+import { saveJournalEntry } from "@/utils/journalEntries";
 
 const TOTAL_STEPS = 4;
 
@@ -31,14 +32,25 @@ export default function DailyCheckinPage() {
 
   const handleNext = () => {
     if (step === TOTAL_STEPS) {
-      toast({
-        title: "Check-in Complete!",
-        description: "Thank you for your daily check-in.",
+      // Save the check-in entry
+      saveJournalEntry({
+        date: new Date(),
+        type: "Daily Check-in",
+        level: temptationLevel,
+        trigger: selectedTemptation,
+        notes: selectedStatement,
+        mood: mood[0],
+        affirmation: description,
       });
-      navigate('/');
-    } else {
-      setStep(step + 1);
+
+      toast({
+        title: "Check-in Complete",
+        description: "Your daily check-in has been saved.",
+      });
+      navigate("/");
+      return;
     }
+    setStep(step + 1);
   };
 
   const handleBack = () => {
