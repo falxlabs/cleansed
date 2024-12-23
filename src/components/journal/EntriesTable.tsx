@@ -43,14 +43,18 @@ const getTypeEmoji = (type: string) => {
   if (type === "Gluttony") return "🍽️";
   if (type === "Wrath") return "😠";
   if (type === "Sloth") return "🦥";
-  return "⚠️";
+  return "📝";
 };
 
 const formatType = (type: string) => {
-  if (type === "Daily check-in") return "Daily check-in";
-  if (type.includes("Reflection")) return type.replace("Reflection", "").trim();
-  if (type.includes("Past Temptation")) return type.replace("Past Temptation", "").trim();
-  return type;
+  // First, remove any prefixes like "Past Temptation" or "Reflection"
+  let cleanType = type
+    .replace("Past Temptation ", "")
+    .replace("Reflection ", "")
+    .trim();
+
+  // Return the clean type (either "Daily check-in" or one of the seven sins)
+  return cleanType;
 };
 
 export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
