@@ -1,9 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { OnboardingContainer } from "@/components/onboarding/OnboardingContainer";
+import { useState } from "react";
 
 const Index = () => {
   const navigate = useNavigate();
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  if (showOnboarding) {
+    return <OnboardingContainer />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-duo-50 px-4">
@@ -64,7 +71,7 @@ const Index = () => {
         <div className="flex flex-col sm:flex-row gap-6 justify-center">
           <Button
             className="duo-button text-xl px-8 py-6 transform hover:-translate-y-1 transition-all duration-300"
-            onClick={() => navigate("/signup")}
+            onClick={() => setShowOnboarding(true)}
           >
             Start Your Journey
           </Button>
