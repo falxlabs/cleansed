@@ -30,7 +30,6 @@ export function Mascot({ message, className, onCheckIn, showCheckInButton = fals
     <Card className={cn(
       "p-6 relative overflow-hidden",
       "bg-white rounded-3xl border-2 border-gray-200 shadow-lg",
-      "transition-all duration-300 ease-in-out",
       className
     )}>
       <div className="flex flex-col gap-4">

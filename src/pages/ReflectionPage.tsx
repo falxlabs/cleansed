@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { TemptationTypeStep } from "@/components/reflection/TemptationTypeStep";
 import { TemptationLevelStep } from "@/components/reflection/TemptationLevelStep";
@@ -21,6 +22,7 @@ type TemptationLevel = typeof TEMPTATION_LEVELS[number];
 export default function ReflectionPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { toast } = useToast();
   
   const [step, setStep] = useState(1);
   const [selectedSin, setSelectedSin] = useState<string>("");
@@ -32,7 +34,6 @@ export default function ReflectionPage() {
   const [trigger, setTrigger] = useState("");
   const [resistanceStrategy, setResistanceStrategy] = useState("");
   const [outcome, setOutcome] = useState<string>("");
-  const [mascotMessage, setMascotMessage] = useState("Let's reflect on this temptation together. I'm here to help you through this process.");
 
   useEffect(() => {
     const storedOutcome = sessionStorage.getItem('pastTemptationOutcome');
@@ -52,23 +53,40 @@ export default function ReflectionPage() {
 
   const handleNext = () => {
     if (step === 1 && !selectedSin) {
-      setMascotMessage("Please select a type of temptation first. This helps us understand your struggle better.");
+      toast({
+        title: "Please complete all required fields",
+        description: "Select a type of temptation",
+        variant: "destructive",
+      });
       return;
     }
     if (step === 2 && !temptationLevel) {
-      setMascotMessage("Could you help me understand how intense this temptation was? This information is really important for tracking your progress.");
+      toast({
+        title: "Please select a temptation level",
+        description: "This helps us understand the intensity of the struggle",
+        variant: "destructive",
+      });
       return;
     }
     if (step === 3 && !trigger) {
-      setMascotMessage("Understanding what triggered this temptation will help you recognize and handle similar situations in the future. Could you share what happened?");
+      toast({
+        title: "Please describe the trigger",
+        description: "Understanding what triggers the temptation is important",
+        variant: "destructive",
+      });
       return;
     }
     if (step === totalSteps) {
       if (outcome === 'resisted' && !resistanceStrategy) {
-        setMascotMessage("Your strategies for resisting temptation can inspire others. Please share what helped you stay strong!");
+        toast({
+          title: "Please share what helped you resist",
+          description: "This insight can help in future situations",
+          variant: "destructive",
+        });
         return;
       }
       
+      // Save the reflection entry
       saveJournalEntry({
         date: new Date(),
         type: selectedSin,
@@ -78,18 +96,12 @@ export default function ReflectionPage() {
         notes: outcome === 'resisted' ? resistanceStrategy : '',
       });
 
-      setMascotMessage("Thank you for your honest reflection! Remember, every step forward, no matter how small, is progress. Keep going!");
+      toast({
+        title: "Reflection completed",
+        description: "Thank you for your honest reflection",
+      });
       navigate("/");
       return;
-    }
-    
-    // Update mascot message based on the next step
-    if (step === 1) {
-      setMascotMessage("Great choice! Now, let's understand how strong this temptation was.");
-    } else if (step === 2) {
-      setMascotMessage("You're doing great! Understanding what triggered this temptation will help you prepare better next time.");
-    } else if (step === 3 && outcome === 'resisted') {
-      setMascotMessage("You showed real strength! What strategies helped you resist? Your experience could help others too!");
     }
     
     // Skip resistance strategy step if gave in
@@ -103,15 +115,8 @@ export default function ReflectionPage() {
   const handleBack = () => {
     if (step > 1) {
       setStep(step - 1);
-      // Update mascot message when going back
-      if (step === 2) {
-        setMascotMessage("Let's reflect on this temptation together. I'm here to help you through this process.");
-      } else if (step === 3) {
-        setMascotMessage("Let's review how strong this temptation was.");
-      } else if (step === 4) {
-        setMascotMessage("Let's look back at what triggered this situation.");
-      }
     } else {
+      // Check if we came from the crossroad page
       if (location.state?.choice) {
         navigate("/crossroad");
       } else {
@@ -127,7 +132,7 @@ export default function ReflectionPage() {
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
-      <Mascot message={mascotMessage} />
+      <Mascot message="Let's reflect on this temptation together" />
       <Progress value={progress} className="w-full" />
 
       <div className="space-y-6">
@@ -165,8 +170,7 @@ export default function ReflectionPage() {
         <NavigationButtons
           onBack={handleBack}
           onNext={handleNext}
-          step={step}
-          isNextDisabled={false}
+          isLastStep={step === totalSteps}
         />
       </div>
     </div>
