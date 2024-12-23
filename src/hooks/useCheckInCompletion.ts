@@ -24,8 +24,36 @@ export function useCheckInCompletion() {
   }: CheckInData) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("No authenticated user");
+      if (!user) {
+        toast({
+          title: "Authentication Required",
+          description: "Please sign in to save your check-in.",
+          variant: "destructive",
+        });
+        return;
+      }
 
+      // First, create or get user affirmation
+      let affirmationId = null;
+      if (selectedStatement) {
+        const { data: userAffirmation, error: affirmationError } = await supabase
+          .from('user_affirmations')
+          .insert({
+            user_id: user.id,
+            content: selectedStatement
+          })
+          .select()
+          .single();
+
+        if (affirmationError) {
+          console.error('Error saving affirmation:', affirmationError);
+          throw new Error('Failed to save affirmation');
+        }
+
+        affirmationId = userAffirmation.id;
+      }
+
+      // Create journal entry
       const { data: journalEntry, error: journalError } = await supabase
         .from('journal_entries')
         .insert({
@@ -35,36 +63,49 @@ export function useCheckInCompletion() {
         .select()
         .single();
 
-      if (journalError) throw journalError;
+      if (journalError) {
+        console.error('Error creating journal entry:', journalError);
+        throw new Error('Failed to create journal entry');
+      }
 
+      // Create check-in entry
       const { error: checkInError } = await supabase
         .from('checkin_entries')
         .insert({
           id: journalEntry.id,
           mood_score: mood[0],
-          mood_description: description
+          mood_description: description,
+          custom_affirmation_id: affirmationId
         });
 
-      if (checkInError) throw checkInError;
+      if (checkInError) {
+        console.error('Error creating check-in entry:', checkInError);
+        throw new Error('Failed to save check-in details');
+      }
 
+      // If temptation is selected, create temptation entry
       if (selectedTemptation) {
         const { error: temptationError } = await supabase
           .from('temptation_entries')
           .insert({
             id: journalEntry.id,
-            temptation_type: selectedTemptation as TemptationType,
+            temptation_type: selectedTemptation,
             intensity_level: temptationLevel[0],
             trigger: description,
             resisted: true
           });
 
-        if (temptationError) throw temptationError;
+        if (temptationError) {
+          console.error('Error creating temptation entry:', temptationError);
+          throw new Error('Failed to save temptation details');
+        }
       }
 
       toast({
         title: "Check-in Complete",
-        description: "Your daily check-in has been saved.",
+        description: "Your daily check-in has been saved successfully.",
       });
+      
       navigate("/dashboard");
     } catch (error) {
       console.error('Error saving check-in:', error);
