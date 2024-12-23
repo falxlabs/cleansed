@@ -62,7 +62,7 @@ const formatEntryType = (type: string) => {
   const matchedSin = sins.find(sin => type.includes(sin));
   
   return {
-    category: matchedSin ? "Temptation" : type,
+    category: "Temptation",
     subtype: matchedSin || null
   };
 };
@@ -124,7 +124,7 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
                     <X className="inline h-5 w-5 text-red-500" />
                   )
                 ) : (
-                  <span className="text-muted-foreground">-</span>
+                  <span>-</span>
                 )}
               </TableCell>
             </TableRow>
