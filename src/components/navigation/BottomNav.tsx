@@ -8,7 +8,9 @@ export const BottomNav = () => {
   const location = useLocation();
   const isMobile = useIsMobile();
 
-  if (!isMobile) return null;
+  // Hide nav on specific routes
+  const hideNavRoutes = ['/crossroad', '/reflection', '/past-temptation'];
+  if (!isMobile || hideNavRoutes.includes(location.pathname)) return null;
 
   const navItems = [
     { icon: Home, label: "Dashboard", path: "/" },
