@@ -5,12 +5,11 @@ import { Mascot } from "@/components/dashboard/Mascot";
 import { StreakDisplay } from "@/components/dashboard/StreakDisplay";
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { calculateStreak } from "@/utils/journalEntries";
 
 const Index = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const currentStreak = calculateStreak();
+  const currentStreak = 7;
   const welcomeMessage = "Welcome back! Remember, each day is a new opportunity to grow stronger in your faith.";
   const dailyVerse = {
     verse: "No temptation has overtaken you except what is common to mankind. And God is faithful; he will not let you be tempted beyond what you can bear.",
@@ -29,7 +28,6 @@ const Index = () => {
           className="animate-fade-in" 
           onCheckIn={() => navigate('/daily-checkin')}
           showCheckInButton={true}
-          context="dashboard"
         />
       </div>
 

@@ -1,62 +1,146 @@
-import { Mascot } from "@/components/dashboard/Mascot";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Mascot } from "@/components/dashboard/Mascot";
+import { ActionButton } from "@/components/dashboard/ActionButton";
+import { ArrowLeft, Sun, Skull, Timer } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
-const CrossroadPage = () => {
+const TIMER_DURATION = 300;
+
+const SUGGESTIONS = [
+  "Take a quiet walk and reflect",
+  "Pray for strength and guidance",
+  "Practice deep breathing exercises",
+  "Read a Bible verse about overcoming temptation",
+  "Call a trusted friend or accountability partner",
+  "Write down your thoughts in a journal",
+];
+
+export default function CrossroadPage() {
+  const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
   const navigate = useNavigate();
-  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
-
+  const { toast } = useToast();
+  
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        if (prevTime <= 1) {
-          clearInterval(timer);
-          navigate("/");
-          return 0;
-        }
-        return prevTime - 1;
+    if (timeLeft <= 0) {
+      toast({
+        title: "Time's up!",
+        description: "Your breathing exercise is complete. Make your choice.",
       });
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [navigate]);
+  }, [timeLeft, toast]);
 
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  const handleSubmitToGod = () => {
+    toast({
+      title: "Praise God!",
+      description: "You've chosen the path of righteousness.",
+    });
+    navigate("/reflection", { state: { choice: "submitted" } });
   };
 
+  const handleFallToSin = () => {
+    toast({
+      title: "Don't give up!",
+      description: "Remember, God's grace is sufficient for you.",
+    });
+    navigate("/reflection", { state: { choice: "fell" } });
+  };
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const progressPercentage = ((TIMER_DURATION - timeLeft) / TIMER_DURATION) * 100;
+
   return (
-    <div className="container mx-auto p-4 space-y-6">
+    <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8 space-y-8 max-w-2xl mx-auto">
+      <Button 
+        variant="ghost" 
+        className="mb-4 -ml-2" 
+        onClick={() => navigate('/')}
+      >
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Back to Dashboard
+      </Button>
+
       <Mascot 
-        message="You're at a crossroads. Take a moment to reflect on your choice."
-        context="crossroad"
+        message="Take a moment to breathe and pray. Remember, God is with you in this moment of temptation." 
+        className="animate-fade-in"
       />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className={cn(
-          "p-6 cursor-pointer hover:shadow-lg transition-shadow",
-          "bg-green-50 rounded-3xl border-2 border-green-200"
-        )} onClick={() => navigate("/reflection")}>
-          <h2 className="text-xl font-bold mb-2 text-green-700">Choose God</h2>
-          <p className="text-green-600">Stay strong in your faith and resist temptation.</p>
-        </Card>
-        <Card className={cn(
-          "p-6 cursor-pointer hover:shadow-lg transition-shadow",
-          "bg-red-50 rounded-3xl border-2 border-red-200"
-        )} onClick={() => navigate("/journal")}>
-          <h2 className="text-xl font-bold mb-2 text-red-700">Fall to Sin</h2>
-          <p className="text-red-600">Record your experience and learn from this moment.</p>
-        </Card>
+
+      <div className="grid grid-cols-2 gap-4 mt-8">
+        <ActionButton
+          icon={Sun}
+          label="Choose God"
+          onClick={handleSubmitToGod}
+          className="bg-duo-500 hover:bg-duo-600 text-white shadow-lg hover:shadow-xl transition-all duration-500 py-6 text-lg sm:text-xl font-bold h-[300px] hover:-translate-y-2 border-4 border-duo-700 px-4 sm:px-8 [&_svg]:w-12 [&_svg]:h-12"
+        />
+        
+        <ActionButton
+          icon={Skull}
+          label="Give In"
+          onClick={handleFallToSin}
+          variant="destructive"
+          className="h-[300px] hover:-translate-y-2 transition-all duration-500 border-4 border-red-700 text-lg sm:text-xl px-4 sm:px-8 [&_svg]:w-12 [&_svg]:h-12"
+          disabled={timeLeft > 0}
+        />
       </div>
-      <div className="fixed bottom-0 left-0 right-0 bg-gray-100 p-4 text-center border-t border-gray-200">
-        <p className="text-gray-600">Time remaining to make a choice: {formatTime(timeLeft)}</p>
-      </div>
+
+      <Card className="p-6 sm:p-8 mt-8 bg-white/50 backdrop-blur-sm">
+        <div className="space-y-6">
+          <div className="flex items-center justify-center gap-3 text-duo-700">
+            <Timer className="h-8 w-8 animate-pulse" />
+            <h3 className="text-2xl font-bold">Reflection Timer</h3>
+          </div>
+          
+          <div className="text-4xl font-bold text-center text-duo-800 font-mono tracking-wider">
+            {formatTime(timeLeft)}
+          </div>
+          
+          <Progress 
+            value={progressPercentage} 
+            className="h-3 bg-duo-100" 
+          />
+          
+          <div className="mt-8 space-y-4">
+            <h4 className="text-lg font-medium text-center text-duo-700">
+              Try these helpful activities while you wait:
+            </h4>
+            <Carousel className="w-full max-w-xs mx-auto" opts={{ loop: true }}>
+              <CarouselContent>
+                {SUGGESTIONS.map((suggestion, index) => (
+                  <CarouselItem key={index}>
+                    <div className="p-6 rounded-xl bg-white/80 text-duo-800 text-base text-center min-h-[100px] flex items-center justify-center shadow-md">
+                      {suggestion}
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-0" aria-label="View previous suggestion" />
+              <CarouselNext className="right-0" aria-label="View next suggestion" />
+            </Carousel>
+          </div>
+        </div>
+      </Card>
     </div>
   );
-};
-
-export default CrossroadPage;
+}
