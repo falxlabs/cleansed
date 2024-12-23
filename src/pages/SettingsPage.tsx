@@ -40,7 +40,7 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto bg-white rounded-3xl border-2 border-gray-200 shadow-lg p-6">
         <SettingsHeader />
         <div className="space-y-2">
           {settingsCategories.map((category) => {
