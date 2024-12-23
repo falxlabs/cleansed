@@ -3,7 +3,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 const TEMPTATION_LEVELS = [
   "Low - I can resist easily",
@@ -17,7 +16,6 @@ interface TemptationStepProps {
   temptationLevel: number[];
   onTemptationChange: (value: string) => void;
   onLevelChange: (value: number[]) => void;
-  onSkipTemptation: () => void;
 }
 
 export function TemptationStep({
@@ -25,7 +23,6 @@ export function TemptationStep({
   temptationLevel,
   onTemptationChange,
   onLevelChange,
-  onSkipTemptation,
 }: TemptationStepProps) {
   useEffect(() => {
     const savedTemptation = localStorage.getItem("defaultTemptation");
@@ -58,16 +55,7 @@ export function TemptationStep({
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-center text-primary">Today's Biggest Challenge</h2>
-        <Button 
-          variant="outline" 
-          onClick={onSkipTemptation}
-          className="bg-white/50 hover:bg-white/80"
-        >
-          Free of Temptation
-        </Button>
-      </div>
+      <h2 className="text-2xl font-bold text-center text-primary">Today's Biggest Challenge</h2>
       
       <Card className="p-6 bg-white/50 backdrop-blur-sm border-2 border-primary/20">
         <div className="space-y-4">

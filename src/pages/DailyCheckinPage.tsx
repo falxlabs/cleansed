@@ -5,9 +5,9 @@ import { MoodStep } from "@/components/daily-checkin/MoodStep";
 import { MissionStep } from "@/components/daily-checkin/MissionStep";
 import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
-import { TemptationStep } from "@/components/daily-checkin/TemptationStep";
+import { TemptationTypeSelector } from "@/components/reflection/TemptationTypeSelector";
+import { TemptationLevelStep } from "@/components/reflection/TemptationLevelStep";
 import { Mascot } from "@/components/dashboard/Mascot";
-import { Slider } from "@/components/ui/slider";
 
 export default function DailyCheckinPage() {
   const navigate = useNavigate();
@@ -18,10 +18,9 @@ export default function DailyCheckinPage() {
   const [selectedTemptation, setSelectedTemptation] = useState("");
   const [temptationLevel, setTemptationLevel] = useState<number[]>([50]);
   const [selectedStatement, setSelectedStatement] = useState("");
-  const [skipTemptation, setSkipTemptation] = useState(false);
 
   const handleNext = () => {
-    if (step === 4 || (skipTemptation && step === 2)) {
+    if (step === 4) {
       // Submit the check-in
       toast({
         title: "Check-in Complete!",
@@ -29,24 +28,13 @@ export default function DailyCheckinPage() {
       });
       navigate('/');
     } else {
-      if (skipTemptation && step === 1) {
-        setStep(4);
-      } else {
-        setStep(step + 1);
-      }
+      setStep(step + 1);
     }
   };
 
-  const handleSkipTemptation = () => {
-    setSkipTemptation(true);
-    setSelectedTemptation("");
-    setTemptationLevel([0]);
-    handleNext();
-  };
-
   const isNextDisabled = () => {
-    if (step === 2 && !skipTemptation) return !selectedTemptation;
-    if (step === 3 && !skipTemptation) return temptationLevel.length === 0;
+    if (step === 2) return !selectedTemptation;
+    if (step === 3) return temptationLevel.length === 0;
     if (step === 4) return !selectedStatement;
     return false;
   };
@@ -79,35 +67,25 @@ export default function DailyCheckinPage() {
         );
       case 2:
         return (
-          <TemptationStep
-            selectedTemptation={selectedTemptation}
-            temptationLevel={temptationLevel}
-            onTemptationChange={setSelectedTemptation}
-            onLevelChange={setTemptationLevel}
-            onSkipTemptation={handleSkipTemptation}
-          />
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-center text-primary">Today's Biggest Challenge</h2>
+            <p className="text-center text-muted-foreground mb-6">
+              What type of temptation are you struggling with the most today?
+            </p>
+            <TemptationTypeSelector
+              value={selectedTemptation}
+              onChange={setSelectedTemptation}
+            />
+          </div>
         );
       case 3:
-        if (!skipTemptation) {
-          return (
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-center text-primary">Temptation Level</h2>
-              <div className="text-center mb-4">
-                <p className="text-lg font-semibold">
-                  {getTemptationLevelText(temptationLevel[0])}
-                </p>
-              </div>
-              <Slider
-                value={temptationLevel}
-                onValueChange={setTemptationLevel}
-                max={100}
-                step={1}
-                className="w-full"
-              />
-            </div>
-          );
-        }
-        return null;
+        return (
+          <TemptationLevelStep
+            sliderValue={temptationLevel}
+            temptationLevel={getTemptationLevelText(temptationLevel[0])}
+            onSliderChange={setTemptationLevel}
+          />
+        );
       case 4:
         return (
           <MissionStep
@@ -136,7 +114,7 @@ export default function DailyCheckinPage() {
         />
         
         <div className="bg-white/40 backdrop-blur-sm rounded-3xl p-6 shadow-xl border-2 border-primary/20">
-          <Progress value={(skipTemptation ? (step === 1 ? 25 : 100) : (step / 4) * 100)} className="w-full" />
+          <Progress value={(step / 4) * 100} className="w-full" />
           
           <div className="space-y-6 mt-6">
             {getStepContent()}
@@ -155,7 +133,7 @@ export default function DailyCheckinPage() {
               disabled={isNextDisabled()}
               className="bg-primary hover:bg-primary/90"
             >
-              {step === 4 || (skipTemptation && step === 2) ? "Complete" : "Next"}
+              {step === 4 ? "Complete" : "Next"}
             </Button>
           </div>
         </div>
