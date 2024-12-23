@@ -134,7 +134,17 @@ export default function ReflectionPage() {
     } else if (step === 3) {
       setTrigger("Not sure / Don't remember");
       if (outcome === 'gave-in') {
-        setStep(totalSteps);
+        saveJournalEntry({
+          date: new Date(),
+          type: selectedSin,
+          resisted: outcome === 'resisted',
+          level: temptationLevel,
+          trigger: "Not sure / Don't remember",
+          notes: '',
+          description: customNote,
+        });
+        setMascotMessage("Thank you for your honest reflection! Remember, every step forward, no matter how small, is progress. Keep going!");
+        navigate("/");
       } else {
         setStep(step + 1);
         setMascotMessage("You showed real strength! What strategies helped you resist? Your experience could help others too!");

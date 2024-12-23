@@ -87,6 +87,8 @@
   [data-radix-toast-viewport] {
     left: 0 !important;
     right: auto !important;
+    bottom: 0 !important;
+    top: auto !important;
   }
 }
 
