@@ -1,14 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Mascot } from "@/components/dashboard/Mascot";
-import { Card } from "@/components/ui/card";
-import { Slider } from "@/components/ui/slider";
-import { TemptationTypeSelector } from "@/components/reflection/TemptationTypeSelector";
+import { TemptationTypeStep } from "@/components/reflection/TemptationTypeStep";
+import { TemptationLevelStep } from "@/components/reflection/TemptationLevelStep";
+import { TriggerStep } from "@/components/reflection/TriggerStep";
+import { ResistanceStep } from "@/components/reflection/ResistanceStep";
+import { NavigationButtons } from "@/components/reflection/NavigationButtons";
 
 const TEMPTATION_LEVELS = [
   "Low - I can resist easily",
@@ -39,45 +38,32 @@ export default function ReflectionPage() {
     setTemptationLevel(TEMPTATION_LEVELS[Math.min(levelIndex, TEMPTATION_LEVELS.length - 1)]);
   };
 
-  const getTemptationEmoji = () => {
-    if (sliderValue[0] <= 25) return "🟢";
-    if (sliderValue[0] <= 50) return "🟡";
-    if (sliderValue[0] <= 75) return "🟠";
-    return "🔴";
-  };
-
   const handleNext = () => {
-    if (step === 1) {
-      if (!selectedSin) {
-        toast({
-          title: "Please complete all required fields",
-          description: "Select a type of temptation",
-          variant: "destructive",
-        });
-        return;
-      }
-      setStep(2);
-    } else if (step === 2) {
-      if (!temptationLevel) {
-        toast({
-          title: "Please select a temptation level",
-          description: "This helps us understand the intensity of the struggle",
-          variant: "destructive",
-        });
-        return;
-      }
-      setStep(3);
-    } else if (step === 3) {
-      if (!trigger) {
-        toast({
-          title: "Please describe the trigger",
-          description: "Understanding what triggers the temptation is important",
-          variant: "destructive",
-        });
-        return;
-      }
-      setStep(4);
-    } else if (step === 4) {
+    if (step === 1 && !selectedSin) {
+      toast({
+        title: "Please complete all required fields",
+        description: "Select a type of temptation",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (step === 2 && !temptationLevel) {
+      toast({
+        title: "Please select a temptation level",
+        description: "This helps us understand the intensity of the struggle",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (step === 3 && !trigger) {
+      toast({
+        title: "Please describe the trigger",
+        description: "Understanding what triggers the temptation is important",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (step === 4) {
       if (!resistanceStrategy) {
         toast({
           title: "Please share what helped you resist",
@@ -86,20 +72,19 @@ export default function ReflectionPage() {
         });
         return;
       }
-      // Handle completion
       toast({
         title: "Reflection completed",
         description: "Thank you for your honest reflection",
       });
-      navigate("/"); // Changed from "/dashboard" to "/"
+      navigate("/");
     }
+    if (step < 4) setStep(step + 1);
   };
 
   const handleBack = () => {
     if (step > 1) {
       setStep(step - 1);
     } else {
-      // Check if we came from the past-temptation page
       const pastTemptationDate = sessionStorage.getItem('pastTemptationDate');
       if (pastTemptationDate) {
         navigate("/past-temptation");
@@ -112,95 +97,45 @@ export default function ReflectionPage() {
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
       <Mascot message="Let's reflect on this temptation together" />
-      
       <Progress value={progress} className="w-full" />
 
       <div className="space-y-6">
         {step === 1 && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Type of Temptation</h2>
-            <Card className="p-6">
-              <TemptationTypeSelector
-                value={selectedSin}
-                onChange={setSelectedSin}
-                showText={true}
-              />
-            </Card>
-            
-            <div className="space-y-2">
-              <Label htmlFor="customNote">Additional details (optional)</Label>
-              <Textarea
-                id="customNote"
-                placeholder="Want to add more details about what you're struggling with?"
-                value={customNote}
-                onChange={(e) => setCustomNote(e.target.value)}
-                className="min-h-[100px]"
-              />
-            </div>
-          </div>
+          <TemptationTypeStep
+            selectedSin={selectedSin}
+            customNote={customNote}
+            onSinChange={setSelectedSin}
+            onCustomNoteChange={setCustomNote}
+          />
         )}
 
         {step === 2 && (
-          <div className="space-y-8">
-            <h2 className="text-2xl font-bold">Temptation Level</h2>
-            <div className="space-y-8">
-              <div className="text-center">
-                <span className="text-4xl mb-4 block">{getTemptationEmoji()}</span>
-                <h3 className="text-xl font-semibold mb-2">{temptationLevel || "Select level"}</h3>
-                <p className="text-muted-foreground">
-                  {temptationLevel ? "This helps us understand your struggle" : "Move the slider to indicate intensity"}
-                </p>
-              </div>
-              <Slider
-                value={sliderValue}
-                onValueChange={handleSliderChange}
-                max={100}
-                step={1}
-                className="w-full"
-              />
-              <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Low</span>
-                <span>Medium</span>
-                <span>High</span>
-                <span>Severe</span>
-              </div>
-            </div>
-          </div>
+          <TemptationLevelStep
+            sliderValue={sliderValue}
+            temptationLevel={temptationLevel}
+            onSliderChange={handleSliderChange}
+          />
         )}
 
         {step === 3 && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">What triggered this temptation?</h2>
-            <Textarea
-              placeholder="Describe what led to this temptation (e.g., specific situations, emotions, or events)"
-              value={trigger}
-              onChange={(e) => setTrigger(e.target.value)}
-              className="min-h-[150px]"
-            />
-          </div>
+          <TriggerStep
+            trigger={trigger}
+            onTriggerChange={setTrigger}
+          />
         )}
 
         {step === 4 && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">What helped you resist?</h2>
-            <p className="text-muted-foreground">Share the strategies, thoughts, or support that helped you overcome this temptation</p>
-            <Textarea
-              placeholder="Example: Prayer, calling a friend, removing myself from the situation, etc."
-              value={resistanceStrategy}
-              onChange={(e) => setResistanceStrategy(e.target.value)}
-              className="min-h-[150px]"
-            />
-          </div>
+          <ResistanceStep
+            resistanceStrategy={resistanceStrategy}
+            onResistanceStrategyChange={setResistanceStrategy}
+          />
         )}
 
-        <div className="flex justify-between pt-6">
-          <Button variant="outline" onClick={handleBack}>
-            Back
-          </Button>
-          <Button onClick={handleNext}>
-            {step === 4 ? "Complete" : "Next"}
-          </Button>
-        </div>
+        <NavigationButtons
+          onBack={handleBack}
+          onNext={handleNext}
+          isLastStep={step === 4}
+        />
       </div>
     </div>
   );
