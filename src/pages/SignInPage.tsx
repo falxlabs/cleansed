@@ -20,14 +20,35 @@ const SignInPage = () => {
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithOtp({
+      // First check if the user exists
+      const { data: { users }, error: userError } = await supabase.auth.admin.listUsers({
+        filters: {
+          email: email
+        }
+      });
+
+      if (userError) throw userError;
+
+      // If no user found with this email
+      if (!users || users.length === 0) {
+        toast({
+          title: "Account not found",
+          description: "This email is not registered. Please sign up first.",
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
+
+      // If user exists, proceed with sign in
+      const { error: signInError } = await supabase.auth.signInWithOtp({
         email,
         options: {
           emailRedirectTo: `${window.location.origin}/dashboard`,
         },
       });
 
-      if (error) throw error;
+      if (signInError) throw signInError;
 
       toast({
         title: "Check your email",
