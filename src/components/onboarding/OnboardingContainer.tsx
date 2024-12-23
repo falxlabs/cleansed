@@ -8,7 +8,7 @@ import { OnboardingStepManager } from "./OnboardingStepManager";
 import { validateStep } from "@/utils/onboardingValidation";
 import { saveOnboardingData } from "@/utils/onboardingStorage";
 
-const TOTAL_STEPS = 6;
+const TOTAL_STEPS = 7;
 
 export function OnboardingContainer() {
   const navigate = useNavigate();
@@ -63,6 +63,10 @@ export function OnboardingContainer() {
         });
 
         if (signUpError) throw signUpError;
+        
+        // Move to magic link step after successful email send
+        handleNext();
+        return;
       }
 
       if ("Notification" in window) {
@@ -83,6 +87,8 @@ export function OnboardingContainer() {
         message={
           currentStep === 1
             ? "Hi! I'm Grace, and I'll be here to support you on your journey. Let's start by understanding what you're struggling with."
+            : currentStep === 7
+            ? "Great! Check your email for the magic link to complete your signup."
             : "I'm here to help you every step of the way. Take your time to answer honestly."
         }
       />
@@ -95,7 +101,7 @@ export function OnboardingContainer() {
         />
         
         <div className="flex justify-between pt-4">
-          {currentStep > 1 ? (
+          {currentStep > 1 && currentStep < 7 ? (
             <Button variant="outline" onClick={handleBack}>
               Back
             </Button>
@@ -103,24 +109,24 @@ export function OnboardingContainer() {
             <div />
           )}
           
-          {currentStep < TOTAL_STEPS ? (
+          {currentStep < TOTAL_STEPS - 1 ? (
             <Button 
               onClick={handleNext}
               disabled={!isCurrentStepValid()}
             >
               Continue
             </Button>
-          ) : (
+          ) : currentStep === TOTAL_STEPS - 1 ? (
             <Button 
               onClick={handleComplete}
               disabled={!isCurrentStepValid()}
             >
               Complete
             </Button>
-          )}
+          ) : null}
         </div>
 
-        {currentStep === TOTAL_STEPS && (
+        {currentStep === TOTAL_STEPS - 1 && (
           <Button
             variant="ghost"
             className="w-full mt-4"

@@ -4,6 +4,7 @@ import { AffirmationStep } from "./AffirmationStep";
 import { CheckInTimeStep } from "./CheckInTimeStep";
 import { ProfileStep } from "./ProfileStep";
 import { SignUpStep } from "./SignUpStep";
+import { MagicLinkStep } from "./MagicLinkStep";
 
 interface OnboardingFormData {
   temptationType: string;
@@ -71,6 +72,8 @@ export function OnboardingStepManager({
           onEmailChange={(value) => onFormDataChange({ email: value })}
         />
       );
+    case 7:
+      return <MagicLinkStep />;
     default:
       return null;
   }
