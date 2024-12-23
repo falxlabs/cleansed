@@ -12,7 +12,7 @@ export const BottomNav = () => {
   if (!isMobile || hideNavRoutes.includes(location.pathname)) return null;
 
   const navItems = [
-    { icon: Home, label: "Dashboard", path: "/" },
+    { icon: Home, label: "Dashboard", path: "/home" },
     { icon: Book, label: "Journal", path: "/journal" },
     { icon: Settings, label: "Settings", path: "/settings" },
   ];
