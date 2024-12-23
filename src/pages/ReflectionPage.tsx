@@ -29,8 +29,9 @@ export default function ReflectionPage() {
   const [temptationLevel, setTemptationLevel] = useState<TemptationLevel | "">("");
   const [sliderValue, setSliderValue] = useState([25]);
   const [trigger, setTrigger] = useState("");
+  const [resistanceStrategy, setResistanceStrategy] = useState("");
 
-  const progress = (step / 3) * 100;
+  const progress = (step / 4) * 100;
 
   const handleSliderChange = (value: number[]) => {
     setSliderValue(value);
@@ -71,6 +72,16 @@ export default function ReflectionPage() {
         toast({
           title: "Please describe the trigger",
           description: "Understanding what triggers the temptation is important",
+          variant: "destructive",
+        });
+        return;
+      }
+      setStep(4);
+    } else if (step === 4) {
+      if (!resistanceStrategy) {
+        toast({
+          title: "Please share what helped you resist",
+          description: "This insight can help in future situations",
           variant: "destructive",
         });
         return;
@@ -169,12 +180,25 @@ export default function ReflectionPage() {
           </div>
         )}
 
+        {step === 4 && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold">What helped you resist?</h2>
+            <p className="text-muted-foreground">Share the strategies, thoughts, or support that helped you overcome this temptation</p>
+            <Textarea
+              placeholder="Example: Prayer, calling a friend, removing myself from the situation, etc."
+              value={resistanceStrategy}
+              onChange={(e) => setResistanceStrategy(e.target.value)}
+              className="min-h-[150px]"
+            />
+          </div>
+        )}
+
         <div className="flex justify-between pt-6">
           <Button variant="outline" onClick={handleBack}>
             Back
           </Button>
           <Button onClick={handleNext}>
-            {step === 3 ? "Complete" : "Next"}
+            {step === 4 ? "Complete" : "Next"}
           </Button>
         </div>
       </div>
