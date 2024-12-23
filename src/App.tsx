@@ -13,12 +13,16 @@ import AffirmationSettingsPage from "./pages/settings/AffirmationSettingsPage";
 import NotificationsSettingsPage from "./pages/settings/NotificationsSettingsPage";
 import SupportSettingsPage from "./pages/settings/SupportSettingsPage";
 import { BottomNav } from "./components/navigation/BottomNav";
+import { DesktopNav } from "./components/navigation/DesktopNav";
 
 const queryClient = new QueryClient();
 
 const LayoutWithNav = ({ children }: { children: React.ReactNode }) => (
   <>
-    {children}
+    <DesktopNav />
+    <div className="md:pl-64">
+      {children}
+    </div>
     <BottomNav />
   </>
 );

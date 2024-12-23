@@ -17,12 +17,12 @@ const Index = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-background p-4 sm:p-6 md:p-8 space-y-6 max-w-2xl mx-auto ${isMobile ? "pb-20" : ""}`}>
-      <div className="flex justify-end">
+    <div className={`min-h-screen bg-background p-4 sm:p-6 md:p-8 space-y-6 ${isMobile ? "pb-20" : ""}`}>
+      <div className="flex justify-end max-w-2xl mx-auto">
         <StreakDisplay streak={currentStreak} />
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 max-w-2xl mx-auto">
         <Mascot 
           message={welcomeMessage} 
           className="animate-fade-in" 
@@ -30,7 +30,7 @@ const Index = () => {
         />
       </div>
 
-      <div className="grid gap-4">
+      <div className="grid gap-4 max-w-2xl mx-auto">
         <ActionButton
           icon={AlertCircle}
           label="I'm Being Tempted"
@@ -47,7 +47,9 @@ const Index = () => {
         />
       </div>
 
-      <DailyVerse verse={dailyVerse.verse} reference={dailyVerse.reference} />
+      <div className="max-w-2xl mx-auto">
+        <DailyVerse verse={dailyVerse.verse} reference={dailyVerse.reference} />
+      </div>
     </div>
   );
 };
