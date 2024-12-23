@@ -60,7 +60,7 @@ const formatEntryType = (type: string) => {
   const matchedSin = sins.find(sin => type.includes(sin));
   
   return {
-    category: type.includes("Daily check-in") ? "Check-in" : "Temptation",
+    category: type === "Daily check-in" ? "Check-in" : "Temptation",
     subtype: matchedSin || null
   };
 };
@@ -110,13 +110,9 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
                 </div>
               </TableCell>
               <TableCell className="text-center">
-                {category === "Temptation" ? (
-                  <span className="text-xl">
-                    {getSeverityEmoji(entry.level)}
-                  </span>
-                ) : (
-                  <span className="text-muted-foreground">-</span>
-                )}
+                <span className="text-xl">
+                  {getSeverityEmoji(entry.level)}
+                </span>
               </TableCell>
               <TableCell className="text-center">
                 {category === "Temptation" ? (
