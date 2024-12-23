@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { getMoodEmoji, getMoodText, getTemptationLevelText } from "./EntryDetailsDialog";
 
-interface DailyCheckInDetailsProps {
+interface CheckInDetailsProps {
   entry: {
     date: Date;
     trigger: string;
@@ -9,11 +9,11 @@ interface DailyCheckInDetailsProps {
     notes: string;
     mood?: number;
     affirmation?: string;
-    personalNotes?: string;
+    customNote?: string;
   };
 }
 
-export const DailyCheckInDetails = ({ entry }: DailyCheckInDetailsProps) => {
+export const CheckInDetails = ({ entry }: CheckInDetailsProps) => {
   return (
     <div className="space-y-4 py-4">
       <div className="bg-primary/5 p-4 sm:p-6 rounded-xl border border-primary/10">
@@ -41,17 +41,15 @@ export const DailyCheckInDetails = ({ entry }: DailyCheckInDetailsProps) => {
         </div>
         
         <div className="bg-white p-4 rounded-xl border shadow-sm">
-          <p className="text-sm font-semibold text-primary mb-2">Challenge Intensity</p>
+          <p className="text-sm font-semibold text-primary mb-2">Intensity Level</p>
           <p>{getTemptationLevelText(entry.level)}</p>
         </div>
       </div>
 
-      {entry.personalNotes && (
-        <div className="bg-white p-4 rounded-xl border shadow-sm">
-          <p className="text-sm font-semibold text-primary mb-2">Personal Notes</p>
-          <p className="text-gray-700">{entry.personalNotes}</p>
-        </div>
-      )}
+      <div className="bg-white p-4 rounded-xl border shadow-sm">
+        <p className="text-sm font-semibold text-primary mb-2">Description</p>
+        <p className="text-gray-700">{entry.customNote || "No description provided"}</p>
+      </div>
 
       <div className="bg-white p-4 rounded-xl border shadow-sm">
         <p className="text-sm font-semibold text-primary mb-2">Mood Description</p>
