@@ -20,7 +20,15 @@ export const shouldShowCheckIn = (): boolean => {
   const checkInTime = getCheckInTime();
   const now = new Date();
   const [hours, minutes] = checkInTime.split(':').map(Number);
-  const checkInDateTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
+  
+  // Create today's date with the check-in time
+  const checkInDateTime = new Date();
+  checkInDateTime.setHours(hours, minutes, 0, 0);
+  
+  // Add console logs for debugging
+  console.log('Current time:', now);
+  console.log('Check-in time:', checkInDateTime);
+  console.log('Is check-in completed:', isCheckInCompletedForToday());
   
   return now >= checkInDateTime && !isCheckInCompletedForToday();
 };
