@@ -72,7 +72,7 @@ export default function CrossroadPage() {
   const progressPercentage = ((TIMER_DURATION - timeLeft) / TIMER_DURATION) * 100;
 
   return (
-    <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8 space-y-6 max-w-2xl mx-auto">
+    <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8 space-y-8 max-w-2xl mx-auto">
       <Button 
         variant="ghost" 
         className="mb-4 -ml-2" 
@@ -82,19 +82,17 @@ export default function CrossroadPage() {
         Back to Dashboard
       </Button>
 
-      <div className="w-full max-w-sm mx-auto sm:max-w-md">
-        <Mascot 
-          message="Take a moment to breathe and pray. Remember, God is with you in this moment of temptation." 
-          className="animate-fade-in"
-        />
-      </div>
+      <Mascot 
+        message="Take a moment to breathe and pray. Remember, God is with you in this moment of temptation." 
+        className="animate-fade-in"
+      />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+      <div className="grid grid-cols-2 gap-4 mt-8">
         <ActionButton
           icon={Sun}
           label="Choose God"
           onClick={handleSubmitToGod}
-          className="bg-duo-500 hover:bg-duo-600 text-white shadow-lg hover:shadow-xl transition-all duration-500 py-4 sm:py-6 text-lg sm:text-xl font-bold h-[200px] sm:h-[300px] hover:-translate-y-2 border-4 border-duo-700 px-4 sm:px-8 [&_svg]:w-8 [&_svg]:h-8 sm:[&_svg]:w-12 sm:[&_svg]:h-12"
+          className="bg-duo-500 hover:bg-duo-600 text-white shadow-lg hover:shadow-xl transition-all duration-500 py-6 text-lg sm:text-xl font-bold h-[300px] hover:-translate-y-2 border-4 border-duo-700 px-4 sm:px-8 [&_svg]:w-12 [&_svg]:h-12"
         />
         
         <ActionButton
@@ -102,43 +100,43 @@ export default function CrossroadPage() {
           label="Give In"
           onClick={handleFallToSin}
           variant="destructive"
-          className="h-[200px] sm:h-[300px] hover:-translate-y-2 transition-all duration-500 border-4 border-red-700 text-lg sm:text-xl px-4 sm:px-8 [&_svg]:w-8 [&_svg]:h-8 sm:[&_svg]:w-12 sm:[&_svg]:h-12"
+          className="h-[300px] hover:-translate-y-2 transition-all duration-500 border-4 border-red-700 text-lg sm:text-xl px-4 sm:px-8 [&_svg]:w-12 [&_svg]:h-12"
           disabled={timeLeft > 0}
         />
       </div>
 
-      <Card className="p-4 sm:p-6 mt-6 bg-white/50 backdrop-blur-sm">
-        <div className="space-y-4 sm:space-y-6">
-          <div className="flex items-center justify-center gap-2 sm:gap-3 text-duo-700">
-            <Timer className="h-6 w-6 sm:h-8 sm:w-8 animate-pulse" />
-            <h3 className="text-xl sm:text-2xl font-bold">Reflection Timer</h3>
+      <Card className="p-6 sm:p-8 mt-8 bg-white/50 backdrop-blur-sm">
+        <div className="space-y-6">
+          <div className="flex items-center justify-center gap-3 text-duo-700">
+            <Timer className="h-8 w-8 animate-pulse" />
+            <h3 className="text-2xl font-bold">Reflection Timer</h3>
           </div>
           
-          <div className="text-3xl sm:text-4xl font-bold text-center text-duo-800 font-mono tracking-wider">
+          <div className="text-4xl font-bold text-center text-duo-800 font-mono tracking-wider">
             {formatTime(timeLeft)}
           </div>
           
           <Progress 
             value={progressPercentage} 
-            className="h-2 sm:h-3 bg-duo-100" 
+            className="h-3 bg-duo-100" 
           />
           
-          <div className="mt-6 sm:mt-8 space-y-4">
-            <h4 className="text-base sm:text-lg font-medium text-center text-duo-700">
+          <div className="mt-8 space-y-4">
+            <h4 className="text-lg font-medium text-center text-duo-700">
               Try these helpful activities while you wait:
             </h4>
             <Carousel className="w-full max-w-xs mx-auto" opts={{ loop: true }}>
               <CarouselContent>
                 {SUGGESTIONS.map((suggestion, index) => (
                   <CarouselItem key={index}>
-                    <div className="p-4 sm:p-6 rounded-xl bg-white/80 text-duo-800 text-sm sm:text-base text-center min-h-[80px] sm:min-h-[100px] flex items-center justify-center shadow-md">
+                    <div className="p-6 rounded-xl bg-white/80 text-duo-800 text-base text-center min-h-[100px] flex items-center justify-center shadow-md">
                       {suggestion}
                     </div>
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="-left-2 sm:left-0" aria-label="View previous suggestion" />
-              <CarouselNext className="-right-2 sm:right-0" aria-label="View next suggestion" />
+              <CarouselPrevious className="left-0" aria-label="View previous suggestion" />
+              <CarouselNext className="right-0" aria-label="View next suggestion" />
             </Carousel>
           </div>
         </div>
