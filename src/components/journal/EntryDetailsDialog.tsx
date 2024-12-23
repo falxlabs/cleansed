@@ -73,85 +73,105 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
 
   return (
     <Dialog open={!!entry} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>
+      <DialogContent className="max-w-2xl">
+        <DialogHeader className="border-b pb-4">
+          <DialogTitle className="text-2xl font-bold text-primary">
             {isCheckIn ? "Daily Check-in" : "Temptation Entry"}
           </DialogTitle>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground font-medium">
             {formattedDate} at {formattedTime}
           </p>
         </DialogHeader>
-        <div className="space-y-4">
+        <div className="space-y-6 py-4">
           {isCheckIn ? (
             <>
-              <div className="bg-primary/5 p-4 rounded-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-sm font-medium text-primary">Mood</p>
-                  <span className="text-2xl" title={getMoodText(entry.mood)}>
+              <div className="bg-primary/5 p-6 rounded-xl border border-primary/10">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-base font-semibold text-primary">Current Mood</p>
+                  <span className="text-3xl" title={getMoodText(entry.mood)}>
                     {getMoodEmoji(entry.mood)}
                   </span>
                 </div>
-                <div className="h-2 bg-primary/20 rounded-full overflow-hidden">
+                <div className="h-2.5 bg-primary/10 rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-primary transition-all"
+                    className="h-full bg-primary transition-all duration-500"
                     style={{ width: `${entry.mood || 50}%` }}
                   />
                 </div>
+                <p className="text-sm text-primary/80 mt-2 text-right font-medium">
+                  {getMoodText(entry.mood)}
+                </p>
               </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Primary Challenge</p>
-                <p className="capitalize">{entry.trigger}</p>
+              
+              <div className="grid gap-6 sm:grid-cols-2">
+                <div className="bg-white p-4 rounded-xl border shadow-sm">
+                  <p className="text-sm font-semibold text-primary mb-2">Primary Challenge</p>
+                  <p className="capitalize">{entry.trigger}</p>
+                </div>
+                
+                <div className="bg-white p-4 rounded-xl border shadow-sm">
+                  <p className="text-sm font-semibold text-primary mb-2">Intensity Level</p>
+                  <p>{getTemptationLevelText(entry.level)}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Intensity Level</p>
-                <p>{getTemptationLevelText(entry.level)}</p>
+
+              <div className="bg-white p-4 rounded-xl border shadow-sm">
+                <p className="text-sm font-semibold text-primary mb-2">Mood Description</p>
+                <p className="text-gray-700">{entry.notes || "No description provided"}</p>
               </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Mood Description</p>
-                <p>{entry.notes || "No description provided"}</p>
-              </div>
+
               {entry.affirmation && (
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Daily Affirmation</p>
-                  <p>{entry.affirmation}</p>
+                <div className="bg-primary/5 p-6 rounded-xl border border-primary/10">
+                  <p className="text-sm font-semibold text-primary mb-2">Daily Affirmation</p>
+                  <p className="text-lg font-medium italic text-gray-700">"{entry.affirmation}"</p>
                 </div>
               )}
             </>
           ) : (
             <>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Type of Temptation</p>
-                <p className="capitalize">{entry.type}</p>
+              <div className="grid gap-6 sm:grid-cols-2">
+                <div className="bg-white p-4 rounded-xl border shadow-sm">
+                  <p className="text-sm font-semibold text-primary mb-2">Type of Temptation</p>
+                  <p className="capitalize">{entry.type}</p>
+                </div>
+                
+                <div className={`bg-white p-4 rounded-xl border shadow-sm ${
+                  entry.resisted ? "bg-green-50" : "bg-red-50"
+                }`}>
+                  <p className="text-sm font-semibold text-primary mb-2">Outcome</p>
+                  <p className={`font-medium ${
+                    entry.resisted ? "text-green-600" : "text-red-600"
+                  }`}>
+                    {entry.resisted ? "✓ Successfully Resisted" : "✗ Gave in"}
+                  </p>
+                </div>
               </div>
-              <div className="bg-primary/5 p-4 rounded-lg">
-                <p className="text-sm font-medium text-primary mb-2">Outcome</p>
-                <p className={entry.resisted ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
-                  {entry.resisted ? "✓ Successfully Resisted" : "✗ Gave in"}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Intensity Level</p>
+
+              <div className="bg-white p-4 rounded-xl border shadow-sm">
+                <p className="text-sm font-semibold text-primary mb-2">Intensity Level</p>
                 <p>{getTemptationLevelText(entry.level)}</p>
               </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Trigger</p>
-                <p>{entry.trigger || "No trigger specified"}</p>
+
+              <div className="bg-white p-4 rounded-xl border shadow-sm">
+                <p className="text-sm font-semibold text-primary mb-2">Trigger</p>
+                <p className="text-gray-700">{entry.trigger || "No trigger specified"}</p>
               </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">
+
+              <div className="bg-white p-4 rounded-xl border shadow-sm">
+                <p className="text-sm font-semibold text-primary mb-2">
                   {entry.resisted ? "What helped me resist" : "Additional Notes"}
                 </p>
-                <p>{entry.notes || "No notes provided"}</p>
+                <p className="text-gray-700">{entry.notes || "No notes provided"}</p>
               </div>
             </>
           )}
-          <div className="flex justify-end pt-4">
+          
+          <div className="flex justify-end pt-2 border-t">
             <Button
               variant="destructive"
               size="sm"
               onClick={handleDelete}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 hover:bg-red-600"
             >
               <Trash2 className="h-4 w-4" />
               Delete Entry
