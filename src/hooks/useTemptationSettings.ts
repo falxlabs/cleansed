@@ -11,10 +11,9 @@ export function useTemptationSettings() {
   useEffect(() => {
     const loadTemptationSettings = async () => {
       try {
-        console.log("Loading temptation settings...");
         const { data: { user } } = await supabase.auth.getUser();
+        
         if (!user) {
-          console.log("No user found, skipping settings load");
           setIsLoading(false);
           return;
         }
@@ -49,9 +48,10 @@ export function useTemptationSettings() {
           }
           hasLoadedDefaults.current = true;
         }
+        
+        setIsLoading(false);
       } catch (error) {
         console.error('Error loading temptation settings:', error);
-      } finally {
         setIsLoading(false);
       }
     };
