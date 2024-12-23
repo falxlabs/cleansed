@@ -16,7 +16,6 @@ export function CheckInContainer({
   currentStep,
   totalSteps,
   isNextDisabled,
-  onBack,
   onNext,
 }: CheckInContainerProps) {
   return (
@@ -30,7 +29,6 @@ export function CheckInContainer({
       <NavigationButtons
         step={currentStep}
         isNextDisabled={isNextDisabled}
-        onBack={onBack}
         onNext={onNext}
       />
     </div>

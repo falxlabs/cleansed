@@ -133,7 +133,6 @@ export function OnboardingContainer() {
           totalSteps={TOTAL_STEPS}
           loading={loading}
           isStepValid={isCurrentStepValid()}
-          onBack={handleBack}
           onNext={handleNext}
           onSkip={handleSkipToDashboard}
           onComplete={handleComplete}
