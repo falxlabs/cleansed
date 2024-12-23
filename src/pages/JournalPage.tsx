@@ -81,9 +81,7 @@ export default function JournalPage() {
           <CardContent className="p-0">
             <EntriesTable 
               entries={filteredEntries} 
-              onEntryClick={setSelectedEntry}
-              showCalendar={showCalendar}
-              selectedDate={date}
+              onEntryClick={setSelectedEntry} 
             />
           </CardContent>
         </Card>
