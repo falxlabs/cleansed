@@ -2,17 +2,18 @@ import { MoodStep } from "./MoodStep";
 import { TemptationStep } from "./TemptationStep";
 import { TemptationLevelStep } from "@/components/reflection/TemptationLevelStep";
 import { MissionStep } from "./MissionStep";
+import { TemptationType } from "@/types/database";
 
 interface CheckInStepContentProps {
   step: number;
   mood: number[];
   description: string;
-  selectedTemptation: string;
+  selectedTemptation: TemptationType | "";
   temptationLevel: number[];
   selectedStatement: string;
   onMoodChange: (value: number[]) => void;
   onDescriptionChange: (value: string) => void;
-  onTemptationChange: (value: string) => void;
+  onTemptationChange: (value: TemptationType | "") => void;
   onTemptationLevelChange: (value: number[]) => void;
   onStatementChange: (value: string) => void;
 }

@@ -1,8 +1,9 @@
 import { TemptationTypeSelector } from "@/components/reflection/TemptationTypeSelector";
+import { TemptationType } from "@/types/database";
 
 interface TemptationStepProps {
-  selectedTemptation: string;
-  onTemptationChange: (value: string) => void;
+  selectedTemptation: TemptationType | "";
+  onTemptationChange: (value: TemptationType | "") => void;
 }
 
 export function TemptationStep({
