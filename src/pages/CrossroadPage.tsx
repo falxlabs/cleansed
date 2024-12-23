@@ -112,8 +112,8 @@ export default function CrossroadPage() {
           <Progress value={progressPercentage} className="h-2" />
           
           <div className="mt-6 space-y-4">
-            <h4 className="text-base font-medium text-center text-muted-foreground">While you wait, try:</h4>
-            <Carousel className="w-full max-w-xs mx-auto">
+            <h4 className="text-base font-medium text-center text-muted-foreground">Here are some helpful activities:</h4>
+            <Carousel className="w-full max-w-xs mx-auto" opts={{ loop: true }}>
               <CarouselContent>
                 {SUGGESTIONS.map((suggestion, index) => (
                   <CarouselItem key={index}>
@@ -123,8 +123,8 @@ export default function CrossroadPage() {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="left-0" />
-              <CarouselNext className="right-0" />
+              <CarouselPrevious className="left-0" aria-label="View previous suggestion" />
+              <CarouselNext className="right-0" aria-label="View next suggestion" />
             </Carousel>
           </div>
         </div>
