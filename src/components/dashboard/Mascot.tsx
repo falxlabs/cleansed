@@ -16,7 +16,12 @@ const getUserFirstName = () => {
   return localStorage.getItem("userFirstName") || "";
 };
 
-export function Mascot({ message, className, onCheckIn, showCheckInButton = false }: MascotProps) {
+export function Mascot({ 
+  message, 
+  className, 
+  onCheckIn, 
+  showCheckInButton = false 
+}: MascotProps) {
   const location = useLocation();
   const { user } = useAuth();
   const isDashboard = location.pathname === "/dashboard";
@@ -25,14 +30,13 @@ export function Mascot({ message, className, onCheckIn, showCheckInButton = fals
   const personalizedGreeting = firstName ? `Hey ${firstName}! ` : "Hey! ";
   
   const displayMessage = (isDashboard && shouldShow && user)
-    ? `${personalizedGreeting}It's time for your daily check-in. This helps us track your progress and support you better!`
+    ? `${personalizedGreeting}It's time for your daily check-in.`
     : message;
 
   return (
     <Card className={cn(
       "p-6 relative overflow-hidden",
       "bg-white rounded-3xl border-2 border-gray-200 shadow-lg",
-      "transition-all duration-300 ease-in-out",
       className
     )}>
       <div className="flex flex-col gap-4">
@@ -40,8 +44,11 @@ export function Mascot({ message, className, onCheckIn, showCheckInButton = fals
           <div className="w-16 h-16 rounded-2xl bg-duo-100 flex items-center justify-center">
             <span className="text-3xl animate-bounce">🕊️</span>
           </div>
-          <p className="text-lg font-bold leading-relaxed text-gray-800">{displayMessage}</p>
+          <p className="text-lg font-bold leading-relaxed text-gray-800">
+            {displayMessage}
+          </p>
         </div>
+        
         {showCheckInButton && isDashboard && shouldShow && user && onCheckIn && (
           <Button
             onClick={onCheckIn}

@@ -24,7 +24,8 @@ import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 
 const AppContent = () => {
   const location = useLocation();
-  const showNav = !['/', '/onboarding', '/signin'].includes(location.pathname);
+  const publicRoutes = ['/', '/onboarding', '/signin'];
+  const showNav = !publicRoutes.includes(location.pathname);
 
   return (
     <div className="min-h-screen bg-[#F5F5F5]">
@@ -33,15 +34,21 @@ const AppContent = () => {
         {showNav && <div className="hidden md:block w-64 shrink-0" />}
         <main className={`${showNav ? "md:flex-1" : ""} px-4 pb-24 md:pb-6 md:px-6`}>
           <Routes>
+            {/* Public Routes */}
             <Route path="/" element={<Index />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/signin" element={<SignInPage />} />
+
+            {/* Protected Routes */}
             <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
             <Route path="/daily-checkin" element={<ProtectedRoute><DailyCheckinPage /></ProtectedRoute>} />
             <Route path="/crossroad" element={<ProtectedRoute><CrossroadPage /></ProtectedRoute>} />
             <Route path="/past-temptation" element={<ProtectedRoute><PastTemptationPage /></ProtectedRoute>} />
             <Route path="/reflection" element={<ProtectedRoute><ReflectionPage /></ProtectedRoute>} />
             <Route path="/journal" element={<ProtectedRoute><JournalPage /></ProtectedRoute>} />
+            <Route path="/achievements" element={<ProtectedRoute><AchievementsPage /></ProtectedRoute>} />
+
+            {/* Settings Routes */}
             <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
             <Route path="/settings/profile" element={<ProtectedRoute><ProfileSettingsPage /></ProtectedRoute>} />
             <Route path="/settings/daily-checkin" element={<ProtectedRoute><DailyCheckInSettingsPage /></ProtectedRoute>} />
@@ -49,7 +56,6 @@ const AppContent = () => {
             <Route path="/settings/temptation" element={<ProtectedRoute><TemptationSettingsPage /></ProtectedRoute>} />
             <Route path="/settings/notifications" element={<ProtectedRoute><NotificationsSettingsPage /></ProtectedRoute>} />
             <Route path="/settings/support" element={<ProtectedRoute><SupportSettingsPage /></ProtectedRoute>} />
-            <Route path="/achievements" element={<ProtectedRoute><AchievementsPage /></ProtectedRoute>} />
           </Routes>
         </main>
       </div>

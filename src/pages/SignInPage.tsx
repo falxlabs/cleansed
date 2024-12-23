@@ -7,6 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { Mascot } from "@/components/dashboard/Mascot";
 
 const SignInPage = () => {
   const navigate = useNavigate();
@@ -44,74 +45,64 @@ const SignInPage = () => {
     }
   };
 
-  const handleSkip = () => {
-    navigate("/dashboard");
-  };
-
   return (
     <div className="min-h-screen bg-[#F5F5F5] px-4 py-8">
-      <div className="max-w-md mx-auto">
+      <div className="max-w-md mx-auto space-y-6">
         <Button
           variant="ghost"
           onClick={() => navigate(-1)}
-          className="mb-8 hover:bg-transparent"
+          className="hover:bg-transparent"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back
         </Button>
 
-        <Card className="p-6 relative overflow-hidden">
-          <div className="flex flex-col gap-6">
-            <div className="flex items-center gap-6">
-              <div className="w-16 h-16 rounded-2xl bg-duo-100 animate-bounce flex items-center justify-center">
-                <span className="text-3xl">🕊️</span>
-              </div>
-              <p className="text-lg font-bold leading-relaxed text-gray-800">
-                Enter your email to continue your journey.
-              </p>
+        <Mascot
+          message="Welcome back! Enter your email to continue your journey."
+          className="mb-6"
+        />
+
+        <Card className="p-6">
+          <form onSubmit={handleSignIn} className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                required
+              />
             </div>
-
-            <form onSubmit={handleSignIn} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="w-full"
-                  required
-                />
-              </div>
-              <Button 
-                type="submit" 
-                className="w-full duo-button"
-                disabled={loading}
-              >
-                {loading ? "Sending..." : "Continue"}
-              </Button>
-            </form>
-
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-muted-foreground">
-                  Or continue without account
-                </span>
-              </div>
-            </div>
-
-            <Button
-              variant="outline"
-              onClick={handleSkip}
-              className="w-full"
+            
+            <Button 
+              type="submit" 
+              className="w-full duo-button"
+              disabled={loading}
             >
-              Skip for now
+              {loading ? "Sending..." : "Continue"}
             </Button>
+          </form>
+
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-white px-2 text-muted-foreground">
+                Or continue without account
+              </span>
+            </div>
           </div>
+
+          <Button
+            variant="outline"
+            onClick={() => navigate("/dashboard")}
+            className="w-full"
+          >
+            Skip for now
+          </Button>
         </Card>
       </div>
     </div>
