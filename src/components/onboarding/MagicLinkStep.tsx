@@ -21,6 +21,9 @@ export function MagicLinkStep({ email }: MagicLinkStepProps) {
         email,
         options: {
           emailRedirectTo: `${window.location.origin}/dashboard`,
+          data: {
+            redirect_to: `${window.location.origin}/dashboard`,
+          }
         },
       });
 
