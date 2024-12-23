@@ -1,48 +1,55 @@
-import { Auth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { supabase } from "@/integrations/supabase/client";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ArrowLeft } from "lucide-react";
 
-export default function SignInPage() {
+const SignInPage = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Check if user is already logged in
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        navigate("/dashboard");
-      }
-    });
-  }, [navigate]);
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h1 className="text-2xl font-extrabold text-duo-500">Cleansed</h1>
-          <p className="mt-2 text-gray-600">Sign in to continue your journey</p>
-        </div>
-        
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <Auth
-            supabaseClient={supabase}
-            appearance={{
-              theme: ThemeSupa,
-              variables: {
-                default: {
-                  colors: {
-                    brand: '#7C3AED',
-                    brandAccent: '#6D28D9',
-                  },
-                },
-              },
-            }}
-            providers={[]}
-            magicLink={true}
-          />
-        </div>
+    <div className="min-h-screen bg-[#F5F5F5] px-4 py-8">
+      <div className="max-w-md mx-auto">
+        <Button
+          variant="ghost"
+          onClick={() => navigate(-1)}
+          className="mb-8 hover:bg-transparent"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back
+        </Button>
+
+        <Card className="p-6 relative overflow-hidden">
+          <div className="flex flex-col gap-6">
+            <div className="flex items-center gap-6">
+              <div className="w-16 h-16 rounded-2xl bg-duo-100 animate-bounce flex items-center justify-center">
+                <span className="text-3xl">🕊️</span>
+              </div>
+              <p className="text-lg font-bold leading-relaxed text-gray-800">
+                Welcome back! Enter your email to continue your journey.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  className="w-full"
+                />
+              </div>
+              <Button className="w-full duo-button">
+                Continue
+              </Button>
+            </div>
+          </div>
+        </Card>
       </div>
     </div>
   );
-}
+};
+
+export default SignInPage;
