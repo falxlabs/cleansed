@@ -1,5 +1,4 @@
 import { format } from "date-fns";
-import { Flame } from "lucide-react";
 import { getMoodEmoji } from "./EntryDetailsDialog";
 import { getSinEmoji } from "@/utils/sinEmoji";
 
@@ -39,12 +38,7 @@ export const DailyCheckInSummary = ({ entry }: DailyCheckInSummaryProps) => {
         <div className="bg-white p-3 rounded-xl border">
           <p className="text-xs font-semibold text-primary mb-1">Intensity</p>
           <div className="flex items-center gap-2">
-            <Flame 
-              className="h-6 w-6 text-orange-500" 
-              style={{ 
-                opacity: parseInt(entry.level) / 100 
-              }} 
-            />
+            <span className="text-xl">💪</span>
           </div>
         </div>
       </div>
