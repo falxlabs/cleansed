@@ -17,12 +17,13 @@ import {
 export default function CrossroadPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(13);
   const [showTimer, setShowTimer] = useState(false);
   const [timer, setTimer] = useState(0);
   const TIMER_SECONDS = 10;
 
   const handleSubmitToGod = () => {
+    setShowTimer(true);
     toast({
       title: "You chose God!",
       description: "Keep moving forward in faith.",
@@ -30,6 +31,7 @@ export default function CrossroadPage() {
   };
 
   const handleGiveIn = () => {
+    setShowTimer(true);
     toast({
       title: "You gave in.",
       description: "Remember, tomorrow is a new day.",
@@ -45,13 +47,14 @@ export default function CrossroadPage() {
           } else {
             clearInterval(interval);
             setShowTimer(false);
-            return prev;
+            navigate("/reflection");
+            return 0;
           }
         });
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [showTimer]);
+  }, [showTimer, navigate]);
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
@@ -121,7 +124,7 @@ export default function CrossroadPage() {
               Use these {TIMER_SECONDS} seconds to breathe and reflect on your choice.
             </p>
             <div className="flex justify-center">
-              <Progress value={(TIMER_SECONDS - timer) * (100 / TIMER_SECONDS)} className="w-full" />
+              <Progress value={(timer / TIMER_SECONDS) * 100} className="w-full" />
             </div>
           </div>
         </div>
