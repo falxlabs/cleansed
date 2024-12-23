@@ -8,12 +8,14 @@ interface DailyVerseProps {
 
 export function DailyVerse({ verse, reference }: DailyVerseProps) {
   return (
-    <Card className="p-6 bg-sage-50">
+    <Card className="p-6 bg-white rounded-3xl border-2 border-gray-200 shadow-lg">
       <div className="flex items-start gap-4">
-        <Book className="w-6 h-6 text-sage-600 shrink-0 mt-1" />
-        <div className="space-y-2">
-          <p className="text-lg italic">{verse}</p>
-          <p className="text-sm font-medium text-sage-600">{reference}</p>
+        <div className="bg-duo-100 p-3 rounded-2xl">
+          <Book className="w-6 h-6 text-duo-600" />
+        </div>
+        <div className="space-y-3">
+          <p className="text-lg leading-relaxed">{verse}</p>
+          <p className="text-sm font-bold text-duo-600">{reference}</p>
         </div>
       </div>
     </Card>

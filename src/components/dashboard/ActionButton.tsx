@@ -23,7 +23,13 @@ export function ActionButton({
     <Button
       variant={variant}
       onClick={onClick}
-      className={cn("flex items-center gap-2 text-lg h-auto py-6 px-6 transition-all duration-300", className)}
+      className={cn(
+        "flex items-center gap-3 text-lg h-auto py-6 px-8",
+        "rounded-2xl font-bold transition-all duration-200",
+        "shadow-md hover:shadow-lg active:scale-95",
+        variant === "default" && "bg-duo-500 hover:bg-duo-600 active:bg-duo-700",
+        className
+      )}
       disabled={disabled}
     >
       <Icon className="w-6 h-6" />

@@ -32,7 +32,7 @@
     --input: 0 0% 89.8%;
     --ring: 142 76% 36%;
  
-    --radius: 0.75rem;
+    --radius: 1.5rem;
   }
  
   .dark {
@@ -71,6 +71,27 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#F5F5F5] text-foreground;
+  }
+  button {
+    @apply rounded-2xl font-bold transition-all duration-200 active:scale-95;
+  }
+  .card {
+    @apply rounded-3xl border-2 shadow-lg;
+  }
+  input, textarea {
+    @apply rounded-2xl border-2 focus:border-duo-500 focus:ring-duo-500;
+  }
+}
+
+@layer components {
+  .duo-button {
+    @apply bg-duo-500 text-white hover:bg-duo-600 active:bg-duo-700 px-6 py-3 text-lg font-bold rounded-2xl shadow-md hover:shadow-lg transition-all duration-200;
+  }
+  .duo-card {
+    @apply bg-white rounded-3xl border-2 border-gray-200 shadow-lg p-6;
+  }
+  .duo-input {
+    @apply rounded-2xl border-2 border-gray-200 focus:border-duo-500 focus:ring-duo-500 px-4 py-3;
   }
 }
