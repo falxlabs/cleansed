@@ -24,7 +24,6 @@ export function useOnboarding() {
     handleFormDataChange,
     handleNext,
     handleBack,
-    handleSkip: baseHandleSkip,
     isCurrentStepValid,
   } = useOnboardingForm();
 
@@ -69,13 +68,8 @@ export function useOnboarding() {
   };
 
   const handleSkip = () => {
-    if (currentStep === TOTAL_STEPS - 1) {
-      // If on the last step before magic link, skip to dashboard
-      navigate("/dashboard");
-    } else {
-      // Otherwise, just go to the next step
-      handleNext();
-    }
+    // Skip directly to dashboard from any step
+    navigate("/dashboard");
   };
 
   return {

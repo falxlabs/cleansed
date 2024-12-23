@@ -48,7 +48,7 @@ export function OnboardingNavigation({
           onClick={onSkip}
           disabled={loading}
         >
-          Skip without saving
+          Skip onboarding
         </Button>
       )}
     </>
