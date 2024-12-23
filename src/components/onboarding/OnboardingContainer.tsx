@@ -7,11 +7,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { OnboardingStepManager } from "./OnboardingStepManager";
 import { validateStep } from "@/utils/onboardingValidation";
 import { saveOnboardingData } from "@/utils/onboardingStorage";
+import { useToast } from "@/hooks/use-toast";
 
 const TOTAL_STEPS = 7;
 
 export function OnboardingContainer() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     temptationType: "Pride",
@@ -22,6 +24,7 @@ export function OnboardingContainer() {
     age: "",
     email: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const progress = (currentStep / TOTAL_STEPS) * 100;
 
@@ -51,31 +54,52 @@ export function OnboardingContainer() {
   };
 
   const handleComplete = async () => {
+    if (!formData.email) {
+      handleSkip();
+      return;
+    }
+
+    setLoading(true);
     try {
+      // First, sign up the user with Supabase
+      const { error: signUpError } = await supabase.auth.signInWithOtp({
+        email: formData.email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/dashboard`,
+          data: {
+            first_name: formData.firstName,
+            age: formData.age ? parseInt(formData.age) : null,
+          }
+        }
+      });
+
+      if (signUpError) throw signUpError;
+
+      // Save onboarding data
       saveOnboardingData(formData);
 
-      if (formData.email) {
-        const { error: signUpError } = await supabase.auth.signInWithOtp({
-          email: formData.email,
-          options: {
-            emailRedirectTo: window.location.origin + '/dashboard',
-          }
-        });
+      // Show success message
+      toast({
+        title: "Check your email",
+        description: "We've sent you a magic link to complete your signup.",
+      });
 
-        if (signUpError) throw signUpError;
-        
-        // Move to magic link step after successful email send
-        handleNext();
-        return;
-      }
-
+      // Request notifications permission
       if ("Notification" in window) {
         Notification.requestPermission();
       }
 
-      navigate("/dashboard");
+      // Move to magic link step
+      handleNext();
     } catch (error) {
       console.error("Error during sign up:", error);
+      toast({
+        title: "Error",
+        description: "There was a problem signing you up. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -119,9 +143,9 @@ export function OnboardingContainer() {
           ) : currentStep === TOTAL_STEPS - 1 ? (
             <Button 
               onClick={handleComplete}
-              disabled={!isCurrentStepValid()}
+              disabled={!isCurrentStepValid() || loading}
             >
-              Complete
+              {loading ? "Signing up..." : "Complete"}
             </Button>
           ) : null}
         </div>
@@ -131,7 +155,7 @@ export function OnboardingContainer() {
             variant="ghost"
             className="w-full mt-4"
             onClick={handleSkip}
-            disabled={!isCurrentStepValid()}
+            disabled={loading}
           >
             Skip for now
           </Button>
