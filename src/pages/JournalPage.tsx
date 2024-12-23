@@ -19,7 +19,7 @@ export default function JournalPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [showCalendar, setShowCalendar] = useState(true);
   const [selectedEntry, setSelectedEntry] = useState<any | null>(null);
-  const [entries] = useState(loadJournalEntries());
+  const [entries, setEntries] = useState(loadJournalEntries());
   const isMobile = useIsMobile();
 
   // Filter entries based on calendar visibility and selected date
