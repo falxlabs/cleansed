@@ -8,6 +8,7 @@ import { EntriesTable } from "@/components/journal/EntriesTable";
 import { EntryDetailsDialog } from "@/components/journal/EntryDetailsDialog";
 import { DailyCheckInSummary } from "@/components/journal/DailyCheckInSummary";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/providers/AuthProvider";
 import {
   Card,
   CardContent,
@@ -23,14 +24,16 @@ export default function JournalPage() {
   const [entries, setEntries] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const isMobile = useIsMobile();
+  const { user } = useAuth();
 
   useEffect(() => {
-    fetchEntries();
-  }, []);
+    if (user) {
+      fetchEntries();
+    }
+  }, [user]);
 
   const fetchEntries = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
       const { data, error } = await supabase
