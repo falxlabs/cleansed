@@ -46,13 +46,6 @@ export const TemptationDetails = ({ entry }: TemptationDetailsProps) => {
         <p className="text-sm font-semibold text-primary mb-2">Trigger</p>
         <p className="text-gray-700">{entry.trigger || "No trigger specified"}</p>
       </div>
-
-      <div className="bg-white p-4 rounded-xl border shadow-sm">
-        <p className="text-sm font-semibold text-primary mb-2">
-          {entry.resisted ? "What helped me resist" : "Additional Notes"}
-        </p>
-        <p className="text-gray-700">{entry.notes || "No notes provided"}</p>
-      </div>
     </div>
   );
 };
