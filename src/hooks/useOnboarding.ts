@@ -31,9 +31,11 @@ export function useOnboarding() {
     try {
       setLoading(true);
 
+      // First, sign up the user with magic link
       const { data, error: signUpError } = await supabase.auth.signInWithOtp({
         email: formData.email,
         options: {
+          emailRedirectTo: `${window.location.origin}/dashboard`,
           data: {
             first_name: formData.firstName,
             age: formData.age ? parseInt(formData.age) : null,
@@ -43,6 +45,26 @@ export function useOnboarding() {
 
       if (signUpError) throw signUpError;
 
+      // Save user affirmation if provided
+      if (formData.affirmation) {
+        const { error: affirmationError } = await supabase
+          .from('user_affirmations')
+          .insert({
+            content: formData.affirmation,
+            user_id: data.session?.user?.id
+          });
+
+        if (affirmationError) {
+          console.error('Error saving affirmation:', affirmationError);
+          toast({
+            title: "Warning",
+            description: "Your affirmation might not have been saved. Please check your settings later.",
+            variant: "destructive",
+          });
+        }
+      }
+
+      // Save other onboarding data
       const userId = data.session?.user?.id;
       if (userId) {
         await saveOnboardingDataToDatabase(userId, formData);
@@ -68,7 +90,6 @@ export function useOnboarding() {
   };
 
   const handleSkip = () => {
-    // Skip directly to dashboard from any step
     navigate("/dashboard");
   };
 

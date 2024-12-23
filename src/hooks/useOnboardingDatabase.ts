@@ -26,11 +26,22 @@ export async function saveOnboardingDataToDatabase(userId: string, formData: Onb
 
     if (temptationError) throw temptationError;
 
+    // Save profile data
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .upsert({
+        id: userId,
+        first_name: formData.firstName,
+        age: formData.age ? parseInt(formData.age) : null,
+      });
+
+    if (profileError) throw profileError;
+
     // Save custom affirmation if provided
     if (formData.affirmation) {
       const { error: affirmationError } = await supabase
         .from('user_affirmations')
-        .insert({
+        .upsert({
           user_id: userId,
           content: formData.affirmation,
         });
