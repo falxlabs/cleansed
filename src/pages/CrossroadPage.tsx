@@ -34,8 +34,8 @@ export default function CrossroadPage() {
   useEffect(() => {
     if (timeLeft <= 0) {
       toast({
-        title: "Time's up",
-        description: "You've taken time to reflect. Remember, you're stronger than you think.",
+        title: "Time's up!",
+        description: "Your breathing exercise is complete. Make your choice.",
       });
       return;
     }
@@ -49,16 +49,16 @@ export default function CrossroadPage() {
 
   const handleSubmitToGod = () => {
     toast({
-      title: "A Wise Choice! 🙏",
-      description: "You're growing stronger every day. God is proud of you!",
+      title: "Praise God!",
+      description: "You've chosen the path of righteousness.",
     });
     navigate("/reflection", { state: { choice: "submitted" } });
   };
 
   const handleFallToSin = () => {
     toast({
-      title: "Don't Lose Hope ❤️",
-      description: "Remember, every moment is a new chance to start again. You are loved.",
+      title: "Don't give up!",
+      description: "Remember, God's grace is sufficient for you.",
     });
     navigate("/reflection", { state: { choice: "fell" } });
   };
@@ -72,10 +72,10 @@ export default function CrossroadPage() {
   const progressPercentage = ((TIMER_DURATION - timeLeft) / TIMER_DURATION) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-duo-50 p-4 sm:p-6 md:p-8 space-y-8 max-w-2xl mx-auto">
+    <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8 space-y-8 max-w-2xl mx-auto">
       <Button 
         variant="ghost" 
-        className="mb-4 -ml-2 text-duo-700 hover:text-duo-800 hover:bg-duo-100" 
+        className="mb-4 -ml-2" 
         onClick={() => navigate('/')}
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
@@ -83,48 +83,48 @@ export default function CrossroadPage() {
       </Button>
 
       <Mascot 
-        message="You're not alone in this moment. Take a deep breath, and remember that God's strength is with you." 
-        className="animate-float"
+        message="Take a moment to breathe and pray. Remember, God is with you in this moment of temptation." 
+        className="animate-fade-in"
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+      <div className="grid grid-cols-2 gap-4 mt-8">
         <ActionButton
           icon={Shield}
-          label="Choose God's Path"
+          label="Submit to God"
           onClick={handleSubmitToGod}
-          className="bg-duo-500 hover:bg-duo-600 text-white shadow-lg hover:shadow-xl transition-all duration-500 py-6 text-base sm:text-lg font-bold h-[200px] sm:h-[250px] hover:-translate-y-2 border-4 border-duo-700 px-4 sm:px-8 rounded-3xl"
+          className="bg-duo-500 hover:bg-duo-600 text-white shadow-lg hover:shadow-xl transition-all duration-500 py-6 text-base sm:text-xl font-bold h-[300px] hover:-translate-y-2 border-4 border-duo-700 px-4 sm:px-8"
         />
         
         <ActionButton
           icon={Flame}
-          label="Need More Time"
+          label="Fall to Sin"
           onClick={handleFallToSin}
           variant="destructive"
-          className="bg-white hover:bg-gray-50 text-gray-700 h-[200px] sm:h-[250px] hover:-translate-y-2 transition-all duration-500 border-4 border-gray-300 text-base sm:text-lg px-4 sm:px-8 rounded-3xl"
+          className="h-[300px] hover:-translate-y-2 transition-all duration-500 border-4 border-red-700 text-base sm:text-xl px-4 sm:px-8"
           disabled={timeLeft > 0}
         />
       </div>
 
-      <Card className="p-6 sm:p-8 mt-8 bg-white/80 backdrop-blur-sm border-duo-100">
-        <div className="space-y-6">
-          <h3 className="text-xl font-medium text-center text-duo-700">Moment of Reflection</h3>
-          <div className="text-4xl font-bold text-center text-duo-600">{formatTime(timeLeft)}</div>
-          <Progress value={progressPercentage} className="h-3 bg-duo-100" />
+      <Card className="p-4 sm:p-6 mt-8">
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium text-center">Take Time to Reflect</h3>
+          <div className="text-3xl font-bold text-center">{formatTime(timeLeft)}</div>
+          <Progress value={progressPercentage} className="h-2" />
           
-          <div className="mt-8 space-y-4">
-            <h4 className="text-lg font-medium text-center text-duo-600">Activities That Can Help You</h4>
+          <div className="mt-6 space-y-4">
+            <h4 className="text-base font-medium text-center text-muted-foreground">Here are some helpful activities:</h4>
             <Carousel className="w-full max-w-xs mx-auto" opts={{ loop: true }}>
               <CarouselContent>
                 {SUGGESTIONS.map((suggestion, index) => (
                   <CarouselItem key={index}>
-                    <div className="p-6 rounded-xl bg-white shadow-md border border-duo-100 text-base text-center min-h-[120px] flex items-center justify-center text-duo-800">
+                    <div className="p-6 rounded-xl bg-secondary/50 text-secondary-foreground text-base text-center min-h-[100px] flex items-center justify-center">
                       {suggestion}
                     </div>
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="left-0 bg-white hover:bg-duo-50 border-duo-200" />
-              <CarouselNext className="right-0 bg-white hover:bg-duo-50 border-duo-200" />
+              <CarouselPrevious className="left-0" aria-label="View previous suggestion" />
+              <CarouselNext className="right-0" aria-label="View next suggestion" />
             </Carousel>
           </div>
         </div>
