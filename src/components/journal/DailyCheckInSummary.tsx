@@ -3,6 +3,13 @@ import { getMoodEmoji } from "./EntryDetailsDialog";
 import { getSinEmoji } from "@/utils/sinEmoji";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/providers/AuthProvider";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface DailyCheckInSummaryProps {
   entry?: {
@@ -16,6 +23,7 @@ interface DailyCheckInSummaryProps {
 
 export const DailyCheckInSummary = ({ entry, date }: DailyCheckInSummaryProps) => {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   if (!entry && isToday(date)) {
     return (
@@ -25,12 +33,26 @@ export const DailyCheckInSummary = ({ entry, date }: DailyCheckInSummaryProps) =
           <p className="text-muted-foreground mb-4">
             Fill out your daily check-in now
           </p>
-          <Button 
-            onClick={() => navigate('/check-in')}
-            className="w-full"
-          >
-            Start Check-in
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div>
+                  <Button 
+                    onClick={() => navigate('/daily-checkin')}
+                    className="w-full"
+                    disabled={!user}
+                  >
+                    Start Check-in
+                  </Button>
+                </div>
+              </TooltipTrigger>
+              {!user && (
+                <TooltipContent>
+                  <p>Please sign in to start your daily check-in</p>
+                </TooltipContent>
+              )}
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
     );
