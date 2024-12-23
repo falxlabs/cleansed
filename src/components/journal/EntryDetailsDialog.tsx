@@ -21,6 +21,7 @@ interface EntryDetailsDialogProps {
     notes: string;
     mood?: number;
     affirmation?: string;
+    customNote?: string;
   } | null;
   onOpenChange: (open: boolean) => void;
   onDelete?: (id: number) => void;
@@ -116,6 +117,13 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
                 </div>
               </div>
 
+              {entry.customNote && (
+                <div className="bg-white p-4 rounded-xl border shadow-sm">
+                  <p className="text-sm font-semibold text-primary mb-2">Challenge Description</p>
+                  <p className="text-gray-700">{entry.customNote}</p>
+                </div>
+              )}
+
               <div className="bg-white p-4 rounded-xl border shadow-sm">
                 <p className="text-sm font-semibold text-primary mb-2">Mood Description</p>
                 <p className="text-gray-700">{entry.notes || "No description provided"}</p>
@@ -152,6 +160,13 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
                 <p className="text-sm font-semibold text-primary mb-2">Intensity Level</p>
                 <p>{getTemptationLevelText(entry.level)}</p>
               </div>
+
+              {entry.customNote && (
+                <div className="bg-white p-4 rounded-xl border shadow-sm">
+                  <p className="text-sm font-semibold text-primary mb-2">Temptation Description</p>
+                  <p className="text-gray-700">{entry.customNote}</p>
+                </div>
+              )}
 
               <div className="bg-white p-4 rounded-xl border shadow-sm">
                 <p className="text-sm font-semibold text-primary mb-2">Trigger</p>
