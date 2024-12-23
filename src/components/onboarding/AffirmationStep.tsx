@@ -1,7 +1,6 @@
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useState } from "react";
 
 const PRESET_AFFIRMATIONS = [
   "I am a child of God, created for His purpose.",
@@ -16,8 +15,6 @@ interface AffirmationStepProps {
 }
 
 export function AffirmationStep({ value, onChange }: AffirmationStepProps) {
-  const [type, setType] = useState<"preset" | "custom">("preset");
-
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-center">Choose Your Daily Affirmation</h2>
@@ -26,45 +23,31 @@ export function AffirmationStep({ value, onChange }: AffirmationStepProps) {
       </p>
 
       <RadioGroup
-        value={type}
-        onValueChange={(v) => setType(v as "preset" | "custom")}
+        value={value}
+        onValueChange={onChange}
         className="space-y-4"
       >
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="preset" id="preset" />
-          <Label htmlFor="preset">Choose a preset affirmation</Label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="custom" id="custom" />
-          <Label htmlFor="custom">Write your own</Label>
-        </div>
+        {PRESET_AFFIRMATIONS.map((affirmation, index) => (
+          <div key={index} className="flex items-center space-x-2">
+            <RadioGroupItem value={affirmation} id={`affirmation-${index}`} />
+            <Label htmlFor={`affirmation-${index}`}>{affirmation}</Label>
+          </div>
+        ))}
       </RadioGroup>
 
-      {type === "preset" ? (
-        <RadioGroup
+      <div className="space-y-2 pt-6 border-t">
+        <Label htmlFor="custom-affirmation">Write your own affirmation</Label>
+        <Textarea
+          id="custom-affirmation"
+          placeholder="Enter your personal daily affirmation"
           value={value}
-          onValueChange={onChange}
-          className="space-y-4"
-        >
-          {PRESET_AFFIRMATIONS.map((affirmation, index) => (
-            <div key={index} className="flex items-center space-x-2">
-              <RadioGroupItem value={affirmation} id={`affirmation-${index}`} />
-              <Label htmlFor={`affirmation-${index}`}>{affirmation}</Label>
-            </div>
-          ))}
-        </RadioGroup>
-      ) : (
-        <div className="space-y-2">
-          <Label htmlFor="custom-affirmation">Write your affirmation</Label>
-          <Textarea
-            id="custom-affirmation"
-            placeholder="Enter your personal daily affirmation"
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            className="min-h-[100px]"
-          />
-        </div>
-      )}
+          onChange={(e) => onChange(e.target.value)}
+          className="min-h-[100px]"
+        />
+        <p className="text-sm text-muted-foreground">
+          Write an affirmation that resonates with your faith journey
+        </p>
+      </div>
     </div>
   );
 }
