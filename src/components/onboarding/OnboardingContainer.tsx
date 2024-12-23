@@ -6,6 +6,8 @@ import { useOnboarding, TOTAL_STEPS } from "@/hooks/useOnboarding";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 
 export function OnboardingContainer() {
@@ -91,9 +93,23 @@ export function OnboardingContainer() {
     navigate('/dashboard');
   };
 
+  const handleNavigateBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="max-w-xl mx-auto p-6 space-y-8">
-      <Progress value={progress} className="w-full" />
+      <div className="flex items-center justify-between">
+        <Button
+          variant="ghost"
+          className="-ml-2"
+          onClick={handleNavigateBack}
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back
+        </Button>
+        <Progress value={progress} className="w-full ml-4" />
+      </div>
       
       <Mascot
         message={
