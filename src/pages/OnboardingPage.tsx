@@ -2,13 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { TemptationTypeSelector } from "@/components/reflection/TemptationTypeSelector";
 import { TemptationLevelStep } from "@/components/reflection/TemptationLevelStep";
 import { Mascot } from "@/components/dashboard/Mascot";
-import { PersonalInfoStep } from "@/components/onboarding/PersonalInfoStep";
-import { NavigationButtons } from "@/components/onboarding/NavigationButtons";
 
 export default function OnboardingPage() {
   const navigate = useNavigate();
@@ -82,6 +81,7 @@ export default function OnboardingPage() {
     }
     
     if (step === totalSteps) {
+      // Here you would typically handle the signup process
       toast({
         title: "Account created successfully!",
         description: "Welcome to Grace Bearer",
@@ -111,6 +111,7 @@ export default function OnboardingPage() {
           <div className="space-y-6">
             {step === 1 && (
               <div className="space-y-6">
+                <h2 className="text-2xl font-bold text-center">What's your main struggle?</h2>
                 <TemptationTypeSelector
                   value={selectedSin}
                   onChange={setSelectedSin}
@@ -143,24 +144,63 @@ export default function OnboardingPage() {
               />
             )}
 
-            {(step === 3 || step === 4 || step === 5) && (
-              <PersonalInfoStep
-                firstName={firstName}
-                setFirstName={setFirstName}
-                age={age}
-                setAge={setAge}
-                email={email}
-                setEmail={setEmail}
-                step={step}
-              />
+            {step === 3 && (
+              <div className="space-y-4">
+                <h2 className="text-2xl font-bold text-center">What's your first name?</h2>
+                <p className="text-center text-muted-foreground">
+                  We'll use this to personalize your experience
+                </p>
+                <Input
+                  type="text"
+                  placeholder="Enter your first name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="text-lg"
+                />
+              </div>
             )}
 
-            <NavigationButtons
-              step={step}
-              totalSteps={totalSteps}
-              handleBack={handleBack}
-              handleNext={handleNext}
-            />
+            {step === 4 && (
+              <div className="space-y-4">
+                <h2 className="text-2xl font-bold text-center">What's your age?</h2>
+                <p className="text-center text-muted-foreground">
+                  This helps us provide age-appropriate guidance
+                </p>
+                <Input
+                  type="number"
+                  min="13"
+                  placeholder="Enter your age"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  className="text-lg"
+                />
+              </div>
+            )}
+
+            {step === 5 && (
+              <div className="space-y-4">
+                <h2 className="text-2xl font-bold text-center">Almost there!</h2>
+                <p className="text-center text-muted-foreground">
+                  Enter your email to create your account
+                </p>
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="text-lg"
+                />
+              </div>
+            )}
+
+            <div className="flex justify-between pt-6">
+              <Button variant="ghost" onClick={handleBack}>
+                {step === 1 ? "Cancel" : "Back"}
+              </Button>
+              <Button onClick={handleNext}>
+                {step === totalSteps ? "Create Account" : "Next"}
+              </Button>
+            </div>
           </div>
         </Card>
       </div>
