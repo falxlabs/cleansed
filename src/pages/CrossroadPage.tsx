@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { ActionButton } from "@/components/dashboard/ActionButton";
-import { Shield, Flame, ArrowLeft } from "lucide-react";
+import { ArrowLeft, DoorOpen, Timer } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Carousel,
@@ -15,7 +15,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-const TIMER_DURATION = 300; // 5 minutes in seconds
+const TIMER_DURATION = 300;
 
 const SUGGESTIONS = [
   "Take a quiet walk and reflect",
@@ -89,35 +89,47 @@ export default function CrossroadPage() {
 
       <div className="grid grid-cols-2 gap-4 mt-8">
         <ActionButton
-          icon={Shield}
-          label="Submit to God"
+          icon={DoorOpen}
+          label="Choose God"
           onClick={handleSubmitToGod}
-          className="bg-duo-500 hover:bg-duo-600 text-white shadow-lg hover:shadow-xl transition-all duration-500 py-6 text-base sm:text-xl font-bold h-[300px] hover:-translate-y-2 border-4 border-duo-700 px-4 sm:px-8"
+          className="bg-duo-500 hover:bg-duo-600 text-white shadow-lg hover:shadow-xl transition-all duration-500 py-6 text-lg sm:text-xl font-bold h-[300px] hover:-translate-y-2 border-4 border-duo-700 px-4 sm:px-8 [&_svg]:w-12 [&_svg]:h-12"
         />
         
         <ActionButton
-          icon={Flame}
-          label="Fall to Sin"
+          icon={DoorOpen}
+          label="Give In"
           onClick={handleFallToSin}
           variant="destructive"
-          className="h-[300px] hover:-translate-y-2 transition-all duration-500 border-4 border-red-700 text-base sm:text-xl px-4 sm:px-8"
+          className="h-[300px] hover:-translate-y-2 transition-all duration-500 border-4 border-red-700 text-lg sm:text-xl px-4 sm:px-8 [&_svg]:w-12 [&_svg]:h-12"
           disabled={timeLeft > 0}
         />
       </div>
 
-      <Card className="p-4 sm:p-6 mt-8">
-        <div className="space-y-4">
-          <h3 className="text-lg font-medium text-center">Take Time to Reflect</h3>
-          <div className="text-3xl font-bold text-center">{formatTime(timeLeft)}</div>
-          <Progress value={progressPercentage} className="h-2" />
+      <Card className="p-6 sm:p-8 mt-8 bg-white/50 backdrop-blur-sm">
+        <div className="space-y-6">
+          <div className="flex items-center justify-center gap-3 text-duo-700">
+            <Timer className="h-8 w-8 animate-pulse" />
+            <h3 className="text-2xl font-bold">Reflection Timer</h3>
+          </div>
           
-          <div className="mt-6 space-y-4">
-            <h4 className="text-base font-medium text-center text-muted-foreground">Here are some helpful activities:</h4>
+          <div className="text-4xl font-bold text-center text-duo-800 font-mono tracking-wider">
+            {formatTime(timeLeft)}
+          </div>
+          
+          <Progress 
+            value={progressPercentage} 
+            className="h-3 bg-duo-100" 
+          />
+          
+          <div className="mt-8 space-y-4">
+            <h4 className="text-lg font-medium text-center text-duo-700">
+              Try these helpful activities while you wait:
+            </h4>
             <Carousel className="w-full max-w-xs mx-auto" opts={{ loop: true }}>
               <CarouselContent>
                 {SUGGESTIONS.map((suggestion, index) => (
                   <CarouselItem key={index}>
-                    <div className="p-6 rounded-xl bg-secondary/50 text-secondary-foreground text-base text-center min-h-[100px] flex items-center justify-center">
+                    <div className="p-6 rounded-xl bg-white/80 text-duo-800 text-base text-center min-h-[100px] flex items-center justify-center shadow-md">
                       {suggestion}
                     </div>
                   </CarouselItem>
