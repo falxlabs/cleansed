@@ -6,6 +6,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { EntriesTable } from "@/components/journal/EntriesTable";
 import { EntryDetailsDialog } from "@/components/journal/EntryDetailsDialog";
+import { CheckInDetails } from "@/components/journal/CheckInDetails";
 import {
   Card,
   CardContent,
@@ -28,6 +29,14 @@ export default function JournalPage() {
         format(entry.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd")
       )
     : entries;
+
+  // Find the check-in entry for the selected date
+  const dailyCheckIn = showCalendar && date
+    ? entries.find(entry => 
+        format(entry.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd") && 
+        entry.type.toLowerCase().includes("check-in")
+      )
+    : null;
 
   const handleDateSelect = (newDate: Date | undefined) => {
     setDate(newDate);
@@ -59,14 +68,30 @@ export default function JournalPage() {
       
       <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4 sm:gap-8">
         {showCalendar && (
-          <Card className="p-2 sm:p-4 h-fit lg:sticky lg:top-4">
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={handleDateSelect}
-              className="rounded-md"
-            />
-          </Card>
+          <div className="space-y-4">
+            <Card className="p-2 sm:p-4 h-fit lg:sticky lg:top-4">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={handleDateSelect}
+                className="rounded-md"
+              />
+            </Card>
+            
+            {dailyCheckIn && (
+              <Card className="h-fit">
+                <CardHeader className="p-4">
+                  <CardTitle className="text-lg">Daily Check-in</CardTitle>
+                  <CardDescription>
+                    {format(dailyCheckIn.date, "MMMM d, yyyy")}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-4 pt-0">
+                  <CheckInDetails entry={dailyCheckIn} />
+                </CardContent>
+              </Card>
+            )}
+          </div>
         )}
 
         <Card className={`${showCalendar ? "" : "lg:col-span-2"} overflow-hidden`}>
