@@ -10,7 +10,7 @@ import { saveJournalEntry } from "@/utils/journalEntries";
 
 export default function PastTemptationPage() {
   const [step, setStep] = useState(1);
-  const [date, setDate] = useState<Date>();
+  const [date, setDate] = useState<Date>(new Date());
   const [timeValue, setTimeValue] = useState([12]); // Default to noon (12:00)
   const [outcome, setOutcome] = useState<"resisted" | "gave-in">();
   const navigate = useNavigate();
