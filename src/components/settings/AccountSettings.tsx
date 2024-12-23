@@ -13,16 +13,25 @@ export function AccountSettings() {
             id="email"
             type="email"
             placeholder="Enter your email"
-            disabled
             value="user@example.com"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="username">Username</Label>
+          <Label htmlFor="firstName">First Name</Label>
           <Input
-            id="username"
-            placeholder="Enter your username"
-            value="username"
+            id="firstName"
+            placeholder="Enter your first name"
+            value="John"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="age">Age</Label>
+          <Input
+            id="age"
+            type="number"
+            min="0"
+            max="120"
+            placeholder="Enter your age"
           />
         </div>
         <Button>Save Changes</Button>
