@@ -28,7 +28,7 @@ const Index = () => {
         <ActionButton
           icon={AlertCircle}
           label="I'm Being Tempted"
-          onClick={() => navigate('/reflection')}
+          onClick={() => navigate('/crossroad')}
           variant="destructive"
           className="w-full"
         />
