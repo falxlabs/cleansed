@@ -10,10 +10,17 @@ interface MascotProps {
   showCheckInButton?: boolean;
 }
 
+const getUserFirstName = () => {
+  return localStorage.getItem("userFirstName") || "";
+};
+
 export function Mascot({ message, className, onCheckIn, showCheckInButton = false }: MascotProps) {
   const shouldShow = shouldShowCheckIn();
+  const firstName = getUserFirstName();
+  const personalizedGreeting = firstName ? `Hey ${firstName}! ` : "Hey! ";
+  
   const displayMessage = shouldShow 
-    ? "Hey! It's time for your daily check-in. This helps us track your progress and support you better!"
+    ? `${personalizedGreeting}It's time for your daily check-in. This helps us track your progress and support you better!`
     : message;
 
   return (
