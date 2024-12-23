@@ -5,9 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { useToast } from "@/hooks/use-toast";
 import { Slider } from "@/components/ui/slider";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
+import { Shield, ThumbsUp, ThumbsDown } from "lucide-react";
 
 export default function PastTemptationPage() {
   const [step, setStep] = useState(1);
@@ -103,7 +102,7 @@ export default function PastTemptationPage() {
         message={
           step === 1 
             ? "Select the date and time when this temptation occurred" 
-            : "What was the outcome of this temptation?"
+            : "How did you handle this situation?"
         } 
       />
       
@@ -143,24 +142,47 @@ export default function PastTemptationPage() {
             </div>
           </>
         ) : (
-          <>
-            <h2 className="text-2xl font-bold text-center">What was the outcome?</h2>
-            
-            <RadioGroup
-              value={outcome}
-              onValueChange={(value) => setOutcome(value as "resisted" | "gave-in")}
-              className="space-y-4"
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="resisted" id="resisted" />
-                <Label htmlFor="resisted">I resisted the temptation</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="gave-in" id="gave-in" />
-                <Label htmlFor="gave-in">I gave in to the temptation</Label>
-              </div>
-            </RadioGroup>
-          </>
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                onClick={() => setOutcome("resisted")}
+                className={`flex flex-col items-center justify-center p-6 rounded-lg border-2 transition-all ${
+                  outcome === "resisted"
+                    ? "border-duo-500 bg-duo-50"
+                    : "border-gray-200 hover:border-duo-300"
+                }`}
+              >
+                <div className="rounded-full bg-duo-100 p-4 mb-3">
+                  <ThumbsUp className={`w-8 h-8 ${
+                    outcome === "resisted" ? "text-duo-600" : "text-duo-400"
+                  }`} />
+                </div>
+                <span className="font-semibold text-lg">I Resisted</span>
+                <span className="text-sm text-muted-foreground mt-1">
+                  Stayed strong against temptation
+                </span>
+              </button>
+
+              <button
+                onClick={() => setOutcome("gave-in")}
+                className={`flex flex-col items-center justify-center p-6 rounded-lg border-2 transition-all ${
+                  outcome === "gave-in"
+                    ? "border-destructive bg-destructive/10"
+                    : "border-gray-200 hover:border-destructive/50"
+                }`}
+              >
+                <div className="rounded-full bg-destructive/20 p-4 mb-3">
+                  <ThumbsDown className={`w-8 h-8 ${
+                    outcome === "gave-in" ? "text-destructive" : "text-destructive/60"
+                  }`} />
+                </div>
+                <span className="font-semibold text-lg">I Gave In</span>
+                <span className="text-sm text-muted-foreground mt-1">
+                  Struggled with the challenge
+                </span>
+              </button>
+            </div>
+          </div>
         )}
 
         <div className="flex justify-between pt-4">
