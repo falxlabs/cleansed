@@ -48,12 +48,17 @@ export default function JournalPage() {
         return;
       }
 
-      console.log('Fetched entries:', data); // Debug log
+      console.log('Raw data from Supabase:', data); // Debug log
 
-      const formattedEntries = data.map(entry => {
+      const formattedEntries = data?.map(entry => {
         const temptationEntry = entry.temptation_entries?.[0];
         const checkInEntry = entry.checkin_entries?.[0];
         
+        // Debug logs
+        console.log('Processing entry:', entry);
+        console.log('Temptation entry:', temptationEntry);
+        console.log('Check-in entry:', checkInEntry);
+
         return {
           id: entry.id,
           date: new Date(entry.created_at),
@@ -68,7 +73,7 @@ export default function JournalPage() {
           mood: checkInEntry?.mood_score,
           affirmation: checkInEntry?.affirmation_id,
         };
-      });
+      }) || [];
 
       console.log('Formatted entries:', formattedEntries); // Debug log
       setEntries(formattedEntries);
