@@ -26,10 +26,6 @@ export function useOnboarding() {
 
   const handleSkip = async () => {
     saveOnboardingData(formData);
-    await updateProfile({
-      firstName: formData.firstName,
-      age: formData.age,
-    });
     navigate("/dashboard");
   };
 
@@ -55,11 +51,6 @@ export function useOnboarding() {
       if (signUpError) throw signUpError;
 
       saveOnboardingData(formData);
-      await updateProfile({
-        firstName: formData.firstName,
-        age: formData.age,
-        email: formData.email,
-      });
 
       toast({
         title: "Check your email",

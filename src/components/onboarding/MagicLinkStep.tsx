@@ -6,9 +6,11 @@ import { useToast } from "@/hooks/use-toast";
 
 interface MagicLinkStepProps {
   email: string;
+  firstName: string;
+  age: string;
 }
 
-export function MagicLinkStep({ email }: MagicLinkStepProps) {
+export function MagicLinkStep({ email, firstName, age }: MagicLinkStepProps) {
   const [isResending, setIsResending] = useState(false);
   const { toast } = useToast();
 
@@ -22,7 +24,8 @@ export function MagicLinkStep({ email }: MagicLinkStepProps) {
         options: {
           emailRedirectTo: `${window.location.origin}/dashboard`,
           data: {
-            redirect_to: `${window.location.origin}/dashboard`,
+            first_name: firstName,
+            age: age ? parseInt(age) : null,
           }
         },
       });
