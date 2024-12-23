@@ -91,7 +91,7 @@ export default function ReflectionPage() {
         title: "Reflection completed",
         description: "Thank you for your honest reflection",
       });
-      navigate("/dashboard");
+      navigate("/"); // Changed from "/dashboard" to "/"
     }
   };
 
