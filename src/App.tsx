@@ -16,24 +16,79 @@ import { BottomNav } from "./components/navigation/BottomNav";
 
 const queryClient = new QueryClient();
 
+const LayoutWithNav = ({ children }: { children: React.ReactNode }) => (
+  <>
+    {children}
+    <BottomNav />
+  </>
+);
+
 export default () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/crossroad" element={<CrossroadPage />} />
-          <Route path="/reflection" element={<ReflectionPage />} />
-          <Route path="/journal" element={<JournalPage />} />
-          <Route path="/past-temptation" element={<PastTemptationPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/daily-checkin" element={<DailyCheckinPage />} />
+          <Route
+            path="/"
+            element={
+              <LayoutWithNav>
+                <Index />
+              </LayoutWithNav>
+            }
+          />
+          <Route
+            path="/crossroad"
+            element={
+              <LayoutWithNav>
+                <CrossroadPage />
+              </LayoutWithNav>
+            }
+          />
+          <Route
+            path="/reflection"
+            element={
+              <LayoutWithNav>
+                <ReflectionPage />
+              </LayoutWithNav>
+            }
+          />
+          <Route
+            path="/journal"
+            element={
+              <LayoutWithNav>
+                <JournalPage />
+              </LayoutWithNav>
+            }
+          />
+          <Route
+            path="/past-temptation"
+            element={
+              <LayoutWithNav>
+                <PastTemptationPage />
+              </LayoutWithNav>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <LayoutWithNav>
+                <SettingsPage />
+              </LayoutWithNav>
+            }
+          />
+          <Route
+            path="/daily-checkin"
+            element={
+              <LayoutWithNav>
+                <DailyCheckinPage />
+              </LayoutWithNav>
+            }
+          />
           <Route path="/settings/profile" element={<ProfileSettingsPage />} />
           <Route path="/settings/affirmation" element={<AffirmationSettingsPage />} />
           <Route path="/settings/notifications" element={<NotificationsSettingsPage />} />
           <Route path="/settings/support" element={<SupportSettingsPage />} />
         </Routes>
-        <BottomNav />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { SettingsDetailLayout } from "@/components/settings/SettingsDetailLayout";
 
 const predefinedAffirmations = [
   "I am a child of God, created for His purpose.",
@@ -25,7 +26,7 @@ export default function AffirmationSettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8 max-w-2xl mx-auto">
+    <SettingsDetailLayout>
       <SettingsHeader />
       <SettingsSection title="Daily Affirmation">
         <div className="space-y-6">
@@ -82,6 +83,6 @@ export default function AffirmationSettingsPage() {
           <Button onClick={handleSave}>Save Changes</Button>
         </div>
       </SettingsSection>
-    </div>
+    </SettingsDetailLayout>
   );
 }
