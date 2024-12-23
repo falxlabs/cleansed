@@ -23,12 +23,14 @@ export default function JournalPage() {
   const [entries, setEntries] = useState(loadJournalEntries());
   const isMobile = useIsMobile();
 
+  // Filter entries based on calendar visibility and selected date
   const filteredEntries = showCalendar && date
     ? entries.filter(entry => 
         format(entry.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd")
       )
     : entries;
 
+  // Find the check-in entry for the selected date
   const dailyCheckIn = showCalendar && date
     ? entries.find(entry => 
         format(entry.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd") && 
@@ -68,7 +70,7 @@ export default function JournalPage() {
         {showCalendar && (
           <div className={`${isMobile ? "space-y-4" : ""}`}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card className="p-2 sm:p-4 h-[400px]">
+              <Card className="p-2 sm:p-4 h-full">
                 <Calendar
                   mode="single"
                   selected={date}
@@ -77,23 +79,25 @@ export default function JournalPage() {
                 />
               </Card>
               
-              <Card className="h-[400px] bg-white">
-                <CardHeader className="p-4">
-                  <CardTitle className="text-lg">Daily Summary</CardTitle>
-                  <CardDescription>
-                    {date ? format(date, "MMMM d, yyyy") : "Select a date"}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="p-4 pt-0 overflow-y-auto max-h-[300px]">
-                  {dailyCheckIn ? (
+              {dailyCheckIn ? (
+                <Card className="h-full">
+                  <CardHeader className="p-4">
+                    <CardTitle className="text-lg">Daily Check-in</CardTitle>
+                    <CardDescription>
+                      {format(dailyCheckIn.date, "MMMM d, yyyy")}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-4 pt-0">
                     <CheckInDetails entry={dailyCheckIn} />
-                  ) : (
-                    <div className="h-full flex items-center justify-center text-muted-foreground">
-                      <p>No check-in data for this date</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              ) : (
+                <Card className="h-full flex items-center justify-center p-4">
+                  <p className="text-muted-foreground">
+                    No check-in data for this date
+                  </p>
+                </Card>
+              )}
             </div>
           </div>
         )}
