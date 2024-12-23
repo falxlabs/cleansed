@@ -40,3 +40,48 @@ export const loadJournalEntries = (): JournalEntry[] => {
     notes: entry.notes || "",
   }));
 };
+
+export const calculateStreak = (): number => {
+  const entries = loadJournalEntries();
+  if (entries.length === 0) return 0;
+
+  let streak = 0;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  // Sort entries by date in descending order
+  const sortedEntries = entries
+    .filter(entry => entry.type.toLowerCase().includes('check-in'))
+    .sort((a, b) => b.date.getTime() - a.date.getTime());
+
+  if (sortedEntries.length === 0) return 0;
+
+  // Check if there's an entry for today or yesterday to maintain the streak
+  const lastEntryDate = new Date(sortedEntries[0].date);
+  lastEntryDate.setHours(0, 0, 0, 0);
+
+  if (lastEntryDate.getTime() !== today.getTime() && 
+      lastEntryDate.getTime() !== yesterday.getTime()) {
+    return 0;
+  }
+
+  // Count consecutive days
+  let currentDate = lastEntryDate;
+  for (const entry of sortedEntries) {
+    const entryDate = new Date(entry.date);
+    entryDate.setHours(0, 0, 0, 0);
+
+    if (currentDate.getTime() === entryDate.getTime() || 
+        currentDate.getTime() === entryDate.getTime() + 86400000) {
+      streak++;
+      currentDate = entryDate;
+    } else {
+      break;
+    }
+  }
+
+  return streak;
+};
