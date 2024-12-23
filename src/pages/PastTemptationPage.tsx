@@ -6,7 +6,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
 import { DateTimeStep } from "@/components/past-temptation/DateTimeStep";
 import { OutcomeStep } from "@/components/past-temptation/OutcomeStep";
-import { saveJournalEntry } from "@/utils/journalEntries";
 import { ArrowLeft } from "lucide-react";
 
 export default function PastTemptationPage() {
@@ -44,18 +43,9 @@ export default function PastTemptationPage() {
       const minutes = Math.round((timeValue[0] - hours) * 60);
       selectedDate.setHours(hours, minutes);
 
-      // Store the outcome in sessionStorage for the reflection page
+      // Store the outcome and date in sessionStorage for the reflection page
       sessionStorage.setItem('pastTemptationOutcome', outcome);
-
-      // Save entry with all required fields
-      saveJournalEntry({
-        date: selectedDate,
-        type: "Past Temptation",
-        resisted: outcome === 'resisted',
-        level: "medium", // Default level
-        trigger: "unspecified", // Default trigger
-        notes: "Logged without reflection",
-      });
+      sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
 
       navigate('/reflection');
     }
@@ -85,7 +75,7 @@ export default function PastTemptationPage() {
         <Button
           variant="ghost"
           className="-ml-2"
-          onClick={() => navigate('/')}
+          onClick={handleBack}
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back

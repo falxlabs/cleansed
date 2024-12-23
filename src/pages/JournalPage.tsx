@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
@@ -7,6 +7,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { EntriesTable } from "@/components/journal/EntriesTable";
 import { EntryDetailsDialog } from "@/components/journal/EntryDetailsDialog";
 import { DailyCheckInSummary } from "@/components/journal/DailyCheckInSummary";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Card,
   CardContent,
@@ -14,14 +15,54 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { loadJournalEntries } from "@/utils/journalEntries";
 
 export default function JournalPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [showCalendar, setShowCalendar] = useState(true);
   const [selectedEntry, setSelectedEntry] = useState<any | null>(null);
-  const [entries, setEntries] = useState(loadJournalEntries());
+  const [entries, setEntries] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    const fetchEntries = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data, error } = await supabase
+          .from('journal_entries')
+          .select(`
+            *,
+            temptation_entries(*),
+            checkin_entries(*)
+          `)
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        const formattedEntries = data.map(entry => ({
+          id: entry.id,
+          date: new Date(entry.created_at),
+          type: entry.entry_type,
+          resisted: entry.temptation_entries?.[0]?.resisted ?? true,
+          level: entry.temptation_entries?.[0]?.intensity_level?.toString() ?? "medium",
+          trigger: entry.temptation_entries?.[0]?.trigger ?? entry.checkin_entries?.[0]?.mood_description ?? "",
+          notes: entry.temptation_entries?.[0]?.temptation_details ?? "",
+          mood: entry.checkin_entries?.[0]?.mood_score,
+        }));
+
+        setEntries(formattedEntries);
+      } catch (error) {
+        console.error('Error fetching entries:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchEntries();
+  }, []);
 
   const filteredEntries = showCalendar && date
     ? entries.filter(entry => 
@@ -38,12 +79,6 @@ export default function JournalPage() {
 
   const handleDateSelect = (newDate: Date | undefined) => {
     setDate(newDate);
-  };
-
-  const handleDeleteEntry = (id: number) => {
-    const updatedEntries = entries.filter(entry => entry.id !== id);
-    setEntries(updatedEntries);
-    localStorage.setItem("journalEntries", JSON.stringify(updatedEntries));
   };
 
   return (
@@ -104,10 +139,16 @@ export default function JournalPage() {
             </CardHeader>
             <CardContent className="p-0">
               <div className="overflow-x-auto">
-                <EntriesTable 
-                  entries={filteredEntries} 
-                  onEntryClick={setSelectedEntry} 
-                />
+                {isLoading ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    Loading entries...
+                  </div>
+                ) : (
+                  <EntriesTable 
+                    entries={filteredEntries} 
+                    onEntryClick={setSelectedEntry} 
+                  />
+                )}
               </div>
             </CardContent>
           </Card>
@@ -144,7 +185,6 @@ export default function JournalPage() {
       <EntryDetailsDialog 
         entry={selectedEntry}
         onOpenChange={() => setSelectedEntry(null)}
-        onDelete={handleDeleteEntry}
       />
     </div>
   );

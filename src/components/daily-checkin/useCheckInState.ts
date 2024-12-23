@@ -13,18 +13,28 @@ export function useCheckInState() {
   const [selectedTemptation, setSelectedTemptation] = useState<TemptationType | "">("");
   const [temptationLevel, setTemptationLevel] = useState<number[]>([50]);
   const [selectedStatement, setSelectedStatement] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Load saved temptation settings
     const loadTemptationSettings = async () => {
-      const { data: settings } = await supabase
-        .from('temptation_settings')
-        .select('default_type, default_intensity')
-        .maybeSingle();
-      
-      if (settings) {
-        if (settings.default_type) setSelectedTemptation(settings.default_type);
-        if (settings.default_intensity) setTemptationLevel([settings.default_intensity]);
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data: settings } = await supabase
+          .from('temptation_settings')
+          .select('default_type, default_intensity')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        
+        if (settings) {
+          if (settings.default_type) setSelectedTemptation(settings.default_type);
+          if (settings.default_intensity !== null) setTemptationLevel([settings.default_intensity]);
+        }
+      } catch (error) {
+        console.error('Error loading temptation settings:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -118,5 +128,6 @@ export function useCheckInState() {
     setSelectedStatement,
     handleNext,
     isNextDisabled,
+    isLoading,
   };
 }
