@@ -68,37 +68,29 @@ export default function JournalPage() {
       
       <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4 sm:gap-8">
         {showCalendar && (
-          <div className={`${isMobile ? "space-y-4" : ""}`}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card className="p-2 sm:p-4 h-full">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={handleDateSelect}
-                  className="rounded-md"
-                />
+          <div className="space-y-4">
+            <Card className="p-2 sm:p-4 h-fit lg:sticky lg:top-4">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={handleDateSelect}
+                className="rounded-md"
+              />
+            </Card>
+            
+            {dailyCheckIn && (
+              <Card className="h-fit">
+                <CardHeader className="p-4">
+                  <CardTitle className="text-lg">Daily Check-in</CardTitle>
+                  <CardDescription>
+                    {format(dailyCheckIn.date, "MMMM d, yyyy")}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-4 pt-0">
+                  <CheckInDetails entry={dailyCheckIn} />
+                </CardContent>
               </Card>
-              
-              {dailyCheckIn ? (
-                <Card className="h-full">
-                  <CardHeader className="p-4">
-                    <CardTitle className="text-lg">Daily Check-in</CardTitle>
-                    <CardDescription>
-                      {format(dailyCheckIn.date, "MMMM d, yyyy")}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="p-4 pt-0">
-                    <CheckInDetails entry={dailyCheckIn} />
-                  </CardContent>
-                </Card>
-              ) : (
-                <Card className="h-full flex items-center justify-center p-4">
-                  <p className="text-muted-foreground">
-                    No check-in data for this date
-                  </p>
-                </Card>
-              )}
-            </div>
+            )}
           </div>
         )}
 
