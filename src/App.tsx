@@ -6,6 +6,8 @@ import CrossroadPage from "./pages/CrossroadPage";
 import ReflectionPage from "./pages/ReflectionPage";
 import JournalPage from "./pages/JournalPage";
 import PastTemptationPage from "./pages/PastTemptationPage";
+import SettingsPage from "./pages/SettingsPage";
+import { BottomNav } from "./components/navigation/BottomNav";
 
 const queryClient = new QueryClient();
 
@@ -19,7 +21,9 @@ export default () => (
           <Route path="/reflection" element={<ReflectionPage />} />
           <Route path="/journal" element={<JournalPage />} />
           <Route path="/past-temptation" element={<PastTemptationPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Routes>
+        <BottomNav />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

@@ -4,9 +4,11 @@ import { DailyVerse } from "@/components/dashboard/DailyVerse";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { StreakDisplay } from "@/components/dashboard/StreakDisplay";
 import { useNavigate } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Index = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const currentStreak = 7;
   const welcomeMessage = "Welcome back! Remember, each day is a new opportunity to grow stronger in your faith.";
   const dailyVerse = {
@@ -15,7 +17,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8 space-y-6 max-w-2xl mx-auto">
+    <div className={`min-h-screen bg-background p-4 sm:p-6 md:p-8 space-y-6 max-w-2xl mx-auto ${isMobile ? "pb-20" : ""}`}>
       <div className="flex justify-end">
         <StreakDisplay streak={currentStreak} />
       </div>
