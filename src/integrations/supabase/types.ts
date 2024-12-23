@@ -32,22 +32,32 @@ export type Database = {
           affirmation_id: number | null
           custom_affirmation_id: number | null
           id: number
+          intensity_level: number | null
           mood_description: string | null
           mood_score: number | null
+          temptation_type: Database["public"]["Enums"]["temptation_type"] | null
         }
         Insert: {
           affirmation_id?: number | null
           custom_affirmation_id?: number | null
           id: number
+          intensity_level?: number | null
           mood_description?: string | null
           mood_score?: number | null
+          temptation_type?:
+            | Database["public"]["Enums"]["temptation_type"]
+            | null
         }
         Update: {
           affirmation_id?: number | null
           custom_affirmation_id?: number | null
           id?: number
+          intensity_level?: number | null
           mood_description?: string | null
           mood_score?: number | null
+          temptation_type?:
+            | Database["public"]["Enums"]["temptation_type"]
+            | null
         }
         Relationships: [
           {

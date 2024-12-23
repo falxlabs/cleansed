@@ -68,14 +68,18 @@ export default function JournalPage() {
 
       const formattedEntries = data.map(entry => {
         console.log("Processing entry:", entry);
+        const isTemptation = entry.entry_type === 'temptation';
+        const entryDetails = isTemptation ? entry.temptation_entries?.[0] : entry.checkin_entries?.[0];
+        
         const formatted = {
           id: entry.id,
           date: new Date(entry.created_at),
           type: entry.entry_type,
-          resisted: entry.temptation_entries?.[0]?.resisted ?? true,
-          level: entry.temptation_entries?.[0]?.intensity_level?.toString() ?? "medium",
-          trigger: entry.temptation_entries?.[0]?.trigger ?? entry.checkin_entries?.[0]?.mood_description ?? "",
-          notes: entry.temptation_entries?.[0]?.temptation_details ?? "",
+          resisted: entryDetails?.resisted ?? true,
+          level: entryDetails?.intensity_level?.toString() ?? "0",
+          trigger: entryDetails?.trigger ?? "",
+          notes: isTemptation ? entryDetails?.temptation_details ?? "" : "",
+          temptation_type: entryDetails?.temptation_type,
           mood: entry.checkin_entries?.[0]?.mood_score,
         };
         console.log("Formatted entry:", formatted);

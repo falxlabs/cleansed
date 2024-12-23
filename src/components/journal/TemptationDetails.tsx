@@ -8,6 +8,7 @@ interface TemptationDetailsProps {
     trigger: string;
     notes: string;
     description?: string;
+    temptation_type?: string;
   };
 }
 
@@ -17,7 +18,7 @@ export const TemptationDetails = ({ entry }: TemptationDetailsProps) => {
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="bg-white p-4 rounded-xl border shadow-sm">
           <p className="text-sm font-semibold text-primary mb-2">Type of Temptation</p>
-          <p className="capitalize">{entry.type}</p>
+          <p className="capitalize">{entry.temptation_type || entry.type}</p>
         </div>
         
         <div className={`bg-white p-4 rounded-xl border shadow-sm ${

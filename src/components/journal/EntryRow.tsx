@@ -14,6 +14,7 @@ interface Entry {
   notes: string;
   mood?: number;
   affirmation?: string;
+  temptation_type?: string;
 }
 
 interface EntryRowProps {
@@ -39,7 +40,7 @@ export const EntryRow = ({ entry, onClick }: EntryRowProps) => {
       </TableCell>
       <TableCell className="text-center">
         <span className="text-xl">
-          {getSinEmoji(isCheckIn ? entry.trigger : entry.type)}
+          {getSinEmoji(entry.temptation_type || entry.type)}
         </span>
       </TableCell>
       <TableCell className="text-center">
