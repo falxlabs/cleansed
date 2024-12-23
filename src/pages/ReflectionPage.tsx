@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { TemptationTypeStep } from "@/components/reflection/TemptationTypeStep";
@@ -7,93 +5,35 @@ import { TemptationLevelStep } from "@/components/reflection/TemptationLevelStep
 import { TriggerStep } from "@/components/reflection/TriggerStep";
 import { ResistanceStep } from "@/components/reflection/ResistanceStep";
 import { NavigationButtons } from "@/components/reflection/NavigationButtons";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
-
-const TEMPTATION_LEVELS = [
-  "Low - I can resist easily",
-  "Medium - It's challenging but manageable",
-  "High - I struggle significantly",
-  "Severe - Almost impossible to resist"
-] as const;
-
-type TemptationLevel = typeof TEMPTATION_LEVELS[number];
+import { useReflectionState } from "@/hooks/useReflectionState";
+import { useReflectionDatabase } from "@/hooks/useReflectionDatabase";
 
 export default function ReflectionPage() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { toast } = useToast();
-  
-  const [step, setStep] = useState(1);
-  const [selectedSin, setSelectedSin] = useState<string>("");
-  const [customNote, setCustomNote] = useState("");
-  const defaultSliderValue = [0];
-  const [sliderValue, setSliderValue] = useState(defaultSliderValue);
-  const defaultLevelIndex = 0;
-  const [temptationLevel, setTemptationLevel] = useState<TemptationLevel>(TEMPTATION_LEVELS[defaultLevelIndex]);
-  const [trigger, setTrigger] = useState("");
-  const [resistanceStrategy, setResistanceStrategy] = useState("");
-  const [outcome, setOutcome] = useState<"resisted" | "gave-in">();
-  const [mascotMessage, setMascotMessage] = useState("Let's reflect on this temptation together. I'm here to help you through this process.");
+  const {
+    step,
+    setStep,
+    selectedSin,
+    setSelectedSin,
+    customNote,
+    setCustomNote,
+    sliderValue,
+    temptationLevel,
+    trigger,
+    setTrigger,
+    resistanceStrategy,
+    setResistanceStrategy,
+    outcome,
+    mascotMessage,
+    setMascotMessage,
+    handleSliderChange,
+    navigate,
+    location,
+  } = useReflectionState();
 
-  useEffect(() => {
-    const storedOutcome = sessionStorage.getItem('pastTemptationOutcome');
-    if (storedOutcome) {
-      setOutcome(storedOutcome as "resisted" | "gave-in");
-    }
-  }, []);
+  const { saveReflection } = useReflectionDatabase();
 
   const totalSteps = outcome === 'gave-in' ? 3 : 4;
   const progress = (step / totalSteps) * 100;
-
-  const handleSliderChange = (value: number[]) => {
-    setSliderValue(value);
-    const levelIndex = Math.floor((value[0] / 100) * TEMPTATION_LEVELS.length);
-    setTemptationLevel(TEMPTATION_LEVELS[Math.min(levelIndex, TEMPTATION_LEVELS.length - 1)]);
-  };
-
-  const saveToDatabase = async () => {
-    try {
-      // First create the journal entry
-      const { data: journalEntry, error: journalError } = await supabase
-        .from('journal_entries')
-        .insert({
-          entry_type: 'temptation',
-        })
-        .select()
-        .single();
-
-      if (journalError) throw journalError;
-
-      // Then create the temptation entry
-      const { error: temptationError } = await supabase
-        .from('temptation_entries')
-        .insert({
-          id: journalEntry.id,
-          temptation_type: selectedSin.toLowerCase(),
-          intensity_level: Math.floor((sliderValue[0] / 100) * 100),
-          trigger: trigger,
-          resisted: outcome === 'resisted',
-          resistance_strategy: outcome === 'resisted' ? resistanceStrategy : null,
-          temptation_details: customNote || null,
-        });
-
-      if (temptationError) throw temptationError;
-
-      toast({
-        title: "Entry saved",
-        description: "Your reflection has been saved successfully.",
-      });
-
-    } catch (error) {
-      console.error('Error saving entry:', error);
-      toast({
-        title: "Error",
-        description: "Failed to save your reflection. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
 
   const handleNext = async () => {
     if (step === 1 && !selectedSin) {
@@ -114,9 +54,19 @@ export default function ReflectionPage() {
         return;
       }
       
-      await saveToDatabase();
-      setMascotMessage("Thank you for your honest reflection! Remember, every step forward, no matter how small, is progress. Keep going!");
-      navigate("/");
+      const success = await saveReflection({
+        selectedSin,
+        sliderValue,
+        trigger,
+        outcome: outcome || 'gave-in',
+        resistanceStrategy,
+        customNote,
+      });
+
+      if (success) {
+        setMascotMessage("Thank you for your honest reflection! Remember, every step forward, no matter how small, is progress. Keep going!");
+        navigate("/");
+      }
       return;
     }
     
@@ -167,9 +117,19 @@ export default function ReflectionPage() {
     } else if (step === 3) {
       setTrigger("Not sure / Don't remember");
       if (outcome === 'gave-in') {
-        await saveToDatabase();
-        setMascotMessage("Thank you for your honest reflection! Remember, every step forward, no matter how small, is progress. Keep going!");
-        navigate("/");
+        const success = await saveReflection({
+          selectedSin,
+          sliderValue,
+          trigger: "Not sure / Don't remember",
+          outcome: outcome || 'gave-in',
+          resistanceStrategy,
+          customNote,
+        });
+
+        if (success) {
+          setMascotMessage("Thank you for your honest reflection! Remember, every step forward, no matter how small, is progress. Keep going!");
+          navigate("/");
+        }
       } else {
         setStep(step + 1);
         setMascotMessage("You showed real strength! What strategies helped you resist? Your experience could help others too!");

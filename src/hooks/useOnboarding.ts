@@ -106,8 +106,9 @@ export function useOnboarding() {
       if (signUpError) throw signUpError;
 
       // If we have a session (e.g., if email verification is disabled), save the data immediately
-      if (data?.session?.user?.id) {
-        await saveOnboardingDataToDatabase(data.session.user.id);
+      const session = data?.session;
+      if (session?.user?.id) {
+        await saveOnboardingDataToDatabase(session.user.id);
       }
 
       saveOnboardingData(formData);
