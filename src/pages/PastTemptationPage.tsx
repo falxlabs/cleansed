@@ -42,6 +42,15 @@ export default function PastTemptationPage() {
       }
       setStep(2);
     } else {
+      if (!outcome) {
+        toast({
+          title: "Please select an outcome",
+          description: "Choose whether you resisted or gave in to the temptation",
+          variant: "destructive",
+        });
+        return;
+      }
+
       // Create a new date with the selected time
       const selectedDate = new Date(date!);
       const hours = Math.floor(timeValue[0]);
@@ -50,7 +59,7 @@ export default function PastTemptationPage() {
 
       // Store both date and outcome in sessionStorage
       sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
-      sessionStorage.setItem('temptationOutcome', outcome || 'skipped');
+      sessionStorage.setItem('temptationOutcome', outcome);
       navigate('/reflection');
     }
   };
@@ -60,24 +69,6 @@ export default function PastTemptationPage() {
       setStep(1);
     } else {
       navigate('/');
-    }
-  };
-
-  const handleSkip = () => {
-    if (date) {
-      const selectedDate = new Date(date);
-      const hours = Math.floor(timeValue[0]);
-      const minutes = Math.round((timeValue[0] - hours) * 60);
-      selectedDate.setHours(hours, minutes);
-      sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
-      sessionStorage.setItem('temptationOutcome', 'skipped');
-      navigate('/reflection');
-    } else {
-      toast({
-        title: "Please select a date",
-        description: "Choose when this temptation occurred before skipping",
-        variant: "destructive",
-      });
     }
   };
 
@@ -159,14 +150,6 @@ export default function PastTemptationPage() {
                 </Label>
               </div>
             </RadioGroup>
-
-            <Button
-              variant="outline"
-              className="w-full mt-4 text-gray-500 hover:text-gray-700 hover:bg-gray-100"
-              onClick={handleSkip}
-            >
-              Skip
-            </Button>
           </>
         )}
 
