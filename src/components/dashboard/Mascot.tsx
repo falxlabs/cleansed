@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { shouldShowCheckIn } from "@/utils/checkInUtils";
 import { useLocation } from "react-router-dom";
+import { useAuth } from "@/providers/AuthProvider";
 
 interface MascotProps {
   message: string;
@@ -17,12 +18,13 @@ const getUserFirstName = () => {
 
 export function Mascot({ message, className, onCheckIn, showCheckInButton = false }: MascotProps) {
   const location = useLocation();
-  const isDashboard = location.pathname === "/";
+  const { user } = useAuth();
+  const isDashboard = location.pathname === "/dashboard";
   const shouldShow = shouldShowCheckIn();
   const firstName = getUserFirstName();
   const personalizedGreeting = firstName ? `Hey ${firstName}! ` : "Hey! ";
   
-  const displayMessage = (isDashboard && shouldShow)
+  const displayMessage = (isDashboard && shouldShow && user)
     ? `${personalizedGreeting}It's time for your daily check-in. This helps us track your progress and support you better!`
     : message;
 
@@ -35,12 +37,12 @@ export function Mascot({ message, className, onCheckIn, showCheckInButton = fals
     )}>
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-6">
-          <div className="w-16 h-16 rounded-2xl bg-duo-100 animate-bounce flex items-center justify-center">
-            <span className="text-3xl">🕊️</span>
+          <div className="w-16 h-16 rounded-2xl bg-duo-100 flex items-center justify-center">
+            <span className="text-3xl animate-bounce">🕊️</span>
           </div>
           <p className="text-lg font-bold leading-relaxed text-gray-800">{displayMessage}</p>
         </div>
-        {showCheckInButton && isDashboard && shouldShow && onCheckIn && (
+        {showCheckInButton && isDashboard && shouldShow && user && onCheckIn && (
           <Button
             onClick={onCheckIn}
             className="bg-duo-100 text-duo-800 hover:bg-duo-200 w-full"
