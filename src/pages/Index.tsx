@@ -61,20 +61,27 @@ const Index = () => {
         </div>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-6 justify-center">
+        <div className="flex flex-col items-center gap-6">
           <Button
-            className="duo-button text-xl px-8 py-6 transform hover:-translate-y-1 transition-all duration-300"
-            onClick={() => navigate("/daily-checkin")}
+            className="duo-button text-xl px-8 py-6 w-full sm:w-auto transform hover:-translate-y-1 transition-all duration-300"
+            onClick={() => navigate("/onboarding")}
           >
             Start Your Journey
           </Button>
-          <Button
-            variant="outline"
-            className="text-xl px-8 py-6 border-2 hover:bg-duo-50 transform hover:-translate-y-1 transition-all duration-300"
-            onClick={() => navigate("/signin")}
-          >
-            Sign In
-          </Button>
+          <div className="flex flex-col items-center gap-2">
+            <button
+              onClick={() => navigate("/signin")}
+              className="text-gray-600 hover:text-gray-800 transition-colors"
+            >
+              Already have an account? Sign in
+            </button>
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              Skip for now
+            </button>
+          </div>
         </div>
       </div>
     </div>

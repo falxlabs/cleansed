@@ -113,17 +113,30 @@ export function OnboardingContainer() {
     }
   };
 
+  const getMascotMessage = () => {
+    switch (currentStep) {
+      case 1:
+        return "Let's identify what you're struggling with.";
+      case 2:
+        return "How strong is this temptation in your life?";
+      case 3:
+        return "Choose words that will encourage you.";
+      case 4:
+        return "When should we check in with you?";
+      case 5:
+        return "Tell me a bit about yourself.";
+      case 6:
+        return "Almost done! Just need your email.";
+      default:
+        return "I'm here to help you on your journey.";
+    }
+  };
+
   return (
     <div className="max-w-xl mx-auto p-6 space-y-8">
       <Progress value={progress} className="w-full" />
       
-      <Mascot
-        message={
-          currentStep === 1
-            ? "Hi! I'm Grace, and I'll be here to support you on your journey. Let's start by understanding what you're struggling with."
-            : "I'm here to help you every step of the way. Take your time to answer honestly."
-        }
-      />
+      <Mascot message={getMascotMessage()} />
 
       <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
         {renderStep()}
