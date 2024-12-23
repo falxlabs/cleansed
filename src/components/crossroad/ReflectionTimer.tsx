@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
-import { SuggestionCarousel } from "./SuggestionCarousel";
 
 const TIMER_DURATION = 300;
 
@@ -55,8 +54,6 @@ export function ReflectionTimer({ onComplete }: ReflectionTimerProps) {
           className="h-2 sm:h-3 bg-gray-100" 
           indicatorClassName="bg-duo-500"
         />
-
-        <SuggestionCarousel />
       </div>
     </Card>
   );
