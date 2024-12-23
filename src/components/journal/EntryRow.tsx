@@ -34,6 +34,19 @@ const getSeverityEmoji = (level: string) => {
   return "🔴";
 };
 
+const getSinEmoji = (type: string) => {
+  const typeLower = type.toLowerCase();
+  if (typeLower.includes("check-in")) return "📝";
+  if (typeLower.includes("lust")) return "😈";
+  if (typeLower.includes("pride")) return "👑";
+  if (typeLower.includes("greed")) return "💰";
+  if (typeLower.includes("envy")) return "👀";
+  if (typeLower.includes("gluttony")) return "🍽️";
+  if (typeLower.includes("wrath")) return "😠";
+  if (typeLower.includes("sloth")) return "🦥";
+  return "❓";
+};
+
 export const EntryRow = ({ entry, onClick }: EntryRowProps) => {
   const isCheckIn = entry.type === "Daily check-in";
   
@@ -55,6 +68,11 @@ export const EntryRow = ({ entry, onClick }: EntryRowProps) => {
       <TableCell>
         <span className="font-medium">
           {isCheckIn ? "Check-in" : "Temptation"}
+        </span>
+      </TableCell>
+      <TableCell className="text-center">
+        <span className="text-xl">
+          {getSinEmoji(entry.type)}
         </span>
       </TableCell>
       <TableCell className="text-center">

@@ -34,6 +34,7 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
         <TableRow>
           <TableHead>Date & Time</TableHead>
           <TableHead>Type</TableHead>
+          <TableHead className="text-center">Sin</TableHead>
           <TableHead className="text-center">Severity</TableHead>
           <TableHead className="text-center">Outcome</TableHead>
         </TableRow>
@@ -49,7 +50,7 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
         {entries.length === 0 && (
           <TableRow>
             <TableCell
-              colSpan={4}
+              colSpan={5}
               className="text-center py-8 text-muted-foreground"
             >
               No entries found
