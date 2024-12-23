@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { SettingsHeader } from "@/components/settings/SettingsHeader";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/providers/AuthProvider";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -19,15 +20,25 @@ export default function SettingsPage() {
     { title: "Support", path: "/settings/support", requiresAuth: false },
   ];
 
-  const handleSignOut = () => {
-    localStorage.clear();
-    
-    toast({
-      title: "Signed out successfully",
-      description: "You have been signed out of your account.",
-    });
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      localStorage.clear();
+      
+      toast({
+        title: "Signed out successfully",
+        description: "You have been signed out of your account.",
+      });
 
-    navigate("/");
+      navigate("/");
+    } catch (error) {
+      console.error('Error signing out:', error);
+      toast({
+        title: "Error signing out",
+        description: "There was a problem signing out. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleGetStarted = () => {
