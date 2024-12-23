@@ -60,7 +60,28 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
-          {!isCheckIn && (
+          {isCheckIn ? (
+            <>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Primary Challenge</p>
+                <p className="capitalize">{entry.trigger}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Intensity Level</p>
+                <p>{getTemptationLevelText(entry.level)}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Mood Description</p>
+                <p>{entry.notes}</p>
+              </div>
+              {entry.affirmation && (
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Daily Affirmation</p>
+                  <p>{entry.affirmation}</p>
+                </div>
+              )}
+            </>
+          ) : (
             <>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Type of Temptation</p>
@@ -70,35 +91,22 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
                 <p className="text-sm font-medium text-muted-foreground">Outcome</p>
                 <p>{entry.resisted ? "Resisted" : "Gave in"}</p>
               </div>
-            </>
-          )}
-          <div>
-            <p className="text-sm font-medium text-muted-foreground">Level</p>
-            <p>{getTemptationLevelText(entry.level)}</p>
-          </div>
-          {!isCheckIn && (
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Trigger</p>
-              <p>{entry.trigger}</p>
-            </div>
-          )}
-          {isCheckIn ? (
-            <>
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Mood Description</p>
-                <p>{entry.notes}</p>
+                <p className="text-sm font-medium text-muted-foreground">Level</p>
+                <p>{getTemptationLevelText(entry.level)}</p>
               </div>
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Daily Affirmation</p>
-                <p>{entry.affirmation}</p>
+                <p className="text-sm font-medium text-muted-foreground">Trigger</p>
+                <p>{entry.trigger}</p>
               </div>
+              {entry.resisted && (
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">What helped me resist</p>
+                  <p>{entry.notes}</p>
+                </div>
+              )}
             </>
-          ) : entry.resisted ? (
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">What helped me resist</p>
-              <p>{entry.notes}</p>
-            </div>
-          ) : null}
+          )}
           <div className="flex justify-end pt-4">
             <Button
               variant="destructive"
