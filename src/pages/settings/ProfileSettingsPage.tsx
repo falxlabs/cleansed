@@ -5,7 +5,7 @@ import { SettingsDetailLayout } from "@/components/settings/SettingsDetailLayout
 export default function ProfileSettingsPage() {
   return (
     <SettingsDetailLayout>
-      <SettingsHeader />
+      <SettingsHeader title="Profile Settings" />
       <AccountSettings />
     </SettingsDetailLayout>
   );

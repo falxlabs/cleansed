@@ -10,6 +10,7 @@ import SettingsPage from "./pages/SettingsPage";
 import AchievementsPage from "./pages/AchievementsPage";
 import OnboardingPage from "./pages/OnboardingPage";
 import SignInPage from "./pages/SignInPage";
+import ProfileSettingsPage from "./pages/settings/ProfileSettingsPage";
 import { BottomNav } from "./components/navigation/BottomNav";
 import { DesktopNav } from "./components/navigation/DesktopNav";
 import { Toaster } from "@/components/ui/toaster";
@@ -37,6 +38,7 @@ const AppContent = () => {
             <Route path="/reflection" element={<ProtectedRoute><ReflectionPage /></ProtectedRoute>} />
             <Route path="/journal" element={<ProtectedRoute><JournalPage /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+            <Route path="/settings/profile" element={<ProtectedRoute><ProfileSettingsPage /></ProtectedRoute>} />
             <Route path="/achievements" element={<ProtectedRoute><AchievementsPage /></ProtectedRoute>} />
           </Routes>
         </main>
