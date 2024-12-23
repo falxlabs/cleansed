@@ -43,11 +43,13 @@ export default function PastTemptationPage() {
       const minutes = Math.round((timeValue[0] - hours) * 60);
       selectedDate.setHours(hours, minutes);
 
-      // Save the past temptation entry
+      // Save the past temptation entry with all required fields
       saveJournalEntry({
         date: selectedDate,
         type: "Past Temptation",
         resisted: outcome === 'resisted',
+        level: "medium", // Default level
+        trigger: "unspecified", // Default trigger
         notes: "Logged without reflection",
       });
 
@@ -67,8 +69,15 @@ export default function PastTemptationPage() {
     const minutes = Math.round((timeValue[0] - hours) * 60);
     selectedDate.setHours(hours, minutes);
 
-    sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
-    sessionStorage.setItem('pastTemptationOutcome', outcome);
+    // Save entry with all required fields when skipping reflection
+    saveJournalEntry({
+      date: selectedDate,
+      type: "Past Temptation",
+      resisted: outcome === 'resisted',
+      level: "medium", // Default level
+      trigger: "unspecified", // Default trigger
+      notes: "Logged without reflection",
+    });
 
     navigate('/');
     toast({
