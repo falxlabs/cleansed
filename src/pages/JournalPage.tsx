@@ -37,28 +37,43 @@ export default function JournalPage() {
         .from('journal_entries')
         .select(`
           *,
-          temptation_entries(*),
-          checkin_entries(*)
+          temptation_entries!inner(*),
+          checkin_entries!inner(*)
         `)
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching entries:', error);
+        return;
+      }
 
-      const formattedEntries = data.map(entry => ({
-        id: entry.id,
-        date: new Date(entry.created_at),
-        type: entry.entry_type,
-        resisted: entry.temptation_entries?.[0]?.resisted ?? true,
-        level: entry.temptation_entries?.[0]?.intensity_level?.toString() ?? "medium",
-        trigger: entry.temptation_entries?.[0]?.trigger ?? entry.checkin_entries?.[0]?.mood_description ?? "",
-        notes: entry.temptation_entries?.[0]?.temptation_details ?? "",
-        mood: entry.checkin_entries?.[0]?.mood_score,
-      }));
+      console.log('Fetched entries:', data); // Debug log
 
+      const formattedEntries = data.map(entry => {
+        const temptationEntry = entry.temptation_entries?.[0];
+        const checkInEntry = entry.checkin_entries?.[0];
+        
+        return {
+          id: entry.id,
+          date: new Date(entry.created_at),
+          type: entry.entry_type,
+          resisted: temptationEntry?.resisted ?? false,
+          level: temptationEntry?.intensity_level?.toString() ?? "1",
+          trigger: entry.entry_type === 'temptation' 
+            ? temptationEntry?.trigger 
+            : checkInEntry?.mood_description,
+          notes: temptationEntry?.temptation_details ?? "",
+          description: temptationEntry?.temptation_details,
+          mood: checkInEntry?.mood_score,
+          affirmation: checkInEntry?.affirmation_id,
+        };
+      });
+
+      console.log('Formatted entries:', formattedEntries); // Debug log
       setEntries(formattedEntries);
     } catch (error) {
-      console.error('Error fetching entries:', error);
+      console.error('Error in fetchEntries:', error);
     } finally {
       setIsLoading(false);
     }
