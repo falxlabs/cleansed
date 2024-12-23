@@ -30,7 +30,49 @@ export function OnboardingContainer() {
 
   const progress = (currentStep / TOTAL_STEPS) * 100;
 
+  const validateCurrentStep = () => {
+    switch (currentStep) {
+      case 1:
+        return formData.temptationType.length > 0;
+      case 2:
+        return formData.temptationLevel.length > 0;
+      case 3:
+        return formData.affirmation.length > 0;
+      case 4:
+        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(formData.checkInTime);
+      case 5:
+        return formData.firstName.length >= 2;
+      case 6:
+        return formData.email === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+      default:
+        return true;
+    }
+  };
+
+  const saveDataLocally = () => {
+    localStorage.setItem("defaultTemptation", formData.temptationType);
+    localStorage.setItem("defaultTemptationLevel", formData.temptationLevel[0].toString());
+    localStorage.setItem("affirmationType", "custom");
+    localStorage.setItem("customAffirmation", formData.affirmation);
+    localStorage.setItem("checkInTime", formData.checkInTime);
+    if (formData.firstName) {
+      localStorage.setItem("firstName", formData.firstName);
+    }
+    if (formData.age) {
+      localStorage.setItem("age", formData.age);
+    }
+  };
+
   const handleNext = () => {
+    if (!validateCurrentStep()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields correctly",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (currentStep < TOTAL_STEPS) {
       setCurrentStep(currentStep + 1);
     }
@@ -43,22 +85,31 @@ export function OnboardingContainer() {
   };
 
   const handleSkip = () => {
-    // Save data to localStorage even when skipping
-    localStorage.setItem("defaultTemptation", formData.temptationType);
-    localStorage.setItem("defaultTemptationLevel", formData.temptationLevel[0].toString());
-    localStorage.setItem("customAffirmation", formData.affirmation);
-    localStorage.setItem("checkInTime", formData.checkInTime);
+    if (!validateCurrentStep()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields correctly",
+        variant: "destructive",
+      });
+      return;
+    }
     
+    saveDataLocally();
     navigate("/dashboard");
   };
 
   const handleComplete = async () => {
+    if (!validateCurrentStep()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields correctly",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      // Save data to localStorage first
-      localStorage.setItem("defaultTemptation", formData.temptationType);
-      localStorage.setItem("defaultTemptationLevel", formData.temptationLevel[0].toString());
-      localStorage.setItem("customAffirmation", formData.affirmation);
-      localStorage.setItem("checkInTime", formData.checkInTime);
+      saveDataLocally();
 
       // Only attempt to sign up if email is provided
       if (formData.email) {
