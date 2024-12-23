@@ -19,17 +19,8 @@ export default function JournalPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [showCalendar, setShowCalendar] = useState(true);
   const [selectedEntry, setSelectedEntry] = useState<any | null>(null);
+  const [entries, setEntries] = useState(loadJournalEntries());
   const isMobile = useIsMobile();
-
-  // Load and process entries
-  const entries = loadJournalEntries().map(entry => {
-    // Check if there's a reflection entry for this temptation
-    const hasReflection = entry.notes !== "Logged without reflection";
-    return {
-      ...entry,
-      hasReflection
-    };
-  });
 
   // Filter entries based on calendar visibility and selected date
   const filteredEntries = showCalendar && date
@@ -40,6 +31,12 @@ export default function JournalPage() {
 
   const handleDateSelect = (newDate: Date | undefined) => {
     setDate(newDate);
+  };
+
+  const handleDeleteEntry = (id: number) => {
+    const updatedEntries = entries.filter(entry => entry.id !== id);
+    setEntries(updatedEntries);
+    localStorage.setItem("journalEntries", JSON.stringify(updatedEntries));
   };
 
   return (
@@ -93,6 +90,7 @@ export default function JournalPage() {
       <EntryDetailsDialog 
         entry={selectedEntry}
         onOpenChange={() => setSelectedEntry(null)}
+        onDelete={handleDeleteEntry}
       />
     </div>
   );

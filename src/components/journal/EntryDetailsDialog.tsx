@@ -1,13 +1,17 @@
 import { format } from "date-fns";
+import { Trash2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface EntryDetailsDialogProps {
   entry: {
+    id: number;
     date: Date;
     type: string;
     resisted: boolean;
@@ -18,6 +22,7 @@ interface EntryDetailsDialogProps {
     affirmation?: string;
   } | null;
   onOpenChange: (open: boolean) => void;
+  onDelete?: (id: number) => void;
 }
 
 const getTemptationLevelText = (value: string) => {
@@ -28,10 +33,23 @@ const getTemptationLevelText = (value: string) => {
   return "Severe - Almost impossible to resist";
 };
 
-export const EntryDetailsDialog = ({ entry, onOpenChange }: EntryDetailsDialogProps) => {
+export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetailsDialogProps) => {
+  const { toast } = useToast();
+
   if (!entry) return null;
 
   const isCheckIn = entry.type === "Daily check-in";
+
+  const handleDelete = () => {
+    if (entry && onDelete) {
+      onDelete(entry.id);
+      onOpenChange(false);
+      toast({
+        title: "Entry deleted",
+        description: "The entry has been successfully deleted.",
+      });
+    }
+  };
 
   return (
     <Dialog open={!!entry} onOpenChange={onOpenChange}>
@@ -75,6 +93,17 @@ export const EntryDetailsDialog = ({ entry, onOpenChange }: EntryDetailsDialogPr
               <p>{entry.notes}</p>
             </div>
           )}
+          <div className="flex justify-end pt-4">
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={handleDelete}
+              className="flex items-center gap-2"
+            >
+              <Trash2 className="h-4 w-4" />
+              Delete Entry
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
