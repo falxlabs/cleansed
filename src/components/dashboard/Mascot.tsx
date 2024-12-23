@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { shouldShowCheckIn } from "@/utils/checkInUtils";
+import { useLocation } from "react-router-dom";
 
 interface MascotProps {
   message: string;
@@ -15,11 +16,13 @@ const getUserFirstName = () => {
 };
 
 export function Mascot({ message, className, onCheckIn, showCheckInButton = false }: MascotProps) {
+  const location = useLocation();
+  const isDashboard = location.pathname === "/";
   const shouldShow = shouldShowCheckIn();
   const firstName = getUserFirstName();
   const personalizedGreeting = firstName ? `Hey ${firstName}! ` : "Hey! ";
   
-  const displayMessage = shouldShow 
+  const displayMessage = (isDashboard && shouldShow)
     ? `${personalizedGreeting}It's time for your daily check-in. This helps us track your progress and support you better!`
     : message;
 
@@ -36,7 +39,7 @@ export function Mascot({ message, className, onCheckIn, showCheckInButton = fals
           </div>
           <p className="text-lg font-bold leading-relaxed text-gray-800">{displayMessage}</p>
         </div>
-        {showCheckInButton && shouldShow && onCheckIn && (
+        {showCheckInButton && isDashboard && shouldShow && onCheckIn && (
           <Button
             onClick={onCheckIn}
             className="bg-duo-100 text-duo-800 hover:bg-duo-200 w-full"
