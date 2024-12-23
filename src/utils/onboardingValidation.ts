@@ -13,7 +13,7 @@ export const validateStep = (step: number, formData: OnboardingFormData): boolea
     case 1:
       return formData.temptationType.length > 0;
     case 2:
-      return formData.temptationLevel.length > 0;
+      return formData.temptationLevel.length > 0 && formData.temptationLevel[0] >= 0 && formData.temptationLevel[0] <= 100;
     case 3:
       return formData.affirmation.length > 0;
     case 4:

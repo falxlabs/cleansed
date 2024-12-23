@@ -1,6 +1,6 @@
 interface OnboardingData {
   temptationType: string;
-  temptationLevel: number;
+  temptationLevel: number[];
   affirmation: string;
   checkInTime: string;
   firstName?: string;
@@ -9,7 +9,7 @@ interface OnboardingData {
 
 export const saveOnboardingData = (data: OnboardingData): void => {
   localStorage.setItem("defaultTemptation", data.temptationType);
-  localStorage.setItem("defaultTemptationLevel", data.temptationLevel.toString());
+  localStorage.setItem("defaultTemptationLevel", data.temptationLevel[0].toString());
   localStorage.setItem("affirmationType", "custom");
   localStorage.setItem("customAffirmation", data.affirmation);
   localStorage.setItem("checkInTime", data.checkInTime);
