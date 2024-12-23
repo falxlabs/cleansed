@@ -45,6 +45,12 @@ export function useOnboardingForm() {
     }
   };
 
+  const handleSkip = () => {
+    if (currentStep === TOTAL_STEPS - 1) {
+      handleNext();
+    }
+  };
+
   return {
     currentStep,
     formData,
@@ -52,6 +58,7 @@ export function useOnboardingForm() {
     handleFormDataChange,
     handleNext,
     handleBack,
+    handleSkip,
     isCurrentStepValid,
   };
 }
