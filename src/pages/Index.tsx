@@ -16,8 +16,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-duo-50 flex flex-col">
-      <div className="flex-1 flex flex-col">
-        <div className="max-w-4xl mx-auto w-full px-4 py-8">
+      <div className="flex-1 px-4">
+        <div className="max-w-4xl mx-auto pt-8">
           {/* Logo */}
           <h1 className="text-2xl font-bold text-duo-500 mb-12 ml-4">
             Cleansed
@@ -60,7 +60,7 @@ const Index = () => {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center gap-8 mb-12">
             <div className="flex flex-col sm:flex-row gap-6 w-full max-w-lg mx-auto">
               <Button
                 className="duo-button text-xl px-8 py-6 flex-1 hover:scale-105 transition-transform"
@@ -78,7 +78,7 @@ const Index = () => {
             </div>
             <button
               onClick={() => navigate("/dashboard")}
-              className="text-gray-500 hover:text-gray-700 hover:underline transition-colors mb-8"
+              className="text-gray-500 hover:text-gray-700 hover:underline transition-colors"
             >
               Skip for now
             </button>
