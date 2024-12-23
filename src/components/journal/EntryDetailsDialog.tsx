@@ -1,17 +1,12 @@
-import { format } from "date-fns";
-import { Trash2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { CheckInDetails } from "./CheckInDetails";
 import { TemptationDetails } from "./TemptationDetails";
+import { EntryDialogHeader } from "./EntryDialogHeader";
+import { DeleteEntryButton } from "./DeleteEntryButton";
+import { useDeleteEntry } from "./useDeleteEntry";
 
 interface EntryDetailsDialogProps {
   entry: {
@@ -57,66 +52,24 @@ export const getMoodText = (mood?: number) => {
 };
 
 export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetailsDialogProps) => {
-  const { toast } = useToast();
+  const { deleteEntry } = useDeleteEntry(onDelete, () => onOpenChange(false));
 
   if (!entry) return null;
 
   const isCheckIn = entry.type.toLowerCase().includes("check-in");
-  const formattedDate = format(entry.date, "EEEE, MMMM d, yyyy");
-  const formattedTime = format(entry.date, "h:mm a");
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (!entry) return;
-
-    try {
-      // First delete the specific entry (temptation or check-in)
-      const specificTable = isCheckIn ? 'checkin_entries' : 'temptation_entries';
-      const { error: specificError } = await supabase
-        .from(specificTable)
-        .delete()
-        .eq('id', entry.id);
-
-      if (specificError) throw specificError;
-
-      // Then delete the parent journal entry
-      const { error: journalError } = await supabase
-        .from('journal_entries')
-        .delete()
-        .eq('id', entry.id);
-
-      if (journalError) throw journalError;
-
-      if (onDelete) {
-        onDelete(entry.id);
-      }
-      
-      onOpenChange(false);
-      
-      toast({
-        title: "Entry deleted",
-        description: "The entry has been successfully deleted.",
-      });
-    } catch (error) {
-      console.error('Error deleting entry:', error);
-      toast({
-        title: "Error",
-        description: "Failed to delete the entry. Please try again.",
-        variant: "destructive",
-      });
-    }
+    deleteEntry(entry.id, isCheckIn);
   };
 
   return (
     <Dialog open={!!entry} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="border-b pb-4">
-          <DialogTitle className="text-xl sm:text-2xl font-bold text-primary">
-            {isCheckIn ? "Daily Check-in" : "Temptation Entry"}
-          </DialogTitle>
-          <DialogDescription className="text-sm text-muted-foreground font-medium">
-            {formattedDate} at {formattedTime}
-          </DialogDescription>
-        </DialogHeader>
+        <EntryDialogHeader 
+          date={entry.date}
+          isCheckIn={isCheckIn}
+        />
         
         {isCheckIn ? (
           <CheckInDetails entry={entry} />
@@ -124,17 +77,7 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
           <TemptationDetails entry={entry} />
         )}
         
-        <div className="flex justify-end pt-2 border-t">
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={handleDelete}
-            className="flex items-center gap-2 hover:bg-red-600"
-          >
-            <Trash2 className="h-4 w-4" />
-            Delete Entry
-          </Button>
-        </div>
+        <DeleteEntryButton onClick={handleDelete} />
       </DialogContent>
     </Dialog>
   );
