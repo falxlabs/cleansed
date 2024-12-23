@@ -1,114 +1,35 @@
-import { useState, useEffect } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { TemptationType } from "@/types/database";
+import { useState } from "react";
+import { useCheckInAuth } from "@/hooks/useCheckInAuth";
+import { useTemptationSettings } from "@/hooks/useTemptationSettings";
+import { useCheckInCompletion } from "@/hooks/useCheckInCompletion";
 
 export function useCheckInState() {
-  const navigate = useNavigate();
-  const { toast } = useToast();
+  useCheckInAuth();
+  
   const [step, setStep] = useState(1);
   const [mood, setMood] = useState<number[]>([50]);
   const [description, setDescription] = useState("");
-  const [selectedTemptation, setSelectedTemptation] = useState<TemptationType | "">("");
-  const [temptationLevel, setTemptationLevel] = useState<number[]>([50]);
   const [selectedStatement, setSelectedStatement] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const loadTemptationSettings = async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-          toast({
-            title: "Sign in required",
-            description: "Please go to Settings to sign in or create an account to save your check-ins.",
-            variant: "destructive",
-          });
-          return;
-        }
+  const {
+    selectedTemptation,
+    setSelectedTemptation,
+    temptationLevel,
+    setTemptationLevel,
+    isLoading
+  } = useTemptationSettings();
 
-        const { data: settings } = await supabase
-          .from('temptation_settings')
-          .select('default_type, default_intensity')
-          .eq('user_id', user.id)
-          .maybeSingle();
-        
-        if (settings) {
-          if (settings.default_type) setSelectedTemptation(settings.default_type);
-          if (settings.default_intensity !== null) setTemptationLevel([settings.default_intensity]);
-        }
-      } catch (error) {
-        console.error('Error loading temptation settings:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadTemptationSettings();
-  }, [toast]);
-
-  const handleComplete = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("No authenticated user");
-
-      // First create the journal entry
-      const { data: journalEntry, error: journalError } = await supabase
-        .from('journal_entries')
-        .insert({
-          entry_type: 'check-in',
-          user_id: user.id
-        })
-        .select()
-        .single();
-
-      if (journalError) throw journalError;
-
-      // Then create the check-in entry
-      const { error: checkInError } = await supabase
-        .from('checkin_entries')
-        .insert({
-          id: journalEntry.id,
-          mood_score: mood[0],
-          mood_description: description
-        });
-
-      if (checkInError) throw checkInError;
-
-      // Create temptation entry if a temptation was selected
-      if (selectedTemptation) {
-        const { error: temptationError } = await supabase
-          .from('temptation_entries')
-          .insert({
-            id: journalEntry.id,
-            temptation_type: selectedTemptation as TemptationType,
-            intensity_level: temptationLevel[0],
-            trigger: description,
-            resisted: true
-          });
-
-        if (temptationError) throw temptationError;
-      }
-
-      toast({
-        title: "Check-in Complete",
-        description: "Your daily check-in has been saved.",
-      });
-      navigate("/dashboard");
-    } catch (error) {
-      console.error('Error saving check-in:', error);
-      toast({
-        title: "Error",
-        description: "Failed to save your check-in. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
+  const { handleComplete } = useCheckInCompletion();
 
   const handleNext = () => {
     if (step === 4) {
-      handleComplete();
+      handleComplete({
+        mood,
+        description,
+        selectedTemptation,
+        temptationLevel,
+        selectedStatement
+      });
       return;
     }
     setStep(step + 1);
