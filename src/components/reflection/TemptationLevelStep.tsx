@@ -22,6 +22,11 @@ export const TemptationLevelStep = ({
 }: TemptationLevelStepProps) => {
   useEffect(() => {
     const loadDefaultSettings = async () => {
+      // Only load default settings if no value is set (slider is at 0)
+      if (sliderValue[0] !== 0) {
+        return;
+      }
+
       try {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
@@ -41,7 +46,7 @@ export const TemptationLevelStep = ({
     };
 
     loadDefaultSettings();
-  }, [onSliderChange]);
+  }, []); // Only run on mount
 
   const getTemptationLevelDescription = (value: number) => {
     if (value <= 25) return TEMPTATION_LEVELS[0];
