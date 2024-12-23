@@ -69,7 +69,7 @@ export default function JournalPage() {
           </Card>
         )}
 
-        <Card className={showCalendar ? "" : "lg:col-span-2"}>
+        <Card className={`${showCalendar ? "" : "lg:col-span-2"} overflow-hidden`}>
           <CardHeader className="p-4">
             <CardTitle>Entries</CardTitle>
             <CardDescription>
@@ -78,11 +78,13 @@ export default function JournalPage() {
                 : "Showing all entries"}
             </CardDescription>
           </CardHeader>
-          <CardContent className="p-0 overflow-x-auto">
-            <EntriesTable 
-              entries={filteredEntries} 
-              onEntryClick={setSelectedEntry} 
-            />
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <EntriesTable 
+                entries={filteredEntries} 
+                onEntryClick={setSelectedEntry} 
+              />
+            </div>
           </CardContent>
         </Card>
       </div>
