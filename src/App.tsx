@@ -13,6 +13,7 @@ import AffirmationSettingsPage from "./pages/settings/AffirmationSettingsPage";
 import NotificationsSettingsPage from "./pages/settings/NotificationsSettingsPage";
 import SupportSettingsPage from "./pages/settings/SupportSettingsPage";
 import TemptationSettingsPage from "./pages/settings/TemptationSettingsPage";
+import DailyCheckInSettingsPage from "./pages/settings/DailyCheckInSettingsPage";
 import { BottomNav } from "./components/navigation/BottomNav";
 import { DesktopNav } from "./components/navigation/DesktopNav";
 
@@ -94,6 +95,7 @@ export default () => (
           <Route path="/settings/temptation" element={<TemptationSettingsPage />} />
           <Route path="/settings/notifications" element={<NotificationsSettingsPage />} />
           <Route path="/settings/support" element={<SupportSettingsPage />} />
+          <Route path="/settings/daily-checkin" element={<DailyCheckInSettingsPage />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
