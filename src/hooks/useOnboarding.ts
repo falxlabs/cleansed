@@ -52,8 +52,30 @@ export function useOnboarding() {
     }
   };
 
-  const handleSkip = () => {
+  const handleSkip = async () => {
     saveOnboardingData(formData);
+    
+    // If user is authenticated, update their profile
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) {
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          first_name: formData.firstName,
+          age: formData.age ? parseInt(formData.age) : null,
+        })
+        .eq('id', session.user.id);
+
+      if (error) {
+        console.error('Error updating profile:', error);
+        toast({
+          title: "Error",
+          description: "Failed to save profile data. Please try again.",
+          variant: "destructive",
+        });
+      }
+    }
+
     navigate("/dashboard");
   };
 
@@ -79,6 +101,28 @@ export function useOnboarding() {
       if (signUpError) throw signUpError;
 
       saveOnboardingData(formData);
+
+      // Update profile data
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        const { error: updateError } = await supabase
+          .from('profiles')
+          .update({
+            first_name: formData.firstName,
+            age: formData.age ? parseInt(formData.age) : null,
+            email: formData.email
+          })
+          .eq('id', session.user.id);
+
+        if (updateError) {
+          console.error('Error updating profile:', updateError);
+          toast({
+            title: "Warning",
+            description: "Profile data may not have been saved completely.",
+            variant: "destructive",
+          });
+        }
+      }
 
       toast({
         title: "Check your email",
