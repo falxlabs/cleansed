@@ -76,16 +76,16 @@ export default function JournalPage() {
               />
             </Card>
             
-            {dailyCheckIn && (
+            {date && (
               <Card className="lg:h-[354px]">
                 <CardHeader className="p-4 pb-0">
                   <CardTitle className="text-lg">Daily Check-in</CardTitle>
                   <CardDescription>
-                    {format(dailyCheckIn.date, "MMMM d, yyyy")}
+                    {format(date, "MMMM d, yyyy")}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="p-4">
-                  <DailyCheckInSummary entry={dailyCheckIn} />
+                  <DailyCheckInSummary entry={dailyCheckIn} date={date} />
                 </CardContent>
               </Card>
             )}
