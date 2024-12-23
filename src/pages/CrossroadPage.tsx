@@ -71,12 +71,12 @@ export default function CrossroadPage() {
         className="animate-fade-in"
       />
 
-      <div className="grid gap-6 mt-8">
+      <div className="grid grid-cols-2 gap-4 mt-8">
         <ActionButton
           icon={Shield}
           label="Submit to God"
           onClick={handleSubmitToGod}
-          className="bg-duo-500 hover:bg-duo-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 py-6 text-xl font-bold animate-float"
+          className="bg-duo-500 hover:bg-duo-600 text-white shadow-lg hover:shadow-xl transition-all duration-500 py-6 text-xl font-bold h-[300px] hover:-translate-y-2 border-4 border-duo-700"
         />
         
         <ActionButton
@@ -84,12 +84,12 @@ export default function CrossroadPage() {
           label="Fall to Sin"
           onClick={handleFallToSin}
           variant="destructive"
-          className="animate-fade-in"
+          className="h-[300px] hover:-translate-y-2 transition-all duration-500 border-4 border-red-700"
           disabled={timeLeft > 0}
         />
       </div>
 
-      <Card className="p-6 mt-8 animate-fade-in">
+      <Card className="p-6 mt-8">
         <div className="space-y-4">
           <h3 className="text-lg font-medium text-center">Breathing Exercise Timer</h3>
           <div className="text-3xl font-bold text-center">{formatTime(timeLeft)}</div>
