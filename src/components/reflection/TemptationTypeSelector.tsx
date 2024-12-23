@@ -5,7 +5,7 @@ import { Slider } from "@/components/ui/slider";
 const SINS = [
   { name: "Pride", emoji: "👑", description: "Excessive belief in own abilities", value: 0 },
   { name: "Greed", emoji: "💰", description: "Desire for material possessions", value: 1 },
-  { name: "Lust", emoji: "💝", description: "Intense or uncontrolled desires", value: 2 },
+  { name: "Lust", emoji: "👄", description: "Intense or uncontrolled desires", value: 2 },
   { name: "Envy", emoji: "👀", description: "Desire for others' traits or possessions", value: 3 },
   { name: "Gluttony", emoji: "🍽️", description: "Overindulgence or overconsumption", value: 4 },
   { name: "Wrath", emoji: "😠", description: "Uncontrolled feelings of anger", value: 5 },
