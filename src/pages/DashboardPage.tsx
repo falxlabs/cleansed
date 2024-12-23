@@ -25,7 +25,7 @@ const DashboardPage = () => {
         </div>
       </div>
 
-      <div className="flex-1 max-w-2xl mx-auto bg-white rounded-3xl shadow-md p-6">
+      <div className="flex-1 max-w-2xl mx-auto">
         <Mascot 
           message={welcomeMessage} 
           className="animate-fade-in" 
