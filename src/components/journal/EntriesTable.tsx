@@ -33,7 +33,7 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
       <TableHeader>
         <TableRow>
           <TableHead>Date & Time</TableHead>
-          <TableHead>Type</TableHead>
+          <TableHead>Entry</TableHead>
           <TableHead className="text-center">Sin</TableHead>
           <TableHead className="text-center">Severity</TableHead>
           <TableHead className="text-center">Outcome</TableHead>
