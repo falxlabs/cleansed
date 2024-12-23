@@ -18,11 +18,6 @@ export const NavigationButtons = ({
       <Button onClick={onNext} disabled={isNextDisabled} className="w-full">
         {step === 4 ? "Complete" : "Next"}
       </Button>
-      {step !== 1 && step !== 3 && step !== 4 && (
-        <Button variant="outline" onClick={onSkip} className="w-full">
-          I don't know
-        </Button>
-      )}
     </div>
   );
 };
