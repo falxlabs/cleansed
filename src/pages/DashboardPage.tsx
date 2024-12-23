@@ -34,30 +34,32 @@ const DashboardPage = () => {
         />
       </div>
 
-      <div className="grid gap-4 max-w-2xl mx-auto bg-white rounded-3xl shadow-md p-6">
-        <ActionButton
-          icon={AlertCircle}
-          label="I'm Being Tempted"
-          onClick={() => navigate('/crossroad')}
-          variant="destructive"
-          className="w-full bg-red-500 hover:bg-red-600 active:bg-red-700 
-                     transform transition-all duration-200 hover:scale-[1.02] 
-                     shadow-lg hover:shadow-xl border-2 border-red-400"
-        />
-        <ActionButton
-          icon={FileText}
-          label="Log Past Temptation"
-          onClick={() => navigate('/past-temptation')}
-          variant="outline"
-          className="w-full bg-white hover:bg-gray-50 active:bg-gray-100 
-                     border-2 border-gray-300 hover:border-gray-400
-                     transform transition-all duration-200 hover:scale-[1.02] 
-                     shadow-md hover:shadow-lg text-gray-700"
-        />
-      </div>
-
       <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-md p-6">
-        <DailyVerse verse={dailyVerse.verse} reference={dailyVerse.reference} />
+        <div className="space-y-6">
+          <div className="space-y-4">
+            <ActionButton
+              icon={AlertCircle}
+              label="I'm Being Tempted"
+              onClick={() => navigate('/crossroad')}
+              variant="destructive"
+              className="w-full bg-red-500 hover:bg-red-600 active:bg-red-700 
+                         transform transition-all duration-200 hover:scale-[1.02] 
+                         shadow-lg hover:shadow-xl border-2 border-red-400"
+            />
+            <ActionButton
+              icon={FileText}
+              label="Log Past Temptation"
+              onClick={() => navigate('/past-temptation')}
+              variant="outline"
+              className="w-full bg-white hover:bg-gray-50 active:bg-gray-100 
+                         border-2 border-gray-300 hover:border-gray-400
+                         transform transition-all duration-200 hover:scale-[1.02] 
+                         shadow-md hover:shadow-lg text-gray-700"
+            />
+          </div>
+
+          <DailyVerse verse={dailyVerse.verse} reference={dailyVerse.reference} />
+        </div>
       </div>
     </div>
   );
