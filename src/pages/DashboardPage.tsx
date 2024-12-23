@@ -1,4 +1,3 @@
-import { AlertCircle, FileText } from "lucide-react";
 import { ActionButton } from "@/components/dashboard/ActionButton";
 import { DailyVerse } from "@/components/dashboard/DailyVerse";
 import { Mascot } from "@/components/dashboard/Mascot";
@@ -36,7 +35,7 @@ const DashboardPage = () => {
 
       <div className="max-w-2xl mx-auto space-y-4">
         <ActionButton
-          icon={AlertCircle}
+          emoji="⚠️"
           label="I'm Being Tempted"
           onClick={() => navigate('/crossroad')}
           variant="destructive"
@@ -45,7 +44,7 @@ const DashboardPage = () => {
                      shadow-lg hover:shadow-xl border-2 border-red-400"
         />
         <ActionButton
-          icon={FileText}
+          emoji="📝"
           label="Log Past Temptation"
           onClick={() => navigate('/past-temptation')}
           variant="outline"
