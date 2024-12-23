@@ -3,7 +3,8 @@ import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
 
 interface ActionButtonProps {
-  icon: LucideIcon;
+  emoji?: string;
+  icon?: LucideIcon;
   label: string;
   onClick: () => void;
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
@@ -12,6 +13,7 @@ interface ActionButtonProps {
 }
 
 export function ActionButton({ 
+  emoji,
   icon: Icon, 
   label, 
   onClick, 
@@ -34,7 +36,11 @@ export function ActionButton({
       disabled={disabled}
     >
       <div className="flex flex-row sm:flex-col items-center gap-3 sm:gap-4">
-        <Icon className="w-8 h-8 sm:w-12 sm:h-12 shrink-0" />
+        {emoji ? (
+          <span className="emoji text-4xl">{emoji}</span>
+        ) : Icon && (
+          <Icon className="w-8 h-8 sm:w-12 sm:h-12 shrink-0" />
+        )}
         <span>{label}</span>
       </div>
     </Button>
