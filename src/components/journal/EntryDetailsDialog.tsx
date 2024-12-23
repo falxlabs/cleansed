@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { CheckInDetails } from "./CheckInDetails";
+import { DailyCheckInDetails } from "./CheckInDetails";
 import { TemptationDetails } from "./TemptationDetails";
 
 interface EntryDetailsDialogProps {
@@ -20,10 +20,10 @@ interface EntryDetailsDialogProps {
     resisted: boolean;
     level: string;
     trigger: string;
-    notes: string;
+    reflectionNotes: string;
     mood?: number;
     affirmation?: string;
-    customNote?: string;
+    personalNotes?: string;
   } | null;
   onOpenChange: (open: boolean) => void;
   onDelete?: (id: number) => void;
@@ -60,7 +60,7 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
 
   if (!entry) return null;
 
-  const isCheckIn = entry.type.toLowerCase().includes("check-in");
+  const isDailyCheckIn = entry.type.toLowerCase().includes('check-in');
   const formattedDate = format(entry.date, "EEEE, MMMM d, yyyy");
   const formattedTime = format(entry.date, "h:mm a");
 
@@ -80,15 +80,15 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="border-b pb-4">
           <DialogTitle className="text-xl sm:text-2xl font-bold text-primary">
-            {isCheckIn ? "Daily Check-in" : "Temptation Entry"}
+            {isDailyCheckIn ? "Daily Check-in" : "Challenge Entry"}
           </DialogTitle>
           <DialogDescription className="text-sm text-muted-foreground font-medium">
             {formattedDate} at {formattedTime}
           </DialogDescription>
         </DialogHeader>
         
-        {isCheckIn ? (
-          <CheckInDetails entry={entry} />
+        {isDailyCheckIn ? (
+          <DailyCheckInDetails entry={entry} />
         ) : (
           <TemptationDetails entry={entry} />
         )}

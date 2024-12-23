@@ -5,10 +5,10 @@ interface JournalEntry {
   resisted: boolean;
   level: string;
   trigger: string;
-  notes: string;
+  reflectionNotes: string;
   mood?: number;
   affirmation?: string;
-  customNote?: string;
+  personalNotes?: string;
 }
 
 export const saveJournalEntry = (entry: Omit<JournalEntry, "id">) => {
@@ -19,8 +19,8 @@ export const saveJournalEntry = (entry: Omit<JournalEntry, "id">) => {
     resisted: entry.resisted || false,
     level: entry.level || "",
     trigger: entry.trigger || "",
-    notes: entry.notes || "",
-    customNote: entry.customNote || "",
+    reflectionNotes: entry.reflectionNotes || "",
+    personalNotes: entry.personalNotes || "",
   };
   
   entries.push(newEntry);
@@ -39,8 +39,8 @@ export const loadJournalEntries = (): JournalEntry[] => {
     resisted: entry.resisted || false,
     level: entry.level || "",
     trigger: entry.trigger || "",
-    notes: entry.notes || "",
-    customNote: entry.customNote || "",
+    reflectionNotes: entry.reflectionNotes || "",
+    personalNotes: entry.personalNotes || "",
   }));
 };
 
