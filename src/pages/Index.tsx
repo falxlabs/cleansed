@@ -23,13 +23,6 @@ const Index = () => {
         <div onClick={() => navigate('/achievements')} className="cursor-pointer">
           <StreakDisplay streak={currentStreak} />
         </div>
-        <ActionButton
-          icon={Shield}
-          label="Achievements"
-          onClick={() => navigate('/achievements')}
-          variant="outline"
-          className="ml-auto"
-        />
       </div>
 
       <div className="flex-1 max-w-2xl mx-auto">
