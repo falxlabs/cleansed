@@ -8,7 +8,6 @@ export const DesktopNav = () => {
 
   const navItems = [
     { icon: Home, label: "Dashboard", path: "/" },
-    { icon: Calendar, label: "Daily Check-in", path: "/daily-checkin" },
     { icon: PenTool, label: "Journal", path: "/journal" },
     { icon: Award, label: "Achievements", path: "/achievements" },
     { icon: Settings, label: "Settings", path: "/settings" },

@@ -15,7 +15,6 @@ export function SettingsHeader({ title = "Settings" }: SettingsHeaderProps) {
         variant="ghost"
         size="icon"
         onClick={() => navigate('/settings')}
-        className="md:hidden"
       >
         <ArrowLeft className="h-4 w-4" />
       </Button>

@@ -13,13 +13,18 @@ export function AccountSettings() {
 
   useEffect(() => {
     const savedFirstName = localStorage.getItem("userFirstName");
+    const savedAge = localStorage.getItem("userAge");
     if (savedFirstName) {
       setFirstName(savedFirstName);
+    }
+    if (savedAge) {
+      setAge(savedAge);
     }
   }, []);
 
   const handleSave = () => {
     localStorage.setItem("userFirstName", firstName);
+    localStorage.setItem("userAge", age);
     toast({
       title: "Settings saved",
       description: "Your account settings have been updated successfully.",
