@@ -7,6 +7,13 @@ import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
+const TEMPTATION_LEVELS = [
+  "Low - I can resist easily",
+  "Medium - It's challenging but manageable",
+  "High - I struggle significantly",
+  "Severe - Almost impossible to resist"
+] as const;
+
 export default function TemptationSettingsPage() {
   const { toast } = useToast();
   const [selectedSin, setSelectedSin] = useState("Pride");
@@ -20,6 +27,13 @@ export default function TemptationSettingsPage() {
     if (savedSin) setSelectedSin(savedSin);
     if (savedLevel) setDefaultLevel([parseInt(savedLevel)]);
   }, []);
+
+  const getTemptationLevelDescription = (value: number) => {
+    if (value <= 25) return TEMPTATION_LEVELS[0];
+    if (value <= 50) return TEMPTATION_LEVELS[1];
+    if (value <= 75) return TEMPTATION_LEVELS[2];
+    return TEMPTATION_LEVELS[3];
+  };
 
   const handleSave = () => {
     localStorage.setItem("defaultTemptation", selectedSin);
@@ -47,6 +61,9 @@ export default function TemptationSettingsPage() {
 
       <SettingsSection title="Default Intensity Level">
         <div className="space-y-4">
+          <div className="text-center mb-4">
+            <p className="text-lg font-semibold">{getTemptationLevelDescription(defaultLevel[0])}</p>
+          </div>
           <Slider
             value={defaultLevel}
             onValueChange={setDefaultLevel}
@@ -58,6 +75,7 @@ export default function TemptationSettingsPage() {
             <span>Low</span>
             <span>Medium</span>
             <span>High</span>
+            <span>Severe</span>
           </div>
         </div>
       </SettingsSection>

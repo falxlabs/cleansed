@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Slider } from "@/components/ui/slider";
 
 const TEMPTATION_LEVELS = [
@@ -18,11 +19,18 @@ export const TemptationLevelStep = ({
   temptationLevel,
   onSliderChange,
 }: TemptationLevelStepProps) => {
-  const getTemptationEmoji = () => {
-    if (sliderValue[0] <= 25) return "🟢";
-    if (sliderValue[0] <= 50) return "🟡";
-    if (sliderValue[0] <= 75) return "🟠";
-    return "🔴";
+  useEffect(() => {
+    const savedLevel = localStorage.getItem("defaultTemptationLevel");
+    if (savedLevel && sliderValue[0] === 0) {
+      onSliderChange([parseInt(savedLevel)]);
+    }
+  }, []);
+
+  const getTemptationLevelDescription = (value: number) => {
+    if (value <= 25) return TEMPTATION_LEVELS[0];
+    if (value <= 50) return TEMPTATION_LEVELS[1];
+    if (value <= 75) return TEMPTATION_LEVELS[2];
+    return TEMPTATION_LEVELS[3];
   };
 
   return (
@@ -30,10 +38,14 @@ export const TemptationLevelStep = ({
       <h2 className="text-2xl font-bold">Temptation Level</h2>
       <div className="space-y-8">
         <div className="text-center">
-          <span className="text-4xl mb-4 block">{getTemptationEmoji()}</span>
-          <h3 className="text-xl font-semibold mb-2">{temptationLevel || "Select level"}</h3>
+          <span className="text-4xl mb-4 block">{
+            sliderValue[0] <= 25 ? "🟢" :
+            sliderValue[0] <= 50 ? "🟡" :
+            sliderValue[0] <= 75 ? "🟠" : "🔴"
+          }</span>
+          <h3 className="text-xl font-semibold mb-2">{getTemptationLevelDescription(sliderValue[0])}</h3>
           <p className="text-muted-foreground">
-            {temptationLevel ? "This helps us understand your struggle" : "Move the slider to indicate intensity"}
+            This helps us understand your struggle
           </p>
         </div>
         <Slider
@@ -42,7 +54,6 @@ export const TemptationLevelStep = ({
           max={100}
           step={1}
           className="w-full"
-          defaultValue={[Number(localStorage.getItem("defaultTemptationLevel")) || 50]}
         />
         <div className="flex justify-between text-sm text-muted-foreground">
           <span>Low</span>
