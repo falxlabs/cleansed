@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { SettingsHeader } from "@/components/settings/SettingsHeader";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const settingsCategories = [
     { title: "Profile", path: "/settings/profile" },
@@ -31,6 +33,10 @@ export default function SettingsPage() {
     navigate("/");
   };
 
+  const handleSignIn = () => {
+    navigate("/signin");
+  };
+
   return (
     <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8">
       <div className="max-w-2xl mx-auto">
@@ -49,15 +55,25 @@ export default function SettingsPage() {
           ))}
         </div>
         
-        {/* Sign out button */}
+        {/* Conditional rendering of Sign Out/Sign Up button */}
         <div className="mt-8">
-          <Button 
-            variant="destructive" 
-            className="w-full"
-            onClick={handleSignOut}
-          >
-            Sign Out
-          </Button>
+          {user ? (
+            <Button 
+              variant="destructive" 
+              className="w-full"
+              onClick={handleSignOut}
+            >
+              Sign Out
+            </Button>
+          ) : (
+            <Button 
+              variant="default" 
+              className="w-full"
+              onClick={handleSignIn}
+            >
+              Sign Up
+            </Button>
+          )}
         </div>
       </div>
     </div>
