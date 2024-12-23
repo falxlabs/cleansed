@@ -28,6 +28,11 @@ interface EntriesTableProps {
 export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
   const sortedEntries = [...entries].sort((a, b) => b.date.getTime() - a.date.getTime());
 
+  const handleDelete = (id: number) => {
+    // In a real app, this would call an API to delete the entry
+    console.log("Delete entry:", id);
+  };
+
   return (
     <Table>
       <TableHeader>
@@ -44,6 +49,7 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
             key={entry.id} 
             entry={entry} 
             onClick={onEntryClick}
+            onDelete={handleDelete}
           />
         ))}
         {entries.length === 0 && (
