@@ -67,7 +67,7 @@ export default function JournalPage() {
       <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4 sm:gap-8">
         {showCalendar && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
-            <Card className="h-fit">
+            <Card>
               <Calendar
                 mode="single"
                 selected={date}
@@ -77,7 +77,7 @@ export default function JournalPage() {
             </Card>
             
             {dailyCheckIn && (
-              <Card className="h-fit">
+              <Card className="lg:h-[354px]">
                 <CardHeader className="p-4 pb-0">
                   <CardTitle className="text-lg">Daily Check-in</CardTitle>
                   <CardDescription>
