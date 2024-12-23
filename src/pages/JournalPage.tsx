@@ -19,7 +19,7 @@ export default function JournalPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [showCalendar, setShowCalendar] = useState(true);
   const [selectedEntry, setSelectedEntry] = useState<any | null>(null);
-  const [entries, setEntries] = useState(loadJournalEntries());
+  const [entries] = useState(loadJournalEntries());
   const isMobile = useIsMobile();
 
   // Filter entries based on calendar visibility and selected date
@@ -40,7 +40,7 @@ export default function JournalPage() {
   };
 
   return (
-    <div className={`container max-w-7xl mx-auto p-2 sm:p-4 space-y-4 sm:space-y-8 ${isMobile ? "pb-20" : ""}`}>
+    <div className="container max-w-7xl mx-auto p-2 sm:p-4 space-y-4 sm:space-y-8 pb-20 md:pb-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl sm:text-3xl font-bold">Journal</h1>
         <Button 
@@ -59,7 +59,7 @@ export default function JournalPage() {
       
       <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4 sm:gap-8">
         {showCalendar && (
-          <Card className="p-2 sm:p-4 h-fit">
+          <Card className="p-2 sm:p-4 h-fit lg:sticky lg:top-4">
             <Calendar
               mode="single"
               selected={date}
@@ -78,7 +78,7 @@ export default function JournalPage() {
                 : "Showing all entries"}
             </CardDescription>
           </CardHeader>
-          <CardContent className="p-0">
+          <CardContent className="p-0 overflow-x-auto">
             <EntriesTable 
               entries={filteredEntries} 
               onEntryClick={setSelectedEntry} 

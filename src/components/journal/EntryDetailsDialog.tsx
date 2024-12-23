@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -73,19 +74,19 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
 
   return (
     <Dialog open={!!entry} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="border-b pb-4">
-          <DialogTitle className="text-2xl font-bold text-primary">
+          <DialogTitle className="text-xl sm:text-2xl font-bold text-primary">
             {isCheckIn ? "Daily Check-in" : "Temptation Entry"}
           </DialogTitle>
-          <p className="text-sm text-muted-foreground font-medium">
+          <DialogDescription className="text-sm text-muted-foreground font-medium">
             {formattedDate} at {formattedTime}
-          </p>
+          </DialogDescription>
         </DialogHeader>
-        <div className="space-y-6 py-4">
+        <div className="space-y-4 py-4">
           {isCheckIn ? (
             <>
-              <div className="bg-primary/5 p-6 rounded-xl border border-primary/10">
+              <div className="bg-primary/5 p-4 sm:p-6 rounded-xl border border-primary/10">
                 <div className="flex items-center justify-between mb-3">
                   <p className="text-base font-semibold text-primary">Current Mood</p>
                   <span className="text-3xl" title={getMoodText(entry.mood)}>
@@ -103,7 +104,7 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
                 </p>
               </div>
               
-              <div className="grid gap-6 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2">
                 <div className="bg-white p-4 rounded-xl border shadow-sm">
                   <p className="text-sm font-semibold text-primary mb-2">Primary Challenge</p>
                   <p className="capitalize">{entry.trigger}</p>
@@ -121,7 +122,7 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
               </div>
 
               {entry.affirmation && (
-                <div className="bg-primary/5 p-6 rounded-xl border border-primary/10">
+                <div className="bg-primary/5 p-4 sm:p-6 rounded-xl border border-primary/10">
                   <p className="text-sm font-semibold text-primary mb-2">Daily Affirmation</p>
                   <p className="text-lg font-medium italic text-gray-700">"{entry.affirmation}"</p>
                 </div>
@@ -129,7 +130,7 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
             </>
           ) : (
             <>
-              <div className="grid gap-6 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2">
                 <div className="bg-white p-4 rounded-xl border shadow-sm">
                   <p className="text-sm font-semibold text-primary mb-2">Type of Temptation</p>
                   <p className="capitalize">{entry.type}</p>
