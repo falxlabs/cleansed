@@ -6,9 +6,18 @@ import { Progress } from "@/components/ui/progress";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { ActionButton } from "@/components/dashboard/ActionButton";
 import { Shield, Flame, ArrowLeft } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const TIMER_DURATION = 300; // 5 minutes in seconds
+
+const SUGGESTIONS = [
+  "Take a quiet walk and reflect",
+  "Pray for strength and guidance",
+  "Practice deep breathing exercises",
+  "Read a Bible verse about overcoming temptation",
+  "Call a trusted friend or accountability partner",
+  "Write down your thoughts in a journal",
+];
 
 export default function CrossroadPage() {
   const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
@@ -91,9 +100,20 @@ export default function CrossroadPage() {
 
       <Card className="p-6 mt-8">
         <div className="space-y-4">
-          <h3 className="text-lg font-medium text-center">Breathing Exercise Timer</h3>
+          <h3 className="text-lg font-medium text-center">Take Time to Reflect</h3>
           <div className="text-3xl font-bold text-center">{formatTime(timeLeft)}</div>
           <Progress value={progressPercentage} className="h-2" />
+          
+          <div className="mt-4 space-y-2">
+            <h4 className="text-sm font-medium text-muted-foreground text-center">Try one of these:</h4>
+            <ul className="text-sm space-y-2">
+              {SUGGESTIONS.map((suggestion, index) => (
+                <li key={index} className="text-center text-muted-foreground">
+                  {suggestion}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </Card>
     </div>
