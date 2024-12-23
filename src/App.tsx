@@ -11,6 +11,11 @@ import AchievementsPage from "./pages/AchievementsPage";
 import OnboardingPage from "./pages/OnboardingPage";
 import SignInPage from "./pages/SignInPage";
 import ProfileSettingsPage from "./pages/settings/ProfileSettingsPage";
+import DailyCheckInSettingsPage from "./pages/settings/DailyCheckInSettingsPage";
+import AffirmationSettingsPage from "./pages/settings/AffirmationSettingsPage";
+import TemptationSettingsPage from "./pages/settings/TemptationSettingsPage";
+import NotificationsSettingsPage from "./pages/settings/NotificationsSettingsPage";
+import SupportSettingsPage from "./pages/settings/SupportSettingsPage";
 import { BottomNav } from "./components/navigation/BottomNav";
 import { DesktopNav } from "./components/navigation/DesktopNav";
 import { Toaster } from "@/components/ui/toaster";
@@ -39,6 +44,11 @@ const AppContent = () => {
             <Route path="/journal" element={<ProtectedRoute><JournalPage /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
             <Route path="/settings/profile" element={<ProtectedRoute><ProfileSettingsPage /></ProtectedRoute>} />
+            <Route path="/settings/daily-checkin" element={<ProtectedRoute><DailyCheckInSettingsPage /></ProtectedRoute>} />
+            <Route path="/settings/affirmation" element={<ProtectedRoute><AffirmationSettingsPage /></ProtectedRoute>} />
+            <Route path="/settings/temptation" element={<ProtectedRoute><TemptationSettingsPage /></ProtectedRoute>} />
+            <Route path="/settings/notifications" element={<ProtectedRoute><NotificationsSettingsPage /></ProtectedRoute>} />
+            <Route path="/settings/support" element={<ProtectedRoute><SupportSettingsPage /></ProtectedRoute>} />
             <Route path="/achievements" element={<ProtectedRoute><AchievementsPage /></ProtectedRoute>} />
           </Routes>
         </main>
