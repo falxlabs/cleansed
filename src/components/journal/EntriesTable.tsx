@@ -36,8 +36,20 @@ const getTimeEmoji = (hour: number) => {
 
 const getTypeEmoji = (type: string) => {
   if (type === "Daily check-in") return "📝";
-  if (type.includes("Reflection")) return "📖";
-  return "⚠️"; // For temptation
+  if (type === "Pride") return "👑";
+  if (type === "Greed") return "💰";
+  if (type === "Lust") return "💋";
+  if (type === "Envy") return "💚";
+  if (type === "Gluttony") return "🍽️";
+  if (type === "Wrath") return "😠";
+  if (type === "Sloth") return "🦥";
+  return "⚠️";
+};
+
+const formatType = (type: string) => {
+  if (type === "Daily check-in") return "Daily check-in";
+  if (type.includes("Reflection")) return type.replace("Reflection", "").trim();
+  return type;
 };
 
 export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
@@ -70,7 +82,7 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
             </TableCell>
             <TableCell>
               <span className="flex items-center gap-2">
-                {getTypeEmoji(entry.type)} {entry.type}
+                {getTypeEmoji(formatType(entry.type))} {formatType(entry.type)}
               </span>
             </TableCell>
             <TableCell className="text-center">
