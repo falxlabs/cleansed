@@ -10,13 +10,24 @@ interface SignUpStepProps {
 export function SignUpStep({ email, onEmailChange }: SignUpStepProps) {
   const [error, setError] = useState("");
 
-  const handleEmailChange = (value: string) => {
-    setError("");
-    if (!value) {
-      setError("Email is required");
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-      setError("Please enter a valid email address");
+  const validateEmail = (email: string) => {
+    // More comprehensive email validation
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    
+    if (!email) {
+      return "Email is required";
     }
+    
+    if (!emailRegex.test(email)) {
+      return "Please enter a valid email address (e.g., user@example.com)";
+    }
+    
+    return "";
+  };
+
+  const handleEmailChange = (value: string) => {
+    const validationError = validateEmail(value);
+    setError(validationError);
     onEmailChange(value);
   };
 
