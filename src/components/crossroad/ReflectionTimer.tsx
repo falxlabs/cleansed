@@ -40,23 +40,27 @@ export function ReflectionTimer({ onComplete }: ReflectionTimerProps) {
   const progressPercentage = ((TIMER_DURATION - timeLeft) / TIMER_DURATION) * 100;
 
   return (
-    <Card className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm border-2 border-gray-200 shadow-lg">
-      <div className="space-y-4">
-        <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-900">
-          <h3 className="text-xl sm:text-2xl font-bold">The 5 Minute Rule</h3>
-        </div>
-        
-        <div className="text-3xl sm:text-4xl font-bold text-center text-gray-900 font-mono tracking-wider">
-          {formatTime(timeLeft)}
+    <Card className="p-6 sm:p-8 bg-white/90 backdrop-blur-sm border-2 border-gray-200 shadow-lg">
+      <div className="space-y-6 sm:space-y-8">
+        <div className="space-y-2">
+          <h3 className="text-xl sm:text-2xl font-bold text-center text-gray-900">
+            The 5 Minute Rule
+          </h3>
+          
+          <div className="text-3xl sm:text-4xl font-bold text-center text-gray-900 font-mono tracking-wider">
+            {formatTime(timeLeft)}
+          </div>
         </div>
         
         <Progress 
           value={progressPercentage} 
-          className="h-2 sm:h-3 bg-gray-100" 
+          className="h-2.5 sm:h-3 bg-gray-100" 
           indicatorClassName="bg-duo-500"
         />
 
-        <SuggestionCarousel />
+        <div className="pt-2">
+          <SuggestionCarousel />
+        </div>
       </div>
     </Card>
   );
