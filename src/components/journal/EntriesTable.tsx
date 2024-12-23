@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { Check, X, BookOpen } from "lucide-react";
+import { Check, X } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -19,7 +19,6 @@ interface Entry {
   notes: string;
   mood?: number;
   affirmation?: string;
-  hasReflection?: boolean;
 }
 
 interface EntriesTableProps {
@@ -32,6 +31,14 @@ const getTimeEmoji = (hour: number) => {
   if (hour >= 12 && hour < 17) return "☀️";
   if (hour >= 17 && hour < 21) return "🌆";
   return "🌙";
+};
+
+const getSeverityEmoji = (level: string) => {
+  const levelLower = level.toLowerCase();
+  if (levelLower.includes("low")) return "🟢";
+  if (levelLower.includes("medium")) return "🟡";
+  if (levelLower.includes("high")) return "🟠";
+  return "🔴";
 };
 
 const getSinEmoji = (type: string) => {
@@ -49,18 +56,16 @@ const getSinEmoji = (type: string) => {
 const formatEntryType = (type: string) => {
   if (type === "Daily check-in") return { category: "Check-in", subtype: null };
   
-  // Extract the sin type from strings like "Past Temptation Pride" or "Reflection Pride"
   const sins = ["Pride", "Greed", "Lust", "Envy", "Gluttony", "Wrath", "Sloth"];
   const matchedSin = sins.find(sin => type.includes(sin));
   
   return {
-    category: "Temptation",
+    category: type.includes("Daily check-in") ? "Check-in" : "Temptation",
     subtype: matchedSin || null
   };
 };
 
 export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
-  // Sort entries by date (newest first)
   const sortedEntries = [...entries].sort((a, b) => b.date.getTime() - a.date.getTime());
 
   return (
@@ -68,10 +73,9 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
       <TableHeader>
         <TableRow>
           <TableHead>Date & Time</TableHead>
-          <TableHead>Entry Type</TableHead>
-          <TableHead>Details</TableHead>
+          <TableHead>Type</TableHead>
+          <TableHead className="text-center">Severity</TableHead>
           <TableHead className="text-center">Outcome</TableHead>
-          <TableHead className="text-center">Reflection</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -88,7 +92,7 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
               <TableCell>
                 <div className="flex flex-col">
                   <span className="font-medium">
-                    {format(entry.date, "MMM d, yyyy")}
+                    {format(entry.date, "EEE, MMM d, yyyy")}
                   </span>
                   <span className="text-sm text-muted-foreground">
                     {getTimeEmoji(entry.date.getHours())} {format(entry.date, "h:mm a")}
@@ -105,11 +109,13 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
                   )}
                 </div>
               </TableCell>
-              <TableCell>
-                {entry.level && (
-                  <span className="text-sm text-muted-foreground">
-                    Level: {entry.level}
+              <TableCell className="text-center">
+                {category === "Temptation" ? (
+                  <span className="text-xl">
+                    {getSeverityEmoji(entry.level)}
                   </span>
+                ) : (
+                  <span className="text-muted-foreground">-</span>
                 )}
               </TableCell>
               <TableCell className="text-center">
@@ -123,20 +129,13 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
                   <span className="text-muted-foreground">-</span>
                 )}
               </TableCell>
-              <TableCell className="text-center">
-                {entry.hasReflection ? (
-                  <BookOpen className="inline h-5 w-5 text-blue-500" />
-                ) : (
-                  <span className="text-muted-foreground">-</span>
-                )}
-              </TableCell>
             </TableRow>
           );
         })}
         {entries.length === 0 && (
           <TableRow>
             <TableCell
-              colSpan={5}
+              colSpan={4}
               className="text-center py-8 text-muted-foreground"
             >
               No entries found
