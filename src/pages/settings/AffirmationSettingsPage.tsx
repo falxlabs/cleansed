@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { SettingsDetailLayout } from "@/components/settings/SettingsDetailLayout";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const predefinedAffirmations = [
   "I am a child of God, created for His purpose.",
@@ -20,40 +21,78 @@ export default function AffirmationSettingsPage() {
   const [affirmationType, setAffirmationType] = useState("predefined");
   const [selectedAffirmation, setSelectedAffirmation] = useState(predefinedAffirmations[0]);
   const [customAffirmation, setCustomAffirmation] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Load saved settings when component mounts
-    const savedAffirmationType = localStorage.getItem("affirmationType");
-    const savedCustomAffirmation = localStorage.getItem("customAffirmation");
-    const savedPredefinedAffirmation = localStorage.getItem("selectedAffirmation");
-
-    if (savedAffirmationType) {
-      setAffirmationType(savedAffirmationType);
-    }
-    if (savedCustomAffirmation) {
-      setCustomAffirmation(savedCustomAffirmation);
-    }
-    if (savedPredefinedAffirmation) {
-      setSelectedAffirmation(savedPredefinedAffirmation);
-    }
+    fetchUserAffirmation();
   }, []);
 
-  const handleSave = () => {
-    // Save affirmation type
-    localStorage.setItem("affirmationType", affirmationType);
+  const fetchUserAffirmation = async () => {
+    try {
+      const { data: userAffirmation, error } = await supabase
+        .from('user_affirmations')
+        .select('*')
+        .maybeSingle();
 
-    // Save the appropriate affirmation based on type
-    if (affirmationType === "predefined") {
-      localStorage.setItem("selectedAffirmation", selectedAffirmation);
-    } else {
-      localStorage.setItem("customAffirmation", customAffirmation);
+      if (error) throw error;
+
+      if (userAffirmation) {
+        setAffirmationType("custom");
+        setCustomAffirmation(userAffirmation.content);
+      }
+    } catch (error) {
+      console.error('Error fetching user affirmation:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load affirmation settings",
+        variant: "destructive",
+      });
     }
+  };
 
-    // Show success toast
-    toast({
-      title: "Settings saved",
-      description: "Your affirmation settings have been updated.",
-    });
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("No user found");
+
+      if (affirmationType === "custom") {
+        // Delete any existing custom affirmations and create a new one
+        await supabase
+          .from('user_affirmations')
+          .delete()
+          .eq('user_id', user.id);
+
+        const { error } = await supabase
+          .from('user_affirmations')
+          .insert({
+            user_id: user.id,
+            content: customAffirmation,
+          });
+
+        if (error) throw error;
+      } else {
+        // If switching to predefined, remove any custom affirmations
+        await supabase
+          .from('user_affirmations')
+          .delete()
+          .eq('user_id', user.id);
+      }
+
+      toast({
+        title: "Settings saved",
+        description: "Your affirmation settings have been updated",
+      });
+    } catch (error) {
+      console.error('Error saving affirmation settings:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save affirmation settings",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -111,7 +150,9 @@ export default function AffirmationSettingsPage() {
             </div>
           )}
 
-          <Button onClick={handleSave}>Save Changes</Button>
+          <Button onClick={handleSave} disabled={loading} className="w-full">
+            {loading ? "Saving..." : "Save Changes"}
+          </Button>
         </div>
       </SettingsSection>
     </SettingsDetailLayout>
