@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MoodStep } from "@/components/daily-checkin/MoodStep";
@@ -18,6 +18,15 @@ export default function DailyCheckinPage() {
   const [selectedTemptation, setSelectedTemptation] = useState("");
   const [temptationLevel, setTemptationLevel] = useState<number[]>([50]);
   const [selectedStatement, setSelectedStatement] = useState("");
+
+  useEffect(() => {
+    // Load saved temptation settings
+    const savedSin = localStorage.getItem("defaultTemptation");
+    const savedLevel = localStorage.getItem("defaultTemptationLevel");
+    
+    if (savedSin) setSelectedTemptation(savedSin);
+    if (savedLevel) setTemptationLevel([parseInt(savedLevel)]);
+  }, []);
 
   const handleNext = () => {
     if (step === 4) {
@@ -40,7 +49,7 @@ export default function DailyCheckinPage() {
   };
 
   const getMascotMessage = () => {
-    switch (step) {
+    switch(step) {
       case 1:
         return "How are you feeling today? Let's start with your mood.";
       case 2:
@@ -55,7 +64,7 @@ export default function DailyCheckinPage() {
   };
 
   const getStepContent = () => {
-    switch (step) {
+    switch(step) {
       case 1:
         return (
           <MoodStep
