@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Slider } from "@/components/ui/slider";
+import { supabase } from "@/integrations/supabase/client";
 
 const TEMPTATION_LEVELS = [
   "Low - I can resist easily",
@@ -20,10 +21,26 @@ export const TemptationLevelStep = ({
   onSliderChange,
 }: TemptationLevelStepProps) => {
   useEffect(() => {
-    const savedLevel = localStorage.getItem("defaultTemptationLevel");
-    if (savedLevel && sliderValue[0] === 0) {
-      onSliderChange([parseInt(savedLevel)]);
-    }
+    const loadDefaultSettings = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data: settings } = await supabase
+          .from('temptation_settings')
+          .select('default_intensity')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        
+        if (settings?.default_intensity && sliderValue[0] === 50) {
+          onSliderChange([settings.default_intensity]);
+        }
+      } catch (error) {
+        console.error('Error loading default temptation level:', error);
+      }
+    };
+
+    loadDefaultSettings();
   }, []);
 
   const getTemptationLevelDescription = (value: number) => {
