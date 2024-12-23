@@ -49,6 +49,7 @@ const getTypeEmoji = (type: string) => {
 const formatType = (type: string) => {
   if (type === "Daily check-in") return "Daily check-in";
   if (type.includes("Reflection")) return type.replace("Reflection", "").trim();
+  if (type.includes("Past Temptation")) return type.replace("Past Temptation", "").trim();
   return type;
 };
 
