@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { ActionButton } from "@/components/dashboard/ActionButton";
-import { ArrowLeft, Sun, Skull, Timer, Heart } from "lucide-react";
+import { ArrowLeft, Sun, Skull, Timer } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Carousel,
@@ -89,55 +89,6 @@ export default function CrossroadPage() {
         />
       </div>
 
-      <Card className="p-6 sm:p-8 mt-6 bg-white/95 backdrop-blur-sm border-2 border-duo-200">
-        <div className="space-y-6">
-          <div className="text-center space-y-3">
-            <div className="flex items-center justify-center gap-3 text-duo-700">
-              <Heart className="h-8 w-8 animate-pulse text-duo-500" />
-              <h2 className="text-2xl sm:text-3xl font-bold text-duo-800">
-                Stay Strong in This Moment
-              </h2>
-            </div>
-            
-            <p className="text-duo-700 text-lg sm:text-xl max-w-md mx-auto">
-              This urge is temporary, but your commitment to God is eternal. 
-              Take these {Math.ceil(timeLeft / 60)} minutes to reconnect with His strength.
-            </p>
-          </div>
-          
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-4xl sm:text-5xl font-bold text-duo-800 font-mono tracking-wider bg-white/80 px-6 py-2 rounded-full shadow-sm">
-                {formatTime(timeLeft)}
-              </div>
-            </div>
-            <Progress 
-              value={progressPercentage} 
-              className="h-4 sm:h-5 bg-duo-100" 
-            />
-          </div>
-          
-          <div className="mt-8 space-y-4">
-            <h3 className="text-lg sm:text-xl font-semibold text-center text-duo-700">
-              Ways to Strengthen Your Spirit:
-            </h3>
-            <Carousel className="w-full max-w-xs mx-auto" opts={{ loop: true }}>
-              <CarouselContent>
-                {SUGGESTIONS.map((suggestion, index) => (
-                  <CarouselItem key={index}>
-                    <div className="p-4 sm:p-6 rounded-xl bg-white/80 text-duo-800 text-base sm:text-lg text-center min-h-[100px] flex items-center justify-center shadow-md border border-duo-100">
-                      {suggestion}
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="-left-2 sm:left-0" />
-              <CarouselNext className="-right-2 sm:right-0" />
-            </Carousel>
-          </div>
-        </div>
-      </Card>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
         <ActionButton
           icon={Sun}
@@ -155,6 +106,43 @@ export default function CrossroadPage() {
           disabled={timeLeft > 0}
         />
       </div>
+
+      <Card className="p-4 sm:p-6 mt-6 bg-white/50 backdrop-blur-sm">
+        <div className="space-y-4 sm:space-y-6">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 text-duo-700">
+            <Timer className="h-6 w-6 sm:h-8 sm:w-8 animate-pulse" />
+            <h3 className="text-xl sm:text-2xl font-bold">Reflection Timer</h3>
+          </div>
+          
+          <div className="text-3xl sm:text-4xl font-bold text-center text-duo-800 font-mono tracking-wider">
+            {formatTime(timeLeft)}
+          </div>
+          
+          <Progress 
+            value={progressPercentage} 
+            className="h-2 sm:h-3 bg-duo-100" 
+          />
+          
+          <div className="mt-6 sm:mt-8 space-y-4">
+            <h4 className="text-base sm:text-lg font-medium text-center text-duo-700">
+              Try these helpful activities while you wait:
+            </h4>
+            <Carousel className="w-full max-w-xs mx-auto" opts={{ loop: true }}>
+              <CarouselContent>
+                {SUGGESTIONS.map((suggestion, index) => (
+                  <CarouselItem key={index}>
+                    <div className="p-4 sm:p-6 rounded-xl bg-white/80 text-duo-800 text-sm sm:text-base text-center min-h-[80px] sm:min-h-[100px] flex items-center justify-center shadow-md">
+                      {suggestion}
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="-left-2 sm:left-0" aria-label="View previous suggestion" />
+              <CarouselNext className="-right-2 sm:right-0" aria-label="View next suggestion" />
+            </Carousel>
+          </div>
+        </div>
+      </Card>
     </div>
   );
 }

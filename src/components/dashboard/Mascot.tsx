@@ -62,7 +62,7 @@ export function Mascot({
 
   return (
     <Card className={cn(
-      "p-6 relative overflow-hidden w-full",
+      "p-6 relative overflow-hidden",
       "bg-white rounded-3xl border-2 border-gray-200 shadow-lg",
       className
     )}>
