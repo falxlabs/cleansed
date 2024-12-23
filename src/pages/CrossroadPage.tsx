@@ -7,6 +7,13 @@ import { Mascot } from "@/components/dashboard/Mascot";
 import { ActionButton } from "@/components/dashboard/ActionButton";
 import { Shield, Flame, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const TIMER_DURATION = 300; // 5 minutes in seconds
 
@@ -106,16 +113,19 @@ export default function CrossroadPage() {
           
           <div className="mt-6 space-y-4">
             <h4 className="text-base font-medium text-center text-muted-foreground">While you wait, try:</h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {SUGGESTIONS.map((suggestion, index) => (
-                <div 
-                  key={index} 
-                  className="p-3 rounded-xl bg-secondary/50 text-secondary-foreground text-sm text-center hover:bg-secondary/80 transition-colors duration-200"
-                >
-                  {suggestion}
-                </div>
-              ))}
-            </div>
+            <Carousel className="w-full max-w-xs mx-auto">
+              <CarouselContent>
+                {SUGGESTIONS.map((suggestion, index) => (
+                  <CarouselItem key={index}>
+                    <div className="p-6 rounded-xl bg-secondary/50 text-secondary-foreground text-base text-center min-h-[100px] flex items-center justify-center">
+                      {suggestion}
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-0" />
+              <CarouselNext className="right-0" />
+            </Carousel>
           </div>
         </div>
       </Card>
