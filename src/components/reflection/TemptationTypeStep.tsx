@@ -3,6 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { TemptationTypeSelector } from "./TemptationTypeSelector";
+import { supabase } from "@/integrations/supabase/client";
 
 interface TemptationTypeStepProps {
   selectedSin: string;
@@ -18,10 +19,27 @@ export const TemptationTypeStep = ({
   onCustomNoteChange,
 }: TemptationTypeStepProps) => {
   useEffect(() => {
-    const savedTemptation = localStorage.getItem("defaultTemptation");
-    if (savedTemptation && !selectedSin) {
-      onSinChange(savedTemptation);
-    }
+    const loadDefaultTemptation = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data: settings } = await supabase
+          .from('temptation_settings')
+          .select('default_type')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        if (settings?.default_type && !selectedSin) {
+          console.log("Setting default temptation from database:", settings.default_type);
+          onSinChange(settings.default_type);
+        }
+      } catch (error) {
+        console.error('Error loading default temptation:', error);
+      }
+    };
+
+    loadDefaultTemptation();
   }, []);
 
   return (
