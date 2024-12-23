@@ -5,15 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { useToast } from "@/hooks/use-toast";
 import { Slider } from "@/components/ui/slider";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { Progress } from "@/components/ui/progress";
+import { format } from "date-fns";
 
 export default function PastTemptationPage() {
-  const [step, setStep] = useState(1);
   const [date, setDate] = useState<Date>();
   const [timeValue, setTimeValue] = useState([12]); // Default to noon (12:00)
-  const [outcome, setOutcome] = useState<"resisted" | "gave-in">();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -30,169 +26,73 @@ export default function PastTemptationPage() {
     return { emoji: "🌙", description: "Night" };
   };
 
-  const handleNext = () => {
-    if (step === 1) {
-      if (!date) {
-        toast({
-          title: "Please select a date",
-          description: "Choose when this temptation occurred",
-          variant: "destructive",
-        });
-        return;
-      }
-      setStep(2);
-    } else {
-      if (!outcome) {
-        toast({
-          title: "Please select an outcome",
-          description: "Choose whether you resisted or gave in to the temptation",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Create a new date with the selected time
-      const selectedDate = new Date(date!);
-      const hours = Math.floor(timeValue[0]);
-      const minutes = Math.round((timeValue[0] - hours) * 60);
-      selectedDate.setHours(hours, minutes);
-
-      // Store both date and outcome in sessionStorage
-      sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
-      sessionStorage.setItem('temptationOutcome', outcome);
-      navigate('/reflection');
-    }
-  };
-
-  const handleSkipReflection = () => {
-    if (!outcome) {
+  const handleContinue = () => {
+    if (!date) {
       toast({
-        title: "Please select an outcome",
-        description: "Choose whether you resisted or gave in to the temptation before skipping",
+        title: "Please select a date",
+        description: "Choose when this temptation occurred",
         variant: "destructive",
       });
       return;
     }
 
     // Create a new date with the selected time
-    const selectedDate = new Date(date!);
+    const selectedDate = new Date(date);
     const hours = Math.floor(timeValue[0]);
     const minutes = Math.round((timeValue[0] - hours) * 60);
     selectedDate.setHours(hours, minutes);
 
-    // Store the data and navigate home
+    // Store the selected date in sessionStorage to access it in the reflection page
     sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
-    sessionStorage.setItem('temptationOutcome', outcome);
-    navigate('/');
-  };
-
-  const handleBack = () => {
-    if (step === 2) {
-      setStep(1);
-    } else {
-      navigate('/');
-    }
+    navigate('/reflection');
   };
 
   const timeInfo = getTimeEmoji(Math.floor(timeValue[0]));
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
-      <Progress value={step === 1 ? 50 : 100} className="w-full" />
-      
-      <Mascot 
-        message={
-          step === 1 
-            ? "Select the date and time when this temptation occurred" 
-            : "What was the outcome of this temptation?"
-        } 
-      />
+      <Mascot message="Select the date and time when this temptation occurred" />
       
       <div className="bg-card rounded-lg p-6 space-y-6">
-        {step === 1 ? (
-          <>
-            <h2 className="text-2xl font-bold text-center">When did this happen?</h2>
-            
-            <div className="flex justify-center">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                disabled={{ after: new Date() }}
-                className="rounded-md border"
-              />
-            </div>
+        <h2 className="text-2xl font-bold text-center">When did this happen?</h2>
+        
+        <div className="flex justify-center">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            disabled={{ after: new Date() }}
+            className="rounded-md border"
+          />
+        </div>
 
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-center">Time of day</h3>
-              <div className="px-4">
-                <div className="text-center mb-4">
-                  <span className="text-2xl">{timeInfo.emoji}</span>
-                  <span className="ml-2 text-muted-foreground">{timeInfo.description}</span>
-                </div>
-                <Slider
-                  value={timeValue}
-                  onValueChange={setTimeValue}
-                  max={23.983333}
-                  step={0.016667}
-                  className="w-full"
-                />
-                <div className="text-center mt-2">
-                  <span className="text-muted-foreground">{formatTime(timeValue[0])}</span>
-                </div>
-              </div>
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-center">Time of day</h3>
+          <div className="px-4">
+            <div className="text-center mb-4">
+              <span className="text-2xl">{timeInfo.emoji}</span>
+              <span className="ml-2 text-muted-foreground">{timeInfo.description}</span>
             </div>
-          </>
-        ) : (
-          <>
-            <h2 className="text-2xl font-bold text-center">What was the outcome?</h2>
-            
-            <RadioGroup
-              value={outcome}
-              onValueChange={(value) => setOutcome(value as "resisted" | "gave-in")}
-              className="space-y-4"
-            >
-              <div className="flex items-center space-x-2 rounded-lg border p-4 cursor-pointer hover:bg-accent">
-                <RadioGroupItem value="resisted" id="resisted" />
-                <Label htmlFor="resisted" className="flex-grow cursor-pointer">
-                  <div className="font-semibold">I Resisted</div>
-                  <p className="text-sm text-muted-foreground">
-                    By God's grace, I overcame this temptation
-                  </p>
-                </Label>
-              </div>
-
-              <div className="flex items-center space-x-2 rounded-lg border p-4 cursor-pointer hover:bg-accent">
-                <RadioGroupItem value="gave-in" id="gave-in" />
-                <Label htmlFor="gave-in" className="flex-grow cursor-pointer">
-                  <div className="font-semibold">I Gave In</div>
-                  <p className="text-sm text-muted-foreground">
-                    I struggled with this temptation and need support
-                  </p>
-                </Label>
-              </div>
-            </RadioGroup>
-          </>
-        )}
+            <Slider
+              value={timeValue}
+              onValueChange={setTimeValue}
+              max={23.983333}
+              step={0.016667}
+              className="w-full"
+            />
+            <div className="text-center mt-2">
+              <span className="text-muted-foreground">{formatTime(timeValue[0])}</span>
+            </div>
+          </div>
+        </div>
 
         <div className="flex justify-between pt-4">
-          <Button variant="outline" onClick={handleBack}>
+          <Button variant="outline" onClick={() => navigate('/')}>
             Back
           </Button>
-          <div className="space-x-2">
-            {step === 2 && (
-              <Button 
-                variant="ghost" 
-                onClick={handleSkipReflection}
-                className="text-muted-foreground"
-              >
-                Skip Reflection
-              </Button>
-            )}
-            <Button onClick={handleNext}>
-              {step === 1 ? "Continue" : "Proceed to Reflection"}
-            </Button>
-          </div>
+          <Button onClick={handleContinue}>
+            Continue
+          </Button>
         </div>
       </div>
     </div>
