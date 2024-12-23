@@ -25,14 +25,23 @@ export default function JournalPage() {
   const isMobile = useIsMobile();
 
   useEffect(() => {
+    console.log("JournalPage mounted, fetching entries...");
     fetchEntries();
   }, []);
 
   const fetchEntries = async () => {
+    console.log("Starting fetchEntries...");
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      console.log("Current user:", user);
+      
+      if (!user) {
+        console.log("No user found, returning early");
+        setIsLoading(false);
+        return;
+      }
 
+      console.log("Fetching entries for user:", user.id);
       const { data, error } = await supabase
         .from('journal_entries')
         .select(`
@@ -43,32 +52,53 @@ export default function JournalPage() {
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase query error:', error);
+        throw error;
+      }
 
-      const formattedEntries = data.map(entry => ({
-        id: entry.id,
-        date: new Date(entry.created_at),
-        type: entry.entry_type,
-        resisted: entry.temptation_entries?.[0]?.resisted ?? true,
-        level: entry.temptation_entries?.[0]?.intensity_level?.toString() ?? "medium",
-        trigger: entry.temptation_entries?.[0]?.trigger ?? entry.checkin_entries?.[0]?.mood_description ?? "",
-        notes: entry.temptation_entries?.[0]?.temptation_details ?? "",
-        mood: entry.checkin_entries?.[0]?.mood_score,
-      }));
+      console.log("Raw data from Supabase:", data);
 
+      if (!data) {
+        console.log("No data returned from Supabase");
+        setEntries([]);
+        setIsLoading(false);
+        return;
+      }
+
+      const formattedEntries = data.map(entry => {
+        console.log("Processing entry:", entry);
+        const formatted = {
+          id: entry.id,
+          date: new Date(entry.created_at),
+          type: entry.entry_type,
+          resisted: entry.temptation_entries?.[0]?.resisted ?? true,
+          level: entry.temptation_entries?.[0]?.intensity_level?.toString() ?? "medium",
+          trigger: entry.temptation_entries?.[0]?.trigger ?? entry.checkin_entries?.[0]?.mood_description ?? "",
+          notes: entry.temptation_entries?.[0]?.temptation_details ?? "",
+          mood: entry.checkin_entries?.[0]?.mood_score,
+        };
+        console.log("Formatted entry:", formatted);
+        return formatted;
+      });
+
+      console.log("Final formatted entries:", formattedEntries);
       setEntries(formattedEntries);
     } catch (error) {
-      console.error('Error fetching entries:', error);
+      console.error('Error in fetchEntries:', error);
     } finally {
+      console.log("Setting isLoading to false");
       setIsLoading(false);
     }
   };
 
   const handleDateSelect = (newDate: Date | undefined) => {
+    console.log("Date selected:", newDate);
     setDate(newDate);
   };
 
   const handleEntryDelete = (deletedEntryId: number) => {
+    console.log("Deleting entry:", deletedEntryId);
     setEntries(prevEntries => prevEntries.filter(entry => entry.id !== deletedEntryId));
     setSelectedEntry(null);
   };
@@ -79,12 +109,16 @@ export default function JournalPage() {
       )
     : entries;
 
+  console.log("Filtered entries:", filteredEntries);
+
   const dailyCheckIn = showCalendar && date
     ? entries.find(entry => 
         format(entry.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd") && 
         entry.type.toLowerCase().includes("check-in")
       )
     : null;
+
+  console.log("Daily check-in:", dailyCheckIn);
 
   return (
     <div className="container max-w-7xl mx-auto p-2 sm:p-4 space-y-4 sm:space-y-8 pb-20 md:pb-4">
