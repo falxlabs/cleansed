@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { CheckInProgress } from "./CheckInProgress";
 import { NavigationButtons } from "./NavigationButtons";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -45,7 +44,6 @@ export function CheckInContainer({
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back
         </Button>
-        <CheckInProgress currentStep={currentStep} totalSteps={totalSteps} className="flex-1" />
       </div>
     </div>
   );
