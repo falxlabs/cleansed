@@ -171,7 +171,7 @@ export default function PastTemptationPage() {
             Back
           </Button>
           <div className="space-x-2">
-            {step === 2 && outcome === "resisted" && (
+            {step === 2 && (
               <Button
                 variant="outline"
                 className="text-muted-foreground"
