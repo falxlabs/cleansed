@@ -8,7 +8,8 @@ import { saveOnboardingDataToDatabase } from "./useOnboardingDatabase";
 import type { AuthResponse } from "@supabase/supabase-js";
 
 export type { OnboardingFormData } from "./useOnboardingForm";
-export { TOTAL_STEPS } from "./useOnboardingForm";
+
+const TOTAL_STEPS = 7;
 
 export function useOnboarding() {
   const [loading, setLoading] = useState(false);
@@ -29,7 +30,6 @@ export function useOnboarding() {
     try {
       setLoading(true);
 
-      // Sign up the user with magic link
       const { data, error: signUpError } = await supabase.auth.signInWithOtp({
         email: formData.email,
         options: {
@@ -42,7 +42,6 @@ export function useOnboarding() {
 
       if (signUpError) throw signUpError;
 
-      // If we have a session (e.g., if email verification is disabled), save the data immediately
       const userId = data.session?.user?.id;
       if (userId) {
         await saveOnboardingDataToDatabase(userId, formData);
@@ -72,6 +71,7 @@ export function useOnboarding() {
     formData,
     loading,
     progress,
+    totalSteps: TOTAL_STEPS,
     handleFormDataChange,
     handleNext,
     handleBack,
