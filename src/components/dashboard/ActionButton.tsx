@@ -24,15 +24,16 @@ export function ActionButton({
       variant={variant}
       onClick={onClick}
       className={cn(
-        "flex flex-col items-center justify-center gap-4 text-lg h-auto py-6 px-8",
-        "rounded-2xl font-bold transition-all duration-200",
+        "flex flex-row items-center gap-6 text-lg h-auto py-6 px-8",
+        "rounded-2xl font-bold transition-all duration-300",
         "shadow-md hover:shadow-lg active:scale-95",
         variant === "default" && "bg-duo-500 hover:bg-duo-600 active:bg-duo-700",
+        variant === "outline" && "hover:bg-gray-50 hover:border-gray-400 hover:shadow-xl hover:scale-[1.02]",
         className
       )}
       disabled={disabled}
     >
-      <Icon className="w-16 h-16" />
+      <Icon className="w-16 h-16 shrink-0" />
       <span>{label}</span>
     </Button>
   );
