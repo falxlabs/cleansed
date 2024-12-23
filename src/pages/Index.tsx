@@ -27,7 +27,6 @@ const Index = () => {
           message={welcomeMessage} 
           className="animate-fade-in" 
           onCheckIn={() => navigate('/daily-checkin')}
-          showCheckInButton={true}
         />
       </div>
 

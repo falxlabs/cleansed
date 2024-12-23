@@ -1,26 +1,32 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Index from "./pages/Index";
+import CrossroadPage from "./pages/CrossroadPage";
+import ReflectionPage from "./pages/ReflectionPage";
+import JournalPage from "./pages/JournalPage";
+import PastTemptationPage from "./pages/PastTemptationPage";
 import SettingsPage from "./pages/SettingsPage";
-import ProfileSettingsPage from "./pages/ProfileSettingsPage";
-import AffirmationSettingsPage from "./pages/AffirmationSettingsPage";
-import NotificationsSettingsPage from "./pages/NotificationsSettingsPage";
-import SupportSettingsPage from "./pages/SupportSettingsPage";
-import HomePage from "./pages/HomePage"; // Example of an existing import
-import NotFoundPage from "./pages/NotFoundPage"; // Example of an existing import
+import DailyCheckinPage from "./pages/DailyCheckinPage";
+import { BottomNav } from "./components/navigation/BottomNav";
 
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/settings/profile" element={<ProfileSettingsPage />} />
-        <Route path="/settings/affirmation" element={<AffirmationSettingsPage />} />
-        <Route path="/settings/notifications" element={<NotificationsSettingsPage />} />
-        <Route path="/settings/support" element={<SupportSettingsPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </Router>
-  );
-}
+const queryClient = new QueryClient();
 
-export default App;
+export default () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/crossroad" element={<CrossroadPage />} />
+          <Route path="/reflection" element={<ReflectionPage />} />
+          <Route path="/journal" element={<JournalPage />} />
+          <Route path="/past-temptation" element={<PastTemptationPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/daily-checkin" element={<DailyCheckinPage />} />
+        </Routes>
+        <BottomNav />
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);

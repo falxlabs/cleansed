@@ -6,10 +6,9 @@ interface MascotProps {
   message: string;
   className?: string;
   onCheckIn?: () => void;
-  showCheckInButton?: boolean;
 }
 
-export function Mascot({ message, className, onCheckIn, showCheckInButton = false }: MascotProps) {
+export function Mascot({ message, className, onCheckIn }: MascotProps) {
   return (
     <Card className={cn(
       "p-6 relative overflow-hidden",
@@ -23,14 +22,12 @@ export function Mascot({ message, className, onCheckIn, showCheckInButton = fals
           </div>
           <p className="text-lg font-bold leading-relaxed text-gray-800">{message}</p>
         </div>
-        {showCheckInButton && (
-          <Button
-            onClick={onCheckIn}
-            className="bg-duo-100 text-duo-800 hover:bg-duo-200 w-full"
-          >
-            Daily Check-in
-          </Button>
-        )}
+        <Button
+          onClick={onCheckIn}
+          className="bg-duo-100 text-duo-800 hover:bg-duo-200 w-full"
+        >
+          Daily Check-in
+        </Button>
       </div>
     </Card>
   );
