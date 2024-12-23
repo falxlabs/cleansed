@@ -12,6 +12,7 @@ import ProfileSettingsPage from "./pages/settings/ProfileSettingsPage";
 import AffirmationSettingsPage from "./pages/settings/AffirmationSettingsPage";
 import NotificationsSettingsPage from "./pages/settings/NotificationsSettingsPage";
 import SupportSettingsPage from "./pages/settings/SupportSettingsPage";
+import TemptationSettingsPage from "./pages/settings/TemptationSettingsPage";
 import { BottomNav } from "./components/navigation/BottomNav";
 import { DesktopNav } from "./components/navigation/DesktopNav";
 
@@ -90,6 +91,7 @@ export default () => (
           />
           <Route path="/settings/profile" element={<ProfileSettingsPage />} />
           <Route path="/settings/affirmation" element={<AffirmationSettingsPage />} />
+          <Route path="/settings/temptation" element={<TemptationSettingsPage />} />
           <Route path="/settings/notifications" element={<NotificationsSettingsPage />} />
           <Route path="/settings/support" element={<SupportSettingsPage />} />
         </Routes>
