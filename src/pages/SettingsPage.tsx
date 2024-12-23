@@ -7,6 +7,7 @@ export default function SettingsPage() {
 
   const settingsCategories = [
     { title: "Profile", path: "/settings/profile" },
+    { title: "Daily Check-in", path: "/settings/daily-checkin" },
     { title: "Affirmation Message", path: "/settings/affirmation" },
     { title: "Temptation", path: "/settings/temptation" },
     { title: "Notifications", path: "/settings/notifications" },

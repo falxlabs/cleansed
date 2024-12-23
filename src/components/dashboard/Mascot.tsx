@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { shouldShowCheckIn } from "@/utils/checkInUtils";
 
 interface MascotProps {
   message: string;
@@ -10,6 +11,11 @@ interface MascotProps {
 }
 
 export function Mascot({ message, className, onCheckIn, showCheckInButton = false }: MascotProps) {
+  const shouldShow = shouldShowCheckIn();
+  const displayMessage = shouldShow 
+    ? "Hey! It's time for your daily check-in. This helps us track your progress and support you better!"
+    : message;
+
   return (
     <Card className={cn(
       "p-6 relative overflow-hidden",
@@ -21,9 +27,9 @@ export function Mascot({ message, className, onCheckIn, showCheckInButton = fals
           <div className="w-16 h-16 rounded-2xl bg-duo-100 animate-bounce flex items-center justify-center">
             <span className="text-3xl">🕊️</span>
           </div>
-          <p className="text-lg font-bold leading-relaxed text-gray-800">{message}</p>
+          <p className="text-lg font-bold leading-relaxed text-gray-800">{displayMessage}</p>
         </div>
-        {showCheckInButton && onCheckIn && (
+        {showCheckInButton && shouldShow && onCheckIn && (
           <Button
             onClick={onCheckIn}
             className="bg-duo-100 text-duo-800 hover:bg-duo-200 w-full"
