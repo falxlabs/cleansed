@@ -64,6 +64,28 @@ export default function PastTemptationPage() {
     }
   };
 
+  const handleSkipReflection = () => {
+    if (!outcome) {
+      toast({
+        title: "Please select an outcome",
+        description: "Choose whether you resisted or gave in to the temptation before skipping",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Create a new date with the selected time
+    const selectedDate = new Date(date!);
+    const hours = Math.floor(timeValue[0]);
+    const minutes = Math.round((timeValue[0] - hours) * 60);
+    selectedDate.setHours(hours, minutes);
+
+    // Store the data and navigate home
+    sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
+    sessionStorage.setItem('temptationOutcome', outcome);
+    navigate('/');
+  };
+
   const handleBack = () => {
     if (step === 2) {
       setStep(1);
@@ -157,9 +179,20 @@ export default function PastTemptationPage() {
           <Button variant="outline" onClick={handleBack}>
             Back
           </Button>
-          <Button onClick={handleNext}>
-            {step === 1 ? "Continue" : "Proceed to Reflection"}
-          </Button>
+          <div className="space-x-2">
+            {step === 2 && (
+              <Button 
+                variant="ghost" 
+                onClick={handleSkipReflection}
+                className="text-muted-foreground"
+              >
+                Skip Reflection
+              </Button>
+            )}
+            <Button onClick={handleNext}>
+              {step === 1 ? "Continue" : "Proceed to Reflection"}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
