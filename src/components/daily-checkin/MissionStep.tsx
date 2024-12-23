@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface MissionStepProps {
   selectedStatement: string;
@@ -12,6 +13,7 @@ export function MissionStep({
   onStatementChange,
 }: MissionStepProps) {
   const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchUserAffirmation = async () => {
@@ -19,24 +21,48 @@ export function MissionStep({
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
 
-        const { data: userAffirmation } = await supabase
+        const { data: userAffirmation, error } = await supabase
           .from('user_affirmations')
           .select('content')
           .eq('user_id', user.id)
           .maybeSingle();
 
+        if (error) throw error;
+
         if (userAffirmation) {
           onStatementChange(userAffirmation.content);
+        } else if (selectedStatement) {
+          // If no existing affirmation but we have a selected statement, save it
+          const { error: insertError } = await supabase
+            .from('user_affirmations')
+            .insert({
+              user_id: user.id,
+              content: selectedStatement
+            });
+
+          if (insertError) {
+            console.error('Error saving affirmation:', insertError);
+            toast({
+              title: "Error",
+              description: "Failed to save your affirmation. Please try again.",
+              variant: "destructive",
+            });
+          }
         }
       } catch (error) {
-        console.error('Error fetching affirmation:', error);
+        console.error('Error fetching/saving affirmation:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load or save your affirmation. Please try again.",
+          variant: "destructive",
+        });
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchUserAffirmation();
-  }, [onStatementChange]);
+  }, [onStatementChange, selectedStatement]);
 
   if (isLoading) {
     return (
