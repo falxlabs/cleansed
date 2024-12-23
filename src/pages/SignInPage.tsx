@@ -43,6 +43,10 @@ const SignInPage = () => {
     }
   };
 
+  const handleSkip = () => {
+    navigate("/dashboard");
+  };
+
   return (
     <div className="min-h-screen bg-[#F5F5F5] px-4 py-8">
       <div className="max-w-md mx-auto">
@@ -87,6 +91,25 @@ const SignInPage = () => {
                 {loading ? "Sending..." : "Continue"}
               </Button>
             </form>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-white px-2 text-muted-foreground">
+                  Or continue without account
+                </span>
+              </div>
+            </div>
+
+            <Button
+              variant="outline"
+              onClick={handleSkip}
+              className="w-full"
+            >
+              Skip for now
+            </Button>
           </div>
         </Card>
       </div>

@@ -43,50 +43,44 @@ export function OnboardingContainer() {
   };
 
   const handleSkip = () => {
+    // Save data to localStorage even when skipping
+    localStorage.setItem("defaultTemptation", formData.temptationType);
+    localStorage.setItem("defaultTemptationLevel", formData.temptationLevel[0].toString());
+    localStorage.setItem("customAffirmation", formData.affirmation);
+    localStorage.setItem("checkInTime", formData.checkInTime);
+    
     navigate("/dashboard");
   };
 
   const handleComplete = async () => {
     try {
-      // Sign up with Supabase
-      const { error: signUpError } = await supabase.auth.signUp({
-        email: formData.email,
-        options: {
-          emailRedirectTo: window.location.origin + '/dashboard',
-          data: {
-            first_name: formData.firstName,
-          }
-        }
-      });
-
-      if (signUpError) throw signUpError;
-
-      // Save additional data to localStorage
+      // Save data to localStorage first
       localStorage.setItem("defaultTemptation", formData.temptationType);
       localStorage.setItem("defaultTemptationLevel", formData.temptationLevel[0].toString());
       localStorage.setItem("customAffirmation", formData.affirmation);
       localStorage.setItem("checkInTime", formData.checkInTime);
-      
-      // Update profile with additional data
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({
-          first_name: formData.firstName,
-          age: parseInt(formData.age),
-        })
-        .eq('id', (await supabase.auth.getUser()).data.user?.id);
 
-      if (updateError) throw updateError;
+      // Only attempt to sign up if email is provided
+      if (formData.email) {
+        const { error: signUpError } = await supabase.auth.signInWithOtp({
+          email: formData.email,
+          options: {
+            emailRedirectTo: window.location.origin + '/dashboard',
+          }
+        });
+
+        if (signUpError) throw signUpError;
+
+        toast({
+          title: "Welcome!",
+          description: "Check your email to verify your account.",
+        });
+      }
 
       // Request notification permission
       if ("Notification" in window) {
         Notification.requestPermission();
       }
-
-      toast({
-        title: "Welcome!",
-        description: "Check your email to verify your account.",
-      });
 
       // Navigate to dashboard
       navigate("/dashboard");
