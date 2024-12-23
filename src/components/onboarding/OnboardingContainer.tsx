@@ -1,16 +1,13 @@
 import { useState } from "react";
-import { Progress } from "@/components/ui/progress";
-import { Mascot } from "@/components/dashboard/Mascot";
-import { TemptationTypeStep } from "@/components/onboarding/TemptationTypeStep";
-import { TemptationLevelStep } from "@/components/onboarding/TemptationLevelStep";
-import { AffirmationStep } from "@/components/onboarding/AffirmationStep";
-import { CheckInTimeStep } from "@/components/onboarding/CheckInTimeStep";
-import { ProfileStep } from "@/components/onboarding/ProfileStep";
-import { SignUpStep } from "@/components/onboarding/SignUpStep";
-import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { Mascot } from "@/components/dashboard/Mascot";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { OnboardingStepManager } from "./OnboardingStepManager";
+import { validateStep } from "@/utils/onboardingValidation";
+import { saveOnboardingData } from "@/utils/onboardingStorage";
 
 const TOTAL_STEPS = 6;
 
@@ -30,41 +27,12 @@ export function OnboardingContainer() {
 
   const progress = (currentStep / TOTAL_STEPS) * 100;
 
-  const validateCurrentStep = () => {
-    switch (currentStep) {
-      case 1:
-        return formData.temptationType.length > 0;
-      case 2:
-        return formData.temptationLevel.length > 0;
-      case 3:
-        return formData.affirmation.length > 0;
-      case 4:
-        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(formData.checkInTime);
-      case 5:
-        return formData.firstName.length >= 2;
-      case 6:
-        return formData.email === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
-      default:
-        return true;
-    }
-  };
-
-  const saveDataLocally = () => {
-    localStorage.setItem("defaultTemptation", formData.temptationType);
-    localStorage.setItem("defaultTemptationLevel", formData.temptationLevel[0].toString());
-    localStorage.setItem("affirmationType", "custom");
-    localStorage.setItem("customAffirmation", formData.affirmation);
-    localStorage.setItem("checkInTime", formData.checkInTime);
-    if (formData.firstName) {
-      localStorage.setItem("firstName", formData.firstName);
-    }
-    if (formData.age) {
-      localStorage.setItem("age", formData.age);
-    }
+  const handleFormDataChange = (updates: Partial<typeof formData>) => {
+    setFormData((prev) => ({ ...prev, ...updates }));
   };
 
   const handleNext = () => {
-    if (!validateCurrentStep()) {
+    if (!validateStep(currentStep, formData)) {
       toast({
         title: "Validation Error",
         description: "Please fill in all required fields correctly",
@@ -85,7 +53,7 @@ export function OnboardingContainer() {
   };
 
   const handleSkip = () => {
-    if (!validateCurrentStep()) {
+    if (!validateStep(currentStep, formData)) {
       toast({
         title: "Validation Error",
         description: "Please fill in all required fields correctly",
@@ -94,12 +62,12 @@ export function OnboardingContainer() {
       return;
     }
     
-    saveDataLocally();
+    saveOnboardingData(formData);
     navigate("/dashboard");
   };
 
   const handleComplete = async () => {
-    if (!validateCurrentStep()) {
+    if (!validateStep(currentStep, formData)) {
       toast({
         title: "Validation Error",
         description: "Please fill in all required fields correctly",
@@ -109,9 +77,8 @@ export function OnboardingContainer() {
     }
 
     try {
-      saveDataLocally();
+      saveOnboardingData(formData);
 
-      // Only attempt to sign up if email is provided
       if (formData.email) {
         const { error: signUpError } = await supabase.auth.signInWithOtp({
           email: formData.email,
@@ -128,12 +95,10 @@ export function OnboardingContainer() {
         });
       }
 
-      // Request notification permission
       if ("Notification" in window) {
         Notification.requestPermission();
       }
 
-      // Navigate to dashboard
       navigate("/dashboard");
     } catch (error) {
       toast({
@@ -141,57 +106,6 @@ export function OnboardingContainer() {
         description: "An error occurred during sign up.",
         variant: "destructive",
       });
-    }
-  };
-
-  const renderStep = () => {
-    switch (currentStep) {
-      case 1:
-        return (
-          <TemptationTypeStep
-            value={formData.temptationType}
-            onChange={(value) => setFormData({ ...formData, temptationType: value })}
-          />
-        );
-      case 2:
-        return (
-          <TemptationLevelStep
-            sliderValue={formData.temptationLevel}
-            onSliderChange={(value) => setFormData({ ...formData, temptationLevel: value })}
-          />
-        );
-      case 3:
-        return (
-          <AffirmationStep
-            value={formData.affirmation}
-            onChange={(value) => setFormData({ ...formData, affirmation: value })}
-          />
-        );
-      case 4:
-        return (
-          <CheckInTimeStep
-            value={formData.checkInTime}
-            onChange={(value) => setFormData({ ...formData, checkInTime: value })}
-          />
-        );
-      case 5:
-        return (
-          <ProfileStep
-            firstName={formData.firstName}
-            age={formData.age}
-            onFirstNameChange={(value) => setFormData({ ...formData, firstName: value })}
-            onAgeChange={(value) => setFormData({ ...formData, age: value })}
-          />
-        );
-      case 6:
-        return (
-          <SignUpStep
-            email={formData.email}
-            onEmailChange={(value) => setFormData({ ...formData, email: value })}
-          />
-        );
-      default:
-        return null;
     }
   };
 
@@ -208,7 +122,11 @@ export function OnboardingContainer() {
       />
 
       <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
-        {renderStep()}
+        <OnboardingStepManager
+          currentStep={currentStep}
+          formData={formData}
+          onFormDataChange={handleFormDataChange}
+        />
         
         <div className="flex justify-between pt-4">
           {currentStep > 1 ? (
