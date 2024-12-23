@@ -5,7 +5,6 @@ import { Mascot } from "@/components/dashboard/Mascot";
 import { StreakDisplay } from "@/components/dashboard/StreakDisplay";
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Button } from "@/components/ui/button";
 import { DailyCheckin } from "@/components/daily-checkin/DailyCheckin";
 import { useState } from "react";
 
@@ -27,16 +26,12 @@ const Index = () => {
         <StreakDisplay streak={currentStreak} />
       </div>
 
-      <div className="flex gap-4 items-start">
-        <div className="flex-1">
-          <Mascot message={welcomeMessage} className="animate-fade-in" />
-        </div>
-        <Button
-          onClick={() => setShowCheckin(true)}
-          className="bg-duo-100 text-duo-800 hover:bg-duo-200"
-        >
-          Daily Check-in
-        </Button>
+      <div className="flex-1">
+        <Mascot 
+          message={welcomeMessage} 
+          className="animate-fade-in" 
+          onCheckIn={() => setShowCheckin(true)}
+        />
       </div>
 
       <div className="grid gap-4">
