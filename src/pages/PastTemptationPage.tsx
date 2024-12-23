@@ -64,11 +64,12 @@ export default function PastTemptationPage() {
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
-      <Mascot message="Select the date and time when this temptation occurred" />
+      <Mascot message="Let's record what happened. First, select when this temptation occurred." />
       
       <div className="bg-card rounded-lg p-6 space-y-6">
         <h2 className="text-2xl font-bold text-center">When did this happen?</h2>
         
+        {/* Step 1: Date Selection */}
         <div className="flex justify-center">
           <Calendar
             mode="single"
@@ -79,6 +80,7 @@ export default function PastTemptationPage() {
           />
         </div>
 
+        {/* Step 2: Time Selection */}
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-center">Time of day</h3>
           <div className="px-4">
@@ -99,30 +101,31 @@ export default function PastTemptationPage() {
           </div>
         </div>
 
-        <div className="space-y-4">
+        {/* Step 3: Outcome Selection */}
+        <div className="space-y-4 mt-8">
           <h3 className="text-lg font-semibold text-center">What was the outcome?</h3>
           <div className="grid grid-cols-2 gap-4">
             <Card 
               className={`p-6 cursor-pointer transition-all duration-200 ${
-                resisted === true ? 'ring-2 ring-green-500 bg-green-50' : 'hover:bg-muted/50'
+                resisted === true ? 'ring-2 ring-green-500 bg-green-50/50' : 'hover:bg-muted/50'
               }`}
               onClick={() => setResisted(true)}
             >
               <div className="flex flex-col items-center space-y-2">
                 <Check className="h-8 w-8 text-green-500" />
-                <span className="font-medium">Resisted</span>
+                <span className="font-medium">I Resisted</span>
               </div>
             </Card>
             
             <Card 
               className={`p-6 cursor-pointer transition-all duration-200 ${
-                resisted === false ? 'ring-2 ring-red-500 bg-red-50' : 'hover:bg-muted/50'
+                resisted === false ? 'ring-2 ring-red-500 bg-red-50/50' : 'hover:bg-muted/50'
               }`}
               onClick={() => setResisted(false)}
             >
               <div className="flex flex-col items-center space-y-2">
                 <X className="h-8 w-8 text-red-500" />
-                <span className="font-medium">Gave In</span>
+                <span className="font-medium">I Gave In</span>
               </div>
             </Card>
           </div>
