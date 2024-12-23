@@ -10,6 +10,12 @@ import AchievementsPage from "./pages/AchievementsPage";
 import { BottomNav } from "./components/navigation/BottomNav";
 import { DesktopNav } from "./components/navigation/DesktopNav";
 import { Toaster } from "@/components/ui/toaster";
+import ProfileSettingsPage from "./pages/settings/ProfileSettingsPage";
+import DailyCheckInSettingsPage from "./pages/settings/DailyCheckInSettingsPage";
+import AffirmationSettingsPage from "./pages/settings/AffirmationSettingsPage";
+import TemptationSettingsPage from "./pages/settings/TemptationSettingsPage";
+import NotificationsSettingsPage from "./pages/settings/NotificationsSettingsPage";
+import SupportSettingsPage from "./pages/settings/SupportSettingsPage";
 
 function App() {
   return (
@@ -26,6 +32,12 @@ function App() {
             <Route path="/journal" element={<JournalPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/achievements" element={<AchievementsPage />} />
+            <Route path="/settings/profile" element={<ProfileSettingsPage />} />
+            <Route path="/settings/daily-checkin" element={<DailyCheckInSettingsPage />} />
+            <Route path="/settings/affirmation" element={<AffirmationSettingsPage />} />
+            <Route path="/settings/temptation" element={<TemptationSettingsPage />} />
+            <Route path="/settings/notifications" element={<NotificationsSettingsPage />} />
+            <Route path="/settings/support" element={<SupportSettingsPage />} />
           </Routes>
         </main>
       </div>
