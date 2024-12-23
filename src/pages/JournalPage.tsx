@@ -64,7 +64,26 @@ export default function JournalPage() {
         </Button>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4 sm:gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-4 sm:gap-8">
+        <Card className={`${showCalendar ? "" : "lg:col-span-2"}`}>
+          <CardHeader className="p-4">
+            <CardTitle>Entries</CardTitle>
+            <CardDescription>
+              {showCalendar 
+                ? "Showing entries for selected date" 
+                : "Showing all entries"}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <EntriesTable 
+                entries={filteredEntries} 
+                onEntryClick={setSelectedEntry} 
+              />
+            </div>
+          </CardContent>
+        </Card>
+
         {showCalendar && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
             <Card>
@@ -91,25 +110,6 @@ export default function JournalPage() {
             )}
           </div>
         )}
-
-        <Card className={`${showCalendar ? "" : "lg:col-span-2"}`}>
-          <CardHeader className="p-4">
-            <CardTitle>Entries</CardTitle>
-            <CardDescription>
-              {showCalendar 
-                ? "Showing entries for selected date" 
-                : "Showing all entries"}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="overflow-x-auto">
-              <EntriesTable 
-                entries={filteredEntries} 
-                onEntryClick={setSelectedEntry} 
-              />
-            </div>
-          </CardContent>
-        </Card>
       </div>
 
       <EntryDetailsDialog 
