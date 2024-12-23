@@ -9,7 +9,272 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      affirmations: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: number
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: never
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: never
+        }
+        Relationships: []
+      }
+      checkin_entries: {
+        Row: {
+          affirmation_id: number | null
+          custom_affirmation_id: number | null
+          id: number
+          mood_description: string | null
+          mood_score: number | null
+        }
+        Insert: {
+          affirmation_id?: number | null
+          custom_affirmation_id?: number | null
+          id: number
+          mood_description?: string | null
+          mood_score?: number | null
+        }
+        Update: {
+          affirmation_id?: number | null
+          custom_affirmation_id?: number | null
+          id?: number
+          mood_description?: string | null
+          mood_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checkin_entries_affirmation_id_fkey"
+            columns: ["affirmation_id"]
+            isOneToOne: false
+            referencedRelation: "affirmations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "checkin_entries_custom_affirmation_id_fkey"
+            columns: ["custom_affirmation_id"]
+            isOneToOne: false
+            referencedRelation: "user_affirmations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "checkin_entries_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "journal_entries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      journal_entries: {
+        Row: {
+          created_at: string | null
+          entry_type: Database["public"]["Enums"]["entry_type"]
+          id: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          entry_type: Database["public"]["Enums"]["entry_type"]
+          id?: never
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          entry_type?: Database["public"]["Enums"]["entry_type"]
+          id?: never
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journal_entries_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_settings: {
+        Row: {
+          check_in_time: string | null
+          created_at: string | null
+          email_enabled: boolean | null
+          push_enabled: boolean | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          check_in_time?: string | null
+          created_at?: string | null
+          email_enabled?: boolean | null
+          push_enabled?: boolean | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          check_in_time?: string | null
+          created_at?: string | null
+          email_enabled?: boolean | null
+          push_enabled?: boolean | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_settings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          age: number | null
+          created_at: string | null
+          email: string | null
+          first_name: string | null
+          id: string
+          last_seen_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          age?: number | null
+          created_at?: string | null
+          email?: string | null
+          first_name?: string | null
+          id: string
+          last_seen_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          age?: number | null
+          created_at?: string | null
+          email?: string | null
+          first_name?: string | null
+          id?: string
+          last_seen_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      temptation_entries: {
+        Row: {
+          created_at: string | null
+          id: number
+          intensity_level: number
+          resistance_strategy: string | null
+          resisted: boolean
+          temptation_details: string | null
+          temptation_type: Database["public"]["Enums"]["temptation_type"]
+          trigger: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id: number
+          intensity_level: number
+          resistance_strategy?: string | null
+          resisted?: boolean
+          temptation_details?: string | null
+          temptation_type: Database["public"]["Enums"]["temptation_type"]
+          trigger?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          intensity_level?: number
+          resistance_strategy?: string | null
+          resisted?: boolean
+          temptation_details?: string | null
+          temptation_type?: Database["public"]["Enums"]["temptation_type"]
+          trigger?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "temptation_entries_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "journal_entries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      temptation_settings: {
+        Row: {
+          created_at: string | null
+          default_intensity: number | null
+          default_type: Database["public"]["Enums"]["temptation_type"] | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          default_intensity?: number | null
+          default_type?: Database["public"]["Enums"]["temptation_type"] | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          default_intensity?: number | null
+          default_type?: Database["public"]["Enums"]["temptation_type"] | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "temptation_settings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_affirmations: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: number
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: never
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: never
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_affirmations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +283,16 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      affirmation_type: "predefined" | "custom"
+      entry_type: "check-in" | "temptation"
+      temptation_type:
+        | "pride"
+        | "greed"
+        | "lust"
+        | "envy"
+        | "gluttony"
+        | "wrath"
+        | "sloth"
     }
     CompositeTypes: {
       [_ in never]: never

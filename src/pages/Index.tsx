@@ -1,9 +1,26 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useEffect, useState } from "react";
+import { getProfile } from "@/utils/databaseUtils";
+import type { Profile } from "@/types/database";
 
 const Index = () => {
   const navigate = useNavigate();
+  const [profile, setProfile] = useState<Profile | null>(null);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const profileData = await getProfile();
+        setProfile(profileData);
+      } catch (error) {
+        console.error('Error loading profile:', error);
+      }
+    };
+
+    loadProfile();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-duo-50 px-4">
@@ -26,7 +43,7 @@ const Index = () => {
             </div>
             <div className="flex-1 space-y-4 text-center md:text-left">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-                Hi, I'm Grace
+                {profile?.first_name ? `Hi, ${profile.first_name}` : "Hi there"}
               </h2>
               <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
                 I'm here whenever you need me, day or night, to support your journey to freedom.
