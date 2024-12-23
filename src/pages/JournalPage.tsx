@@ -17,22 +17,29 @@ import { loadJournalEntries } from "@/utils/journalEntries";
 
 export default function JournalPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
-  const [selectedEntries, setSelectedEntries] = useState(loadJournalEntries());
-  const [selectedEntry, setSelectedEntry] = useState<typeof selectedEntries[0] | null>(null);
   const [showCalendar, setShowCalendar] = useState(true);
+  const [selectedEntry, setSelectedEntry] = useState<any | null>(null);
   const isMobile = useIsMobile();
+
+  // Load and process entries
+  const entries = loadJournalEntries().map(entry => {
+    // Check if there's a reflection entry for this temptation
+    const hasReflection = entry.notes !== "Logged without reflection";
+    return {
+      ...entry,
+      hasReflection
+    };
+  });
+
+  // Filter entries based on calendar visibility and selected date
+  const filteredEntries = showCalendar && date
+    ? entries.filter(entry => 
+        format(entry.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd")
+      )
+    : entries;
 
   const handleDateSelect = (newDate: Date | undefined) => {
     setDate(newDate);
-    if (newDate) {
-      const entries = loadJournalEntries();
-      const filtered = entries.filter(
-        (entry) => format(entry.date, "yyyy-MM-dd") === format(newDate, "yyyy-MM-dd")
-      );
-      setSelectedEntries(filtered);
-    } else {
-      setSelectedEntries(loadJournalEntries());
-    }
   };
 
   return (
@@ -69,12 +76,14 @@ export default function JournalPage() {
           <CardHeader className="p-4">
             <CardTitle>Entries</CardTitle>
             <CardDescription>
-              Click on an entry to view more details
+              {showCalendar 
+                ? "Showing entries for selected date" 
+                : "Showing all entries"}
             </CardDescription>
           </CardHeader>
           <CardContent className="p-0">
             <EntriesTable 
-              entries={selectedEntries} 
+              entries={filteredEntries} 
               onEntryClick={setSelectedEntry} 
             />
           </CardContent>

@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { Check, X } from "lucide-react";
+import { Check, X, BookOpen } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -19,6 +19,7 @@ interface Entry {
   notes: string;
   mood?: number;
   affirmation?: string;
+  hasReflection?: boolean;
 }
 
 interface EntriesTableProps {
@@ -34,6 +35,7 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
           <TableHead>Date</TableHead>
           <TableHead>Type</TableHead>
           <TableHead className="text-center">Outcome</TableHead>
+          <TableHead className="text-center">Reflection</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -54,15 +56,22 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
                 <X className="inline h-5 w-5 text-red-500" />
               )}
             </TableCell>
+            <TableCell className="text-center">
+              {entry.hasReflection ? (
+                <BookOpen className="inline h-5 w-5 text-blue-500" />
+              ) : (
+                <span className="text-muted-foreground">-</span>
+              )}
+            </TableCell>
           </TableRow>
         ))}
         {entries.length === 0 && (
           <TableRow>
             <TableCell
-              colSpan={3}
+              colSpan={4}
               className="text-center py-8 text-muted-foreground"
             >
-              No entries found for this date
+              No entries found
             </TableCell>
           </TableRow>
         )}
