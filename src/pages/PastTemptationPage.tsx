@@ -73,16 +73,17 @@ export default function PastTemptationPage() {
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
-      <Button
-        variant="ghost"
-        className="-ml-2"
-        onClick={() => navigate('/')}
-      >
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Back
-      </Button>
-
-      <Progress value={progress} className="w-full" />
+      <div className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          className="-ml-2"
+          onClick={() => navigate('/')}
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back
+        </Button>
+        <Progress value={progress} className="flex-1" />
+      </div>
       
       <Mascot 
         message={

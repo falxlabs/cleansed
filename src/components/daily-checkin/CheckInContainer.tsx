@@ -1,13 +1,15 @@
 import { ReactNode } from "react";
 import { CheckInProgress } from "./CheckInProgress";
 import { NavigationButtons } from "./NavigationButtons";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface CheckInContainerProps {
   children: ReactNode;
   currentStep: number;
   totalSteps: number;
   isNextDisabled: boolean;
-  onBack: () => void;
   onNext: () => void;
 }
 
@@ -18,19 +20,33 @@ export function CheckInContainer({
   isNextDisabled,
   onNext,
 }: CheckInContainerProps) {
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-white/40 backdrop-blur-sm rounded-3xl p-6 shadow-xl border-2 border-primary/20">
-      <CheckInProgress currentStep={currentStep} totalSteps={totalSteps} />
-      
-      <div className="space-y-6 mt-6">
-        {children}
+    <div className="space-y-6">
+      <div className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          className="-ml-2"
+          onClick={() => navigate('/')}
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back
+        </Button>
+        <CheckInProgress currentStep={currentStep} totalSteps={totalSteps} className="flex-1" />
       </div>
 
-      <NavigationButtons
-        step={currentStep}
-        isNextDisabled={isNextDisabled}
-        onNext={onNext}
-      />
+      <div className="bg-white/40 backdrop-blur-sm rounded-3xl p-6 shadow-xl border-2 border-primary/20">
+        <div className="space-y-6">
+          {children}
+        </div>
+
+        <NavigationButtons
+          step={currentStep}
+          isNextDisabled={isNextDisabled}
+          onNext={onNext}
+        />
+      </div>
     </div>
   );
 }

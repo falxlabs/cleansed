@@ -139,17 +139,19 @@ export default function ReflectionPage() {
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
-      <Button
-        variant="ghost"
-        className="-ml-2"
-        onClick={handleBack}
-      >
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Back
-      </Button>
+      <div className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          className="-ml-2"
+          onClick={handleBack}
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back
+        </Button>
+        <Progress value={progress} className="flex-1" />
+      </div>
 
       <Mascot message={mascotMessage} />
-      <Progress value={progress} className="w-full" />
 
       <div className="space-y-6">
         {step === 1 && (
