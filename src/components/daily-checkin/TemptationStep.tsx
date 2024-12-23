@@ -25,14 +25,13 @@ export function TemptationStep({
   onLevelChange,
 }: TemptationStepProps) {
   useEffect(() => {
-    // Load saved settings from localStorage
     const savedTemptation = localStorage.getItem("defaultTemptation");
     const savedLevel = localStorage.getItem("defaultTemptationLevel");
     
     if (savedTemptation && !selectedTemptation) {
       onTemptationChange(savedTemptation);
     }
-    if (savedLevel && temptationLevel[0] === 50) { // Check if it's the initial value
+    if (savedLevel && temptationLevel[0] === 0) {
       onLevelChange([parseInt(savedLevel)]);
     }
   }, []);

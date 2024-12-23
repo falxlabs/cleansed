@@ -8,7 +8,6 @@ import { Progress } from "@/components/ui/progress";
 import { TemptationTypeSelector } from "@/components/reflection/TemptationTypeSelector";
 import { TemptationLevelStep } from "@/components/reflection/TemptationLevelStep";
 import { Mascot } from "@/components/dashboard/Mascot";
-import { TemptationStep } from "@/components/daily-checkin/TemptationStep";
 
 export default function DailyCheckinPage() {
   const navigate = useNavigate();
@@ -31,17 +30,6 @@ export default function DailyCheckinPage() {
     } else {
       setStep(step + 1);
     }
-  };
-
-  const handleFreeOfTemptation = () => {
-    // Skip to affirmation step (step 4)
-    setStep(4);
-    setSelectedTemptation("");
-    setTemptationLevel([0]);
-    toast({
-      title: "Great News!",
-      description: "Wonderful that you're free of temptation today!",
-    });
   };
 
   const isNextDisabled = () => {
@@ -79,12 +67,16 @@ export default function DailyCheckinPage() {
         );
       case 2:
         return (
-          <TemptationStep
-            selectedTemptation={selectedTemptation}
-            temptationLevel={temptationLevel}
-            onTemptationChange={setSelectedTemptation}
-            onLevelChange={setTemptationLevel}
-          />
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-center text-primary">Today's Biggest Challenge</h2>
+            <p className="text-center text-muted-foreground mb-6">
+              What type of temptation are you struggling with the most today?
+            </p>
+            <TemptationTypeSelector
+              value={selectedTemptation}
+              onChange={setSelectedTemptation}
+            />
+          </div>
         );
       case 3:
         return (
@@ -136,24 +128,13 @@ export default function DailyCheckinPage() {
             >
               {step === 1 ? "Cancel" : "Back"}
             </Button>
-            <div className="flex gap-2">
-              {step === 2 && (
-                <Button
-                  variant="secondary"
-                  onClick={handleFreeOfTemptation}
-                  className="bg-green-500 hover:bg-green-600 text-white"
-                >
-                  Free of Temptation
-                </Button>
-              )}
-              <Button 
-                onClick={handleNext} 
-                disabled={isNextDisabled()}
-                className="bg-primary hover:bg-primary/90"
-              >
-                {step === 4 ? "Complete" : "Next"}
-              </Button>
-            </div>
+            <Button 
+              onClick={handleNext} 
+              disabled={isNextDisabled()}
+              className="bg-primary hover:bg-primary/90"
+            >
+              {step === 4 ? "Complete" : "Next"}
+            </Button>
           </div>
         </div>
       </div>
