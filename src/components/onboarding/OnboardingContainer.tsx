@@ -109,6 +109,18 @@ export function OnboardingContainer() {
         }
       />
 
+      <div className="flex items-center gap-4 mb-6">
+        <Button
+          variant="ghost"
+          className="-ml-2"
+          onClick={handleNavigateBack}
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back
+        </Button>
+        <Progress value={progress} className="flex-1" />
+      </div>
+
       <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
         <OnboardingStepManager
           currentStep={currentStep}
@@ -125,18 +137,6 @@ export function OnboardingContainer() {
           onSkip={handleSkipToDashboard}
           onComplete={handleComplete}
         />
-      </div>
-
-      <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          className="-ml-2"
-          onClick={handleNavigateBack}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back
-        </Button>
-        <Progress value={progress} className="w-full ml-4" />
       </div>
     </div>
   );

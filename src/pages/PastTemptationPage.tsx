@@ -73,7 +73,15 @@ export default function PastTemptationPage() {
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
-      <div className="flex items-center gap-4">
+      <Mascot 
+        message={
+          step === 1 
+            ? "Select the date and time when this temptation occurred" 
+            : "How did you handle this situation?"
+        } 
+      />
+
+      <div className="flex items-center gap-4 mb-6">
         <Button
           variant="ghost"
           className="-ml-2"
@@ -84,14 +92,6 @@ export default function PastTemptationPage() {
         </Button>
         <Progress value={progress} className="flex-1" />
       </div>
-      
-      <Mascot 
-        message={
-          step === 1 
-            ? "Select the date and time when this temptation occurred" 
-            : "How did you handle this situation?"
-        } 
-      />
       
       <div className="bg-card rounded-lg p-6 space-y-6">
         {step === 1 ? (
