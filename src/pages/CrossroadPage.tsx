@@ -76,7 +76,7 @@ export default function CrossroadPage() {
           icon={Shield}
           label="Submit to God"
           onClick={handleSubmitToGod}
-          className="bg-sage-600 hover:bg-sage-700 text-white animate-fade-in"
+          className="bg-duo-500 hover:bg-duo-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 py-6 text-xl font-bold animate-float"
         />
         
         <ActionButton
