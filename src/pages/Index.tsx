@@ -15,8 +15,8 @@ const Index = () => {
   }, [user, navigate]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-duo-50 px-4">
-      <div className="max-w-4xl mx-auto pt-8 pb-12">
+    <div className="min-h-screen bg-gradient-to-b from-white to-duo-50 px-4 flex flex-col">
+      <div className="max-w-4xl mx-auto pt-8 pb-12 flex-1">
         {/* Logo */}
         <h1 className="text-2xl font-bold text-duo-500 mb-12 ml-4">
           Cleansed
@@ -30,7 +30,7 @@ const Index = () => {
             </div>
             <div className="flex-1 space-y-4 text-center md:text-left">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-                Hi there, I'm Grace!
+                Hi there, I'm Grace.
               </h2>
               <p className="text-lg text-gray-700">
                 Your companion in overcoming daily temptations through Christ.
