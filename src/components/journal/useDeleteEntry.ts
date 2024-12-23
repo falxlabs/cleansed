@@ -6,21 +6,27 @@ export const useDeleteEntry = (onDelete?: (id: number) => void, onClose?: () => 
 
   const deleteEntry = async (entryId: number, isCheckIn: boolean) => {
     try {
+      console.log('Starting deletion process for entry:', entryId, 'isCheckIn:', isCheckIn);
+      
       // First delete the specific entry (temptation or check-in)
       const specificTable = isCheckIn ? 'checkin_entries' : 'temptation_entries';
-      const { error: specificError } = await supabase
+      const { error: specificError, data: specificData } = await supabase
         .from(specificTable)
         .delete()
-        .eq('id', entryId);
+        .eq('id', entryId)
+        .select();
 
+      console.log('Specific entry deletion result:', { specificData, specificError });
       if (specificError) throw specificError;
 
       // Then delete the parent journal entry
-      const { error: journalError } = await supabase
+      const { error: journalError, data: journalData } = await supabase
         .from('journal_entries')
         .delete()
-        .eq('id', entryId);
+        .eq('id', entryId)
+        .select();
 
+      console.log('Journal entry deletion result:', { journalData, journalError });
       if (journalError) throw journalError;
 
       if (onDelete) {
