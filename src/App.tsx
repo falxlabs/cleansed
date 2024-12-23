@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import DashboardPage from "./pages/DashboardPage";
 import DailyCheckinPage from "./pages/DailyCheckinPage";
 import CrossroadPage from "./pages/CrossroadPage";
 import PastTemptationPage from "./pages/PastTemptationPage";
@@ -25,6 +26,7 @@ function App() {
         <main className="flex-1 md:ml-64">
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/daily-checkin" element={<DailyCheckinPage />} />
             <Route path="/crossroad" element={<CrossroadPage />} />
             <Route path="/past-temptation" element={<PastTemptationPage />} />
