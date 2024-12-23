@@ -41,14 +41,14 @@ export function useReflectionDatabase() {
 
       if (journalError) throw journalError;
 
-      // Then create the temptation entry
+      // Then create the temptation entry with all fields
       const { error: temptationError } = await supabase
         .from('temptation_entries')
         .insert({
           id: journalEntry.id,
           temptation_type: selectedSin.toLowerCase() as TemptationType,
           intensity_level: Math.floor((sliderValue[0] / 100) * 100),
-          trigger: trigger,
+          trigger: trigger || null,
           resisted: outcome === 'resisted',
           resistance_strategy: outcome === 'resisted' ? resistanceStrategy : null,
           temptation_details: customNote || null,

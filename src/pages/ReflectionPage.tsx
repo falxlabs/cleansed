@@ -32,7 +32,9 @@ export default function ReflectionPage() {
 
   const { saveReflection } = useReflectionDatabase();
 
-  const totalSteps = outcome === 'resisted' ? 4 : 3;
+  // Determine if we're coming from crossroad with "submitted" choice
+  const isResisted = location.state?.choice === "submitted" || outcome === "resisted";
+  const totalSteps = isResisted ? 4 : 3;
   const progress = (step / totalSteps) * 100;
 
   const handleNext = async () => {
@@ -48,7 +50,7 @@ export default function ReflectionPage() {
       setMascotMessage("Understanding what triggered this temptation will help you recognize and handle similar situations in the future. Could you share what happened?");
       return;
     }
-    if (step === 4 && outcome === 'resisted' && !resistanceStrategy) {
+    if (step === 4 && isResisted && !resistanceStrategy) {
       setMascotMessage("Your strategies for resisting temptation can inspire others. Please share what helped you stay strong!");
       return;
     }
@@ -58,14 +60,14 @@ export default function ReflectionPage() {
         selectedSin,
         sliderValue,
         trigger,
-        outcome: outcome || 'gave-in',
+        outcome: isResisted ? 'resisted' : 'gave-in',
         resistanceStrategy,
         customNote,
       });
 
       if (success) {
         setMascotMessage("Thank you for your honest reflection! Remember, every step forward, no matter how small, is progress. Keep going!");
-        navigate("/");
+        navigate("/journal");
       }
       return;
     }
@@ -74,7 +76,7 @@ export default function ReflectionPage() {
       setMascotMessage("Great choice! Now, let's understand how strong this temptation was.");
     } else if (step === 2) {
       setMascotMessage("You're doing great! Understanding what triggered this temptation will help you prepare better next time.");
-    } else if (step === 3 && outcome === 'resisted') {
+    } else if (step === 3 && isResisted) {
       setMascotMessage("You showed real strength! What strategies helped you resist? Your experience could help others too!");
     }
     
@@ -112,19 +114,19 @@ export default function ReflectionPage() {
       setMascotMessage("You're doing great! Understanding what triggered this temptation will help you prepare better next time.");
     } else if (step === 3) {
       setTrigger("Not sure / Don't remember");
-      if (outcome === 'gave-in') {
+      if (!isResisted) {
         const success = await saveReflection({
           selectedSin,
           sliderValue,
           trigger: "Not sure / Don't remember",
-          outcome: outcome || 'gave-in',
+          outcome: isResisted ? 'resisted' : 'gave-in',
           resistanceStrategy,
           customNote,
         });
 
         if (success) {
           setMascotMessage("Thank you for your honest reflection! Remember, every step forward, no matter how small, is progress. Keep going!");
-          navigate("/");
+          navigate("/journal");
         }
       } else {
         setStep(step + 1);
@@ -163,7 +165,7 @@ export default function ReflectionPage() {
           />
         )}
 
-        {step === 4 && outcome === 'resisted' && (
+        {step === 4 && isResisted && (
           <ResistanceStep
             resistanceStrategy={resistanceStrategy}
             onResistanceStrategyChange={setResistanceStrategy}
