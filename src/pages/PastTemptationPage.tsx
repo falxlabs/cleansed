@@ -43,6 +43,9 @@ export default function PastTemptationPage() {
       const minutes = Math.round((timeValue[0] - hours) * 60);
       selectedDate.setHours(hours, minutes);
 
+      // Store the outcome in sessionStorage for the reflection page
+      sessionStorage.setItem('pastTemptationOutcome', outcome);
+
       // Save entry with all required fields
       saveJournalEntry({
         date: selectedDate,
