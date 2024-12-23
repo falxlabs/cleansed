@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MoodStep } from "@/components/daily-checkin/MoodStep";
+import { MissionStep } from "@/components/daily-checkin/MissionStep";
 import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
-import { TemptationStep } from "@/components/daily-checkin/TemptationStep";
+import { TemptationTypeSelector } from "@/components/reflection/TemptationTypeSelector";
+import { TemptationLevelStep } from "@/components/reflection/TemptationLevelStep";
 import { Mascot } from "@/components/dashboard/Mascot";
 
 export default function DailyCheckinPage() {
@@ -15,9 +17,10 @@ export default function DailyCheckinPage() {
   const [description, setDescription] = useState("");
   const [selectedTemptation, setSelectedTemptation] = useState("");
   const [temptationLevel, setTemptationLevel] = useState<number[]>([50]);
+  const [selectedStatement, setSelectedStatement] = useState("");
 
   const handleNext = () => {
-    if (step === 2) {
+    if (step === 4) {
       // Submit the check-in
       toast({
         title: "Check-in Complete!",
@@ -31,6 +34,8 @@ export default function DailyCheckinPage() {
 
   const isNextDisabled = () => {
     if (step === 2) return !selectedTemptation;
+    if (step === 3) return temptationLevel.length === 0;
+    if (step === 4) return !selectedStatement;
     return false;
   };
 
@@ -40,6 +45,10 @@ export default function DailyCheckinPage() {
         return "How are you feeling today? Let's start with your mood.";
       case 2:
         return "What challenges are you facing? I'm here to support you.";
+      case 3:
+        return "Understanding your temptation level helps us support you better.";
+      case 4:
+        return "Let's end with your daily affirmation. You're doing great!";
       default:
         return "Let's do your daily check-in together!";
     }
@@ -58,16 +67,42 @@ export default function DailyCheckinPage() {
         );
       case 2:
         return (
-          <TemptationStep
-            selectedTemptation={selectedTemptation}
-            temptationLevel={temptationLevel}
-            onTemptationChange={setSelectedTemptation}
-            onLevelChange={setTemptationLevel}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-center text-primary">Today's Biggest Challenge</h2>
+            <p className="text-center text-muted-foreground mb-6">
+              What type of temptation are you struggling with the most today?
+            </p>
+            <TemptationTypeSelector
+              value={selectedTemptation}
+              onChange={setSelectedTemptation}
+            />
+          </div>
+        );
+      case 3:
+        return (
+          <TemptationLevelStep
+            sliderValue={temptationLevel}
+            temptationLevel={getTemptationLevelText(temptationLevel[0])}
+            onSliderChange={setTemptationLevel}
+          />
+        );
+      case 4:
+        return (
+          <MissionStep
+            selectedStatement={selectedStatement}
+            onStatementChange={setSelectedStatement}
           />
         );
       default:
         return null;
     }
+  };
+
+  const getTemptationLevelText = (value: number) => {
+    if (value <= 25) return "Low - I can resist easily";
+    if (value <= 50) return "Medium - It's challenging but manageable";
+    if (value <= 75) return "High - I struggle significantly";
+    return "Severe - Almost impossible to resist";
   };
 
   return (
@@ -79,7 +114,7 @@ export default function DailyCheckinPage() {
         />
         
         <div className="bg-white/40 backdrop-blur-sm rounded-3xl p-6 shadow-xl border-2 border-primary/20">
-          <Progress value={(step / 2) * 100} className="w-full" />
+          <Progress value={(step / 4) * 100} className="w-full" />
           
           <div className="space-y-6 mt-6">
             {getStepContent()}
@@ -98,7 +133,7 @@ export default function DailyCheckinPage() {
               disabled={isNextDisabled()}
               className="bg-primary hover:bg-primary/90"
             >
-              {step === 2 ? "Complete" : "Next"}
+              {step === 4 ? "Complete" : "Next"}
             </Button>
           </div>
         </div>
