@@ -98,21 +98,24 @@ export default function CrossroadPage() {
         />
       </div>
 
-      <Card className="p-6 mt-8">
+      <Card className="p-4 sm:p-6 mt-8">
         <div className="space-y-4">
           <h3 className="text-lg font-medium text-center">Take Time to Reflect</h3>
           <div className="text-3xl font-bold text-center">{formatTime(timeLeft)}</div>
           <Progress value={progressPercentage} className="h-2" />
           
-          <div className="mt-4 space-y-2">
-            <h4 className="text-sm font-medium text-muted-foreground text-center">Try one of these:</h4>
-            <ul className="text-sm space-y-2">
+          <div className="mt-6 space-y-4">
+            <h4 className="text-base font-medium text-center text-muted-foreground">While you wait, try:</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {SUGGESTIONS.map((suggestion, index) => (
-                <li key={index} className="text-center text-muted-foreground">
+                <div 
+                  key={index} 
+                  className="p-3 rounded-xl bg-secondary/50 text-secondary-foreground text-sm text-center hover:bg-secondary/80 transition-colors duration-200"
+                >
                   {suggestion}
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
       </Card>
