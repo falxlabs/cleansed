@@ -6,7 +6,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { EntriesTable } from "@/components/journal/EntriesTable";
 import { EntryDetailsDialog } from "@/components/journal/EntryDetailsDialog";
-import { CheckInDetails } from "@/components/journal/CheckInDetails";
+import { DailyCheckInSummary } from "@/components/journal/DailyCheckInSummary";
 import {
   Card,
   CardContent,
@@ -85,7 +85,7 @@ export default function JournalPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="p-4">
-                  <CheckInDetails entry={dailyCheckIn} />
+                  <DailyCheckInSummary entry={dailyCheckIn} />
                 </CardContent>
               </Card>
             )}
