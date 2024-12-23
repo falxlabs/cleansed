@@ -37,7 +37,7 @@ const getSeverityEmoji = (level: string) => {
 const SINS = {
   pride: "👑",
   greed: "💰",
-  lust: "😈",
+  lust: "💝",
   envy: "👀",
   gluttony: "🍽️",
   wrath: "😠",

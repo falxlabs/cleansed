@@ -93,12 +93,12 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
                 <p>{entry.affirmation}</p>
               </div>
             </>
-          ) : (
+          ) : entry.resisted ? (
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Notes</p>
+              <p className="text-sm font-medium text-muted-foreground">What helped me resist</p>
               <p>{entry.notes}</p>
             </div>
-          )}
+          ) : null}
           <div className="flex justify-end pt-4">
             <Button
               variant="destructive"
