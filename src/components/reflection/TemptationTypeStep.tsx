@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
@@ -17,6 +17,13 @@ export const TemptationTypeStep = ({
   onSinChange,
   onCustomNoteChange,
 }: TemptationTypeStepProps) => {
+  useEffect(() => {
+    const savedTemptation = localStorage.getItem("defaultTemptation");
+    if (savedTemptation && !selectedSin) {
+      onSinChange(savedTemptation);
+    }
+  }, []);
+
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Type of Temptation</h2>

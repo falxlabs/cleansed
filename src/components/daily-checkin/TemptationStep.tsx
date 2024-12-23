@@ -44,12 +44,13 @@ export function TemptationStep({
   };
 
   const temptations = [
-    "Lust",
     "Pride",
-    "Anger",
-    "Envy",
     "Greed",
-    "Other"
+    "Lust",
+    "Envy",
+    "Gluttony",
+    "Wrath",
+    "Sloth"
   ];
 
   return (
