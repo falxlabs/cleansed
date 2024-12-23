@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { ActionButton } from "@/components/dashboard/ActionButton";
-import { ArrowLeft, DoorOpen, Timer } from "lucide-react";
+import { ArrowLeft, DoorClosed, DoorOpen, Timer } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Carousel,
@@ -89,7 +89,7 @@ export default function CrossroadPage() {
 
       <div className="grid grid-cols-2 gap-4 mt-8">
         <ActionButton
-          icon={DoorOpen}
+          icon={DoorClosed}
           label="Choose God"
           onClick={handleSubmitToGod}
           className="bg-duo-500 hover:bg-duo-600 text-white shadow-lg hover:shadow-xl transition-all duration-500 py-6 text-lg sm:text-xl font-bold h-[300px] hover:-translate-y-2 border-4 border-duo-700 px-4 sm:px-8 [&_svg]:w-12 [&_svg]:h-12"
