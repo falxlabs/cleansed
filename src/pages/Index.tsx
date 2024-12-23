@@ -64,7 +64,7 @@ const Index = () => {
         <div className="flex flex-col sm:flex-row gap-6 justify-center">
           <Button
             className="duo-button text-xl px-8 py-6 transform hover:-translate-y-1 transition-all duration-300"
-            onClick={() => setShowOnboarding(true)}
+            onClick={() => navigate("/daily-checkin")}
           >
             Start Your Journey
           </Button>
