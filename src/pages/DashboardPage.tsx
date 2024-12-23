@@ -18,14 +18,14 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-background p-4 sm:p-6 md:p-8 space-y-6 ${isMobile ? "pb-20" : ""}`}>
+    <div className="min-h-screen bg-[#F5F5F5] space-y-4 p-4 pb-20 md:pb-6">
       <div className="flex justify-end max-w-2xl mx-auto">
         <div onClick={() => navigate('/achievements')} className="cursor-pointer">
           <StreakDisplay streak={currentStreak} />
         </div>
       </div>
 
-      <div className="flex-1 max-w-2xl mx-auto">
+      <div className="flex-1 max-w-2xl mx-auto bg-white rounded-3xl shadow-md p-6">
         <Mascot 
           message={welcomeMessage} 
           className="animate-fade-in" 
@@ -34,7 +34,7 @@ const DashboardPage = () => {
         />
       </div>
 
-      <div className="grid gap-4 max-w-2xl mx-auto">
+      <div className="grid gap-4 max-w-2xl mx-auto bg-white rounded-3xl shadow-md p-6">
         <ActionButton
           icon={AlertCircle}
           label="I'm Being Tempted"
@@ -56,7 +56,7 @@ const DashboardPage = () => {
         />
       </div>
 
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-md p-6">
         <DailyVerse verse={dailyVerse.verse} reference={dailyVerse.reference} />
       </div>
     </div>

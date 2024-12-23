@@ -32,7 +32,7 @@ const AppContent = () => {
       {showNav && <DesktopNav />}
       <div className={`${showNav ? "md:flex" : ""} min-h-[calc(100vh-4rem)]`}>
         {showNav && <div className="hidden md:block w-64 shrink-0" />}
-        <main className={`${showNav ? "md:flex-1" : ""} px-4 pb-24 md:pb-6 md:px-6`}>
+        <main className={`${showNav ? "md:flex-1" : ""} md:pb-6`}>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Index />} />
