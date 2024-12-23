@@ -5,7 +5,7 @@ export function DesktopNav() {
   const location = useLocation();
   
   const navItems = [
-    { icon: Home, label: "Dashboard", path: "/" },
+    { icon: Home, label: "Home", path: "/dashboard" },
     { icon: PenTool, label: "Journal", path: "/journal" },
     { icon: Settings, label: "Settings", path: "/settings" },
   ];
@@ -23,7 +23,7 @@ export function DesktopNav() {
           const Icon = item.icon;
           const isActive = item.path === '/settings' 
             ? isSettingsActive 
-            : location.pathname === item.path;
+            : (location.pathname === item.path || (item.path === "/dashboard" && location.pathname === "/"));
 
           return (
             <NavLink

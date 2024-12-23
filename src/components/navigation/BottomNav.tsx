@@ -12,7 +12,7 @@ export const BottomNav = () => {
   if (!isMobile || hideNavRoutes.includes(location.pathname)) return null;
 
   const navItems = [
-    { icon: Home, label: "Dashboard", path: "/" },
+    { icon: Home, label: "Home", path: "/dashboard" },
     { icon: Book, label: "Journal", path: "/journal" },
     { icon: Settings, label: "Settings", path: "/settings" },
   ];
@@ -27,7 +27,7 @@ export const BottomNav = () => {
             className={cn(
               "flex flex-col items-center justify-center w-20 h-full",
               "text-gray-400 hover:text-duo-500 transition-colors",
-              location.pathname === path && "text-duo-500 font-bold"
+              (location.pathname === path || (path === "/dashboard" && location.pathname === "/")) && "text-duo-500 font-bold"
             )}
           >
             <Icon className="h-6 w-6 mb-1" />
