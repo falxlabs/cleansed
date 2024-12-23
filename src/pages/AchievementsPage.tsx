@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 export default function AchievementsPage() {
   const navigate = useNavigate();
   const streak = calculateStreak();
-  const flameSize = Math.min(20 + streak * 2, 64); // Grows with streak but caps at 64px
+  const flameSize = Math.min(20 + streak * 2, 64);
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-primary/5 to-primary/10 p-4 sm:p-6 md:p-8">
@@ -21,15 +21,26 @@ export default function AchievementsPage() {
           >
             <ArrowLeft className="h-6 w-6" />
           </Button>
-          <h1 className="text-3xl font-bold text-gray-900">Your Achievements</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Your Journey</h1>
         </div>
+
+        <Card className="p-6 bg-white/50 backdrop-blur-sm border-primary/20">
+          <div className="prose prose-green max-w-none">
+            <h2 className="text-xl font-semibold text-primary mb-4">Focus on Progress, Not Perfection</h2>
+            <p className="text-muted-foreground mb-6">
+              We celebrate your daily commitment to growth and self-improvement. While avoiding setbacks is important, 
+              what truly matters is your dedication to showing up every day, reflecting, and moving forward. 
+              Your streak represents days of active engagement in your journey.
+            </p>
+          </div>
+        </Card>
         
         <Card className="p-6 space-y-4">
           <div className="text-center space-y-4">
             <h2 className="text-xl font-semibold text-gray-800">Current Streak</h2>
             <div className="flex flex-col items-center gap-2">
               <Flame 
-                className="text-duo-500 animate-breathe"
+                className="text-primary animate-breathe"
                 style={{ 
                   width: `${flameSize}px`, 
                   height: `${flameSize}px`,
@@ -43,17 +54,17 @@ export default function AchievementsPage() {
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-800">Streak Milestones</h3>
+            <h3 className="text-lg font-semibold text-gray-800">Check-in Milestones</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[7, 30, 90, 180, 365].map((milestone) => (
                 <Card 
                   key={milestone}
-                  className={`p-4 ${streak >= milestone ? 'bg-duo-50 border-duo-200' : 'bg-gray-50 border-gray-200'}`}
+                  className={`p-4 ${streak >= milestone ? 'bg-primary/10 border-primary/20' : 'bg-gray-50 border-gray-200'}`}
                 >
                   <div className="flex items-center gap-3">
-                    <Flame className={`w-5 h-5 ${streak >= milestone ? 'text-duo-500' : 'text-gray-400'}`} />
-                    <span className={`font-medium ${streak >= milestone ? 'text-duo-800' : 'text-gray-500'}`}>
-                      {milestone} Days
+                    <Flame className={`w-5 h-5 ${streak >= milestone ? 'text-primary' : 'text-gray-400'}`} />
+                    <span className={`font-medium ${streak >= milestone ? 'text-primary-foreground' : 'text-gray-500'}`}>
+                      {milestone} Days of Growth
                     </span>
                   </div>
                 </Card>
