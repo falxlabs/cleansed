@@ -19,7 +19,14 @@ export function useCheckInState() {
     const loadTemptationSettings = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        if (!user) {
+          toast({
+            title: "Sign in required",
+            description: "Please go to Settings to sign in or create an account to save your check-ins.",
+            variant: "destructive",
+          });
+          return;
+        }
 
         const { data: settings } = await supabase
           .from('temptation_settings')
@@ -39,7 +46,7 @@ export function useCheckInState() {
     };
 
     loadTemptationSettings();
-  }, []);
+  }, [toast]);
 
   const handleComplete = async () => {
     try {
