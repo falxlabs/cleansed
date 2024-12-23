@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { Mascot } from "@/components/dashboard/Mascot";
@@ -20,6 +20,7 @@ type TemptationLevel = typeof TEMPTATION_LEVELS[number];
 
 export default function ReflectionPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   
   const [step, setStep] = useState(1);
@@ -85,11 +86,16 @@ export default function ReflectionPage() {
     if (step > 1) {
       setStep(step - 1);
     } else {
-      const pastTemptationDate = sessionStorage.getItem('pastTemptationDate');
-      if (pastTemptationDate) {
-        navigate("/past-temptation");
+      // Check if we came from the crossroad page
+      if (location.state?.choice) {
+        navigate("/crossroad");
       } else {
-        navigate("/");
+        const pastTemptationDate = sessionStorage.getItem('pastTemptationDate');
+        if (pastTemptationDate) {
+          navigate("/past-temptation");
+        } else {
+          navigate("/");
+        }
       }
     }
   };
