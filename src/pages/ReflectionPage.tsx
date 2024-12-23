@@ -31,13 +31,13 @@ export default function ReflectionPage() {
   const [temptationLevel, setTemptationLevel] = useState<TemptationLevel>(TEMPTATION_LEVELS[defaultLevelIndex]);
   const [trigger, setTrigger] = useState("");
   const [resistanceStrategy, setResistanceStrategy] = useState("");
-  const [outcome, setOutcome] = useState<string>("");
+  const [outcome, setOutcome] = useState<"resisted" | "gave-in">();
   const [mascotMessage, setMascotMessage] = useState("Let's reflect on this temptation together. I'm here to help you through this process.");
 
   useEffect(() => {
     const storedOutcome = sessionStorage.getItem('pastTemptationOutcome');
     if (storedOutcome) {
-      setOutcome(storedOutcome);
+      setOutcome(storedOutcome as "resisted" | "gave-in");
     }
   }, []);
 
@@ -84,7 +84,6 @@ export default function ReflectionPage() {
       return;
     }
     
-    // Update mascot message based on the next step
     if (step === 1) {
       setMascotMessage("Great choice! Now, let's understand how strong this temptation was.");
     } else if (step === 2) {
@@ -93,7 +92,6 @@ export default function ReflectionPage() {
       setMascotMessage("You showed real strength! What strategies helped you resist? Your experience could help others too!");
     }
     
-    // Skip resistance strategy step if gave in
     if (step === 3 && outcome === 'gave-in') {
       setStep(totalSteps);
     } else {
@@ -104,7 +102,6 @@ export default function ReflectionPage() {
   const handleBack = () => {
     if (step > 1) {
       setStep(step - 1);
-      // Update mascot message when going back
       if (step === 2) {
         setMascotMessage("Let's reflect on this temptation together. I'm here to help you through this process.");
       } else if (step === 3) {
@@ -128,7 +125,7 @@ export default function ReflectionPage() {
 
   const handleSkip = () => {
     if (step === 2) {
-      handleSliderChange([50]); // Set to medium level
+      handleSliderChange([50]);
       setStep(step + 1);
       setMascotMessage("You're doing great! Understanding what triggered this temptation will help you prepare better next time.");
     } else if (step === 3) {
@@ -137,7 +134,7 @@ export default function ReflectionPage() {
         saveJournalEntry({
           date: new Date(),
           type: selectedSin,
-          resisted: outcome === 'resisted',
+          resisted: false,
           level: temptationLevel,
           trigger: "Not sure / Don't remember",
           notes: '',
