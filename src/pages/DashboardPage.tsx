@@ -18,7 +18,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-background p-4 sm:p-6 md:p-8 space-y-6 ${isMobile ? "pb-20" : ""}`}>
+    <div className="page-container">
       <div className="flex justify-end max-w-2xl mx-auto">
         <div onClick={() => navigate('/achievements')} className="cursor-pointer">
           <StreakDisplay streak={currentStreak} />
