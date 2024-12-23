@@ -92,7 +92,7 @@ export default function CrossroadPage() {
           icon={Shield}
           label="Submit to God"
           onClick={handleSubmitToGod}
-          className="bg-duo-500 hover:bg-duo-600 text-white shadow-lg hover:shadow-xl transition-all duration-500 py-6 text-xl font-bold h-[300px] hover:-translate-y-2 border-4 border-duo-700"
+          className="bg-duo-500 hover:bg-duo-600 text-white shadow-lg hover:shadow-xl transition-all duration-500 py-6 text-base sm:text-xl font-bold h-[300px] hover:-translate-y-2 border-4 border-duo-700 px-4 sm:px-8"
         />
         
         <ActionButton
@@ -100,7 +100,7 @@ export default function CrossroadPage() {
           label="Fall to Sin"
           onClick={handleFallToSin}
           variant="destructive"
-          className="h-[300px] hover:-translate-y-2 transition-all duration-500 border-4 border-red-700"
+          className="h-[300px] hover:-translate-y-2 transition-all duration-500 border-4 border-red-700 text-base sm:text-xl px-4 sm:px-8"
           disabled={timeLeft > 0}
         />
       </div>
