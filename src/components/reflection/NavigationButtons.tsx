@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 interface NavigationButtonsProps {
   onBack: () => void;
@@ -13,7 +14,8 @@ export const NavigationButtons = ({
 }: NavigationButtonsProps) => {
   return (
     <div className="flex justify-between pt-6">
-      <Button variant="outline" onClick={onBack}>
+      <Button variant="ghost" className="-ml-2" onClick={onBack}>
+        <ArrowLeft className="mr-2 h-4 w-4" />
         Back
       </Button>
       <Button onClick={onNext}>
