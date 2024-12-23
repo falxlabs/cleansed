@@ -68,12 +68,20 @@ const Index = () => {
           >
             Start Your Journey
           </Button>
-          <button
-            onClick={() => navigate("/dashboard")}
-            className="text-gray-500 hover:text-gray-700 transition-colors"
-          >
-            Skip for now
-          </button>
+          <div className="flex flex-col items-center gap-2">
+            <button
+              onClick={() => navigate("/signin")}
+              className="text-gray-600 hover:text-gray-800 transition-colors"
+            >
+              Already have an account? Sign in
+            </button>
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              Skip for now
+            </button>
+          </div>
         </div>
       </div>
     </div>
