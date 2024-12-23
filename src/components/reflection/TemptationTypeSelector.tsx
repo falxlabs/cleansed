@@ -5,7 +5,7 @@ import { Slider } from "@/components/ui/slider";
 const SINS = [
   { name: "Pride", emoji: "👑", description: "Excessive belief in own abilities", value: 0 },
   { name: "Greed", emoji: "💰", description: "Desire for material possessions", value: 1 },
-  { name: "Lust", emoji: "👄", description: "Intense or uncontrolled desires", value: 2 },
+  { name: "Lust", emoji: "👄", description: "Struggles with sexual immorality and impure thoughts", value: 2 },
   { name: "Envy", emoji: "👀", description: "Desire for others' traits or possessions", value: 3 },
   { name: "Gluttony", emoji: "🍽️", description: "Overindulgence or overconsumption", value: 4 },
   { name: "Wrath", emoji: "😠", description: "Uncontrolled feelings of anger", value: 5 },
@@ -19,9 +19,9 @@ interface TemptationTypeSelectorProps {
 }
 
 export const TemptationTypeSelector = ({ value, onChange, showText = true }: TemptationTypeSelectorProps) => {
-  // Find the initial sin index, defaulting to 0 if not found
-  const initialSinIndex = SINS.findIndex(sin => sin.name === value);
-  const [sliderValue, setSliderValue] = useState([initialSinIndex >= 0 ? initialSinIndex : 0]);
+  // Find the initial sin index, defaulting to Lust (index 2) if not found
+  const initialSinIndex = value ? SINS.findIndex(sin => sin.name === value) : 2;
+  const [sliderValue, setSliderValue] = useState([initialSinIndex >= 0 ? initialSinIndex : 2]);
   
   // Update slider value when value prop changes
   useEffect(() => {
