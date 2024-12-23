@@ -62,7 +62,7 @@ const formatEntryType = (type: string) => {
   const matchedSin = sins.find(sin => type.includes(sin));
   
   return {
-    category: "Temptation",
+    category: type === "Daily check-in" ? "Check-in" : "Temptation",
     subtype: matchedSin || null
   };
 };
@@ -84,6 +84,7 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
         {sortedEntries.map((entry) => {
           const { category, subtype } = formatEntryType(entry.type);
           const sinEmoji = subtype ? getSinEmoji(subtype) : null;
+          const isCheckIn = category === "Check-in";
           
           return (
             <TableRow
@@ -117,7 +118,7 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
                 </span>
               </TableCell>
               <TableCell className="text-center">
-                {category === "Temptation" ? (
+                {!isCheckIn ? (
                   entry.resisted ? (
                     <Check className="inline h-5 w-5 text-green-500" />
                   ) : (
