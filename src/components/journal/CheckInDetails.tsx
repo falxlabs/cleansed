@@ -43,7 +43,10 @@ export const CheckInDetails = ({ entry }: CheckInDetailsProps) => {
         
         <div className="bg-white p-3 rounded-xl border">
           <p className="text-xs font-semibold text-primary mb-1">Intensity</p>
-          <p className="text-sm truncate">{getTemptationLevelText(entry.level)}</p>
+          <div className="flex items-center gap-2">
+            <span className="text-xl">💪</span>
+            <p className="text-sm truncate">{getTemptationLevelText(entry.level)}</p>
+          </div>
         </div>
       </div>
 
@@ -51,13 +54,6 @@ export const CheckInDetails = ({ entry }: CheckInDetailsProps) => {
         <div className="bg-white p-3 rounded-xl border">
           <p className="text-xs font-semibold text-primary mb-1">Description</p>
           <p className="text-sm line-clamp-2">{entry.description}</p>
-        </div>
-      )}
-
-      {entry.affirmation && (
-        <div className="bg-primary/5 p-3 rounded-xl border border-primary/10">
-          <p className="text-xs font-semibold text-primary mb-1">Affirmation</p>
-          <p className="text-sm italic line-clamp-2">"{entry.affirmation}"</p>
         </div>
       )}
     </div>
