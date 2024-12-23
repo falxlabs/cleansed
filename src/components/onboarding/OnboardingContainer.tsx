@@ -6,6 +6,7 @@ import { useOnboarding, TOTAL_STEPS } from "@/hooks/useOnboarding";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import type { Database } from "@/integrations/supabase/types";
 
 export function OnboardingContainer() {
   const navigate = useNavigate();
@@ -26,7 +27,6 @@ export function OnboardingContainer() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session) {
         try {
-          // Save onboarding data to database when user completes email verification
           const savedData = localStorage.getItem("defaultTemptation");
           if (savedData) {
             // Update profile
@@ -50,12 +50,13 @@ export function OnboardingContainer() {
 
             if (notificationError) throw notificationError;
 
-            // Save temptation settings
+            // Save temptation settings with proper type casting
+            const temptationType = localStorage.getItem("defaultTemptation")?.toLowerCase() as Database["public"]["Enums"]["temptation_type"];
             const { error: temptationError } = await supabase
               .from('temptation_settings')
               .upsert({
                 user_id: session.user.id,
-                default_type: localStorage.getItem("defaultTemptation")?.toLowerCase(),
+                default_type: temptationType,
                 default_intensity: localStorage.getItem("defaultTemptationLevel") ? 
                   parseInt(localStorage.getItem("defaultTemptationLevel")!) : 50,
               });

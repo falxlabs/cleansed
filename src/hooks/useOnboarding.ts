@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { saveOnboardingData } from "@/utils/onboardingStorage";
 import { useOnboardingForm } from "./useOnboardingForm";
 import { useProfileManagement } from "./useProfileManagement";
+import type { Database } from "@/integrations/supabase/types";
 
 export type { OnboardingFormData } from "./useOnboardingForm";
 export { TOTAL_STEPS } from "./useOnboardingForm";
@@ -47,12 +48,13 @@ export function useOnboarding() {
 
       if (notificationError) throw notificationError;
 
-      // Save temptation settings
+      // Save temptation settings with proper type casting
+      const temptationType = formData.temptationType.toLowerCase() as Database["public"]["Enums"]["temptation_type"];
       const { error: temptationError } = await supabase
         .from('temptation_settings')
         .upsert({
           user_id: userId,
-          default_type: formData.temptationType.toLowerCase(),
+          default_type: temptationType,
           default_intensity: formData.temptationLevel[0],
         });
 
@@ -90,7 +92,7 @@ export function useOnboarding() {
 
     setLoading(true);
     try {
-      const { data: { session }, error: signUpError } = await supabase.auth.signInWithOtp({
+      const { data, error: signUpError } = await supabase.auth.signInWithOtp({
         email: formData.email,
         options: {
           emailRedirectTo: `${window.location.origin}/dashboard`,
@@ -104,8 +106,8 @@ export function useOnboarding() {
       if (signUpError) throw signUpError;
 
       // If we have a session (e.g., if email verification is disabled), save the data immediately
-      if (session?.user) {
-        await saveOnboardingDataToDatabase(session.user.id);
+      if (data.session?.user) {
+        await saveOnboardingDataToDatabase(data.session.user.id);
       }
 
       saveOnboardingData(formData);
