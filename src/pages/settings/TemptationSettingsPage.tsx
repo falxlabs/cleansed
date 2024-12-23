@@ -6,6 +6,8 @@ import { TemptationTypeSelector } from "@/components/reflection/TemptationTypeSe
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
 const TEMPTATION_LEVELS = [
   "Low - I can resist easily",
@@ -18,15 +20,38 @@ export default function TemptationSettingsPage() {
   const { toast } = useToast();
   const [selectedSin, setSelectedSin] = useState("Pride");
   const [defaultLevel, setDefaultLevel] = useState([50]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Load saved settings from localStorage
-    const savedSin = localStorage.getItem("defaultTemptation");
-    const savedLevel = localStorage.getItem("defaultTemptationLevel");
-    
-    if (savedSin) setSelectedSin(savedSin);
-    if (savedLevel) setDefaultLevel([parseInt(savedLevel)]);
+    fetchSettings();
   }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('temptation_settings')
+        .select('*')
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (data) {
+        if (data.default_type) {
+          setSelectedSin(data.default_type.charAt(0).toUpperCase() + data.default_type.slice(1));
+        }
+        if (data.default_intensity !== null) {
+          setDefaultLevel([data.default_intensity]);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching temptation settings:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load temptation settings",
+        variant: "destructive",
+      });
+    }
+  };
 
   const getTemptationLevelDescription = (value: number) => {
     if (value <= 25) return TEMPTATION_LEVELS[0];
@@ -35,14 +60,33 @@ export default function TemptationSettingsPage() {
     return TEMPTATION_LEVELS[3];
   };
 
-  const handleSave = () => {
-    localStorage.setItem("defaultTemptation", selectedSin);
-    localStorage.setItem("defaultTemptationLevel", defaultLevel[0].toString());
-    
-    toast({
-      title: "Settings saved",
-      description: "Your temptation settings have been updated",
-    });
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from('temptation_settings')
+        .update({
+          default_type: selectedSin.toLowerCase() as Database["public"]["Enums"]["temptation_type"],
+          default_intensity: defaultLevel[0],
+        })
+        .eq('user_id', (await supabase.auth.getUser()).data.user?.id);
+
+      if (error) throw error;
+      
+      toast({
+        title: "Settings saved",
+        description: "Your temptation settings have been updated",
+      });
+    } catch (error) {
+      console.error('Error saving temptation settings:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save temptation settings",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -81,8 +125,8 @@ export default function TemptationSettingsPage() {
       </SettingsSection>
 
       <div className="mt-6">
-        <Button onClick={handleSave} className="w-full">
-          Save Changes
+        <Button onClick={handleSave} className="w-full" disabled={loading}>
+          {loading ? "Saving..." : "Save Changes"}
         </Button>
       </div>
     </SettingsDetailLayout>
