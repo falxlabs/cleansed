@@ -24,7 +24,6 @@ const Index = () => {
     loadProfile();
   }, []);
 
-  // Add automatic redirect when user is signed in
   useEffect(() => {
     if (user) {
       navigate('/dashboard');
@@ -33,19 +32,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-duo-50 px-4">
-      <div className="max-w-4xl mx-auto pt-20 pb-24">
-        {/* Hero Section */}
-        <div className="text-center mb-20">
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-8 animate-fade-in">
-            Cleansed
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Walk in Freedom with Christ
-          </p>
-        </div>
+      <div className="max-w-4xl mx-auto pt-8 pb-12">
+        {/* Logo */}
+        <h1 className="text-3xl font-bold text-duo-500 mb-12 ml-4">
+          Cleansed
+        </h1>
 
         {/* Mascot Card */}
-        <Card className="mb-16 p-8 bg-white/80 backdrop-blur shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+        <Card className="mb-12 p-8 bg-white/80 backdrop-blur shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-duo-100 flex items-center justify-center shrink-0">
               <span className="text-4xl md:text-6xl animate-bounce">🕊️</span>
@@ -55,33 +49,33 @@ const Index = () => {
                 Hi there, I'm Grace!
               </h2>
               <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
-                I'm here whenever you need me, day or night, to support your journey to freedom.
+                Here to help you overcome temptation, day or night.
               </p>
             </div>
           </div>
         </Card>
 
         {/* Features Grid - Hidden on mobile */}
-        <div className="hidden md:grid md:grid-cols-3 gap-8 mb-16">
-          <Card className="p-8 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 bg-white/90">
-            <div className="text-4xl mb-6">📈</div>
-            <h3 className="text-xl font-bold mb-4 text-gray-900">Long-term Progress</h3>
-            <p className="text-gray-600 leading-relaxed">
-              Track your journey with daily check-ins and reflections, celebrating every step forward in your path to freedom.
+        <div className="hidden md:grid md:grid-cols-3 gap-8 mb-12">
+          <Card className="p-6 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 bg-white/90">
+            <div className="text-4xl mb-4">📈</div>
+            <h3 className="text-lg font-bold mb-2 text-gray-900">Progress Tracking</h3>
+            <p className="text-gray-600">
+              Track your journey with daily check-ins and celebrate victories.
             </p>
           </Card>
-          <Card className="p-8 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 bg-white/90">
-            <div className="text-4xl mb-6">💪</div>
-            <h3 className="text-xl font-bold mb-4 text-gray-900">Practical Support</h3>
-            <p className="text-gray-600 leading-relaxed">
-              Get immediate help with temptation through guided exercises, biblical wisdom, and practical strategies.
+          <Card className="p-6 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 bg-white/90">
+            <div className="text-4xl mb-4">💪</div>
+            <h3 className="text-lg font-bold mb-2 text-gray-900">Instant Support</h3>
+            <p className="text-gray-600">
+              Get immediate help through guided exercises and strategies.
             </p>
           </Card>
-          <Card className="p-8 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 bg-white/90">
-            <div className="text-4xl mb-6">✝️</div>
-            <h3 className="text-xl font-bold mb-4 text-gray-900">Coming Soon: AI Scripture Guide</h3>
-            <p className="text-gray-600 leading-relaxed">
-              Receive personalized biblical guidance based on your journey, powered by AI trained on Scripture.
+          <Card className="p-6 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 bg-white/90">
+            <div className="text-4xl mb-4">✝️</div>
+            <h3 className="text-lg font-bold mb-2 text-gray-900">Biblical Guidance</h3>
+            <p className="text-gray-600">
+              Receive Scripture-based support for your journey.
             </p>
           </Card>
         </div>

@@ -24,18 +24,6 @@ export function CheckInContainer({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          className="-ml-2"
-          onClick={() => navigate('/')}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back
-        </Button>
-        <CheckInProgress currentStep={currentStep} totalSteps={totalSteps} className="flex-1" />
-      </div>
-
       <div className="bg-white/40 backdrop-blur-sm rounded-3xl p-6 shadow-xl border-2 border-primary/20">
         <div className="space-y-6">
           {children}
@@ -46,6 +34,18 @@ export function CheckInContainer({
           isNextDisabled={isNextDisabled}
           onNext={onNext}
         />
+      </div>
+
+      <div className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          className="-ml-2"
+          onClick={() => navigate('/')}
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back
+        </Button>
+        <CheckInProgress currentStep={currentStep} totalSteps={totalSteps} className="flex-1" />
       </div>
     </div>
   );

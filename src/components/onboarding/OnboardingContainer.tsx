@@ -99,22 +99,10 @@ export function OnboardingContainer() {
 
   return (
     <div className="max-w-xl mx-auto p-6 space-y-8">
-      <div className="flex items-center justify-between">
-        <Button
-          variant="ghost"
-          className="-ml-2"
-          onClick={handleNavigateBack}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back
-        </Button>
-        <Progress value={progress} className="w-full ml-4" />
-      </div>
-      
       <Mascot
         message={
           currentStep === 1
-            ? "Hi! I'm Grace, and I'll be here to support you on your journey. Let's start by understanding what you're struggling with."
+            ? "Hi there, I'm Grace! Let's start by understanding what you're struggling with."
             : currentStep === 7
             ? "Great! Check your email for the magic link to complete your signup."
             : "I'm here to help you every step of the way. Take your time to answer honestly."
@@ -137,6 +125,18 @@ export function OnboardingContainer() {
           onSkip={handleSkipToDashboard}
           onComplete={handleComplete}
         />
+      </div>
+
+      <div className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          className="-ml-2"
+          onClick={handleNavigateBack}
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back
+        </Button>
+        <Progress value={progress} className="w-full ml-4" />
       </div>
     </div>
   );
