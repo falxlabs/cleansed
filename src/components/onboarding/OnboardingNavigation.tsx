@@ -5,7 +5,6 @@ interface OnboardingNavigationProps {
   totalSteps: number;
   loading: boolean;
   isStepValid: boolean;
-  onBack: () => void;
   onNext: () => void;
   onSkip: () => void;
   onComplete: () => void;
@@ -16,22 +15,13 @@ export function OnboardingNavigation({
   totalSteps,
   loading,
   isStepValid,
-  onBack,
   onNext,
   onSkip,
   onComplete,
 }: OnboardingNavigationProps) {
   return (
     <>
-      <div className="flex justify-between pt-4">
-        {currentStep > 1 && currentStep < totalSteps ? (
-          <Button variant="outline" onClick={onBack}>
-            Back
-          </Button>
-        ) : (
-          <div />
-        )}
-        
+      <div className="flex justify-end pt-4">
         {currentStep < totalSteps - 1 ? (
           <Button 
             onClick={onNext}
