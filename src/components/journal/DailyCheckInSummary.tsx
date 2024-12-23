@@ -1,6 +1,8 @@
-import { format } from "date-fns";
+import { format, isToday } from "date-fns";
 import { getMoodEmoji } from "./EntryDetailsDialog";
 import { getSinEmoji } from "@/utils/sinEmoji";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface DailyCheckInSummaryProps {
   entry?: {
@@ -13,6 +15,27 @@ interface DailyCheckInSummaryProps {
 }
 
 export const DailyCheckInSummary = ({ entry, date }: DailyCheckInSummaryProps) => {
+  const navigate = useNavigate();
+
+  if (!entry && isToday(date)) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <div className="text-center space-y-4">
+          <span className="text-4xl">📝</span>
+          <p className="text-muted-foreground mb-4">
+            Fill out your daily check-in now
+          </p>
+          <Button 
+            onClick={() => navigate('/check-in')}
+            className="w-full"
+          >
+            Start Check-in
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   if (!entry) {
     return (
       <div className="flex items-center justify-center h-full">
