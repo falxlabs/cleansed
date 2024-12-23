@@ -15,7 +15,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8 space-y-6 max-w-2xl mx-auto">
+    <div className="container max-w-2xl mx-auto p-4 sm:p-6 md:p-8 space-y-6">
       <div className="flex justify-end">
         <StreakDisplay streak={currentStreak} />
       </div>
