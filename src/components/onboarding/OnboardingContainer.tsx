@@ -3,8 +3,12 @@ import { Mascot } from "@/components/dashboard/Mascot";
 import { OnboardingStepManager } from "./OnboardingStepManager";
 import { OnboardingNavigation } from "./OnboardingNavigation";
 import { useOnboarding, TOTAL_STEPS } from "@/hooks/useOnboarding";
+import { useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 
 export function OnboardingContainer() {
+  const navigate = useNavigate();
   const {
     currentStep,
     formData,
@@ -17,6 +21,16 @@ export function OnboardingContainer() {
     handleComplete,
     isCurrentStepValid,
   } = useOnboarding();
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        navigate('/dashboard');
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
 
   return (
     <div className="max-w-xl mx-auto p-6 space-y-8">
