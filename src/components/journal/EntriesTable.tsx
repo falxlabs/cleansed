@@ -45,9 +45,11 @@ export const EntriesTable = ({
 
   const getMoodEmoji = (mood?: number) => {
     if (!mood) return <Meh className="w-16 h-16 text-gray-400" />;
-    if (mood >= 7) return <Smile className="w-16 h-16 text-green-500" />;
-    if (mood <= 4) return <Frown className="w-16 h-16 text-red-500" />;
-    return <Meh className="w-16 h-16 text-yellow-500" />;
+    if (mood[0] <= 20) return <Meh className="w-16 h-16 text-gray-400" />;
+    if (mood[0] <= 40) return <Meh className="w-16 h-16 text-gray-400" />;
+    if (mood[0] <= 60) return <Meh className="w-16 h-16 text-gray-400" />;
+    if (mood[0] <= 80) return <Meh className="w-16 h-16 text-gray-400" />;
+    return <Meh className="w-16 h-16 text-gray-400" />;
   };
 
   if (showCalendar && selectedDate) {
