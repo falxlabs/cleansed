@@ -48,12 +48,12 @@ export default function ReflectionPage() {
       setMascotMessage("Understanding what triggered this temptation will help you recognize and handle similar situations in the future. Could you share what happened?");
       return;
     }
+    if (step === 4 && outcome === 'resisted' && !resistanceStrategy) {
+      setMascotMessage("Your strategies for resisting temptation can inspire others. Please share what helped you stay strong!");
+      return;
+    }
+    
     if (step === totalSteps) {
-      if (outcome === 'resisted' && !resistanceStrategy) {
-        setMascotMessage("Your strategies for resisting temptation can inspire others. Please share what helped you stay strong!");
-        return;
-      }
-      
       const success = await saveReflection({
         selectedSin,
         sliderValue,

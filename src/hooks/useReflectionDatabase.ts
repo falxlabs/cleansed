@@ -25,15 +25,16 @@ export function useReflectionDatabase() {
     customNote,
   }: SaveReflectionParams) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("No user found");
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) throw sessionError;
+      if (!sessionData.session?.user) throw new Error("Please sign in to save your reflection");
 
       // First create the journal entry
       const { data: journalEntry, error: journalError } = await supabase
         .from('journal_entries')
         .insert({
           entry_type: 'temptation',
-          user_id: user.id,
+          user_id: sessionData.session.user.id,
         })
         .select()
         .single();
@@ -65,7 +66,7 @@ export function useReflectionDatabase() {
       console.error('Error saving entry:', error);
       toast({
         title: "Error",
-        description: "Failed to save your reflection. Please try again.",
+        description: error instanceof Error ? error.message : "Failed to save your reflection. Please try again.",
         variant: "destructive",
       });
       return false;
