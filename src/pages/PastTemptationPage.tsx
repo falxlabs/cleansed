@@ -6,10 +6,15 @@ import { Mascot } from "@/components/dashboard/Mascot";
 import { useToast } from "@/hooks/use-toast";
 import { Slider } from "@/components/ui/slider";
 import { format } from "date-fns";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
 
 export default function PastTemptationPage() {
+  const [step, setStep] = useState(1);
   const [date, setDate] = useState<Date>();
   const [timeValue, setTimeValue] = useState([12]); // Default to noon (12:00)
+  const [outcome, setOutcome] = useState<"resisted" | "gave-in">();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -27,67 +32,126 @@ export default function PastTemptationPage() {
   };
 
   const handleContinue = () => {
-    if (!date) {
-      toast({
-        title: "Please select a date",
-        description: "Choose when this temptation occurred",
-        variant: "destructive",
-      });
-      return;
+    if (step === 1) {
+      if (!date) {
+        toast({
+          title: "Please select a date",
+          description: "Choose when this temptation occurred",
+          variant: "destructive",
+        });
+        return;
+      }
+      setStep(2);
+    } else {
+      if (!outcome) {
+        toast({
+          title: "Please select an outcome",
+          description: "Choose whether you resisted or gave in to the temptation",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Create a new date with the selected time
+      const selectedDate = new Date(date!);
+      const hours = Math.floor(timeValue[0]);
+      const minutes = Math.round((timeValue[0] - hours) * 60);
+      selectedDate.setHours(hours, minutes);
+
+      // Store the selected date and outcome in sessionStorage
+      sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
+      sessionStorage.setItem('pastTemptationOutcome', outcome);
+
+      // Navigate based on outcome
+      if (outcome === "resisted") {
+        navigate('/reflection');
+      } else {
+        // Skip reflection for "gave in" outcome
+        navigate('/');
+        toast({
+          title: "Entry recorded",
+          description: "Your past temptation has been logged",
+        });
+      }
     }
-
-    // Create a new date with the selected time
-    const selectedDate = new Date(date);
-    const hours = Math.floor(timeValue[0]);
-    const minutes = Math.round((timeValue[0] - hours) * 60);
-    selectedDate.setHours(hours, minutes);
-
-    // Store the selected date in sessionStorage to access it in the reflection page
-    sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
-    navigate('/reflection');
   };
 
   const timeInfo = getTimeEmoji(Math.floor(timeValue[0]));
+  const progress = (step / 2) * 100;
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
-      <Mascot message="Select the date and time when this temptation occurred" />
+      <Progress value={progress} className="w-full" />
+      
+      <Mascot 
+        message={
+          step === 1 
+            ? "Select the date and time when this temptation occurred" 
+            : "What was the outcome of this temptation?"
+        } 
+      />
       
       <div className="bg-card rounded-lg p-6 space-y-6">
-        <h2 className="text-2xl font-bold text-center">When did this happen?</h2>
-        
-        <div className="flex justify-center">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            disabled={{ after: new Date() }}
-            className="rounded-md border"
-          />
-        </div>
+        {step === 1 ? (
+          <>
+            <h2 className="text-2xl font-bold text-center">When did this happen?</h2>
+            
+            <div className="flex justify-center">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+                disabled={{ after: new Date() }}
+                className="rounded-md border"
+              />
+            </div>
 
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-center">Time of day</h3>
-          <div className="px-4">
-            <div className="text-center mb-4">
-              <span className="text-2xl">{timeInfo.emoji}</span>
-              <span className="ml-2 text-muted-foreground">{timeInfo.description}</span>
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-center">Time of day</h3>
+              <div className="px-4">
+                <div className="text-center mb-4">
+                  <span className="text-2xl">{timeInfo.emoji}</span>
+                  <span className="ml-2 text-muted-foreground">{timeInfo.description}</span>
+                </div>
+                <Slider
+                  value={timeValue}
+                  onValueChange={setTimeValue}
+                  max={23.983333}
+                  step={0.016667}
+                  className="w-full"
+                />
+                <div className="text-center mt-2">
+                  <span className="text-muted-foreground">{formatTime(timeValue[0])}</span>
+                </div>
+              </div>
             </div>
-            <Slider
-              value={timeValue}
-              onValueChange={setTimeValue}
-              max={23.983333}
-              step={0.016667}
-              className="w-full"
-            />
-            <div className="text-center mt-2">
-              <span className="text-muted-foreground">{formatTime(timeValue[0])}</span>
-            </div>
-          </div>
-        </div>
+          </>
+        ) : (
+          <>
+            <h2 className="text-2xl font-bold text-center">What was the outcome?</h2>
+            
+            <RadioGroup
+              value={outcome}
+              onValueChange={(value) => setOutcome(value as "resisted" | "gave-in")}
+              className="space-y-4"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="resisted" id="resisted" />
+                <Label htmlFor="resisted">I resisted the temptation</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="gave-in" id="gave-in" />
+                <Label htmlFor="gave-in">I gave in to the temptation</Label>
+              </div>
+            </RadioGroup>
+          </>
+        )}
 
         <div className="flex justify-between pt-4">
-          <Button variant="outline" onClick={() => navigate('/')}>
+          <Button 
+            variant="outline" 
+            onClick={() => step === 1 ? navigate('/') : setStep(1)}
+          >
             Back
           </Button>
           <Button onClick={handleContinue}>
