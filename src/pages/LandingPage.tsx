@@ -5,6 +5,11 @@ import { useNavigate } from "react-router-dom";
 export default function LandingPage() {
   const navigate = useNavigate();
 
+  const handleGetStarted = () => {
+    localStorage.setItem("isAuthenticated", "true");
+    navigate('/onboarding');
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
       <Card className="max-w-lg w-full p-6 space-y-8">
@@ -21,7 +26,7 @@ export default function LandingPage() {
 
         <div className="space-y-4">
           <Button 
-            onClick={() => navigate('/onboarding')} 
+            onClick={handleGetStarted} 
             className="w-full text-lg py-6"
           >
             Get Started
