@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { getMoodEmoji, getMoodText, getTemptationLevelText } from "./EntryDetailsDialog";
+import { getSinEmoji } from "@/utils/sinEmoji";
 
 interface CheckInDetailsProps {
   entry: {
@@ -34,7 +35,10 @@ export const CheckInDetails = ({ entry }: CheckInDetailsProps) => {
       <div className="grid grid-cols-2 gap-3">
         <div className="bg-white p-3 rounded-xl border">
           <p className="text-xs font-semibold text-primary mb-1">Challenge</p>
-          <p className="text-sm capitalize truncate">{entry.trigger}</p>
+          <div className="flex items-center gap-2">
+            <span className="text-xl">{getSinEmoji(entry.trigger)}</span>
+            <p className="text-sm capitalize truncate">{entry.trigger}</p>
+          </div>
         </div>
         
         <div className="bg-white p-3 rounded-xl border">
@@ -49,11 +53,6 @@ export const CheckInDetails = ({ entry }: CheckInDetailsProps) => {
           <p className="text-sm line-clamp-2">{entry.description}</p>
         </div>
       )}
-
-      <div className="bg-white p-3 rounded-xl border">
-        <p className="text-xs font-semibold text-primary mb-1">Notes</p>
-        <p className="text-sm line-clamp-2">{entry.notes || "No description provided"}</p>
-      </div>
 
       {entry.affirmation && (
         <div className="bg-primary/5 p-3 rounded-xl border border-primary/10">
