@@ -130,13 +130,6 @@ export default function ReflectionPage() {
     }
   };
 
-  const isNextDisabled = (
-    (step === 1 && !selectedSin) ||
-    (step === 2 && !temptationLevel) ||
-    (step === 3 && !trigger) ||
-    (step === totalSteps && outcome === 'resisted' && !resistanceStrategy)
-  );
-
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
       <Mascot message="Let's reflect on this temptation together" />
@@ -175,10 +168,9 @@ export default function ReflectionPage() {
         )}
 
         <NavigationButtons
-          step={step}
-          isNextDisabled={isNextDisabled}
           onBack={handleBack}
           onNext={handleNext}
+          isLastStep={step === totalSteps}
         />
       </div>
     </div>
