@@ -55,14 +55,6 @@ export default function DailyCheckinPage() {
     setStep(step + 1);
   };
 
-  const handleBack = () => {
-    if (step === 1) {
-      navigate('/');
-    } else {
-      setStep(step - 1);
-    }
-  };
-
   const isNextDisabled = () => {
     if (step === 2) return !selectedTemptation;
     if (step === 3) return temptationLevel.length === 0;
@@ -148,7 +140,6 @@ export default function DailyCheckinPage() {
           currentStep={step}
           totalSteps={TOTAL_STEPS}
           isNextDisabled={isNextDisabled()}
-          onBack={handleBack}
           onNext={handleNext}
         >
           {getStepContent()}
