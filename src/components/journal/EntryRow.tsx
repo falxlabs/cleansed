@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { Check, X } from "lucide-react";
+import { Check, X, Minus } from "lucide-react";
 import { TableCell, TableRow } from "@/components/ui/table";
 
 interface Entry {
@@ -36,19 +36,18 @@ const getSeverityEmoji = (level: string) => {
 
 const getSinEmoji = (type: string) => {
   const typeLower = type.toLowerCase();
-  if (typeLower.includes("check-in")) return "📝";
-  if (typeLower.includes("lust")) return "😈";
   if (typeLower.includes("pride")) return "👑";
   if (typeLower.includes("greed")) return "💰";
+  if (typeLower.includes("lust")) return "😈";
   if (typeLower.includes("envy")) return "👀";
   if (typeLower.includes("gluttony")) return "🍽️";
   if (typeLower.includes("wrath")) return "😠";
   if (typeLower.includes("sloth")) return "🦥";
-  return "❓";
+  return "📝"; // Default emoji for check-ins
 };
 
 export const EntryRow = ({ entry, onClick }: EntryRowProps) => {
-  const isCheckIn = entry.type === "Daily check-in";
+  const isCheckIn = entry.type.toLowerCase().includes("check-in");
   
   return (
     <TableRow
@@ -81,7 +80,9 @@ export const EntryRow = ({ entry, onClick }: EntryRowProps) => {
         </span>
       </TableCell>
       <TableCell className="text-center">
-        {!isCheckIn && (
+        {isCheckIn ? (
+          <Minus className="inline h-5 w-5 text-muted-foreground" />
+        ) : (
           entry.resisted ? (
             <Check className="inline h-5 w-5 text-green-500" />
           ) : (

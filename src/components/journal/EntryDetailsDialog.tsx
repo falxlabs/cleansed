@@ -38,7 +38,7 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
 
   if (!entry) return null;
 
-  const isCheckIn = entry.type === "Daily check-in";
+  const isCheckIn = entry.type.toLowerCase().includes("check-in");
 
   const handleDelete = () => {
     if (entry && onDelete) {
@@ -56,15 +56,21 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {entry.type} - {format(entry.date || new Date(), "MMMM d, yyyy")}
+            {isCheckIn ? "Daily Check-in" : "Temptation Entry"} - {format(entry.date || new Date(), "MMMM d, yyyy")}
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           {!isCheckIn && (
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Outcome</p>
-              <p>{entry.resisted ? "Resisted" : "Gave in"}</p>
-            </div>
+            <>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Type of Temptation</p>
+                <p>{entry.type}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Outcome</p>
+                <p>{entry.resisted ? "Resisted" : "Gave in"}</p>
+              </div>
+            </>
           )}
           <div>
             <p className="text-sm font-medium text-muted-foreground">Level</p>
