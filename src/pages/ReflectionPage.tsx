@@ -129,10 +129,16 @@ export default function ReflectionPage() {
   const handleSkip = () => {
     if (step === 2) {
       handleSliderChange([50]); // Set to medium level
-      handleNext();
+      setStep(step + 1);
+      setMascotMessage("You're doing great! Understanding what triggered this temptation will help you prepare better next time.");
     } else if (step === 3) {
       setTrigger("Not sure / Don't remember");
-      handleNext();
+      if (outcome === 'gave-in') {
+        setStep(totalSteps);
+      } else {
+        setStep(step + 1);
+        setMascotMessage("You showed real strength! What strategies helped you resist? Your experience could help others too!");
+      }
     }
   };
 

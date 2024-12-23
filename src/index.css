@@ -82,6 +82,12 @@
   input, textarea {
     @apply rounded-2xl border-2 focus:border-duo-500 focus:ring-duo-500;
   }
+
+  /* Override toast viewport position */
+  [data-radix-toast-viewport] {
+    left: 0 !important;
+    right: auto !important;
+  }
 }
 
 @layer components {
