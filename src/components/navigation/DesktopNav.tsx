@@ -15,35 +15,26 @@ export function DesktopNav() {
 
   return (
     <nav className="hidden md:flex fixed left-0 top-0 h-screen w-64 border-r bg-background p-6">
-      <div className="flex flex-col w-full">
-        <div className="mb-8">
-          <h1 className="text-2xl font-extrabold text-cleansed-600 tracking-tight">
-            cleansed
-          </h1>
-        </div>
-        <div className="space-y-2">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = item.path === '/settings' 
-              ? isSettingsActive 
-              : location.pathname === item.path;
+      <div className="space-y-2 w-full">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = item.path === '/settings' 
+            ? isSettingsActive 
+            : location.pathname === item.path;
 
-            return (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-base font-semibold transition-all hover:bg-cleansed-50 hover:text-cleansed-600 ${
-                  isActive 
-                    ? "bg-cleansed-50 text-cleansed-600" 
-                    : "text-gray-600"
-                }`}
-              >
-                <Icon className="h-5 w-5" />
-                {item.label}
-              </NavLink>
-            );
-          })}
-        </div>
+          return (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent ${
+                isActive ? "bg-accent" : ""
+              }`}
+            >
+              <Icon className="h-4 w-4" />
+              {item.label}
+            </NavLink>
+          );
+        })}
       </div>
     </nav>
   );
