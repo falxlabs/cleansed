@@ -5,14 +5,14 @@ import { useNavigate } from "react-router-dom";
 
 interface NavigationButtonsProps {
   step: number;
-  isNextDisabled: boolean;
+  isNextDisabled?: boolean;
   onBack: () => void;
   onNext: () => void;
 }
 
 export function NavigationButtons({
   step,
-  isNextDisabled,
+  isNextDisabled = false,
   onBack,
   onNext,
 }: NavigationButtonsProps) {
