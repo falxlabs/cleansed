@@ -1,8 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
-import OnboardingPage from "./pages/OnboardingPage";
 import Index from "./pages/Index";
 import CrossroadPage from "./pages/CrossroadPage";
 import ReflectionPage from "./pages/ReflectionPage";
@@ -18,9 +16,7 @@ export default () => (
     <TooltipProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/onboarding" element={<OnboardingPage />} />
-          <Route path="/home" element={<Index />} />
+          <Route path="/" element={<Index />} />
           <Route path="/crossroad" element={<CrossroadPage />} />
           <Route path="/reflection" element={<ReflectionPage />} />
           <Route path="/journal" element={<JournalPage />} />

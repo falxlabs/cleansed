@@ -8,11 +8,11 @@ export const BottomNav = () => {
   const location = useLocation();
   const isMobile = useIsMobile();
 
-  const hideNavRoutes = ['/crossroad', '/reflection', '/past-temptation', '/', '/onboarding'];
+  const hideNavRoutes = ['/crossroad', '/reflection', '/past-temptation'];
   if (!isMobile || hideNavRoutes.includes(location.pathname)) return null;
 
   const navItems = [
-    { icon: Home, label: "Dashboard", path: "/home" },
+    { icon: Home, label: "Dashboard", path: "/" },
     { icon: Book, label: "Journal", path: "/journal" },
     { icon: Settings, label: "Settings", path: "/settings" },
   ];
