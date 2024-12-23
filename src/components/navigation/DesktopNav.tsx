@@ -1,4 +1,4 @@
-import { Home, PenTool, Award, Settings } from "lucide-react";
+import { Home, PenTool, Settings } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
 export function DesktopNav() {
@@ -7,7 +7,6 @@ export function DesktopNav() {
   const navItems = [
     { icon: Home, label: "Dashboard", path: "/" },
     { icon: PenTool, label: "Journal", path: "/journal" },
-    { icon: Award, label: "Achievements", path: "/achievements" },
     { icon: Settings, label: "Settings", path: "/settings" },
   ];
 
