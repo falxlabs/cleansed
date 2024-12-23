@@ -33,7 +33,13 @@ export default function ReflectionPage() {
   const [trigger, setTrigger] = useState("");
   const [resistanceStrategy, setResistanceStrategy] = useState("");
 
-  const progress = (step / 4) * 100;
+  // Get the outcome from sessionStorage
+  const temptationOutcome = sessionStorage.getItem('temptationOutcome');
+  const wasResisted = temptationOutcome === 'resisted';
+
+  // Calculate total steps based on outcome
+  const totalSteps = wasResisted ? 4 : 3;
+  const progress = (step / totalSteps) * 100;
 
   const handleSliderChange = (value: number[]) => {
     setSliderValue(value);
@@ -66,8 +72,8 @@ export default function ReflectionPage() {
       });
       return;
     }
-    if (step === 4) {
-      if (!resistanceStrategy) {
+    if (step === totalSteps) {
+      if (wasResisted && !resistanceStrategy) {
         toast({
           title: "Please share what helped you resist",
           description: "This insight can help in future situations",
@@ -81,7 +87,7 @@ export default function ReflectionPage() {
       });
       navigate("/");
     }
-    if (step < 4) setStep(step + 1);
+    if (step < totalSteps) setStep(step + 1);
   };
 
   const handleBack = () => {
@@ -132,7 +138,7 @@ export default function ReflectionPage() {
           />
         )}
 
-        {step === 4 && (
+        {step === 4 && wasResisted && (
           <ResistanceStep
             resistanceStrategy={resistanceStrategy}
             onResistanceStrategyChange={setResistanceStrategy}
@@ -142,7 +148,7 @@ export default function ReflectionPage() {
         <NavigationButtons
           onBack={handleBack}
           onNext={handleNext}
-          isLastStep={step === 4}
+          isLastStep={step === totalSteps}
         />
       </div>
     </div>
