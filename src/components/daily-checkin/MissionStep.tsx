@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
+import { supabase } from "@/integrations/supabase/client";
 
 interface MissionStepProps {
   selectedStatement: string;
@@ -10,20 +11,41 @@ export function MissionStep({
   selectedStatement,
   onStatementChange,
 }: MissionStepProps) {
-  const [savedAffirmation, setSavedAffirmation] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Load the saved affirmation from localStorage
-    const affirmationType = localStorage.getItem("affirmationType");
-    const customAffirmation = localStorage.getItem("customAffirmation");
-    const predefinedAffirmation = localStorage.getItem("selectedAffirmation");
-    
-    const affirmation = affirmationType === "custom" ? customAffirmation : predefinedAffirmation;
-    if (affirmation) {
-      setSavedAffirmation(affirmation);
-      onStatementChange(affirmation);
-    }
-  }, []);
+    const fetchUserAffirmation = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data: userAffirmation } = await supabase
+          .from('user_affirmations')
+          .select('content')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        if (userAffirmation) {
+          onStatementChange(userAffirmation.content);
+        }
+      } catch (error) {
+        console.error('Error fetching affirmation:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserAffirmation();
+  }, [onStatementChange]);
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <h2 className="text-2xl font-bold text-center text-primary">Daily Affirmation</h2>
+        <p className="text-center text-muted-foreground mb-6">Loading your affirmation...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -33,7 +55,7 @@ export function MissionStep({
       </p>
       
       <Card className="p-6">
-        <p className="text-lg text-center font-medium">{savedAffirmation}</p>
+        <p className="text-lg text-center font-medium">{selectedStatement}</p>
       </Card>
     </div>
   );
