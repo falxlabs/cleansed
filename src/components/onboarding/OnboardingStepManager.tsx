@@ -73,7 +73,7 @@ export function OnboardingStepManager({
         />
       );
     case 7:
-      return <MagicLinkStep />;
+      return <MagicLinkStep email={formData.email} />;
     default:
       return null;
   }

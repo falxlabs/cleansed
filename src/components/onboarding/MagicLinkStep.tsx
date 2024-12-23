@@ -1,7 +1,47 @@
 import { Button } from "@/components/ui/button";
 import { Mail } from "lucide-react";
+import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
-export function MagicLinkStep() {
+interface MagicLinkStepProps {
+  email: string;
+}
+
+export function MagicLinkStep({ email }: MagicLinkStepProps) {
+  const [isResending, setIsResending] = useState(false);
+  const { toast } = useToast();
+
+  const handleResendEmail = async () => {
+    if (!email) return;
+    
+    setIsResending(true);
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/dashboard`,
+        },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Email sent",
+        description: "We've sent you a new magic link.",
+      });
+    } catch (error) {
+      console.error("Error resending email:", error);
+      toast({
+        title: "Error",
+        description: "Failed to resend the email. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsResending(false);
+    }
+  };
+
   return (
     <div className="space-y-6 text-center">
       <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
@@ -17,6 +57,17 @@ export function MagicLinkStep() {
         <p className="text-muted-foreground">
           Click the link in your email to continue to the dashboard.
         </p>
+      </div>
+
+      <div className="pt-4">
+        <Button
+          variant="outline"
+          onClick={handleResendEmail}
+          disabled={isResending}
+          className="w-full"
+        >
+          {isResending ? "Sending..." : "Resend email"}
+        </Button>
       </div>
     </div>
   );
