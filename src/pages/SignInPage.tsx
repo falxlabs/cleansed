@@ -22,7 +22,7 @@ const SignInPage = () => {
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: window.location.origin + '/dashboard',
+          emailRedirectTo: `${window.location.origin}/dashboard`,
         },
       });
 
@@ -33,6 +33,7 @@ const SignInPage = () => {
         description: "We've sent you a magic link to sign in.",
       });
     } catch (error) {
+      console.error('Error:', error);
       toast({
         title: "Error",
         description: "An error occurred while signing in.",
