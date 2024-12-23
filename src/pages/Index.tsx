@@ -33,7 +33,7 @@ const Index = () => {
                 Hi there, I'm Grace!
               </h2>
               <p className="text-lg text-gray-700">
-                Your companion in daily temptations through Christ.
+                Your companion in overcoming daily temptations through Christ.
               </p>
             </div>
           </div>
