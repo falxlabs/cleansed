@@ -1,22 +1,35 @@
 import { Card } from "@/components/ui/card";
-import { Flame } from "lucide-react";
+import { Flame, ArrowLeft } from "lucide-react";
 import { calculateStreak } from "@/utils/journalEntries";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 export default function AchievementsPage() {
+  const navigate = useNavigate();
   const streak = calculateStreak();
   const flameSize = Math.min(20 + streak * 2, 64); // Grows with streak but caps at 64px
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-primary/5 to-primary/10 p-4 sm:p-6 md:p-8">
       <div className="max-w-2xl mx-auto space-y-8">
-        <h1 className="text-3xl font-bold text-center text-gray-900">Your Achievements</h1>
+        <div className="flex items-center">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate(-1)}
+            className="mr-4"
+          >
+            <ArrowLeft className="h-6 w-6" />
+          </Button>
+          <h1 className="text-3xl font-bold text-gray-900">Your Achievements</h1>
+        </div>
         
         <Card className="p-6 space-y-4">
           <div className="text-center space-y-4">
             <h2 className="text-xl font-semibold text-gray-800">Current Streak</h2>
             <div className="flex flex-col items-center gap-2">
               <Flame 
-                className={`text-duo-500 animate-breathe`} 
+                className="text-duo-500 animate-breathe"
                 style={{ 
                   width: `${flameSize}px`, 
                   height: `${flameSize}px`,

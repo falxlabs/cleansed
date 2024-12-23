@@ -20,7 +20,9 @@ const Index = () => {
   return (
     <div className={`min-h-screen bg-background p-4 sm:p-6 md:p-8 space-y-6 ${isMobile ? "pb-20" : ""}`}>
       <div className="flex justify-between items-center max-w-2xl mx-auto">
-        <StreakDisplay streak={currentStreak} />
+        <div onClick={() => navigate('/achievements')} className="cursor-pointer">
+          <StreakDisplay streak={currentStreak} />
+        </div>
         <ActionButton
           icon={Shield}
           label="Achievements"
