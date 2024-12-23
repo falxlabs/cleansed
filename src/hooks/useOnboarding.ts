@@ -5,6 +5,7 @@ import { useToast } from "./use-toast";
 import { useOnboardingForm } from "./useOnboardingForm";
 import { useProfileManagement } from "./useProfileManagement";
 import { saveOnboardingDataToDatabase } from "./useOnboardingDatabase";
+import { useNavigate } from "react-router-dom";
 import type { AuthResponse } from "@supabase/supabase-js";
 
 export type { OnboardingFormData } from "./useOnboardingForm";
@@ -14,6 +15,7 @@ const TOTAL_STEPS = 7;
 export function useOnboarding() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
   const { updateProfile } = useProfileManagement();
   const {
     currentStep,
@@ -22,7 +24,7 @@ export function useOnboarding() {
     handleFormDataChange,
     handleNext,
     handleBack,
-    handleSkip,
+    handleSkip: baseHandleSkip,
     isCurrentStepValid,
   } = useOnboardingForm();
 
@@ -63,6 +65,16 @@ export function useOnboarding() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSkip = () => {
+    if (currentStep === TOTAL_STEPS - 1) {
+      // If on the last step before magic link, skip to dashboard
+      navigate("/dashboard");
+    } else {
+      // Otherwise, just go to the next step
+      handleNext();
     }
   };
 

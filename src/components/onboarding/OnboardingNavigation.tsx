@@ -41,7 +41,7 @@ export function OnboardingNavigation({
         ) : null}
       </div>
 
-      {currentStep === totalSteps - 1 && (
+      {currentStep < totalSteps && (
         <Button
           variant="ghost"
           className="w-full mt-4"
