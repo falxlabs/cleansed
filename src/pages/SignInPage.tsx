@@ -4,9 +4,44 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft } from "lucide-react";
+import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const SignInPage = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: window.location.origin + '/dashboard',
+        },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Check your email",
+        description: "We've sent you a magic link to sign in.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An error occurred while signing in.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] px-4 py-8">
@@ -27,24 +62,31 @@ const SignInPage = () => {
                 <span className="text-3xl">🕊️</span>
               </div>
               <p className="text-lg font-bold leading-relaxed text-gray-800">
-                Welcome back! Enter your email to continue your journey.
+                Enter your email to continue your journey.
               </p>
             </div>
 
-            <div className="space-y-4">
+            <form onSubmit={handleSignIn} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   className="w-full"
+                  required
                 />
               </div>
-              <Button className="w-full duo-button">
-                Continue
+              <Button 
+                type="submit" 
+                className="w-full duo-button"
+                disabled={loading}
+              >
+                {loading ? "Sending..." : "Continue"}
               </Button>
-            </div>
+            </form>
           </div>
         </Card>
       </div>

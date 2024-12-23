@@ -9,11 +9,14 @@ import { ProfileStep } from "@/components/onboarding/ProfileStep";
 import { SignUpStep } from "@/components/onboarding/SignUpStep";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const TOTAL_STEPS = 6;
 
 export function OnboardingContainer() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     temptationType: "Pride",
@@ -43,23 +46,57 @@ export function OnboardingContainer() {
     navigate("/dashboard");
   };
 
-  const handleComplete = () => {
-    // Save all the data to localStorage
-    localStorage.setItem("defaultTemptation", formData.temptationType);
-    localStorage.setItem("defaultTemptationLevel", formData.temptationLevel[0].toString());
-    localStorage.setItem("customAffirmation", formData.affirmation);
-    localStorage.setItem("checkInTime", formData.checkInTime);
-    localStorage.setItem("userFirstName", formData.firstName);
-    localStorage.setItem("userAge", formData.age);
-    localStorage.setItem("userEmail", formData.email);
-    
-    // Request notification permission
-    if ("Notification" in window) {
-      Notification.requestPermission();
-    }
+  const handleComplete = async () => {
+    try {
+      // Sign up with Supabase
+      const { error: signUpError } = await supabase.auth.signUp({
+        email: formData.email,
+        options: {
+          emailRedirectTo: window.location.origin + '/dashboard',
+          data: {
+            first_name: formData.firstName,
+          }
+        }
+      });
 
-    // Navigate to dashboard
-    navigate("/dashboard");
+      if (signUpError) throw signUpError;
+
+      // Save additional data to localStorage
+      localStorage.setItem("defaultTemptation", formData.temptationType);
+      localStorage.setItem("defaultTemptationLevel", formData.temptationLevel[0].toString());
+      localStorage.setItem("customAffirmation", formData.affirmation);
+      localStorage.setItem("checkInTime", formData.checkInTime);
+      
+      // Update profile with additional data
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({
+          first_name: formData.firstName,
+          age: parseInt(formData.age),
+        })
+        .eq('id', (await supabase.auth.getUser()).data.user?.id);
+
+      if (updateError) throw updateError;
+
+      // Request notification permission
+      if ("Notification" in window) {
+        Notification.requestPermission();
+      }
+
+      toast({
+        title: "Welcome!",
+        description: "Check your email to verify your account.",
+      });
+
+      // Navigate to dashboard
+      navigate("/dashboard");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An error occurred during sign up.",
+        variant: "destructive",
+      });
+    }
   };
 
   const renderStep = () => {

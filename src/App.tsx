@@ -13,6 +13,8 @@ import SignInPage from "./pages/SignInPage";
 import { BottomNav } from "./components/navigation/BottomNav";
 import { DesktopNav } from "./components/navigation/DesktopNav";
 import { Toaster } from "@/components/ui/toaster";
+import { AuthProvider } from "./providers/AuthProvider";
+import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 
 const AppContent = () => {
   const location = useLocation();
@@ -28,14 +30,14 @@ const AppContent = () => {
             <Route path="/" element={<Index />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/signin" element={<SignInPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/daily-checkin" element={<DailyCheckinPage />} />
-            <Route path="/crossroad" element={<CrossroadPage />} />
-            <Route path="/past-temptation" element={<PastTemptationPage />} />
-            <Route path="/reflection" element={<ReflectionPage />} />
-            <Route path="/journal" element={<JournalPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/achievements" element={<AchievementsPage />} />
+            <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+            <Route path="/daily-checkin" element={<ProtectedRoute><DailyCheckinPage /></ProtectedRoute>} />
+            <Route path="/crossroad" element={<ProtectedRoute><CrossroadPage /></ProtectedRoute>} />
+            <Route path="/past-temptation" element={<ProtectedRoute><PastTemptationPage /></ProtectedRoute>} />
+            <Route path="/reflection" element={<ProtectedRoute><ReflectionPage /></ProtectedRoute>} />
+            <Route path="/journal" element={<ProtectedRoute><JournalPage /></ProtectedRoute>} />
+            <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+            <Route path="/achievements" element={<ProtectedRoute><AchievementsPage /></ProtectedRoute>} />
           </Routes>
         </main>
       </div>
@@ -48,7 +50,9 @@ const AppContent = () => {
 function App() {
   return (
     <Router>
-      <AppContent />
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </Router>
   );
 }
