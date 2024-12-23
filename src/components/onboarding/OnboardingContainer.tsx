@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/dashboard/Mascot";
-import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { OnboardingStepManager } from "./OnboardingStepManager";
 import { validateStep } from "@/utils/onboardingValidation";
@@ -13,7 +12,6 @@ const TOTAL_STEPS = 6;
 
 export function OnboardingContainer() {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     temptationType: "Pride",
@@ -31,16 +29,11 @@ export function OnboardingContainer() {
     setFormData((prev) => ({ ...prev, ...updates }));
   };
 
-  const handleNext = () => {
-    if (!validateStep(currentStep, formData)) {
-      toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields correctly",
-        variant: "destructive",
-      });
-      return;
-    }
+  const isCurrentStepValid = () => {
+    return validateStep(currentStep, formData);
+  };
 
+  const handleNext = () => {
     if (currentStep < TOTAL_STEPS) {
       setCurrentStep(currentStep + 1);
     }
@@ -53,29 +46,11 @@ export function OnboardingContainer() {
   };
 
   const handleSkip = () => {
-    if (!validateStep(currentStep, formData)) {
-      toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields correctly",
-        variant: "destructive",
-      });
-      return;
-    }
-    
     saveOnboardingData(formData);
     navigate("/dashboard");
   };
 
   const handleComplete = async () => {
-    if (!validateStep(currentStep, formData)) {
-      toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields correctly",
-        variant: "destructive",
-      });
-      return;
-    }
-
     try {
       saveOnboardingData(formData);
 
@@ -88,11 +63,6 @@ export function OnboardingContainer() {
         });
 
         if (signUpError) throw signUpError;
-
-        toast({
-          title: "Welcome!",
-          description: "Check your email to verify your account.",
-        });
       }
 
       if ("Notification" in window) {
@@ -101,11 +71,7 @@ export function OnboardingContainer() {
 
       navigate("/dashboard");
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "An error occurred during sign up.",
-        variant: "destructive",
-      });
+      console.error("Error during sign up:", error);
     }
   };
 
@@ -138,9 +104,19 @@ export function OnboardingContainer() {
           )}
           
           {currentStep < TOTAL_STEPS ? (
-            <Button onClick={handleNext}>Continue</Button>
+            <Button 
+              onClick={handleNext}
+              disabled={!isCurrentStepValid()}
+            >
+              Continue
+            </Button>
           ) : (
-            <Button onClick={handleComplete}>Complete</Button>
+            <Button 
+              onClick={handleComplete}
+              disabled={!isCurrentStepValid()}
+            >
+              Complete
+            </Button>
           )}
         </div>
 
@@ -149,6 +125,7 @@ export function OnboardingContainer() {
             variant="ghost"
             className="w-full mt-4"
             onClick={handleSkip}
+            disabled={!isCurrentStepValid()}
           >
             Skip for now
           </Button>
