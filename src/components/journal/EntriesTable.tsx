@@ -27,19 +27,36 @@ interface EntriesTableProps {
   onEntryClick: (entry: Entry) => void;
 }
 
+const getTimeEmoji = (hour: number) => {
+  if (hour >= 5 && hour < 12) return "🌅";
+  if (hour >= 12 && hour < 17) return "☀️";
+  if (hour >= 17 && hour < 21) return "🌆";
+  return "🌙";
+};
+
+const getTypeEmoji = (type: string) => {
+  if (type === "Daily check-in") return "📝";
+  if (type.includes("Reflection")) return "📖";
+  return "⚠️"; // For temptation
+};
+
 export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
+  // Sort entries by date (newest first)
+  const sortedEntries = [...entries].sort((a, b) => b.date.getTime() - a.date.getTime());
+
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Date</TableHead>
+          <TableHead>Time</TableHead>
           <TableHead>Type</TableHead>
           <TableHead className="text-center">Outcome</TableHead>
           <TableHead className="text-center">Reflection</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {entries.map((entry) => (
+        {sortedEntries.map((entry) => (
           <TableRow
             key={entry.id}
             className="cursor-pointer hover:bg-muted/50"
@@ -48,7 +65,14 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
             <TableCell className="font-medium">
               {format(entry.date, "MMM d")}
             </TableCell>
-            <TableCell>{entry.type}</TableCell>
+            <TableCell>
+              {getTimeEmoji(entry.date.getHours())}
+            </TableCell>
+            <TableCell>
+              <span className="flex items-center gap-2">
+                {getTypeEmoji(entry.type)} {entry.type}
+              </span>
+            </TableCell>
             <TableCell className="text-center">
               {entry.resisted ? (
                 <Check className="inline h-5 w-5 text-green-500" />
@@ -68,7 +92,7 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
         {entries.length === 0 && (
           <TableRow>
             <TableCell
-              colSpan={4}
+              colSpan={5}
               className="text-center py-8 text-muted-foreground"
             >
               No entries found
