@@ -18,6 +18,14 @@ interface EntryDetailsDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
+const getTemptationLevelText = (value: string) => {
+  const levelValue = parseInt(value);
+  if (levelValue <= 25) return "Low - I can resist easily";
+  if (levelValue <= 50) return "Medium - It's challenging but manageable";
+  if (levelValue <= 75) return "High - I struggle significantly";
+  return "Severe - Almost impossible to resist";
+};
+
 export const EntryDetailsDialog = ({ entry, onOpenChange }: EntryDetailsDialogProps) => {
   if (!entry) return null;
 
@@ -32,11 +40,11 @@ export const EntryDetailsDialog = ({ entry, onOpenChange }: EntryDetailsDialogPr
         <div className="space-y-4">
           <div>
             <p className="text-sm font-medium text-muted-foreground">Outcome</p>
-            <p>{entry.resisted ? "Resisted" : "Gave in"}</p>
+            <p>{entry.type === "Daily check-in" ? "-" : (entry.resisted ? "Resisted" : "Gave in")}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-muted-foreground">Level</p>
-            <p>{entry.level}</p>
+            <p>{getTemptationLevelText(entry.level)}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-muted-foreground">Trigger</p>
