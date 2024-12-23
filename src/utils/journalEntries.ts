@@ -8,6 +8,7 @@ interface JournalEntry {
   notes: string;
   mood?: number;
   affirmation?: string;
+  customNote?: string;
 }
 
 export const saveJournalEntry = (entry: Omit<JournalEntry, "id">) => {
@@ -19,6 +20,7 @@ export const saveJournalEntry = (entry: Omit<JournalEntry, "id">) => {
     level: entry.level || "",
     trigger: entry.trigger || "",
     notes: entry.notes || "",
+    customNote: entry.customNote || "",
   };
   
   entries.push(newEntry);
@@ -38,6 +40,7 @@ export const loadJournalEntries = (): JournalEntry[] => {
     level: entry.level || "",
     trigger: entry.trigger || "",
     notes: entry.notes || "",
+    customNote: entry.customNote || "",
   }));
 };
 
