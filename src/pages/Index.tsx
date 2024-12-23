@@ -64,24 +64,16 @@ const Index = () => {
         <div className="flex flex-col items-center gap-6">
           <Button
             className="duo-button text-xl px-8 py-6 w-full sm:w-auto transform hover:-translate-y-1 transition-all duration-300"
-            onClick={() => navigate("/onboarding")}
+            onClick={() => navigate("/signin")}
           >
             Start Your Journey
           </Button>
-          <div className="flex flex-col items-center gap-2">
-            <button
-              onClick={() => navigate("/signin")}
-              className="text-gray-600 hover:text-gray-800 transition-colors"
-            >
-              Already have an account? Sign in
-            </button>
-            <button
-              onClick={() => navigate("/dashboard")}
-              className="text-gray-500 hover:text-gray-700 transition-colors"
-            >
-              Skip for now
-            </button>
-          </div>
+          <button
+            onClick={() => navigate("/dashboard")}
+            className="text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            Skip for now
+          </button>
         </div>
       </div>
     </div>
