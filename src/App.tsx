@@ -8,6 +8,10 @@ import JournalPage from "./pages/JournalPage";
 import PastTemptationPage from "./pages/PastTemptationPage";
 import SettingsPage from "./pages/SettingsPage";
 import DailyCheckinPage from "./pages/DailyCheckinPage";
+import ProfileSettingsPage from "./pages/settings/ProfileSettingsPage";
+import AffirmationSettingsPage from "./pages/settings/AffirmationSettingsPage";
+import NotificationsSettingsPage from "./pages/settings/NotificationsSettingsPage";
+import SupportSettingsPage from "./pages/settings/SupportSettingsPage";
 import { BottomNav } from "./components/navigation/BottomNav";
 
 const queryClient = new QueryClient();
@@ -24,6 +28,10 @@ export default () => (
           <Route path="/past-temptation" element={<PastTemptationPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/daily-checkin" element={<DailyCheckinPage />} />
+          <Route path="/settings/profile" element={<ProfileSettingsPage />} />
+          <Route path="/settings/affirmation" element={<AffirmationSettingsPage />} />
+          <Route path="/settings/notifications" element={<NotificationsSettingsPage />} />
+          <Route path="/settings/support" element={<SupportSettingsPage />} />
         </Routes>
         <BottomNav />
       </BrowserRouter>
