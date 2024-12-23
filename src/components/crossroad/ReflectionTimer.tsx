@@ -18,7 +18,7 @@ export function ReflectionTimer({ onComplete }: ReflectionTimerProps) {
     if (timeLeft <= 0) {
       toast({
         title: "Time's up!",
-        description: "Your breathing exercise is complete. Make your choice.",
+        description: "Your 5 minutes are up. Make your choice.",
       });
       onComplete?.();
       return;
@@ -40,21 +40,21 @@ export function ReflectionTimer({ onComplete }: ReflectionTimerProps) {
   const progressPercentage = ((TIMER_DURATION - timeLeft) / TIMER_DURATION) * 100;
 
   return (
-    <Card className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm border-2 border-purple-100/50 shadow-lg">
+    <Card className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm border-2 border-gray-200 shadow-lg">
       <div className="space-y-4 sm:space-y-6">
-        <div className="flex items-center justify-center gap-2 sm:gap-3 text-purple-700">
+        <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-900">
           <Timer className="h-6 w-6 sm:h-8 sm:w-8 animate-pulse" />
-          <h3 className="text-xl sm:text-2xl font-bold">Reflection Timer</h3>
+          <h3 className="text-xl sm:text-2xl font-bold">The 5 Minute Rule</h3>
         </div>
         
-        <div className="text-3xl sm:text-4xl font-bold text-center text-purple-800 font-mono tracking-wider">
+        <div className="text-3xl sm:text-4xl font-bold text-center text-gray-900 font-mono tracking-wider">
           {formatTime(timeLeft)}
         </div>
         
         <Progress 
           value={progressPercentage} 
-          className="h-2 sm:h-3 bg-purple-100" 
-          indicatorClassName="bg-purple-500"
+          className="h-2 sm:h-3 bg-gray-100" 
+          indicatorClassName="bg-duo-500"
         />
       </div>
     </Card>

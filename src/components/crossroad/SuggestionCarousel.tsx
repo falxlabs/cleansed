@@ -7,19 +7,19 @@ import {
 } from "@/components/ui/carousel";
 
 const SUGGESTIONS = [
-  "Take a quiet walk and reflect",
-  "Pray for strength and guidance",
-  "Practice deep breathing exercises",
-  "Read a Bible verse about overcoming temptation",
-  "Call a trusted friend or accountability partner",
-  "Write down your thoughts in a journal",
+  "Taking a quiet walk will help clear your mind",
+  "Praying will give you strength and guidance",
+  "Deep breathing exercises will calm your urges",
+  "Reading scripture will strengthen your resolve",
+  "Calling a friend will provide the support you need",
+  "Journaling will help process your thoughts",
 ];
 
 export function SuggestionCarousel() {
   return (
     <div className="mt-6 sm:mt-8 space-y-4">
       <h4 className="text-base sm:text-lg font-medium text-center text-duo-700">
-        Try these helpful activities while you wait:
+        These activities will help you overcome this moment:
       </h4>
       <Carousel className="w-full max-w-xs mx-auto" opts={{ loop: true }}>
         <CarouselContent>
