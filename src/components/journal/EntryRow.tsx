@@ -34,16 +34,27 @@ const getSeverityEmoji = (level: string) => {
   return "🔴";
 };
 
+const SINS = {
+  pride: "👑",
+  greed: "💰",
+  lust: "😈",
+  envy: "👀",
+  gluttony: "🍽️",
+  wrath: "😠",
+  sloth: "🦥"
+} as const;
+
 const getSinEmoji = (type: string) => {
   const typeLower = type.toLowerCase();
-  if (typeLower.includes("pride")) return "👑";
-  if (typeLower.includes("greed")) return "💰";
-  if (typeLower.includes("lust")) return "😈";
-  if (typeLower.includes("envy")) return "👀";
-  if (typeLower.includes("gluttony")) return "🍽️";
-  if (typeLower.includes("wrath")) return "😠";
-  if (typeLower.includes("sloth")) return "🦥";
-  return "📝"; // Default emoji for check-ins
+  // Check if it's a check-in
+  if (typeLower.includes("check-in")) return "📝";
+  
+  // Find matching sin
+  const matchingSin = Object.entries(SINS).find(([sin]) => 
+    typeLower === sin.toLowerCase()
+  );
+  
+  return matchingSin ? matchingSin[1] : "📝";
 };
 
 export const EntryRow = ({ entry, onClick }: EntryRowProps) => {
