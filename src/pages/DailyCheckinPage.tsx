@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { MoodStep } from "@/components/daily-checkin/MoodStep";
 import { MissionStep } from "@/components/daily-checkin/MissionStep";
 import { useToast } from "@/hooks/use-toast";
-import { Progress } from "@/components/ui/progress";
 import { TemptationTypeSelector } from "@/components/reflection/TemptationTypeSelector";
 import { TemptationLevelStep } from "@/components/reflection/TemptationLevelStep";
 import { Mascot } from "@/components/dashboard/Mascot";
+import { CheckInContainer } from "@/components/daily-checkin/CheckInContainer";
+
+const TOTAL_STEPS = 4;
 
 export default function DailyCheckinPage() {
   const navigate = useNavigate();
@@ -29,8 +30,7 @@ export default function DailyCheckinPage() {
   }, []);
 
   const handleNext = () => {
-    if (step === 4) {
-      // Submit the check-in
+    if (step === TOTAL_STEPS) {
       toast({
         title: "Check-in Complete!",
         description: "Thank you for your daily check-in.",
@@ -38,6 +38,14 @@ export default function DailyCheckinPage() {
       navigate('/');
     } else {
       setStep(step + 1);
+    }
+  };
+
+  const handleBack = () => {
+    if (step === 1) {
+      navigate('/');
+    } else {
+      setStep(step - 1);
     }
   };
 
@@ -122,30 +130,15 @@ export default function DailyCheckinPage() {
           className="mb-6"
         />
         
-        <div className="bg-white/40 backdrop-blur-sm rounded-3xl p-6 shadow-xl border-2 border-primary/20">
-          <Progress value={(step / 4) * 100} className="w-full" />
-          
-          <div className="space-y-6 mt-6">
-            {getStepContent()}
-          </div>
-
-          <div className="flex justify-between mt-6 pt-6 border-t border-primary/20">
-            <Button
-              variant="outline"
-              onClick={() => (step === 1 ? navigate('/') : setStep(step - 1))}
-              className="bg-white/50 hover:bg-white/80"
-            >
-              {step === 1 ? "Cancel" : "Back"}
-            </Button>
-            <Button 
-              onClick={handleNext} 
-              disabled={isNextDisabled()}
-              className="bg-primary hover:bg-primary/90"
-            >
-              {step === 4 ? "Complete" : "Next"}
-            </Button>
-          </div>
-        </div>
+        <CheckInContainer
+          currentStep={step}
+          totalSteps={TOTAL_STEPS}
+          isNextDisabled={isNextDisabled()}
+          onBack={handleBack}
+          onNext={handleNext}
+        >
+          {getStepContent()}
+        </CheckInContainer>
       </div>
     </div>
   );
