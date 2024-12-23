@@ -57,7 +57,9 @@ export default function ReflectionPage() {
       return;
     }
     
-    if (step === totalSteps) {
+    // Check if we should save (last step) or move to next step
+    const isLastStep = step === totalSteps;
+    if (isLastStep) {
       const success = await saveReflection({
         selectedSin,
         sliderValue,
@@ -74,6 +76,7 @@ export default function ReflectionPage() {
       return;
     }
     
+    // Update mascot message based on next step
     if (step === 1) {
       setMascotMessage("Great choice! Now, let's understand how strong this temptation was.");
     } else if (step === 2) {
