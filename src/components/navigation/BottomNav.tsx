@@ -8,7 +8,7 @@ export const BottomNav = () => {
   const location = useLocation();
   const isMobile = useIsMobile();
 
-  const hideNavRoutes = ['/crossroad', '/reflection', '/past-temptation'];
+  const hideNavRoutes = ['/crossroad', '/reflection', '/past-temptation', '/', '/onboarding'];
   if (!isMobile || hideNavRoutes.includes(location.pathname)) return null;
 
   const navItems = [
