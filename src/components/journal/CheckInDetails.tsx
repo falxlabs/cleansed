@@ -38,17 +38,15 @@ export const CheckInDetails = ({ entry }: CheckInDetailsProps) => {
         <div className="bg-white p-4 rounded-xl border shadow-sm">
           <p className="text-sm font-semibold text-primary mb-2">Primary Challenge</p>
           <p className="capitalize">{entry.trigger}</p>
+          {entry.customNote && (
+            <p className="text-gray-700 mt-2 text-sm">{entry.customNote}</p>
+          )}
         </div>
         
         <div className="bg-white p-4 rounded-xl border shadow-sm">
           <p className="text-sm font-semibold text-primary mb-2">Intensity Level</p>
           <p>{getTemptationLevelText(entry.level)}</p>
         </div>
-      </div>
-
-      <div className="bg-white p-4 rounded-xl border shadow-sm">
-        <p className="text-sm font-semibold text-primary mb-2">Description</p>
-        <p className="text-gray-700">{entry.customNote || "No description provided"}</p>
       </div>
 
       <div className="bg-white p-4 rounded-xl border shadow-sm">
