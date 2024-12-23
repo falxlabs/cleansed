@@ -1,6 +1,8 @@
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { Check } from "lucide-react";
 
 const PRESET_AFFIRMATIONS = [
   "I am a child of God, created for His purpose.",
@@ -22,18 +24,28 @@ export function AffirmationStep({ value, onChange }: AffirmationStepProps) {
         This affirmation will be shown to you daily to strengthen your resolve
       </p>
 
-      <RadioGroup
-        value={value}
-        onValueChange={onChange}
-        className="space-y-4"
-      >
+      <div className="grid gap-4">
         {PRESET_AFFIRMATIONS.map((affirmation, index) => (
-          <div key={index} className="flex items-center space-x-2">
-            <RadioGroupItem value={affirmation} id={`affirmation-${index}`} />
-            <Label htmlFor={`affirmation-${index}`}>{affirmation}</Label>
-          </div>
+          <Card
+            key={index}
+            className={cn(
+              "p-4 cursor-pointer transition-all duration-200 hover:border-duo-500",
+              "relative flex items-center",
+              value === affirmation ? "border-duo-500 bg-duo-50" : "border-border"
+            )}
+            onClick={() => onChange(affirmation)}
+          >
+            <div className="flex-1">
+              <p className="text-sm font-medium">{affirmation}</p>
+            </div>
+            {value === affirmation && (
+              <div className="absolute right-4">
+                <Check className="h-5 w-5 text-duo-500" />
+              </div>
+            )}
+          </Card>
         ))}
-      </RadioGroup>
+      </div>
 
       <div className="space-y-2 pt-6 border-t">
         <Label htmlFor="custom-affirmation">Write your own affirmation</Label>
