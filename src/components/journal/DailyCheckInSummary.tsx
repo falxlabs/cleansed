@@ -3,15 +3,29 @@ import { getMoodEmoji } from "./EntryDetailsDialog";
 import { getSinEmoji } from "@/utils/sinEmoji";
 
 interface DailyCheckInSummaryProps {
-  entry: {
+  entry?: {
     date: Date;
     trigger: string;
     level: string;
     mood?: number;
   };
+  date: Date;
 }
 
-export const DailyCheckInSummary = ({ entry }: DailyCheckInSummaryProps) => {
+export const DailyCheckInSummary = ({ entry, date }: DailyCheckInSummaryProps) => {
+  if (!entry) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <div className="text-center space-y-2">
+          <span className="text-4xl">😢</span>
+          <p className="text-muted-foreground">
+            Daily check-in was missed on {format(date, "MMMM d, yyyy")}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-3">
       <div className="bg-primary/5 p-3 rounded-xl border border-primary/10">
