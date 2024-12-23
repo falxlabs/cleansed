@@ -4,10 +4,12 @@ import { Card } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { getProfile } from "@/utils/databaseUtils";
 import type { Profile } from "@/types/database";
+import { useAuth } from "@/providers/AuthProvider";
 
 const Index = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState<Profile | null>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -21,6 +23,13 @@ const Index = () => {
 
     loadProfile();
   }, []);
+
+  // Add automatic redirect when user is signed in
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-duo-50 px-4">
@@ -43,7 +52,7 @@ const Index = () => {
             </div>
             <div className="flex-1 space-y-4 text-center md:text-left">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-                {profile?.first_name ? `Hi, ${profile.first_name}` : "Hi there"}
+                Hi there, I'm Grace!
               </h2>
               <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
                 I'm here whenever you need me, day or night, to support your journey to freedom.
