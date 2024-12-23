@@ -15,7 +15,11 @@ export function DesktopNav() {
 
   return (
     <nav className="hidden md:flex fixed left-0 top-0 h-screen w-64 border-r bg-background p-6">
-      <div className="space-y-2 w-full">
+      <div className="space-y-6 w-full">
+        <div className="flex items-center gap-2 mb-8">
+          <h1 className="text-2xl font-extrabold text-duo-500">Cleansed</h1>
+        </div>
+        
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = item.path === '/settings' 
@@ -26,11 +30,13 @@ export function DesktopNav() {
             <NavLink
               key={item.path}
               to={item.path}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent ${
-                isActive ? "bg-accent" : ""
+              className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-base font-bold transition-all duration-200 hover:bg-duo-50 ${
+                isActive 
+                  ? "bg-duo-50 text-duo-500" 
+                  : "text-gray-600 hover:text-duo-500"
               }`}
             >
-              <Icon className="h-4 w-4" />
+              <Icon className={`h-5 w-5 ${isActive ? "text-duo-500" : ""}`} />
               {item.label}
             </NavLink>
           );
