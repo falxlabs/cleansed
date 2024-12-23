@@ -69,12 +69,22 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
     if (!entry) return;
 
     try {
-      const { error } = await supabase
+      // First delete the specific entry (temptation or check-in)
+      const specificTable = isCheckIn ? 'checkin_entries' : 'temptation_entries';
+      const { error: specificError } = await supabase
+        .from(specificTable)
+        .delete()
+        .eq('id', entry.id);
+
+      if (specificError) throw specificError;
+
+      // Then delete the parent journal entry
+      const { error: journalError } = await supabase
         .from('journal_entries')
         .delete()
         .eq('id', entry.id);
 
-      if (error) throw error;
+      if (journalError) throw journalError;
 
       if (onDelete) {
         onDelete(entry.id);
