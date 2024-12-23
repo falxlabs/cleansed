@@ -6,11 +6,16 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { format } from "date-fns";
+import { useToast } from "@/hooks/use-toast";
 
 const TOTAL_STEPS = 4;
 
 export default function DailyCheckinPage() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const {
     step,
     mood,
@@ -26,6 +31,37 @@ export default function DailyCheckinPage() {
     handleNext,
     isNextDisabled,
   } = useCheckInState();
+
+  useEffect(() => {
+    const checkExistingCheckIn = async () => {
+      const today = new Date();
+      const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+
+      const { data: existingCheckIn, error } = await supabase
+        .from('journal_entries')
+        .select('*')
+        .eq('entry_type', 'check-in')
+        .gte('created_at', startOfDay.toISOString())
+        .lt('created_at', endOfDay.toISOString())
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error checking for existing check-in:', error);
+        return;
+      }
+
+      if (existingCheckIn) {
+        toast({
+          title: "Check-in Already Completed",
+          description: `You've already completed your daily check-in for ${format(today, 'MMMM d, yyyy')}`,
+        });
+        navigate('/dashboard');
+      }
+    };
+
+    checkExistingCheckIn();
+  }, [navigate, toast]);
 
   const getMascotMessage = () => {
     switch(step) {
