@@ -35,8 +35,8 @@ const Index = () => {
           </div>
         </Card>
 
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        {/* Features Grid - Hidden on mobile */}
+        <div className="hidden md:grid md:grid-cols-3 gap-6 mb-12">
           <Card className="p-8 text-center hover:shadow-xl transition-shadow duration-300 bg-white/90">
             <div className="text-4xl mb-4">📈</div>
             <h3 className="text-xl font-bold mb-4">Long-term Progress</h3>
@@ -53,7 +53,7 @@ const Index = () => {
           </Card>
           <Card className="p-8 text-center hover:shadow-xl transition-shadow duration-300 bg-white/90">
             <div className="text-4xl mb-4">✝️</div>
-            <h3 className="text-xl font-bold mb-4">AI Scripture Guide</h3>
+            <h3 className="text-xl font-bold mb-4">Coming Soon: AI Scripture Guide</h3>
             <p className="text-gray-600">
               Receive personalized biblical guidance based on your journey, powered by AI trained on Scripture.
             </p>
