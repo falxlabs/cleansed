@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { ActionButton } from "@/components/dashboard/ActionButton";
-import { Shield, Flame } from "lucide-react";
+import { Shield, Flame, ArrowLeft } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 const TIMER_DURATION = 300; // 5 minutes in seconds
@@ -57,6 +57,15 @@ export default function CrossroadPage() {
 
   return (
     <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8 space-y-8 max-w-2xl mx-auto">
+      <Button 
+        variant="ghost" 
+        className="mb-4 -ml-2" 
+        onClick={() => navigate('/')}
+      >
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Back to Dashboard
+      </Button>
+
       <Mascot 
         message="Take a moment to breathe and pray. Remember, God is with you in this moment of temptation." 
         className="animate-fade-in"
