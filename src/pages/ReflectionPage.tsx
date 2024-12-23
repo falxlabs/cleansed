@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
@@ -32,8 +32,17 @@ export default function ReflectionPage() {
   const [temptationLevel, setTemptationLevel] = useState<TemptationLevel>(TEMPTATION_LEVELS[defaultLevelIndex]);
   const [trigger, setTrigger] = useState("");
   const [resistanceStrategy, setResistanceStrategy] = useState("");
+  const [outcome, setOutcome] = useState<string>("");
 
-  const progress = (step / 4) * 100;
+  useEffect(() => {
+    const storedOutcome = sessionStorage.getItem('pastTemptationOutcome');
+    if (storedOutcome) {
+      setOutcome(storedOutcome);
+    }
+  }, []);
+
+  const totalSteps = outcome === 'gave-in' ? 3 : 4;
+  const progress = (step / totalSteps) * 100;
 
   const handleSliderChange = (value: number[]) => {
     setSliderValue(value);
@@ -66,8 +75,8 @@ export default function ReflectionPage() {
       });
       return;
     }
-    if (step === 4) {
-      if (!resistanceStrategy) {
+    if (step === totalSteps) {
+      if (outcome === 'resisted' && !resistanceStrategy) {
         toast({
           title: "Please share what helped you resist",
           description: "This insight can help in future situations",
@@ -80,8 +89,9 @@ export default function ReflectionPage() {
         description: "Thank you for your honest reflection",
       });
       navigate("/");
+      return;
     }
-    if (step < 4) setStep(step + 1);
+    setStep(step + 1);
   };
 
   const handleBack = () => {
@@ -132,7 +142,7 @@ export default function ReflectionPage() {
           />
         )}
 
-        {step === 4 && (
+        {step === 4 && outcome === 'resisted' && (
           <ResistanceStep
             resistanceStrategy={resistanceStrategy}
             onResistanceStrategyChange={setResistanceStrategy}
@@ -142,7 +152,7 @@ export default function ReflectionPage() {
         <NavigationButtons
           onBack={handleBack}
           onNext={handleNext}
-          isLastStep={step === 4}
+          isLastStep={step === totalSteps}
         />
       </div>
     </div>
