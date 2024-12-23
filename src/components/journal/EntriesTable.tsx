@@ -34,27 +34,29 @@ const getTimeEmoji = (hour: number) => {
   return "🌙";
 };
 
-const getTypeEmoji = (type: string) => {
-  if (type === "Daily check-in") return "📝";
-  if (type === "Pride") return "👑";
-  if (type === "Greed") return "💰";
-  if (type === "Lust") return "💋";
-  if (type === "Envy") return "💚";
-  if (type === "Gluttony") return "🍽️";
-  if (type === "Wrath") return "😠";
-  if (type === "Sloth") return "🦥";
-  return "📝";
+const getSinEmoji = (type: string) => {
+  const sinType = type.toLowerCase();
+  if (sinType.includes("pride")) return "👑";
+  if (sinType.includes("greed")) return "💰";
+  if (sinType.includes("lust")) return "💋";
+  if (sinType.includes("envy")) return "💚";
+  if (sinType.includes("gluttony")) return "🍽️";
+  if (sinType.includes("wrath")) return "😠";
+  if (sinType.includes("sloth")) return "🦥";
+  return null;
 };
 
-const formatType = (type: string) => {
-  // First, remove any prefixes like "Past Temptation" or "Reflection"
-  let cleanType = type
-    .replace("Past Temptation ", "")
-    .replace("Reflection ", "")
-    .trim();
-
-  // Return the clean type (either "Daily check-in" or one of the seven sins)
-  return cleanType;
+const formatEntryType = (type: string) => {
+  if (type === "Daily check-in") return { category: "Check-in", subtype: null };
+  
+  // Extract the sin type from strings like "Past Temptation Pride" or "Reflection Pride"
+  const sins = ["Pride", "Greed", "Lust", "Envy", "Gluttony", "Wrath", "Sloth"];
+  const matchedSin = sins.find(sin => type.includes(sin));
+  
+  return {
+    category: "Temptation",
+    subtype: matchedSin || null
+  };
 };
 
 export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
@@ -65,47 +67,72 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Date</TableHead>
-          <TableHead>Time</TableHead>
-          <TableHead>Type</TableHead>
+          <TableHead>Date & Time</TableHead>
+          <TableHead>Entry Type</TableHead>
+          <TableHead>Details</TableHead>
           <TableHead className="text-center">Outcome</TableHead>
           <TableHead className="text-center">Reflection</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {sortedEntries.map((entry) => (
-          <TableRow
-            key={entry.id}
-            className="cursor-pointer hover:bg-muted/50"
-            onClick={() => onEntryClick(entry)}
-          >
-            <TableCell className="font-medium">
-              {format(entry.date, "MMM d")}
-            </TableCell>
-            <TableCell>
-              {getTimeEmoji(entry.date.getHours())}
-            </TableCell>
-            <TableCell>
-              <span className="flex items-center gap-2">
-                {getTypeEmoji(formatType(entry.type))} {formatType(entry.type)}
-              </span>
-            </TableCell>
-            <TableCell className="text-center">
-              {entry.resisted ? (
-                <Check className="inline h-5 w-5 text-green-500" />
-              ) : (
-                <X className="inline h-5 w-5 text-red-500" />
-              )}
-            </TableCell>
-            <TableCell className="text-center">
-              {entry.hasReflection ? (
-                <BookOpen className="inline h-5 w-5 text-blue-500" />
-              ) : (
-                <span className="text-muted-foreground">-</span>
-              )}
-            </TableCell>
-          </TableRow>
-        ))}
+        {sortedEntries.map((entry) => {
+          const { category, subtype } = formatEntryType(entry.type);
+          const sinEmoji = subtype ? getSinEmoji(subtype) : null;
+          
+          return (
+            <TableRow
+              key={entry.id}
+              className="cursor-pointer hover:bg-muted/50"
+              onClick={() => onEntryClick(entry)}
+            >
+              <TableCell>
+                <div className="flex flex-col">
+                  <span className="font-medium">
+                    {format(entry.date, "MMM d, yyyy")}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    {getTimeEmoji(entry.date.getHours())} {format(entry.date, "h:mm a")}
+                  </span>
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="flex flex-col">
+                  <span className="font-medium">{category}</span>
+                  {subtype && (
+                    <span className="text-sm text-muted-foreground">
+                      {sinEmoji} {subtype}
+                    </span>
+                  )}
+                </div>
+              </TableCell>
+              <TableCell>
+                {entry.level && (
+                  <span className="text-sm text-muted-foreground">
+                    Level: {entry.level}
+                  </span>
+                )}
+              </TableCell>
+              <TableCell className="text-center">
+                {category === "Temptation" ? (
+                  entry.resisted ? (
+                    <Check className="inline h-5 w-5 text-green-500" />
+                  ) : (
+                    <X className="inline h-5 w-5 text-red-500" />
+                  )
+                ) : (
+                  <span className="text-muted-foreground">-</span>
+                )}
+              </TableCell>
+              <TableCell className="text-center">
+                {entry.hasReflection ? (
+                  <BookOpen className="inline h-5 w-5 text-blue-500" />
+                ) : (
+                  <span className="text-muted-foreground">-</span>
+                )}
+              </TableCell>
+            </TableRow>
+          );
+        })}
         {entries.length === 0 && (
           <TableRow>
             <TableCell
