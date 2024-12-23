@@ -34,7 +34,7 @@ export const TemptationDetails = ({ entry }: TemptationDetailsProps) => {
 
       <div className="bg-white p-4 rounded-xl border shadow-sm">
         <p className="text-sm font-semibold text-primary mb-2">Description</p>
-        <p className="text-gray-700">{entry.customNote || "No description provided"}</p>
+        <p className="text-gray-700">{entry.notes || "No description provided"}</p>
       </div>
 
       <div className="bg-white p-4 rounded-xl border shadow-sm">
