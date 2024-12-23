@@ -76,6 +76,7 @@ export default function CrossroadPage() {
           onClick={handleFallToSin}
           variant="destructive"
           className="animate-fade-in"
+          disabled={timeLeft > 0}
         />
       </div>
 
