@@ -6,8 +6,10 @@ interface SettingsDetailLayoutProps {
 
 export function SettingsDetailLayout({ children }: SettingsDetailLayoutProps) {
   return (
-    <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8 max-w-2xl mx-auto">
-      {children}
+    <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8">
+      <div className="max-w-2xl mx-auto">
+        {children}
+      </div>
     </div>
   );
 }

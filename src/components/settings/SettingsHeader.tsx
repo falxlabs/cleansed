@@ -11,8 +11,8 @@ export function SettingsHeader() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => navigate(-1)}
-          className="lg:hidden"
+          onClick={() => navigate('/settings')}
+          className="md:hidden"
         >
           <ArrowLeft className="h-4 w-4" />
         </Button>
