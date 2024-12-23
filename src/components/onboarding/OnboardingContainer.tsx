@@ -25,7 +25,7 @@ export function OnboardingContainer() {
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session) {
+      if (event === 'SIGNED_IN' && session?.user) {
         try {
           const savedData = localStorage.getItem("defaultTemptation");
           if (savedData) {
