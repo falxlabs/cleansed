@@ -66,91 +66,55 @@ export default function JournalPage() {
         </Button>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-[400px_400px] gap-4 sm:gap-8 justify-center">
+      <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-4 sm:gap-8">
         {showCalendar && (
-          <>
-            <Card className="p-2 sm:p-4 h-[400px]">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={handleDateSelect}
-                className="rounded-md"
-              />
-            </Card>
-            
-            {dailyCheckIn ? (
-              <Card className="h-[400px]">
-                <CardHeader className="p-4">
-                  <CardTitle className="text-lg">Daily Check-in</CardTitle>
-                  <CardDescription>
-                    {format(dailyCheckIn.date, "MMMM d, yyyy")}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="p-4 pt-0">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-3xl" title={getMoodText(dailyCheckIn.mood)}>
-                        {getMoodEmoji(dailyCheckIn.mood)}
-                      </span>
-                      <p className="text-sm font-medium text-primary">
-                        {getMoodText(dailyCheckIn.mood)}
-                      </p>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="bg-primary/5 p-3 rounded-lg">
-                        <p className="text-xs font-semibold text-primary mb-1">Challenge</p>
-                        <p className="text-sm capitalize">{dailyCheckIn.trigger}</p>
-                      </div>
-                      <div className="bg-primary/5 p-3 rounded-lg">
-                        <p className="text-xs font-semibold text-primary mb-1">Intensity</p>
-                        <p className="text-sm">{getTemptationLevelText(dailyCheckIn.level)}</p>
-                      </div>
-                    </div>
-
-                    {dailyCheckIn.description && (
-                      <div className="bg-primary/5 p-3 rounded-lg">
-                        <p className="text-xs font-semibold text-primary mb-1">Notes</p>
-                        <p className="text-sm line-clamp-2">{dailyCheckIn.description}</p>
-                      </div>
-                    )}
-
-                    {dailyCheckIn.affirmation && (
-                      <div className="bg-primary/5 p-3 rounded-lg">
-                        <p className="text-xs font-semibold text-primary mb-1">Affirmation</p>
-                        <p className="text-sm italic line-clamp-2">"{dailyCheckIn.affirmation}"</p>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
+          <div className={`${isMobile ? "space-y-4" : ""}`}>
+            <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-4">
+              <Card className="p-2 sm:p-4 h-fit lg:sticky lg:top-4">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={handleDateSelect}
+                  className="rounded-md"
+                />
               </Card>
-            ) : (
-              <Card className="h-[400px] flex items-center justify-center">
-                <p className="text-muted-foreground">No check-in data for this date</p>
-              </Card>
-            )}
-          </>
-        )}
-      </div>
-
-      <Card className={`${showCalendar ? "" : "lg:col-span-2"} overflow-hidden`}>
-        <CardHeader className="p-4">
-          <CardTitle>Entries</CardTitle>
-          <CardDescription>
-            {showCalendar 
-              ? "Showing entries for selected date" 
-              : "Showing all entries"}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <EntriesTable 
-              entries={filteredEntries} 
-              onEntryClick={setSelectedEntry} 
-            />
+              
+              {dailyCheckIn && (
+                <Card className="h-fit md:max-w-md">
+                  <CardHeader className="p-4">
+                    <CardTitle className="text-lg">Daily Check-in</CardTitle>
+                    <CardDescription>
+                      {format(dailyCheckIn.date, "MMMM d, yyyy")}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-4 pt-0">
+                    <CheckInDetails entry={dailyCheckIn} />
+                  </CardContent>
+                </Card>
+              )}
+            </div>
           </div>
-        </CardContent>
-      </Card>
+        )}
+
+        <Card className={`${showCalendar ? "" : "lg:col-span-2"} overflow-hidden`}>
+          <CardHeader className="p-4">
+            <CardTitle>Entries</CardTitle>
+            <CardDescription>
+              {showCalendar 
+                ? "Showing entries for selected date" 
+                : "Showing all entries"}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <EntriesTable 
+                entries={filteredEntries} 
+                onEntryClick={setSelectedEntry} 
+              />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       <EntryDetailsDialog 
         entry={selectedEntry}
@@ -159,30 +123,4 @@ export default function JournalPage() {
       />
     </div>
   );
-}
-
-function getMoodText(mood?: number): string {
-  if (!mood) return "Neutral";
-  if (mood <= 20) return "Very Negative";
-  if (mood <= 40) return "Negative";
-  if (mood <= 60) return "Neutral";
-  if (mood <= 80) return "Positive";
-  return "Very Positive";
-}
-
-function getMoodEmoji(mood?: number): string {
-  if (!mood) return "😐";
-  if (mood <= 20) return "😢";
-  if (mood <= 40) return "😕";
-  if (mood <= 60) return "😐";
-  if (mood <= 80) return "🙂";
-  return "😊";
-}
-
-function getTemptationLevelText(level: string): string {
-  const value = parseInt(level);
-  if (value <= 25) return "Low";
-  if (value <= 50) return "Medium";
-  if (value <= 75) return "High";
-  return "Severe";
 }
