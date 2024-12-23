@@ -24,6 +24,18 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        cleansed: {
+          50: "#F0F9FF",
+          100: "#E0F2FE",
+          200: "#BAE6FD",
+          300: "#7DD3FC",
+          400: "#38BDF8",
+          500: "#0EA5E9",
+          600: "#0284C7",
+          700: "#0369A1",
+          800: "#075985",
+          900: "#0C4A6E",
+        },
         duo: {
           50: "#E5F6E8",
           100: "#C2E9C7",
@@ -81,7 +93,7 @@ export default {
         },
         float: {
           "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-10px)" },
+          "50%": { transform: "translateY(-5px)" }, // Reduced from -10px to -5px
         },
         breathe: {
           "0%, 100%": { transform: "scale(1)" },
@@ -95,7 +107,7 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        float: "float 6s ease-in-out infinite",
+        float: "float 3s ease-in-out infinite", // Reduced from 6s to 3s
         breathe: "breathe 4s ease-in-out infinite",
         bounce: "bounce 2s ease-in-out infinite",
       },
