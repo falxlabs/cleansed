@@ -20,10 +20,10 @@ export default function PastTemptationPage() {
   };
 
   const getTimeEmoji = (hour: number) => {
-    if (hour >= 5 && hour < 12) return "🌅"; // Morning
-    if (hour >= 12 && hour < 17) return "☀️"; // Afternoon
-    if (hour >= 17 && hour < 21) return "🌆"; // Evening
-    return "🌙"; // Night
+    if (hour >= 5 && hour < 12) return { emoji: "🌅", description: "Morning" };
+    if (hour >= 12 && hour < 17) return { emoji: "☀️", description: "Afternoon" };
+    if (hour >= 17 && hour < 21) return { emoji: "🌆", description: "Evening" };
+    return { emoji: "🌙", description: "Night" };
   };
 
   const handleContinue = () => {
@@ -47,6 +47,8 @@ export default function PastTemptationPage() {
     navigate('/reflection');
   };
 
+  const timeInfo = getTimeEmoji(Math.floor(timeValue[0]));
+
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
       <Mascot message="Select the date and time when this temptation occurred" />
@@ -67,11 +69,9 @@ export default function PastTemptationPage() {
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-center">Time of day</h3>
           <div className="px-4">
-            <div className="flex justify-between mb-2 text-2xl">
-              <span>🌅</span>
-              <span>☀️</span>
-              <span>🌆</span>
-              <span>🌙</span>
+            <div className="text-center mb-4">
+              <span className="text-2xl">{timeInfo.emoji}</span>
+              <span className="ml-2 text-muted-foreground">{timeInfo.description}</span>
             </div>
             <Slider
               value={timeValue}
@@ -81,7 +81,6 @@ export default function PastTemptationPage() {
               className="w-full"
             />
             <div className="text-center mt-2">
-              <span className="text-2xl mr-2">{getTimeEmoji(Math.floor(timeValue[0]))}</span>
               <span className="text-muted-foreground">{formatTime(timeValue[0])}</span>
             </div>
           </div>
