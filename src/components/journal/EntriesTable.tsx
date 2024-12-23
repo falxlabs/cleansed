@@ -17,6 +17,8 @@ interface Entry {
   level: string;
   trigger: string;
   notes: string;
+  mood?: number;
+  affirmation?: string;
 }
 
 interface EntriesTableProps {

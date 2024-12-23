@@ -2,10 +2,10 @@ interface JournalEntry {
   id: number;
   date: Date;
   type: string;
-  resisted?: boolean;
-  level?: string;
-  trigger?: string;
-  notes?: string;
+  resisted: boolean;
+  level: string;
+  trigger: string;
+  notes: string;
   mood?: number;
   affirmation?: string;
 }
@@ -15,6 +15,10 @@ export const saveJournalEntry = (entry: Omit<JournalEntry, "id">) => {
   const newEntry = {
     ...entry,
     id: Date.now(),
+    resisted: entry.resisted || false,
+    level: entry.level || "",
+    trigger: entry.trigger || "",
+    notes: entry.notes || "",
   };
   
   entries.push(newEntry);
@@ -30,5 +34,9 @@ export const loadJournalEntries = (): JournalEntry[] => {
   return entries.map((entry: JournalEntry) => ({
     ...entry,
     date: new Date(entry.date),
+    resisted: entry.resisted || false,
+    level: entry.level || "",
+    trigger: entry.trigger || "",
+    notes: entry.notes || "",
   }));
 };
