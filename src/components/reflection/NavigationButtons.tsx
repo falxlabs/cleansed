@@ -1,26 +1,56 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useMascotStore } from "@/components/dashboard/Mascot";
+import { useNavigate } from "react-router-dom";
 
 interface NavigationButtonsProps {
+  step: number;
+  isNextDisabled: boolean;
   onBack: () => void;
   onNext: () => void;
-  isLastStep: boolean;
 }
 
-export const NavigationButtons = ({
+export function NavigationButtons({
+  step,
+  isNextDisabled,
   onBack,
   onNext,
-  isLastStep,
-}: NavigationButtonsProps) => {
+}: NavigationButtonsProps) {
+  const { setMessage } = useMascotStore();
+  const navigate = useNavigate();
+
+  const handleNext = () => {
+    if (step === 5) {
+      setMessage("Thank you for your reflection. Every moment of awareness helps you grow stronger!");
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+    }
+    onNext();
+  };
+
   return (
-    <div className="flex justify-between pt-6">
-      <Button variant="ghost" className="-ml-2" onClick={onBack}>
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Back
-      </Button>
-      <Button onClick={onNext}>
-        {isLastStep ? "Complete" : "Next"}
+    <div className="flex justify-between mt-8">
+      {step > 1 ? (
+        <Button
+          variant="outline"
+          onClick={onBack}
+          className="flex items-center gap-2"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back
+        </Button>
+      ) : (
+        <div></div>
+      )}
+      <Button
+        onClick={handleNext}
+        disabled={isNextDisabled}
+        className="flex items-center gap-2"
+      >
+        {step === 5 ? "Complete" : "Next"}
+        <ArrowRight className="w-4 h-4" />
       </Button>
     </div>
   );
-};
+}
