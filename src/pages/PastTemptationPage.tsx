@@ -42,6 +42,11 @@ export default function PastTemptationPage() {
     // Store the selected date and resistance status in sessionStorage
     sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
     sessionStorage.setItem('pastTemptationResisted', String(resisted));
+
+    // Add console.log to debug the values being stored
+    console.log('Stored date:', selectedDate.toISOString());
+    console.log('Stored resisted status:', resisted);
+
     navigate('/reflection');
   };
 
