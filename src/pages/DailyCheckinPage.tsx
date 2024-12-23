@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
 import { TemptationStep } from "@/components/daily-checkin/TemptationStep";
 import { Mascot } from "@/components/dashboard/Mascot";
+import { Slider } from "@/components/ui/slider";
 
 export default function DailyCheckinPage() {
   const navigate = useNavigate();
