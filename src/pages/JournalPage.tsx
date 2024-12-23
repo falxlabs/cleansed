@@ -37,8 +37,8 @@ export default function JournalPage() {
         .from('journal_entries')
         .select(`
           *,
-          temptation_entries!inner(*),
-          checkin_entries!inner(*)
+          temptation_entries(*),
+          checkin_entries(*)
         `)
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
