@@ -24,6 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { Check, ChevronDown, ChevronUp, X } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Temporary mock data - replace with actual data from your backend
 const mockEntries = [
@@ -52,6 +53,7 @@ export default function TemptationTimelinePage() {
   const [selectedEntries, setSelectedEntries] = useState(mockEntries);
   const [selectedEntry, setSelectedEntry] = useState<typeof mockEntries[0] | null>(null);
   const [showCalendar, setShowCalendar] = useState(true);
+  const isMobile = useIsMobile();
 
   const handleDateSelect = (newDate: Date | undefined) => {
     setDate(newDate);
@@ -74,7 +76,7 @@ export default function TemptationTimelinePage() {
   };
 
   return (
-    <div className="container max-w-7xl mx-auto p-2 sm:p-4 space-y-4 sm:space-y-8">
+    <div className={`container max-w-7xl mx-auto p-2 sm:p-4 space-y-4 sm:space-y-8 ${isMobile ? "pb-20" : ""}`}>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl sm:text-3xl font-bold">Temptation Timeline</h1>
         <Button 
