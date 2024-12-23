@@ -38,8 +38,8 @@ export function SuggestionCarousel() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="hidden sm:flex -left-4 border-2 hover:bg-duo-50 hover:border-duo-300" />
-        <CarouselNext className="hidden sm:flex -right-4 border-2 hover:bg-duo-50 hover:border-duo-300" />
+        <CarouselPrevious className="hidden sm:flex -left-4 text-gray-600 hover:text-duo-500 transition-colors" />
+        <CarouselNext className="hidden sm:flex -right-4 text-gray-600 hover:text-duo-500 transition-colors" />
       </Carousel>
     </div>
   );
