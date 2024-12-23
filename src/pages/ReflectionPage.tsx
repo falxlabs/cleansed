@@ -32,7 +32,7 @@ export default function ReflectionPage() {
 
   const { saveReflection } = useReflectionDatabase();
 
-  const totalSteps = outcome === 'gave-in' ? 3 : 4;
+  const totalSteps = outcome === 'resisted' ? 4 : 3;
   const progress = (step / totalSteps) * 100;
 
   const handleNext = async () => {
@@ -78,11 +78,7 @@ export default function ReflectionPage() {
       setMascotMessage("You showed real strength! What strategies helped you resist? Your experience could help others too!");
     }
     
-    if (step === 3 && outcome === 'gave-in') {
-      setStep(totalSteps);
-    } else {
-      setStep(step + 1);
-    }
+    setStep(step + 1);
   };
 
   const handleBack = () => {
