@@ -18,9 +18,6 @@ export const TemptationDetails = ({ entry }: TemptationDetailsProps) => {
         <div className="bg-white p-4 rounded-xl border shadow-sm">
           <p className="text-sm font-semibold text-primary mb-2">Type of Temptation</p>
           <p className="capitalize">{entry.type}</p>
-          {entry.customNote && (
-            <p className="text-gray-700 mt-2 text-sm">{entry.customNote}</p>
-          )}
         </div>
         
         <div className={`bg-white p-4 rounded-xl border shadow-sm ${
@@ -33,6 +30,11 @@ export const TemptationDetails = ({ entry }: TemptationDetailsProps) => {
             {entry.resisted ? "✓ Successfully Resisted" : "✗ Gave in"}
           </p>
         </div>
+      </div>
+
+      <div className="bg-white p-4 rounded-xl border shadow-sm">
+        <p className="text-sm font-semibold text-primary mb-2">Description</p>
+        <p className="text-gray-700">{entry.customNote || "No description provided"}</p>
       </div>
 
       <div className="bg-white p-4 rounded-xl border shadow-sm">
