@@ -5,10 +5,8 @@ import { OnboardingNavigation } from "./OnboardingNavigation";
 import { useOnboarding } from "@/hooks/useOnboarding";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 export function OnboardingContainer() {
-  const navigate = useNavigate();
   const {
     currentStep,
     formData,
@@ -23,10 +21,6 @@ export function OnboardingContainer() {
     isCurrentStepValid,
   } = useOnboarding();
 
-  const handleNavigateBack = () => {
-    navigate(-1);
-  };
-
   return (
     <div className="max-w-xl mx-auto p-6 space-y-6">
       <Mascot
@@ -40,14 +34,16 @@ export function OnboardingContainer() {
       />
 
       <div className="flex items-center gap-4 mb-6">
-        <Button
-          variant="ghost"
-          className="-ml-2"
-          onClick={handleNavigateBack}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back
-        </Button>
+        {currentStep > 1 && (
+          <Button
+            variant="ghost"
+            className="-ml-2"
+            onClick={handleBack}
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back
+          </Button>
+        )}
         <Progress value={progress} className="flex-1" />
       </div>
 
