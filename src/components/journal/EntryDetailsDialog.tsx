@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Dialog,
   DialogContent,
@@ -64,13 +65,33 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
   const formattedDate = format(entry.date, "EEEE, MMMM d, yyyy");
   const formattedTime = format(entry.date, "h:mm a");
 
-  const handleDelete = () => {
-    if (entry && onDelete) {
-      onDelete(entry.id);
+  const handleDelete = async () => {
+    if (!entry) return;
+
+    try {
+      const { error } = await supabase
+        .from('journal_entries')
+        .delete()
+        .eq('id', entry.id);
+
+      if (error) throw error;
+
+      if (onDelete) {
+        onDelete(entry.id);
+      }
+      
       onOpenChange(false);
+      
       toast({
         title: "Entry deleted",
         description: "The entry has been successfully deleted.",
+      });
+    } catch (error) {
+      console.error('Error deleting entry:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete the entry. Please try again.",
+        variant: "destructive",
       });
     }
   };
