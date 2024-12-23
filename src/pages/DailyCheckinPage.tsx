@@ -42,6 +42,7 @@ export default function DailyCheckinPage() {
         mood: mood[0],
         affirmation: selectedStatement,
         resisted: true,
+        description: description,
       });
 
       toast({

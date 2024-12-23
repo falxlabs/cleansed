@@ -9,7 +9,7 @@ interface CheckInDetailsProps {
     notes: string;
     mood?: number;
     affirmation?: string;
-    customNote?: string;
+    description?: string;
   };
 }
 
@@ -46,10 +46,12 @@ export const CheckInDetails = ({ entry }: CheckInDetailsProps) => {
         </div>
       </div>
 
-      <div className="bg-white p-4 rounded-xl border shadow-sm">
-        <p className="text-sm font-semibold text-primary mb-2">Description</p>
-        <p className="text-gray-700">{entry.customNote || "No description provided"}</p>
-      </div>
+      {entry.description && (
+        <div className="bg-white p-4 rounded-xl border shadow-sm">
+          <p className="text-sm font-semibold text-primary mb-2">Description</p>
+          <p className="text-gray-700">{entry.description}</p>
+        </div>
+      )}
 
       <div className="bg-white p-4 rounded-xl border shadow-sm">
         <p className="text-sm font-semibold text-primary mb-2">Mood Description</p>

@@ -76,6 +76,7 @@ export default function ReflectionPage() {
         level: temptationLevel,
         trigger: trigger,
         notes: outcome === 'resisted' ? resistanceStrategy : '',
+        description: customNote,
       });
 
       setMascotMessage("Thank you for your honest reflection! Remember, every step forward, no matter how small, is progress. Keep going!");
