@@ -26,9 +26,9 @@ export default function ReflectionPage() {
   const [step, setStep] = useState(1);
   const [selectedSin, setSelectedSin] = useState<string>("");
   const [customNote, setCustomNote] = useState("");
-  const defaultSliderValue = [25];
+  const defaultSliderValue = [0];
   const [sliderValue, setSliderValue] = useState(defaultSliderValue);
-  const defaultLevelIndex = Math.floor((defaultSliderValue[0] / 100) * TEMPTATION_LEVELS.length);
+  const defaultLevelIndex = 0;
   const [temptationLevel, setTemptationLevel] = useState<TemptationLevel>(TEMPTATION_LEVELS[defaultLevelIndex]);
   const [trigger, setTrigger] = useState("");
   const [resistanceStrategy, setResistanceStrategy] = useState("");
