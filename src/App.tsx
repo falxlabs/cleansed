@@ -1,5 +1,6 @@
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
+import SignInPage from "./pages/SignInPage";
 import DashboardPage from "./pages/DashboardPage";
 import DailyCheckinPage from "./pages/DailyCheckinPage";
 import CrossroadPage from "./pages/CrossroadPage";
@@ -20,7 +21,7 @@ import SupportSettingsPage from "./pages/settings/SupportSettingsPage";
 
 const AppContent = () => {
   const location = useLocation();
-  const showNav = location.pathname !== "/";
+  const showNav = location.pathname !== "/" && location.pathname !== "/signin";
 
   return (
     <div className="min-h-screen bg-[#F5F5F5]">
@@ -30,6 +31,7 @@ const AppContent = () => {
         <main className={`${showNav ? "md:flex-1" : ""} px-4 pb-24 md:pb-6 md:px-6`}>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/signin" element={<SignInPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/daily-checkin" element={<DailyCheckinPage />} />
             <Route path="/crossroad" element={<CrossroadPage />} />
