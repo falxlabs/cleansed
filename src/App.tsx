@@ -23,11 +23,11 @@ const AppContent = () => {
   const showNav = location.pathname !== "/";
 
   return (
-    <>
+    <div className="min-h-screen bg-[#F5F5F5]">
       {showNav && <DesktopNav />}
-      <div className={showNav ? "flex" : ""}>
-        {showNav && <div className="w-64 shrink-0" />}
-        <main className={showNav ? "flex-1" : ""}>
+      <div className={`${showNav ? "md:flex" : ""} min-h-[calc(100vh-4rem)]`}>
+        {showNav && <div className="hidden md:block w-64 shrink-0" />}
+        <main className={`${showNav ? "md:flex-1" : ""} px-4 pb-24 md:pb-6 md:px-6`}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<DashboardPage />} />
@@ -49,7 +49,7 @@ const AppContent = () => {
       </div>
       {showNav && <BottomNav />}
       <Toaster />
-    </>
+    </div>
   );
 };
 
