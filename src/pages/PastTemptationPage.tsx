@@ -43,7 +43,7 @@ export default function PastTemptationPage() {
       const minutes = Math.round((timeValue[0] - hours) * 60);
       selectedDate.setHours(hours, minutes);
 
-      // Save the past temptation entry with all required fields
+      // Save entry with all required fields
       saveJournalEntry({
         date: selectedDate,
         type: "Past Temptation",
@@ -53,37 +53,16 @@ export default function PastTemptationPage() {
         notes: "Logged without reflection",
       });
 
-      // Store data for reflection if needed
-      sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
-      sessionStorage.setItem('pastTemptationOutcome', outcome);
-
       navigate('/reflection');
     }
   };
 
-  const handleSkipReflection = () => {
-    if (!date || !outcome) return;
-    
-    const selectedDate = new Date(date);
-    const hours = Math.floor(timeValue[0]);
-    const minutes = Math.round((timeValue[0] - hours) * 60);
-    selectedDate.setHours(hours, minutes);
-
-    // Save entry with all required fields when skipping reflection
-    saveJournalEntry({
-      date: selectedDate,
-      type: "Past Temptation",
-      resisted: outcome === 'resisted',
-      level: "medium", // Default level
-      trigger: "unspecified", // Default trigger
-      notes: "Logged without reflection",
-    });
-
-    navigate('/');
-    toast({
-      title: "Entry recorded",
-      description: "Your past temptation has been logged without reflection",
-    });
+  const handleBack = () => {
+    if (step === 1) {
+      navigate('/');
+    } else {
+      setStep(step - 1);
+    }
   };
 
   const progress = (step / 2) * 100;
@@ -118,25 +97,13 @@ export default function PastTemptationPage() {
         <div className="flex justify-between pt-4">
           <Button 
             variant="outline" 
-            onClick={() => step === 1 ? navigate('/') : setStep(1)}
+            onClick={handleBack}
           >
             Back
           </Button>
-          <div className="space-x-2">
-            {step === 2 && (
-              <Button
-                variant="outline"
-                className="text-muted-foreground"
-                onClick={handleSkipReflection}
-                disabled={!outcome}
-              >
-                Skip Reflection
-              </Button>
-            )}
-            <Button onClick={handleContinue}>
-              Continue
-            </Button>
-          </div>
+          <Button onClick={handleContinue}>
+            Continue
+          </Button>
         </div>
       </div>
     </div>

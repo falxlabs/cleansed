@@ -35,12 +35,12 @@ export default function DailyCheckinPage() {
       // Save the check-in entry
       saveJournalEntry({
         date: new Date(),
-        type: "Daily Check-in",
+        type: "Daily check-in",
         level: String(temptationLevel[0]),
         trigger: selectedTemptation,
-        notes: selectedStatement,
+        notes: description,
         mood: mood[0],
-        affirmation: description,
+        affirmation: selectedStatement,
         resisted: true,
       });
 
