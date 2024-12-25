@@ -38,11 +38,11 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Time</TableHead>
+          <TableHead>Date & Time</TableHead>
           <TableHead>Entry Type</TableHead>
-          <TableHead className="text-center">Type</TableHead>
-          <TableHead className="text-center">Level</TableHead>
-          <TableHead className="text-center">Result</TableHead>
+          <TableHead className="text-center">Sin Type</TableHead>
+          <TableHead className="text-center">Intensity</TableHead>
+          <TableHead className="text-center">Outcome</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -76,14 +76,22 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
                   {isCheckIn ? "Daily Check-in" : "Temptation"}
                 </TableCell>
                 <TableCell className="text-center">
-                  <span className="text-xl">
-                    {getSinEmoji(entry.temptation_type)}
-                  </span>
+                  {isCheckIn ? (
+                    <span className="text-muted-foreground">-</span>
+                  ) : (
+                    <span className="text-xl" title={entry.temptation_type}>
+                      {getSinEmoji(entry.temptation_type)}
+                    </span>
+                  )}
                 </TableCell>
                 <TableCell className="text-center">
-                  <span className="text-xl">
-                    {getSeverityEmoji(entry.level)}
-                  </span>
+                  {isCheckIn ? (
+                    <span className="text-muted-foreground">-</span>
+                  ) : (
+                    <span className="text-xl" title={`Level: ${entry.level}`}>
+                      {getSeverityEmoji(entry.level)}
+                    </span>
+                  )}
                 </TableCell>
                 <TableCell className="text-center">
                   {isCheckIn ? (
