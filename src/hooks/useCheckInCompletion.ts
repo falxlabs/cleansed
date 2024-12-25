@@ -33,26 +33,6 @@ export function useCheckInCompletion() {
         return;
       }
 
-      // First, create or update user affirmation if provided
-      let affirmationId = null;
-      if (selectedStatement) {
-        const { data: userAffirmation, error: affirmationError } = await supabase
-          .from('user_affirmations')
-          .upsert({
-            user_id: user.id,
-            content: selectedStatement
-          })
-          .select()
-          .single();
-
-        if (affirmationError) {
-          console.error('Error saving affirmation:', affirmationError);
-          throw new Error('Failed to save affirmation');
-        }
-
-        affirmationId = userAffirmation?.id;
-      }
-
       // Create journal entry
       const { data: journalEntry, error: journalError } = await supabase
         .from('journal_entries')
@@ -74,8 +54,7 @@ export function useCheckInCompletion() {
         .insert({
           id: journalEntry.id,
           mood_score: mood[0],
-          mood_description: description,
-          custom_affirmation_id: affirmationId
+          mood_description: description
         });
 
       if (checkInError) {
