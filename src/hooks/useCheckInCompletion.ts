@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { TemptationType } from "@/types/database";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface CheckInData {
   mood: number[];
@@ -14,6 +15,7 @@ interface CheckInData {
 export function useCheckInCompletion() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const updateUserProgress = async (userId: string) => {
     const today = new Date();
@@ -117,6 +119,9 @@ export function useCheckInCompletion() {
 
       // Update user progress and streak
       await updateUserProgress(user.id);
+
+      // Invalidate the userProgress query to trigger a refetch
+      queryClient.invalidateQueries({ queryKey: ['userProgress'] });
 
       toast({
         title: "Check-in Complete",

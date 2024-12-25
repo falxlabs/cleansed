@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -5,6 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useCarousel } from "@/components/ui/carousel";
 
 const SUGGESTIONS = [
   "Take a walk",
@@ -16,6 +18,18 @@ const SUGGESTIONS = [
 ];
 
 export function SuggestionCarousel() {
+  const [api, setApi] = useState<ReturnType<typeof useCarousel>["api"]>();
+  
+  useEffect(() => {
+    if (!api) return;
+
+    const interval = setInterval(() => {
+      api.scrollNext();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [api]);
+
   return (
     <div className="space-y-4">
       <h4 className="text-base sm:text-lg font-medium text-center text-gray-700">
@@ -28,6 +42,7 @@ export function SuggestionCarousel() {
           align: "center",
           containScroll: "trimSnaps"
         }}
+        setApi={setApi}
       >
         <CarouselContent>
           {SUGGESTIONS.map((suggestion, index) => (
