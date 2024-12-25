@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import type { JournalEntry } from "@/types/journal";
+import type { Entry } from "@/components/journal/types";
 import { useToast } from "@/hooks/use-toast";
 
 export function useJournalEntries(date?: Date) {
@@ -14,26 +14,28 @@ export function useJournalEntries(date?: Date) {
         {
           id: 1,
           created_at: new Date().toISOString(),
-          entry_type: 'check-in',
+          entry_type: 'check-in' as const,
           checkin_entries: [{
             mood_score: 4,
             temptation_type: 'pride',
-            intensity_level: 3
+            intensity_level: 3,
+            mood_description: 'Feeling good today'
           }],
           temptation_entries: []
         },
         {
           id: 2,
           created_at: new Date(Date.now() - 86400000).toISOString(),
-          entry_type: 'temptation',
+          entry_type: 'temptation' as const,
           temptation_entries: [{
             temptation_type: 'greed',
             intensity_level: 2,
-            resisted: true
+            resisted: true,
+            temptation_details: 'Resisted successfully'
           }],
           checkin_entries: []
         }
-      ];
+      ] as Entry[];
     }
 
     const query = supabase
@@ -100,7 +102,7 @@ export function useJournalEntries(date?: Date) {
         : entry.checkin_entries
           ? [entry.checkin_entries]
           : []
-    })) as JournalEntry[];
+    })) as Entry[];
 
     return transformedData;
   };
