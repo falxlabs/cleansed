@@ -54,7 +54,9 @@ export function useCheckInCompletion() {
         .insert({
           id: journalEntry.id,
           mood_score: mood[0],
-          mood_description: description
+          mood_description: description,
+          temptation_type: selectedTemptation || null,
+          intensity_level: selectedTemptation ? temptationLevel[0] : null
         });
 
       if (checkInError) {
@@ -66,30 +68,6 @@ export function useCheckInCompletion() {
         
         console.error('Error creating check-in entry:', checkInError);
         throw new Error('Failed to save check-in details');
-      }
-
-      // If temptation is selected, create temptation entry
-      if (selectedTemptation) {
-        const { error: temptationError } = await supabase
-          .from('temptation_entries')
-          .insert({
-            id: journalEntry.id,
-            temptation_type: selectedTemptation,
-            intensity_level: temptationLevel[0],
-            trigger: description,
-            resisted: true
-          });
-
-        if (temptationError) {
-          // If temptation entry fails, clean up both journal and check-in entries
-          await supabase
-            .from('journal_entries')
-            .delete()
-            .eq('id', journalEntry.id);
-          
-          console.error('Error creating temptation entry:', temptationError);
-          throw new Error('Failed to save temptation details');
-        }
       }
 
       toast({
