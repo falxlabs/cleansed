@@ -12,6 +12,8 @@ interface DailyCheckInSummaryProps {
     trigger: string;
     level: string;
     mood?: number;
+    description?: string;
+    affirmation?: string;
   };
   date: Date;
 }
@@ -100,6 +102,20 @@ export const DailyCheckInSummary = ({ entry, date }: DailyCheckInSummaryProps) =
           </div>
         </div>
       </div>
+
+      {entry.description && (
+        <div className="bg-white p-3 rounded-xl border">
+          <p className="text-xs font-semibold text-primary mb-1">Description</p>
+          <p className="text-sm line-clamp-2">{entry.description}</p>
+        </div>
+      )}
+
+      {entry.affirmation && (
+        <div className="bg-primary/5 p-3 rounded-xl border border-primary/10">
+          <p className="text-xs font-semibold text-primary mb-1">Affirmation</p>
+          <p className="text-sm italic line-clamp-2">"{entry.affirmation}"</p>
+        </div>
+      )}
     </div>
   );
 };

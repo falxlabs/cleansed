@@ -55,9 +55,9 @@ export function Mascot({
   }, [user]);
 
   const displayMessage = (isDashboard && shouldShow && user && !hasCompletedCheckIn)
-    ? `${personalizedGreeting}It's time for your daily check-in.`
+    ? `${personalizedGreeting}Time for your daily moment of reflection.`
     : hasCompletedCheckIn
-    ? `${personalizedGreeting}You've completed your daily check-in. Great job!`
+    ? `${personalizedGreeting}Thank you for taking time to reflect today. Keep growing stronger! 🌱`
     : message;
 
   return (

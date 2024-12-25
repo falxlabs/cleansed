@@ -10,13 +10,13 @@ interface JournalEntriesListProps {
   onEntriesUpdate?: (entries: Entry[]) => void;
 }
 
-export const JournalEntriesList = ({ 
+export function JournalEntriesList({ 
   showCalendar, 
   isLoading, 
   entries,
   date,
   onEntriesUpdate
-}: JournalEntriesListProps) => {
+}: JournalEntriesListProps) {
   const filteredEntries = showCalendar && date
     ? entries.filter(entry => 
         new Date(entry.created_at).toDateString() === date.toDateString()
@@ -56,4 +56,4 @@ export const JournalEntriesList = ({
       </CardContent>
     </Card>
   );
-};
+}
