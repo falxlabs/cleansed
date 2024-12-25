@@ -4,7 +4,6 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { JournalCalendar } from "@/components/journal/JournalCalendar";
 import { useAuth } from "@/providers/AuthProvider";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { JournalEntriesList } from "@/components/journal/JournalEntriesList";
 import { useJournalEntries } from "@/hooks/useJournalEntries";
 import { Entry } from "@/components/journal/types";
@@ -18,7 +17,6 @@ export default function NewJournalPage() {
   const { data: entries = [], isLoading } = useJournalEntries(showCalendar ? date : undefined);
   const [localEntries, setLocalEntries] = useState<Entry[]>([]);
 
-  // Update local entries when the query data changes
   useEffect(() => {
     setLocalEntries(entries);
   }, [entries]);
@@ -55,17 +53,6 @@ export default function NewJournalPage() {
           )}
         </Button>
       </div>
-      
-      {!user && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Sample Data</CardTitle>
-            <CardDescription>
-              You're viewing sample data. Sign in to track your own journal entries.
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      )}
 
       <div className="grid grid-cols-1 gap-4 sm:gap-8">
         {showCalendar && (

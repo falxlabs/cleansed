@@ -21,11 +21,15 @@ import { DesktopNav } from "./components/navigation/DesktopNav";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "./providers/AuthProvider";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
+import { SampleDataAlert } from "./components/auth/SampleDataAlert";
+import { useAuth } from "./providers/AuthProvider";
 
 const AppContent = () => {
   const location = useLocation();
+  const { user } = useAuth();
   const publicRoutes = ['/', '/onboarding', '/signin'];
   const showNav = !publicRoutes.includes(location.pathname);
+  const isProtectedRoute = !publicRoutes.includes(location.pathname);
 
   return (
     <div className="min-h-screen bg-[#F5F5F5]">
@@ -33,6 +37,11 @@ const AppContent = () => {
       <div className={`${showNav ? "md:flex" : ""} min-h-[calc(100vh-4rem)]`}>
         {showNav && <div className="hidden md:block w-64 shrink-0" />}
         <main className={`${showNav ? "md:flex-1" : ""} md:pb-6`}>
+          {isProtectedRoute && !user && (
+            <div className="container max-w-7xl mx-auto px-2 sm:px-4 pt-4">
+              <SampleDataAlert />
+            </div>
+          )}
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Index />} />
