@@ -12,20 +12,24 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+interface TemptationEntry {
+  temptation_type: string;
+  intensity_level: number;
+  resisted: boolean;
+}
+
+interface CheckInEntry {
+  mood_score: number | null;
+  temptation_type: string | null;
+  intensity_level: number | null;
+}
+
 interface Entry {
   id: number;
-  date: Date;
-  entry_type: string;
-  temptation_entries: {
-    temptation_type: string;
-    intensity_level: number;
-    resisted: boolean;
-  }[];
-  checkin_entries: {
-    mood_score: number;
-    temptation_type: string;
-    intensity_level: number;
-  }[];
+  created_at: string;
+  entry_type: 'check-in' | 'temptation';
+  temptation_entries?: TemptationEntry[];
+  checkin_entries?: CheckInEntry[];
 }
 
 interface EntriesListProps {
@@ -36,7 +40,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
   console.log('Entries received in EntriesList:', entries);
   
   const sortedEntries = [...entries].sort(
-    (a, b) => b.date.getTime() - a.date.getTime()
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
   );
 
   const getTemptationType = (entry: Entry) => {
@@ -98,17 +102,18 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
             const sinEmoji = getSinEmoji(temptationType);
             const intensityLevel = getIntensityLevel(entry);
             const resisted = getResisted(entry);
+            const entryDate = new Date(entry.created_at);
             
             return (
               <TableRow key={entry.id}>
                 <TableCell>
                   <div className="flex flex-col">
                     <span className="font-medium">
-                      {format(entry.date, "MMM d, yyyy")}
+                      {format(entryDate, "MMM d, yyyy")}
                     </span>
                     <span className="text-sm text-muted-foreground">
-                      {getTimeEmoji(entry.date.getHours())}{" "}
-                      {format(entry.date, "h:mm a")}
+                      {getTimeEmoji(entryDate.getHours())}{" "}
+                      {format(entryDate, "h:mm a")}
                     </span>
                   </div>
                 </TableCell>
@@ -118,7 +123,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
                       {isCheckIn ? "Daily Check-in" : "Temptation"}
                     </span>
                     <span className="text-sm text-muted-foreground">
-                      {format(entry.date, "EEEE")}
+                      {format(entryDate, "EEEE")}
                     </span>
                   </div>
                 </TableCell>
