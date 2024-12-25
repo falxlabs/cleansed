@@ -94,7 +94,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
       <TableHeader>
         <TableRow>
           <TableHead>Date & Time</TableHead>
-          <TableHead>Entry Type</TableHead>
+          <TableHead>Type</TableHead>
           <TableHead className="text-center">Sin Type</TableHead>
           <TableHead className="text-center">Intensity</TableHead>
           <TableHead className="text-center">Outcome</TableHead>
@@ -134,14 +134,9 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="flex flex-col">
-                    <span className="font-medium">
-                      {isCheckIn ? "Daily Check-in" : "Temptation"}
-                    </span>
-                    <span className="text-sm text-muted-foreground">
-                      {format(entryDate, "EEEE")}
-                    </span>
-                  </div>
+                  <span className="font-medium">
+                    {isCheckIn ? "Check-in" : "Temptation"}
+                  </span>
                 </TableCell>
                 <TableCell className="text-center">
                   {temptationType ? (
@@ -185,7 +180,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
                         <>
                           <X className="h-5 w-5 text-red-500" />
                           <span className="text-sm text-muted-foreground">
-                            Failed
+                            Gave in
                           </span>
                         </>
                       )}
