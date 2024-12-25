@@ -59,19 +59,33 @@ export function useJournalEntries(date?: Date) {
       return [];
     }
 
-    // Transform the data to match our expected structure
-    const transformedData = data.map(entry => ({
-      ...entry,
-      temptation_entries: entry.temptation_entries ? [entry.temptation_entries] : [],
-      checkin_entries: entry.checkin_entries ? [entry.checkin_entries] : []
-    }));
+    if (!data) return [];
 
-    return transformedData as JournalEntry[];
+    // Transform the data to match our expected structure
+    const transformedData = data.map(entry => {
+      // Ensure temptation_entries and checkin_entries are always arrays
+      const transformedEntry = {
+        ...entry,
+        temptation_entries: Array.isArray(entry.temptation_entries) 
+          ? entry.temptation_entries 
+          : entry.temptation_entries 
+            ? [entry.temptation_entries] 
+            : [],
+        checkin_entries: Array.isArray(entry.checkin_entries)
+          ? entry.checkin_entries
+          : entry.checkin_entries
+            ? [entry.checkin_entries]
+            : []
+      };
+
+      return transformedEntry;
+    });
+
+    return transformedData as unknown as JournalEntry[];
   };
 
   return useQuery({
     queryKey: ['journal-entries', date?.toISOString()],
     queryFn: fetchEntries,
-    staleTime: 1000 * 60, // Consider data fresh for 1 minute
   });
 }
