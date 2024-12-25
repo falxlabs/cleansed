@@ -75,11 +75,12 @@ export default function JournalPage() {
           id: entry.id,
           date: new Date(entry.created_at),
           type: entry.entry_type,
-          resisted: entryDetails?.resisted ?? true,
+          resisted: isTemptation ? entryDetails?.resisted ?? false : true,
           level: entryDetails?.intensity_level?.toString() ?? "0",
           trigger: entryDetails?.trigger ?? "",
           notes: isTemptation ? entryDetails?.temptation_details ?? "" : "",
-          temptation_type: entryDetails?.temptation_type,
+          // Only set temptation_type for temptation entries
+          temptation_type: isTemptation ? entryDetails?.temptation_type : undefined,
           mood: entry.checkin_entries?.[0]?.mood_score,
         };
         console.log("Formatted entry:", formatted);
