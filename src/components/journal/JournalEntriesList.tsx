@@ -25,7 +25,11 @@ export function JournalEntriesList({
 
   const handleDelete = (updatedEntries: Entry[]) => {
     if (onEntriesUpdate) {
-      onEntriesUpdate(updatedEntries);
+      // Update with all entries, not just filtered ones
+      const newEntries = entries.filter(entry => 
+        !filteredEntries.find(deleted => deleted.id === entry.id)
+      );
+      onEntriesUpdate(newEntries);
     }
   };
 

@@ -1,10 +1,11 @@
 import { format, isToday } from "date-fns";
-import { getMoodEmoji } from "./EntryDetailsDialog";
+import { getMoodEmoji, getMoodText } from "./EntryDetailsDialog";
 import { getSinEmoji } from "@/utils/sinEmoji";
 import { getSeverityEmoji } from "@/utils/severityEmoji";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/providers/AuthProvider";
+import { Separator } from "@/components/ui/separator";
 
 interface DailyCheckInSummaryProps {
   entry?: {
@@ -71,12 +72,15 @@ export const DailyCheckInSummary = ({ entry, date }: DailyCheckInSummaryProps) =
   }
 
   return (
-    <div className="space-y-3">
-      <div className="bg-primary/5 p-3 rounded-xl border border-primary/10">
+    <div className="space-y-4">
+      <div>
         <div className="flex items-center justify-between mb-2">
-          <p className="text-sm font-semibold text-primary">Mood</p>
+          <h3 className="font-semibold">Mood</h3>
           <span className="text-2xl">{getMoodEmoji(entry.mood)}</span>
         </div>
+        <p className="text-sm text-muted-foreground mb-2">
+          {getMoodText(entry.mood)}
+        </p>
         <div className="h-2 bg-primary/10 rounded-full overflow-hidden">
           <div 
             className="h-full bg-primary transition-all duration-500"
@@ -84,37 +88,48 @@ export const DailyCheckInSummary = ({ entry, date }: DailyCheckInSummaryProps) =
           />
         </div>
       </div>
+
+      <Separator />
       
-      <div className="grid grid-cols-2 gap-3">
-        <div className="bg-white p-3 rounded-xl border">
-          <p className="text-xs font-semibold text-primary mb-1">Challenge</p>
-          <div className="flex items-center gap-2">
-            <span className="text-xl">{getSinEmoji(entry.trigger)}</span>
-            <p className="text-sm capitalize truncate">{entry.trigger}</p>
+      <div>
+        <h3 className="font-semibold mb-2">Challenge</h3>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="bg-white p-3 rounded-xl border">
+            <p className="text-xs font-medium text-muted-foreground mb-1">Type</p>
+            <div className="flex items-center gap-2">
+              <span className="text-xl">{getSinEmoji(entry.trigger)}</span>
+              <p className="text-sm capitalize">{entry.trigger}</p>
+            </div>
           </div>
-        </div>
-        
-        <div className="bg-white p-3 rounded-xl border">
-          <p className="text-xs font-semibold text-primary mb-1">Intensity</p>
-          <div className="flex items-center gap-2">
-            <span className="text-xl">{getSeverityEmoji(entry.level)}</span>
-            <p className="text-sm truncate">{getTemptationLevelText(entry.level)}</p>
+          
+          <div className="bg-white p-3 rounded-xl border">
+            <p className="text-xs font-medium text-muted-foreground mb-1">Intensity</p>
+            <div className="flex items-center gap-2">
+              <span className="text-xl">{getSeverityEmoji(entry.level)}</span>
+              <p className="text-sm">{getTemptationLevelText(entry.level)}</p>
+            </div>
           </div>
         </div>
       </div>
 
       {entry.description && (
-        <div className="bg-white p-3 rounded-xl border">
-          <p className="text-xs font-semibold text-primary mb-1">Description</p>
-          <p className="text-sm line-clamp-2">{entry.description}</p>
-        </div>
+        <>
+          <Separator />
+          <div>
+            <h3 className="font-semibold mb-2">Description</h3>
+            <p className="text-sm text-muted-foreground">{entry.description}</p>
+          </div>
+        </>
       )}
 
       {entry.affirmation && (
-        <div className="bg-primary/5 p-3 rounded-xl border border-primary/10">
-          <p className="text-xs font-semibold text-primary mb-1">Affirmation</p>
-          <p className="text-sm italic line-clamp-2">"{entry.affirmation}"</p>
-        </div>
+        <>
+          <Separator />
+          <div>
+            <h3 className="font-semibold mb-2">Affirmation</h3>
+            <p className="text-sm italic text-muted-foreground">"{entry.affirmation}"</p>
+          </div>
+        </>
       )}
     </div>
   );
