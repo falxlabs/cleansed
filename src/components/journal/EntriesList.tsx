@@ -10,6 +10,7 @@ import {
 import { EntryDetailsDialog } from "./EntryDetailsDialog";
 import { EntryRow } from "./EntryRow";
 import { Entry } from "./types";
+import { useAuth } from "@/providers/AuthProvider";
 
 interface EntriesListProps {
   entries: Entry[];
@@ -19,6 +20,7 @@ interface EntriesListProps {
 
 export const EntriesList = ({ entries, showCheckIn = true, onDelete }: EntriesListProps) => {
   const [selectedEntry, setSelectedEntry] = useState<any>(null);
+  const { user } = useAuth();
   
   const sortedEntries = [...entries]
     .filter(entry => showCheckIn || entry.entry_type !== 'check-in')
@@ -48,6 +50,9 @@ export const EntriesList = ({ entries, showCheckIn = true, onDelete }: EntriesLi
   };
 
   const handleDelete = (id: number) => {
+    // Only allow deletion if user is authenticated
+    if (!user) return;
+    
     const updatedEntries = entries.filter(entry => entry.id !== id);
     if (onDelete) {
       onDelete(updatedEntries);
@@ -92,6 +97,7 @@ export const EntriesList = ({ entries, showCheckIn = true, onDelete }: EntriesLi
         entry={selectedEntry}
         onOpenChange={(open) => !open && setSelectedEntry(null)}
         onDelete={handleDelete}
+        showDelete={!!user}
       />
     </>
   );

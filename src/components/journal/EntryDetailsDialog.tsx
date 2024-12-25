@@ -23,6 +23,7 @@ interface EntryDetailsDialogProps {
   } | null;
   onOpenChange: (open: boolean) => void;
   onDelete?: (id: number) => void;
+  showDelete?: boolean;
 }
 
 export const getTemptationLevelText = (value: string) => {
@@ -51,7 +52,7 @@ export const getMoodText = (mood?: number) => {
   return "Excellent";
 };
 
-export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetailsDialogProps) => {
+export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete, showDelete = true }: EntryDetailsDialogProps) => {
   const { deleteEntry } = useDeleteEntry(onDelete, () => onOpenChange(false));
 
   if (!entry) return null;
@@ -77,7 +78,7 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete }: EntryDetai
           <TemptationDetails entry={entry} />
         )}
         
-        <DeleteEntryButton onClick={handleDelete} />
+        {showDelete && <DeleteEntryButton onClick={handleDelete} />}
       </DialogContent>
     </Dialog>
   );
