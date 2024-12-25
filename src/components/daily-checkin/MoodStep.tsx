@@ -29,7 +29,7 @@ export function MoodStep({
       
       <Card className="p-6 bg-white/50 backdrop-blur-sm border-2 border-primary/20">
         <div className="text-center space-y-4">
-          <span className="text-6xl block animate-bounce">{getMoodEmoji()}</span>
+          <span className="text-6xl block">{getMoodEmoji()}</span>
           <Slider
             value={mood}
             onValueChange={onMoodChange}

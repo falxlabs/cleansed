@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { SuggestionCarousel } from "./SuggestionCarousel";
 
 const TIMER_DURATION = 300;
+const UNLOCK_DURATION = 5;
 
 interface ReflectionTimerProps {
   onComplete?: () => void;
@@ -12,6 +13,7 @@ interface ReflectionTimerProps {
 
 export function ReflectionTimer({ onComplete }: ReflectionTimerProps) {
   const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
+  const [unlockTime, setUnlockTime] = useState(UNLOCK_DURATION);
   const { toast } = useToast();
   
   useEffect(() => {
@@ -30,6 +32,16 @@ export function ReflectionTimer({ onComplete }: ReflectionTimerProps) {
 
     return () => clearInterval(timer);
   }, [timeLeft, toast, onComplete]);
+
+  useEffect(() => {
+    if (unlockTime <= 0) return;
+
+    const timer = setInterval(() => {
+      setUnlockTime((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [unlockTime]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);

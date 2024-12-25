@@ -3,7 +3,7 @@ import { Flame, Loader2 } from "lucide-react";
 import { useUserProgress } from "@/hooks/useUserProgress";
 
 export function StreakDisplay() {
-  const { currentStreak, totalCheckins, isLoading } = useUserProgress();
+  const { currentStreak, isLoading } = useUserProgress();
   const streakText = currentStreak === 1 ? "1 Day" : `${currentStreak} Days`;
   
   return (
@@ -14,7 +14,6 @@ export function StreakDisplay() {
         <>
           <Flame className="w-6 h-6 text-duo-500 animate-breathe" />
           <span className="font-bold text-duo-800">{streakText}</span>
-          <span className="text-sm text-duo-600">({totalCheckins} total)</span>
         </>
       )}
     </Card>
