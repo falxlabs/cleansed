@@ -37,9 +37,19 @@ export default function JournalPage() {
       const { data, error } = await supabase
         .from('journal_entries')
         .select(`
-          *,
-          temptation_entries(*),
-          checkin_entries(*)
+          id,
+          entry_type,
+          created_at,
+          temptation_entries (
+            temptation_type,
+            intensity_level,
+            resisted
+          ),
+          checkin_entries (
+            mood_score,
+            temptation_type,
+            intensity_level
+          )
         `)
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
@@ -52,22 +62,14 @@ export default function JournalPage() {
         return;
       }
 
-      const formattedEntries = data.map(entry => {
-        const isTemptation = entry.entry_type === 'temptation';
-        const entryDetails = isTemptation ? entry.temptation_entries?.[0] : entry.checkin_entries?.[0];
-        
-        return {
-          id: entry.id,
-          date: new Date(entry.created_at),
-          type: entry.entry_type,
-          resisted: isTemptation ? entryDetails?.resisted ?? false : undefined,
-          level: entryDetails?.intensity_level?.toString() ?? "0",
-          trigger: entryDetails?.trigger ?? "",
-          notes: isTemptation ? entryDetails?.temptation_details ?? "" : "",
-          temptation_type: isTemptation ? entryDetails?.temptation_type : undefined,
-          mood: entry.checkin_entries?.[0]?.mood_score,
-        };
-      });
+      // Map the data to match the EntriesList component's expected format
+      const formattedEntries = data.map(entry => ({
+        id: entry.id,
+        date: new Date(entry.created_at),
+        entry_type: entry.entry_type,
+        temptation_entries: entry.temptation_entries || [],
+        checkin_entries: entry.checkin_entries || [],
+      }));
 
       setEntries(formattedEntries);
     } catch (error) {
@@ -90,7 +92,7 @@ export default function JournalPage() {
   const dailyCheckIn = showCalendar && date
     ? entries.find(entry => 
         format(entry.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd") && 
-        entry.type === "check-in"
+        entry.entry_type === "check-in"
       )
     : null;
 
