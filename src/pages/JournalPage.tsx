@@ -6,6 +6,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { EntriesList } from "@/components/journal/EntriesList";
 import { JournalCalendar } from "@/components/journal/JournalCalendar";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/providers/AuthProvider";
 import {
   Card,
   CardContent,
@@ -20,16 +21,39 @@ export default function JournalPage() {
   const [entries, setEntries] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const isMobile = useIsMobile();
+  const { user } = useAuth();
 
   useEffect(() => {
     fetchEntries();
-  }, []);
+  }, [user]);
 
   const fetchEntries = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
       if (!user) {
+        // For unauthenticated users, show sample data
+        const sampleEntries = [
+          {
+            id: 1,
+            created_at: new Date().toISOString(),
+            entry_type: 'check-in',
+            checkin_entries: [{
+              mood_score: 4,
+              temptation_type: 'pride',
+              intensity_level: 3
+            }]
+          },
+          {
+            id: 2,
+            created_at: new Date(Date.now() - 86400000).toISOString(),
+            entry_type: 'temptation',
+            temptation_entries: [{
+              temptation_type: 'greed',
+              intensity_level: 2,
+              resisted: true
+            }]
+          }
+        ];
+        setEntries(sampleEntries);
         setIsLoading(false);
         return;
       }
@@ -64,17 +88,7 @@ export default function JournalPage() {
         return;
       }
 
-      // Map the data to match the EntriesList component's expected format
-      const formattedEntries = data.map(entry => ({
-        id: entry.id,
-        date: new Date(entry.created_at),
-        entry_type: entry.entry_type,
-        temptation_entries: entry.temptation_entries || [],
-        checkin_entries: entry.checkin_entries || [],
-      }));
-
-      console.log('Formatted entries:', formattedEntries);
-      setEntries(formattedEntries);
+      setEntries(data);
     } catch (error) {
       console.error('Error in fetchEntries:', error);
     } finally {
@@ -88,13 +102,13 @@ export default function JournalPage() {
 
   const filteredEntries = showCalendar && date
     ? entries.filter(entry => 
-        format(entry.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd")
+        format(new Date(entry.created_at), "yyyy-MM-dd") === format(date, "yyyy-MM-dd")
       )
     : entries;
 
   const dailyCheckIn = showCalendar && date
     ? entries.find(entry => 
-        format(entry.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd") && 
+        format(new Date(entry.created_at), "yyyy-MM-dd") === format(date, "yyyy-MM-dd") && 
         entry.entry_type === "check-in"
       )
     : null;
@@ -117,6 +131,17 @@ export default function JournalPage() {
         </Button>
       </div>
       
+      {!user && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Sample Data</CardTitle>
+            <CardDescription>
+              You're viewing sample data. Sign in to track your own journal entries.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      )}
+
       <div className="grid grid-cols-1 gap-4 sm:gap-8">
         {showCalendar && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:hidden gap-4">
