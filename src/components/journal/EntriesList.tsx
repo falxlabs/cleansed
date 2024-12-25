@@ -15,13 +15,13 @@ import {
 interface Entry {
   id: number;
   date: Date;
-  type: string;
-  temptation_entries?: {
+  entry_type: string;
+  temptation_entries: {
     temptation_type: string;
     intensity_level: number;
     resisted: boolean;
   }[];
-  checkin_entries?: {
+  checkin_entries: {
     mood_score: number;
     temptation_type: string;
     intensity_level: number;
@@ -38,27 +38,27 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
   );
 
   const getTemptationType = (entry: Entry) => {
-    if (entry.type === 'temptation' && entry.temptation_entries?.[0]) {
+    if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {
       return entry.temptation_entries[0].temptation_type;
     }
-    if (entry.type === 'check-in' && entry.checkin_entries?.[0]) {
+    if (entry.entry_type === 'check-in' && entry.checkin_entries?.[0]) {
       return entry.checkin_entries[0].temptation_type;
     }
     return undefined;
   };
 
   const getIntensityLevel = (entry: Entry) => {
-    if (entry.type === 'temptation' && entry.temptation_entries?.[0]) {
+    if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {
       return entry.temptation_entries[0].intensity_level;
     }
-    if (entry.type === 'check-in' && entry.checkin_entries?.[0]) {
+    if (entry.entry_type === 'check-in' && entry.checkin_entries?.[0]) {
       return entry.checkin_entries[0].intensity_level;
     }
     return 0;
   };
 
   const getResisted = (entry: Entry) => {
-    if (entry.type === 'temptation' && entry.temptation_entries?.[0]) {
+    if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {
       return entry.temptation_entries[0].resisted;
     }
     return undefined;
@@ -87,7 +87,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
           </TableRow>
         ) : (
           sortedEntries.map((entry) => {
-            const isCheckIn = entry.type === "check-in";
+            const isCheckIn = entry.entry_type === "check-in";
             const temptationType = getTemptationType(entry);
             const sinEmoji = getSinEmoji(temptationType);
             const intensityLevel = getIntensityLevel(entry);
