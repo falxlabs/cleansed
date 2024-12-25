@@ -37,8 +37,6 @@ interface EntriesListProps {
 }
 
 export const EntriesList = ({ entries }: EntriesListProps) => {
-  console.log('Entries received in EntriesList:', entries);
-  
   const sortedEntries = [...entries].sort(
     (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
   );
@@ -70,6 +68,19 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
     return undefined;
   };
 
+  // Convert intensity level to a 0-100 scale for severity emoji
+  const getIntensityScale = (level: number | undefined) => {
+    if (level === undefined) return undefined;
+    // Map 1-4 scale to 0-100 scale
+    switch (level) {
+      case 1: return 25;  // Low
+      case 2: return 50;  // Medium
+      case 3: return 75;  // High
+      case 4: return 100; // Severe
+      default: return undefined;
+    }
+  };
+
   return (
     <Table>
       <TableHeader>
@@ -97,6 +108,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
             const temptationType = getTemptationType(entry);
             const sinEmoji = getSinEmoji(temptationType);
             const intensityLevel = getIntensityLevel(entry);
+            const intensityScale = getIntensityScale(intensityLevel);
             const resisted = getResisted(entry);
             const entryDate = new Date(entry.created_at);
             
@@ -141,7 +153,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
                   {intensityLevel ? (
                     <div className="flex flex-col items-center">
                       <span className="text-xl" title={`Level ${intensityLevel}`}>
-                        {getSeverityEmoji(intensityLevel.toString())}
+                        {intensityScale !== undefined ? getSeverityEmoji(intensityScale.toString()) : '-'}
                       </span>
                       <span className="text-sm text-muted-foreground">
                         Level {intensityLevel}
