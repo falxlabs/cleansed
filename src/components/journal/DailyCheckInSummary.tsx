@@ -1,5 +1,5 @@
 import { format, isToday } from "date-fns";
-import { getMoodEmoji, getMoodText } from "./EntryDetailsDialog";
+import { getMoodEmoji } from "./EntryDetailsDialog";
 import { getSinEmoji } from "@/utils/sinEmoji";
 import { getSeverityEmoji } from "@/utils/severityEmoji";
 import { Button } from "@/components/ui/button";
@@ -12,8 +12,6 @@ interface DailyCheckInSummaryProps {
     trigger: string;
     level: string;
     mood?: number;
-    description?: string;
-    affirmation?: string;
   };
   date: Date;
 }
@@ -75,9 +73,7 @@ export const DailyCheckInSummary = ({ entry, date }: DailyCheckInSummaryProps) =
       <div className="bg-primary/5 p-3 rounded-xl border border-primary/10">
         <div className="flex items-center justify-between mb-2">
           <p className="text-sm font-semibold text-primary">Mood</p>
-          <span className="text-2xl" title={getMoodText(entry.mood)}>
-            {getMoodEmoji(entry.mood)}
-          </span>
+          <span className="text-2xl">{getMoodEmoji(entry.mood)}</span>
         </div>
         <div className="h-2 bg-primary/10 rounded-full overflow-hidden">
           <div 
@@ -104,20 +100,6 @@ export const DailyCheckInSummary = ({ entry, date }: DailyCheckInSummaryProps) =
           </div>
         </div>
       </div>
-
-      {entry.description && (
-        <div className="bg-white p-3 rounded-xl border">
-          <p className="text-xs font-semibold text-primary mb-1">Description</p>
-          <p className="text-sm line-clamp-2">{entry.description}</p>
-        </div>
-      )}
-
-      {entry.affirmation && (
-        <div className="bg-primary/5 p-3 rounded-xl border border-primary/10">
-          <p className="text-xs font-semibold text-primary mb-1">Affirmation</p>
-          <p className="text-sm italic line-clamp-2">"{entry.affirmation}"</p>
-        </div>
-      )}
     </div>
   );
 };
