@@ -9,6 +9,7 @@ import { ChoiceButtons } from "@/components/crossroad/ChoiceButtons";
 
 export default function CrossroadPage() {
   const [isTimerComplete, setIsTimerComplete] = useState(false);
+  const [unlockTime, setUnlockTime] = useState(5);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -49,9 +50,13 @@ export default function CrossroadPage() {
           onSubmitToGod={handleSubmitToGod}
           onFallToSin={handleFallToSin}
           isTimerComplete={isTimerComplete}
+          unlockTime={unlockTime}
         />
 
-        <ReflectionTimer onComplete={() => setIsTimerComplete(true)} />
+        <ReflectionTimer 
+          onComplete={() => setIsTimerComplete(true)} 
+          onUnlockTimeChange={setUnlockTime}
+        />
       </div>
     </div>
   );

@@ -9,9 +9,10 @@ const UNLOCK_DURATION = 5;
 
 interface ReflectionTimerProps {
   onComplete?: () => void;
+  onUnlockTimeChange: (time: number) => void;
 }
 
-export function ReflectionTimer({ onComplete }: ReflectionTimerProps) {
+export function ReflectionTimer({ onComplete, onUnlockTimeChange }: ReflectionTimerProps) {
   const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
   const [unlockTime, setUnlockTime] = useState(UNLOCK_DURATION);
   const { toast } = useToast();
@@ -37,11 +38,15 @@ export function ReflectionTimer({ onComplete }: ReflectionTimerProps) {
     if (unlockTime <= 0) return;
 
     const timer = setInterval(() => {
-      setUnlockTime((prev) => prev - 1);
+      setUnlockTime((prev) => {
+        const newTime = prev - 1;
+        onUnlockTimeChange(newTime);
+        return newTime;
+      });
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [unlockTime]);
+  }, [unlockTime, onUnlockTimeChange]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
