@@ -33,7 +33,7 @@ export function Mascot({
   const location = useLocation();
   const { user } = useAuth();
   const isDashboard = location.pathname === "/dashboard";
-  const shouldShow = shouldShowCheckIn();
+  const [shouldShowCheckInState, setShouldShowCheckInState] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [hasCompletedCheckIn, setHasCompletedCheckIn] = useState(false);
   
@@ -45,6 +45,14 @@ export function Mascot({
       }
     };
     loadUserData();
+  }, [user]);
+
+  useEffect(() => {
+    const checkShowStatus = async () => {
+      const shouldShow = await shouldShowCheckIn();
+      setShouldShowCheckInState(shouldShow);
+    };
+    checkShowStatus();
   }, [user]);
 
   useEffect(() => {
@@ -73,7 +81,7 @@ export function Mascot({
   }, [user]);
 
   const displayMessage = isDashboard 
-    ? (shouldShow && !hasCompletedCheckIn)
+    ? (shouldShowCheckInState && !hasCompletedCheckIn)
       ? firstName
         ? `${firstName}, time for your daily moment of reflection.`
         : "Time for your daily moment of reflection."
@@ -100,7 +108,7 @@ export function Mascot({
           </p>
         </div>
         
-        {showCheckInButton && isDashboard && shouldShow && !hasCompletedCheckIn && onCheckIn && (
+        {showCheckInButton && isDashboard && shouldShowCheckInState && !hasCompletedCheckIn && onCheckIn && (
           <Button
             onClick={onCheckIn}
             className="bg-duo-100 text-duo-800 hover:bg-duo-200 w-full"
