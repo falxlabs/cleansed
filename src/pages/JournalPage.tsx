@@ -26,7 +26,7 @@ export default function JournalPage() {
   useEffect(() => {
     const loadEntries = async () => {
       try {
-        // For unauthenticated users, show sample data without accessing storage
+        // For unauthenticated users, show sample data
         if (!user) {
           const sampleEntries = [
             {
