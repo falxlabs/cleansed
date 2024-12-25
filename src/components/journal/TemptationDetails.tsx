@@ -10,6 +10,7 @@ interface TemptationDetailsProps {
     notes: string;
     description?: string;
     temptation_type?: string;
+    resistance_strategy?: string;
   };
 }
 
@@ -39,8 +40,15 @@ export const TemptationDetails = ({ entry }: TemptationDetailsProps) => {
 
       {entry.description && (
         <div className="bg-white p-4 rounded-xl border shadow-sm">
-          <p className="text-sm font-semibold text-primary mb-2">Description</p>
+          <p className="text-sm font-semibold text-primary mb-2">Temptation Details</p>
           <p className="text-gray-700">{entry.description}</p>
+        </div>
+      )}
+
+      {entry.resisted && entry.resistance_strategy && (
+        <div className="bg-white p-4 rounded-xl border shadow-sm">
+          <p className="text-sm font-semibold text-primary mb-2">What Helped Resist</p>
+          <p className="text-gray-700">{entry.resistance_strategy}</p>
         </div>
       )}
 
