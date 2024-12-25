@@ -58,6 +58,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
         ) : (
           sortedEntries.map((entry) => {
             const isCheckIn = entry.type === "check-in";
+            const sinEmoji = getSinEmoji(entry.temptation_type);
             
             return (
               <TableRow key={entry.id}>
@@ -78,10 +79,12 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
                 <TableCell className="text-center">
                   {isCheckIn ? (
                     <span className="text-muted-foreground">-</span>
-                  ) : (
+                  ) : sinEmoji ? (
                     <span className="text-xl" title={entry.temptation_type}>
-                      {getSinEmoji(entry.temptation_type)}
+                      {sinEmoji}
                     </span>
+                  ) : (
+                    <span className="text-muted-foreground">Unknown</span>
                   )}
                 </TableCell>
                 <TableCell className="text-center">
