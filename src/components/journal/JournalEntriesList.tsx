@@ -1,59 +1,100 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { EntriesList } from "./EntriesList";
+import { useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { EntryDetailsDialog } from "./EntryDetailsDialog";
+import { EntryRow } from "./EntryRow";
 import { Entry } from "./types";
 
-interface JournalEntriesListProps {
-  showCalendar: boolean;
-  isLoading: boolean;
+interface EntriesListProps {
   entries: Entry[];
-  date?: Date;
-  onEntriesUpdate?: (entries: Entry[]) => void;
+  showCheckIn?: boolean;
+  onDelete?: (entries: Entry[]) => void;
 }
 
-export const JournalEntriesList = ({ 
-  showCalendar, 
-  isLoading, 
-  entries,
-  date,
-  onEntriesUpdate
-}: JournalEntriesListProps) => {
-  const filteredEntries = showCalendar && date
-    ? entries.filter(entry => 
-        new Date(entry.created_at).toDateString() === date.toDateString()
-      )
-    : entries;
+export const EntriesList = ({ entries, showCheckIn = true, onDelete }: EntriesListProps) => {
+  const [selectedEntry, setSelectedEntry] = useState<any>(null);
+  
+  const sortedEntries = [...entries]
+    .filter(entry => showCheckIn || entry.entry_type !== 'check-in')
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
-  const handleDelete = (updatedEntries: Entry[]) => {
-    if (onEntriesUpdate) {
-      onEntriesUpdate(updatedEntries);
+  const handleEntryClick = (entry: Entry) => {
+    const entryData = {
+      id: entry.id,
+      date: new Date(entry.created_at),
+      type: entry.entry_type,
+      level: entry.entry_type === 'check-in' 
+        ? entry.checkin_entries[0]?.intensity_level?.toString() 
+        : entry.temptation_entries[0]?.intensity_level?.toString(),
+      trigger: entry.entry_type === 'check-in'
+        ? entry.checkin_entries[0]?.temptation_type
+        : entry.temptation_entries[0]?.temptation_type,
+      notes: '',
+      mood: entry.entry_type === 'check-in' ? entry.checkin_entries[0]?.mood_score : undefined,
+      description: entry.entry_type === 'check-in'
+        ? entry.checkin_entries[0]?.mood_description
+        : entry.temptation_entries[0]?.temptation_details,
+      resisted: entry.entry_type === 'temptation' ? entry.temptation_entries[0]?.resisted : undefined,
+      temptation_type: entry.entry_type === 'temptation' ? entry.temptation_entries[0]?.temptation_type : undefined,
+      resistance_strategy: entry.entry_type === 'temptation' ? entry.temptation_entries[0]?.resistance_strategy : undefined,
+      affirmation: entry.entry_type === 'check-in' ? entry.checkin_entries[0]?.affirmation_content : undefined
+    };
+    setSelectedEntry(entryData);
+  };
+
+  const handleDelete = (id: number) => {
+    const updatedEntries = entries.filter(entry => entry.id !== id);
+    if (onDelete) {
+      onDelete(updatedEntries);
     }
+    setSelectedEntry(null);
   };
 
   return (
-    <Card className={`${showCalendar ? "" : "lg:col-span-2"}`}>
-      <CardHeader className="p-4">
-        <CardTitle>Entries</CardTitle>
-        <CardDescription>
-          {showCalendar 
-            ? "Showing entries for selected date" 
-            : "Showing all entries"}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="p-0">
-        <div className="overflow-x-auto">
-          {isLoading ? (
-            <div className="text-center py-8 text-muted-foreground">
-              Loading entries...
-            </div>
+    <>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Date & Time</TableHead>
+            <TableHead>Type</TableHead>
+            <TableHead className="text-center">Sin Type</TableHead>
+            <TableHead className="text-center">Intensity</TableHead>
+            <TableHead className="text-center">Outcome</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {sortedEntries.length === 0 ? (
+            <TableRow>
+              <TableCell
+                colSpan={5}
+                className="text-center py-8 text-muted-foreground"
+              >
+                No entries found
+              </TableCell>
+            </TableRow>
           ) : (
-            <EntriesList 
-              entries={filteredEntries} 
-              showCheckIn={!showCalendar}
-              onDelete={handleDelete}
-            />
+            sortedEntries.map((entry) => (
+              <EntryRow 
+                key={entry.id} 
+                entry={entry} 
+                onClick={() => handleEntryClick(entry)}
+              />
+            ))
           )}
-        </div>
-      </CardContent>
-    </Card>
+        </TableBody>
+      </Table>
+
+      <EntryDetailsDialog
+        entry={selectedEntry}
+        onOpenChange={(open) => !open && setSelectedEntry(null)}
+        onDelete={handleDelete}
+      />
+    </>
   );
 };
