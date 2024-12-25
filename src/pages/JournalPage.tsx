@@ -7,6 +7,7 @@ import { EntriesList } from "@/components/journal/EntriesList";
 import { JournalCalendar } from "@/components/journal/JournalCalendar";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
+import { useToast } from "@/components/ui/use-toast";
 import {
   Card,
   CardContent,
@@ -22,10 +23,13 @@ export default function JournalPage() {
   const [isLoading, setIsLoading] = useState(true);
   const isMobile = useIsMobile();
   const { user } = useAuth();
+  const { toast } = useToast();
 
   useEffect(() => {
     const loadEntries = async () => {
       try {
+        setIsLoading(true);
+        
         // For unauthenticated users, show sample data
         if (!user) {
           const sampleEntries = [
@@ -51,7 +55,6 @@ export default function JournalPage() {
             }
           ];
           setEntries(sampleEntries);
-          setIsLoading(false);
           return;
         }
 
@@ -78,12 +81,22 @@ export default function JournalPage() {
 
         if (error) {
           console.error('Error fetching entries:', error);
+          toast({
+            title: "Error loading entries",
+            description: "Please try again later",
+            variant: "destructive",
+          });
           setEntries([]);
         } else {
           setEntries(data || []);
         }
       } catch (error) {
         console.error('Error in loadEntries:', error);
+        toast({
+          title: "Error loading entries",
+          description: "Please try again later",
+          variant: "destructive",
+        });
         setEntries([]);
       } finally {
         setIsLoading(false);
@@ -91,7 +104,7 @@ export default function JournalPage() {
     };
 
     loadEntries();
-  }, [user]);
+  }, [user, toast]);
 
   const handleDateSelect = (newDate: Date | undefined) => {
     setDate(newDate);
