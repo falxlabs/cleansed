@@ -30,8 +30,9 @@ export interface TemptationEntry extends JournalEntry {
 export interface CheckInEntry extends JournalEntry {
   mood_score: number | null;
   mood_description: string | null;
-  affirmation_id: number | null;
-  custom_affirmation_id: number | null;
+  temptation_type: TemptationType | null;
+  intensity_level: number | null;
+  affirmation_content: string | null;
 }
 
 export interface Affirmation {

@@ -56,7 +56,8 @@ export function useCheckInCompletion() {
           mood_score: mood[0],
           mood_description: description,
           temptation_type: selectedTemptation || null,
-          intensity_level: selectedTemptation ? temptationLevel[0] : null
+          intensity_level: selectedTemptation ? temptationLevel[0] : null,
+          affirmation_content: selectedStatement
         });
 
       if (checkInError) {

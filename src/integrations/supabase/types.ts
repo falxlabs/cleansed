@@ -29,8 +29,7 @@ export type Database = {
       }
       checkin_entries: {
         Row: {
-          affirmation_id: number | null
-          custom_affirmation_id: number | null
+          affirmation_content: string | null
           id: number
           intensity_level: number | null
           mood_description: string | null
@@ -38,8 +37,7 @@ export type Database = {
           temptation_type: Database["public"]["Enums"]["temptation_type"] | null
         }
         Insert: {
-          affirmation_id?: number | null
-          custom_affirmation_id?: number | null
+          affirmation_content?: string | null
           id: number
           intensity_level?: number | null
           mood_description?: string | null
@@ -49,8 +47,7 @@ export type Database = {
             | null
         }
         Update: {
-          affirmation_id?: number | null
-          custom_affirmation_id?: number | null
+          affirmation_content?: string | null
           id?: number
           intensity_level?: number | null
           mood_description?: string | null
@@ -60,20 +57,6 @@ export type Database = {
             | null
         }
         Relationships: [
-          {
-            foreignKeyName: "checkin_entries_affirmation_id_fkey"
-            columns: ["affirmation_id"]
-            isOneToOne: false
-            referencedRelation: "affirmations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "checkin_entries_custom_affirmation_id_fkey"
-            columns: ["custom_affirmation_id"]
-            isOneToOne: false
-            referencedRelation: "user_affirmations"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "checkin_entries_id_fkey"
             columns: ["id"]
