@@ -41,7 +41,8 @@ export const EntriesList = ({ entries, showCheckIn = true, onDelete }: EntriesLi
         ? entry.checkin_entries[0]?.mood_description
         : entry.temptation_entries[0]?.temptation_details,
       resisted: entry.entry_type === 'temptation' ? entry.temptation_entries[0]?.resisted : undefined,
-      temptation_type: entry.entry_type === 'temptation' ? entry.temptation_entries[0]?.temptation_type : undefined
+      temptation_type: entry.entry_type === 'temptation' ? entry.temptation_entries[0]?.temptation_type : undefined,
+      resistance_strategy: entry.entry_type === 'temptation' ? entry.temptation_entries[0]?.resistance_strategy : undefined
     };
     setSelectedEntry(entryData);
   };

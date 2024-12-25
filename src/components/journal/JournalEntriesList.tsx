@@ -23,6 +23,12 @@ export const JournalEntriesList = ({
       )
     : entries;
 
+  const handleDelete = (updatedEntries: Entry[]) => {
+    if (onEntriesUpdate) {
+      onEntriesUpdate(updatedEntries);
+    }
+  };
+
   return (
     <Card className={`${showCalendar ? "" : "lg:col-span-2"}`}>
       <CardHeader className="p-4">
@@ -43,7 +49,7 @@ export const JournalEntriesList = ({
             <EntriesList 
               entries={filteredEntries} 
               showCheckIn={!showCalendar}
-              onDelete={onEntriesUpdate}
+              onDelete={handleDelete}
             />
           )}
         </div>

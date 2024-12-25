@@ -7,6 +7,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { JournalEntriesList } from "@/components/journal/JournalEntriesList";
 import { useJournalEntries } from "@/hooks/useJournalEntries";
+import { Entry } from "@/components/journal/types";
 
 export default function NewJournalPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -15,13 +16,23 @@ export default function NewJournalPage() {
   const { user } = useAuth();
   
   const { data: entries = [], isLoading } = useJournalEntries(showCalendar ? date : undefined);
+  const [localEntries, setLocalEntries] = useState<Entry[]>([]);
+
+  // Update local entries when the query data changes
+  useState(() => {
+    setLocalEntries(entries);
+  }, [entries]);
 
   const handleDateSelect = (newDate: Date | undefined) => {
     setDate(newDate);
   };
 
-  const dailyCheckIn = showCalendar && date && entries
-    ? entries.find(entry => 
+  const handleEntriesUpdate = (updatedEntries: Entry[]) => {
+    setLocalEntries(updatedEntries);
+  };
+
+  const dailyCheckIn = showCalendar && date && localEntries
+    ? localEntries.find(entry => 
         new Date(entry.created_at).toDateString() === date.toDateString() && 
         entry.entry_type === "check-in"
       )
@@ -71,8 +82,9 @@ export default function NewJournalPage() {
           <JournalEntriesList 
             showCalendar={showCalendar}
             isLoading={isLoading}
-            entries={entries}
+            entries={localEntries}
             date={date}
+            onEntriesUpdate={handleEntriesUpdate}
           />
 
           {showCalendar && (

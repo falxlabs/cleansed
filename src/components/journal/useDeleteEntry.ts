@@ -10,23 +10,21 @@ export const useDeleteEntry = (onDelete?: (id: number) => void, onClose?: () => 
       
       // First delete the specific entry (temptation or check-in)
       const specificTable = isCheckIn ? 'checkin_entries' : 'temptation_entries';
-      const { error: specificError, data: specificData } = await supabase
+      const { error: specificError } = await supabase
         .from(specificTable)
         .delete()
-        .eq('id', entryId)
-        .select();
+        .eq('id', entryId);
 
-      console.log('Specific entry deletion result:', { specificData, specificError });
+      console.log('Specific entry deletion result:', { specificError });
       if (specificError) throw specificError;
 
       // Then delete the parent journal entry
-      const { error: journalError, data: journalData } = await supabase
+      const { error: journalError } = await supabase
         .from('journal_entries')
         .delete()
-        .eq('id', entryId)
-        .select();
+        .eq('id', entryId);
 
-      console.log('Journal entry deletion result:', { journalData, journalError });
+      console.log('Journal entry deletion result:', { journalError });
       if (journalError) throw journalError;
 
       if (onDelete) {
