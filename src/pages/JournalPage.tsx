@@ -24,77 +24,68 @@ export default function JournalPage() {
   const { user } = useAuth();
 
   useEffect(() => {
-    fetchEntries();
+    const loadEntries = async () => {
+      setIsLoading(true);
+      try {
+        if (!user) {
+          // Sample data for unauthenticated users
+          const sampleEntries = [
+            {
+              id: 1,
+              created_at: new Date().toISOString(),
+              entry_type: 'check-in',
+              checkin_entries: [{
+                mood_score: 4,
+                temptation_type: 'pride',
+                intensity_level: 3
+              }]
+            },
+            {
+              id: 2,
+              created_at: new Date(Date.now() - 86400000).toISOString(),
+              entry_type: 'temptation',
+              temptation_entries: [{
+                temptation_type: 'greed',
+                intensity_level: 2,
+                resisted: true
+              }]
+            }
+          ];
+          setEntries(sampleEntries);
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from('journal_entries')
+          .select(`
+            id,
+            entry_type,
+            created_at,
+            temptation_entries (
+              temptation_type,
+              intensity_level,
+              resisted
+            ),
+            checkin_entries (
+              mood_score,
+              temptation_type,
+              intensity_level
+            )
+          `)
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        setEntries(data || []);
+      } catch (error) {
+        console.error('Error loading entries:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadEntries();
   }, [user]);
-
-  const fetchEntries = async () => {
-    try {
-      if (!user) {
-        // For unauthenticated users, show sample data
-        const sampleEntries = [
-          {
-            id: 1,
-            created_at: new Date().toISOString(),
-            entry_type: 'check-in',
-            checkin_entries: [{
-              mood_score: 4,
-              temptation_type: 'pride',
-              intensity_level: 3
-            }]
-          },
-          {
-            id: 2,
-            created_at: new Date(Date.now() - 86400000).toISOString(),
-            entry_type: 'temptation',
-            temptation_entries: [{
-              temptation_type: 'greed',
-              intensity_level: 2,
-              resisted: true
-            }]
-          }
-        ];
-        setEntries(sampleEntries);
-        setIsLoading(false);
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from('journal_entries')
-        .select(`
-          id,
-          entry_type,
-          created_at,
-          temptation_entries (
-            temptation_type,
-            intensity_level,
-            resisted
-          ),
-          checkin_entries (
-            mood_score,
-            temptation_type,
-            intensity_level
-          )
-        `)
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-
-      console.log('Raw data from Supabase:', data);
-
-      if (!data) {
-        setEntries([]);
-        setIsLoading(false);
-        return;
-      }
-
-      setEntries(data);
-    } catch (error) {
-      console.error('Error in fetchEntries:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleDateSelect = (newDate: Date | undefined) => {
     setDate(newDate);
