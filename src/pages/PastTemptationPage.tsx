@@ -16,39 +16,30 @@ export default function PastTemptationPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleContinue = () => {
-    if (step === 1) {
-      if (!date) {
-        toast({
-          title: "Please select a date",
-          description: "Choose when this temptation occurred",
-          variant: "destructive",
-        });
-        return;
-      }
-      setStep(2);
-    } else {
-      if (!outcome) {
-        toast({
-          title: "Please select an outcome",
-          description: "Choose whether you resisted or gave in to the temptation",
-          variant: "destructive",
-        });
-        return;
-      }
+  const handleOutcomeChange = (newOutcome: "resisted" | "gave-in") => {
+    // Create a new date with the selected time
+    const selectedDate = new Date(date!);
+    const hours = Math.floor(timeValue[0]);
+    const minutes = Math.round((timeValue[0] - hours) * 60);
+    selectedDate.setHours(hours, minutes);
 
-      // Create a new date with the selected time
-      const selectedDate = new Date(date!);
-      const hours = Math.floor(timeValue[0]);
-      const minutes = Math.round((timeValue[0] - hours) * 60);
-      selectedDate.setHours(hours, minutes);
+    // Store the outcome and date in sessionStorage for the reflection page
+    sessionStorage.setItem('pastTemptationOutcome', newOutcome);
+    sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
+    
+    setOutcome(newOutcome);
+  };
 
-      // Store the outcome and date in sessionStorage for the reflection page
-      sessionStorage.setItem('pastTemptationOutcome', outcome);
-      sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
-
-      navigate('/reflection');
+  const handleDateTimeContinue = () => {
+    if (!date) {
+      toast({
+        title: "Please select a date",
+        description: "Choose when this temptation occurred",
+        variant: "destructive",
+      });
+      return;
     }
+    setStep(2);
   };
 
   const handleBack = () => {
@@ -85,25 +76,26 @@ export default function PastTemptationPage() {
       
       <div className="bg-card rounded-lg p-6 space-y-6">
         {step === 1 ? (
-          <DateTimeStep
-            date={date}
-            timeValue={timeValue}
-            onDateChange={setDate}
-            onTimeChange={setTimeValue}
-          />
+          <>
+            <DateTimeStep
+              date={date}
+              timeValue={timeValue}
+              onDateChange={setDate}
+              onTimeChange={setTimeValue}
+            />
+            <Button 
+              onClick={handleDateTimeContinue}
+              className="w-full"
+            >
+              Continue
+            </Button>
+          </>
         ) : (
           <OutcomeStep
             outcome={outcome}
-            onOutcomeChange={setOutcome}
+            onOutcomeChange={handleOutcomeChange}
           />
         )}
-
-        <Button 
-          onClick={handleContinue}
-          className="w-full"
-        >
-          Continue
-        </Button>
       </div>
     </div>
   );

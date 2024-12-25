@@ -1,4 +1,5 @@
 import { ThumbsUp, ThumbsDown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface OutcomeStepProps {
   outcome: "resisted" | "gave-in" | undefined;
@@ -6,11 +7,18 @@ interface OutcomeStepProps {
 }
 
 export const OutcomeStep = ({ outcome, onOutcomeChange }: OutcomeStepProps) => {
+  const navigate = useNavigate();
+
+  const handleOutcomeSelect = (selectedOutcome: "resisted" | "gave-in") => {
+    onOutcomeChange(selectedOutcome);
+    navigate('/reflection');
+  };
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 gap-4">
         <button
-          onClick={() => onOutcomeChange("resisted")}
+          onClick={() => handleOutcomeSelect("resisted")}
           className={`flex flex-col items-center justify-center p-6 rounded-lg border-2 transition-all ${
             outcome === "resisted"
               ? "border-duo-500 bg-duo-50"
@@ -29,7 +37,7 @@ export const OutcomeStep = ({ outcome, onOutcomeChange }: OutcomeStepProps) => {
         </button>
 
         <button
-          onClick={() => onOutcomeChange("gave-in")}
+          onClick={() => handleOutcomeSelect("gave-in")}
           className={`flex flex-col items-center justify-center p-6 rounded-lg border-2 transition-all ${
             outcome === "gave-in"
               ? "border-destructive bg-destructive/10"
