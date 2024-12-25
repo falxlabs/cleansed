@@ -12,6 +12,7 @@ export interface TemptationEntry {
   resisted: boolean;
   temptation_details?: string;
   trigger?: string;
+  resistance_strategy?: string;
 }
 
 export interface CheckInEntry {

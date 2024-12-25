@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -19,7 +19,7 @@ export default function NewJournalPage() {
   const [localEntries, setLocalEntries] = useState<Entry[]>([]);
 
   // Update local entries when the query data changes
-  useState(() => {
+  useEffect(() => {
     setLocalEntries(entries);
   }, [entries]);
 
