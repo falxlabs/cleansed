@@ -11,14 +11,7 @@
   </head>
   <body>
     <div id="root"></div>
-    <script>
-      // Dynamically set the origin based on the current environment
-      const script = document.createElement('script');
-      script.src = 'https://cdn.gpteng.co/gptengineer.js';
-      script.type = 'module';
-      script.setAttribute('data-origin', window.location.origin);
-      document.body.appendChild(script);
-    </script>
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
