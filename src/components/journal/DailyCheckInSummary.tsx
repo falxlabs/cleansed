@@ -1,6 +1,7 @@
 import { format, isToday } from "date-fns";
 import { getMoodEmoji } from "./EntryDetailsDialog";
 import { getSinEmoji } from "@/utils/sinEmoji";
+import { getSeverityEmoji } from "@/utils/severityEmoji";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/providers/AuthProvider";
@@ -14,6 +15,14 @@ interface DailyCheckInSummaryProps {
   };
   date: Date;
 }
+
+const getTemptationLevelText = (level: string) => {
+  const levelNum = parseInt(level);
+  if (levelNum <= 25) return "Low";
+  if (levelNum <= 50) return "Medium";
+  if (levelNum <= 75) return "High";
+  return "Severe";
+};
 
 export const DailyCheckInSummary = ({ entry, date }: DailyCheckInSummaryProps) => {
   const navigate = useNavigate();
@@ -79,13 +88,15 @@ export const DailyCheckInSummary = ({ entry, date }: DailyCheckInSummaryProps) =
           <p className="text-xs font-semibold text-primary mb-1">Challenge</p>
           <div className="flex items-center gap-2">
             <span className="text-xl">{getSinEmoji(entry.trigger)}</span>
+            <p className="text-sm capitalize truncate">{entry.trigger}</p>
           </div>
         </div>
         
         <div className="bg-white p-3 rounded-xl border">
           <p className="text-xs font-semibold text-primary mb-1">Intensity</p>
           <div className="flex items-center gap-2">
-            <span className="text-xl">💪</span>
+            <span className="text-xl">{getSeverityEmoji(entry.level)}</span>
+            <p className="text-sm truncate">{getTemptationLevelText(entry.level)}</p>
           </div>
         </div>
       </div>

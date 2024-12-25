@@ -36,6 +36,14 @@ interface EntriesListProps {
   entries: Entry[];
 }
 
+const getTemptationLevelText = (level: number | null) => {
+  if (level === null) return "-";
+  if (level <= 25) return "Low";
+  if (level <= 50) return "Medium";
+  if (level <= 75) return "High";
+  return "Severe";
+};
+
 export const EntriesList = ({ entries }: EntriesListProps) => {
   const sortedEntries = [...entries].sort(
     (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
@@ -156,7 +164,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
                         {intensityScale !== null ? getSeverityEmoji(intensityScale.toString()) : '-'}
                       </span>
                       <span className="text-sm text-muted-foreground">
-                        Level {intensityLevel}
+                        {getTemptationLevelText(intensityLevel)}
                       </span>
                     </div>
                   ) : (
