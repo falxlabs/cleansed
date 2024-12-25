@@ -30,63 +30,23 @@ interface EntriesListProps {
 }
 
 export const EntriesList = ({ entries }: EntriesListProps) => {
-  const sortedEntries = [...entries].sort((a, b) => b.date.getTime() - a.date.getTime());
+  const sortedEntries = [...entries].sort(
+    (a, b) => b.date.getTime() - a.date.getTime()
+  );
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Date & Time</TableHead>
-          <TableHead>Type</TableHead>
-          <TableHead className="text-center">Sin</TableHead>
-          <TableHead className="text-center">Severity</TableHead>
-          <TableHead className="text-center">Outcome</TableHead>
+          <TableHead>Time</TableHead>
+          <TableHead>Entry Type</TableHead>
+          <TableHead className="text-center">Type</TableHead>
+          <TableHead className="text-center">Level</TableHead>
+          <TableHead className="text-center">Result</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {sortedEntries.map((entry) => {
-          const isCheckIn = entry.type.toLowerCase().includes("check-in");
-          
-          return (
-            <TableRow key={entry.id}>
-              <TableCell>
-                <div className="flex flex-col">
-                  <span className="font-medium">
-                    {format(entry.date, "EEE, MMM d, yyyy")}
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    {getTimeEmoji(entry.date.getHours())} {format(entry.date, "h:mm a")}
-                  </span>
-                </div>
-              </TableCell>
-              <TableCell>
-                <span className="font-medium">
-                  {isCheckIn ? "Check-in" : "Temptation"}
-                </span>
-              </TableCell>
-              <TableCell className="text-center">
-                <span className="text-xl">
-                  {getSinEmoji(isCheckIn ? entry.type : entry.temptation_type)}
-                </span>
-              </TableCell>
-              <TableCell className="text-center">
-                <span className="text-xl">
-                  {getSeverityEmoji(entry.level)}
-                </span>
-              </TableCell>
-              <TableCell className="text-center">
-                {isCheckIn ? (
-                  <span className="text-muted-foreground">-</span>
-                ) : entry.resisted ? (
-                  <Check className="inline h-5 w-5 text-green-500" />
-                ) : (
-                  <X className="inline h-5 w-5 text-red-500" />
-                )}
-              </TableCell>
-            </TableRow>
-          );
-        })}
-        {entries.length === 0 && (
+        {sortedEntries.length === 0 ? (
           <TableRow>
             <TableCell
               colSpan={5}
@@ -95,6 +55,48 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
               No entries found
             </TableCell>
           </TableRow>
+        ) : (
+          sortedEntries.map((entry) => {
+            const isCheckIn = entry.type === "check-in";
+            
+            return (
+              <TableRow key={entry.id}>
+                <TableCell>
+                  <div className="flex flex-col">
+                    <span className="font-medium">
+                      {format(entry.date, "MMM d, yyyy")}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {getTimeEmoji(entry.date.getHours())}{" "}
+                      {format(entry.date, "h:mm a")}
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  {isCheckIn ? "Daily Check-in" : "Temptation"}
+                </TableCell>
+                <TableCell className="text-center">
+                  <span className="text-xl">
+                    {getSinEmoji(entry.temptation_type)}
+                  </span>
+                </TableCell>
+                <TableCell className="text-center">
+                  <span className="text-xl">
+                    {getSeverityEmoji(entry.level)}
+                  </span>
+                </TableCell>
+                <TableCell className="text-center">
+                  {isCheckIn ? (
+                    <span className="text-muted-foreground">-</span>
+                  ) : entry.resisted ? (
+                    <Check className="inline h-5 w-5 text-green-500" />
+                  ) : (
+                    <X className="inline h-5 w-5 text-red-500" />
+                  )}
+                </TableCell>
+              </TableRow>
+            );
+          })
         )}
       </TableBody>
     </Table>
