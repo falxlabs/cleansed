@@ -9,8 +9,12 @@ import { useReflectionState } from "@/hooks/useReflectionState";
 import { useReflectionDatabase } from "@/hooks/useReflectionDatabase";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ReflectionPage() {
+  const { toast } = useToast();
   const {
     step,
     setStep,
@@ -34,7 +38,21 @@ export default function ReflectionPage() {
 
   const { saveReflection } = useReflectionDatabase();
 
-  // Determine if we're coming from crossroad with "submitted" choice
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast({
+          title: "Sign in required",
+          description: "Please go to Settings to sign in or create an account to save your reflections.",
+          variant: "destructive",
+        });
+      }
+    };
+
+    checkAuthStatus();
+  }, [toast]);
+
   const isResisted = location.state?.choice === "submitted" || outcome === "resisted";
   const totalSteps = isResisted ? 4 : 3;
   const progress = (step / totalSteps) * 100;
@@ -57,7 +75,6 @@ export default function ReflectionPage() {
       return;
     }
     
-    // Check if we should save (last step) or move to next step
     const isLastStep = step === totalSteps;
     if (isLastStep) {
       const success = await saveReflection({
@@ -76,7 +93,6 @@ export default function ReflectionPage() {
       return;
     }
     
-    // Update mascot message based on next step
     if (step === 1) {
       setMascotMessage("Great choice! Now, let's understand how strong this temptation was.");
     } else if (step === 2) {
