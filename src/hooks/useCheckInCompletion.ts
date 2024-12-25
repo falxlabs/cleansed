@@ -33,7 +33,7 @@ export function useCheckInCompletion() {
         return;
       }
 
-      // Create journal entry
+      // Create journal entry first
       const { data: journalEntry, error: journalError } = await supabase
         .from('journal_entries')
         .insert({
@@ -43,12 +43,12 @@ export function useCheckInCompletion() {
         .select()
         .single();
 
-      if (journalError) {
+      if (journalError || !journalEntry) {
         console.error('Error creating journal entry:', journalError);
         throw new Error('Failed to create journal entry');
       }
 
-      // Create check-in entry
+      // Create check-in entry using the journal entry ID
       const { error: checkInError } = await supabase
         .from('checkin_entries')
         .insert({
@@ -58,6 +58,12 @@ export function useCheckInCompletion() {
         });
 
       if (checkInError) {
+        // If check-in entry fails, delete the journal entry to maintain consistency
+        await supabase
+          .from('journal_entries')
+          .delete()
+          .eq('id', journalEntry.id);
+        
         console.error('Error creating check-in entry:', checkInError);
         throw new Error('Failed to save check-in details');
       }
@@ -75,6 +81,12 @@ export function useCheckInCompletion() {
           });
 
         if (temptationError) {
+          // If temptation entry fails, clean up both journal and check-in entries
+          await supabase
+            .from('journal_entries')
+            .delete()
+            .eq('id', journalEntry.id);
+          
           console.error('Error creating temptation entry:', temptationError);
           throw new Error('Failed to save temptation details');
         }
