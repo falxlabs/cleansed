@@ -15,6 +15,50 @@ export function useCheckInCompletion() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const updateUserProgress = async (userId: string) => {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    // Get current user progress
+    const { data: progress, error: progressError } = await supabase
+      .from('user_progress')
+      .select('current_streak, longest_streak, last_check_in')
+      .eq('user_id', userId)
+      .single();
+
+    if (progressError) {
+      console.error('Error fetching user progress:', progressError);
+      return;
+    }
+
+    let newStreak = 1;
+    if (progress?.last_check_in) {
+      const lastCheckIn = new Date(progress.last_check_in);
+      if (lastCheckIn.toDateString() === yesterday.toDateString()) {
+        // If last check-in was yesterday, increment streak
+        newStreak = (progress.current_streak || 0) + 1;
+      } else if (lastCheckIn.toDateString() === today.toDateString()) {
+        // If already checked in today, maintain current streak
+        newStreak = progress.current_streak || 1;
+      }
+    }
+
+    // Update user progress
+    const { error: updateError } = await supabase
+      .from('user_progress')
+      .update({
+        current_streak: newStreak,
+        longest_streak: Math.max(newStreak, progress?.longest_streak || 0),
+        last_check_in: today.toISOString()
+      })
+      .eq('user_id', userId);
+
+    if (updateError) {
+      console.error('Error updating user progress:', updateError);
+    }
+  };
+
   const handleComplete = async ({
     mood,
     description,
@@ -70,6 +114,9 @@ export function useCheckInCompletion() {
         console.error('Error creating check-in entry:', checkInError);
         throw new Error('Failed to save check-in details');
       }
+
+      // Update user progress and streak
+      await updateUserProgress(user.id);
 
       toast({
         title: "Check-in Complete",
