@@ -35,7 +35,7 @@ export function MissionStep({
           // If no existing affirmation but we have a selected statement, save it
           const { error: insertError } = await supabase
             .from('user_affirmations')
-            .insert({
+            .upsert({
               user_id: user.id,
               content: selectedStatement
             });
