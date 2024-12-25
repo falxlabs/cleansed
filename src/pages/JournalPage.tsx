@@ -1,20 +1,13 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { EntriesList } from "@/components/journal/EntriesList";
 import { JournalCalendar } from "@/components/journal/JournalCalendar";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/providers/AuthProvider";
-import { useToast } from "@/components/ui/use-toast";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { JournalEntriesList } from "@/components/journal/JournalEntriesList";
 
 export default function JournalPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -30,7 +23,6 @@ export default function JournalPage() {
       try {
         setIsLoading(true);
         
-        // For unauthenticated users, show sample data
         if (!user) {
           const sampleEntries = [
             {
@@ -58,7 +50,6 @@ export default function JournalPage() {
           return;
         }
 
-        // For authenticated users, fetch real data
         const { data, error } = await supabase
           .from('journal_entries')
           .select(`
@@ -110,15 +101,9 @@ export default function JournalPage() {
     setDate(newDate);
   };
 
-  const filteredEntries = showCalendar && date
-    ? entries.filter(entry => 
-        format(new Date(entry.created_at), "yyyy-MM-dd") === format(date, "yyyy-MM-dd")
-      )
-    : entries;
-
   const dailyCheckIn = showCalendar && date
     ? entries.find(entry => 
-        format(new Date(entry.created_at), "yyyy-MM-dd") === format(date, "yyyy-MM-dd") && 
+        new Date(entry.created_at).toDateString() === date.toDateString() && 
         entry.entry_type === "check-in"
       )
     : null;
@@ -164,27 +149,12 @@ export default function JournalPage() {
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-4 sm:gap-8">
-          <Card className={`${showCalendar ? "" : "lg:col-span-2"}`}>
-            <CardHeader className="p-4">
-              <CardTitle>Entries</CardTitle>
-              <CardDescription>
-                {showCalendar 
-                  ? "Showing entries for selected date" 
-                  : "Showing all entries"}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-0">
-              <div className="overflow-x-auto">
-                {isLoading ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    Loading entries...
-                  </div>
-                ) : (
-                  <EntriesList entries={filteredEntries} />
-                )}
-              </div>
-            </CardContent>
-          </Card>
+          <JournalEntriesList 
+            showCalendar={showCalendar}
+            isLoading={isLoading}
+            entries={entries}
+            date={date}
+          />
 
           {showCalendar && (
             <div className="hidden lg:block">
