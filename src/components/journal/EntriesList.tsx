@@ -16,13 +16,16 @@ interface Entry {
   id: number;
   date: Date;
   type: string;
-  resisted: boolean;
-  level: string;
-  trigger: string;
-  notes: string;
-  mood?: number;
-  affirmation?: string;
-  temptation_type?: string;
+  temptation_entries?: {
+    temptation_type: string;
+    intensity_level: number;
+    resisted: boolean;
+  }[];
+  checkin_entries?: {
+    mood_score: number;
+    temptation_type: string;
+    intensity_level: number;
+  }[];
 }
 
 interface EntriesListProps {
@@ -33,6 +36,33 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
   const sortedEntries = [...entries].sort(
     (a, b) => b.date.getTime() - a.date.getTime()
   );
+
+  const getTemptationType = (entry: Entry) => {
+    if (entry.type === 'temptation' && entry.temptation_entries?.[0]) {
+      return entry.temptation_entries[0].temptation_type;
+    }
+    if (entry.type === 'check-in' && entry.checkin_entries?.[0]) {
+      return entry.checkin_entries[0].temptation_type;
+    }
+    return undefined;
+  };
+
+  const getIntensityLevel = (entry: Entry) => {
+    if (entry.type === 'temptation' && entry.temptation_entries?.[0]) {
+      return entry.temptation_entries[0].intensity_level.toString();
+    }
+    if (entry.type === 'check-in' && entry.checkin_entries?.[0]) {
+      return entry.checkin_entries[0].intensity_level?.toString();
+    }
+    return "0";
+  };
+
+  const getResisted = (entry: Entry) => {
+    if (entry.type === 'temptation' && entry.temptation_entries?.[0]) {
+      return entry.temptation_entries[0].resisted;
+    }
+    return undefined;
+  };
 
   return (
     <Table>
@@ -58,7 +88,10 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
         ) : (
           sortedEntries.map((entry) => {
             const isCheckIn = entry.type === "check-in";
-            const sinEmoji = getSinEmoji(entry.temptation_type);
+            const temptationType = getTemptationType(entry);
+            const sinEmoji = getSinEmoji(temptationType);
+            const intensityLevel = getIntensityLevel(entry);
+            const resisted = getResisted(entry);
             
             return (
               <TableRow key={entry.id}>
@@ -80,7 +113,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
                   {isCheckIn ? (
                     <span className="text-muted-foreground">-</span>
                   ) : sinEmoji ? (
-                    <span className="text-xl" title={entry.temptation_type}>
+                    <span className="text-xl" title={temptationType}>
                       {sinEmoji}
                     </span>
                   ) : (
@@ -91,18 +124,22 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
                   {isCheckIn ? (
                     <span className="text-muted-foreground">-</span>
                   ) : (
-                    <span className="text-xl" title={`Level: ${entry.level}`}>
-                      {getSeverityEmoji(entry.level)}
+                    <span className="text-xl" title={`Level: ${intensityLevel}`}>
+                      {getSeverityEmoji(intensityLevel)}
                     </span>
                   )}
                 </TableCell>
                 <TableCell className="text-center">
                   {isCheckIn ? (
                     <span className="text-muted-foreground">-</span>
-                  ) : entry.resisted ? (
-                    <Check className="inline h-5 w-5 text-green-500" />
+                  ) : resisted !== undefined ? (
+                    resisted ? (
+                      <Check className="inline h-5 w-5 text-green-500" />
+                    ) : (
+                      <X className="inline h-5 w-5 text-red-500" />
+                    )
                   ) : (
-                    <X className="inline h-5 w-5 text-red-500" />
+                    <span className="text-muted-foreground">-</span>
                   )}
                 </TableCell>
               </TableRow>
