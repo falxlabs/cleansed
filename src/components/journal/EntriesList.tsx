@@ -1,8 +1,4 @@
 import { useState } from "react";
-import { format } from "date-fns";
-import { Check, X } from "lucide-react";
-import { getTimeEmoji } from "@/utils/timeEmoji";
-import { getSinEmoji } from "@/utils/sinEmoji";
 import {
   Table,
   TableBody,
@@ -12,55 +8,23 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { EntryDetailsDialog } from "./EntryDetailsDialog";
-
-interface TemptationEntry {
-  temptation_type: string;
-  intensity_level: number;
-  resisted: boolean;
-}
-
-interface CheckInEntry {
-  mood_score: number | null;
-  temptation_type: string | null;
-  intensity_level: number | null;
-}
-
-interface Entry {
-  id: number;
-  created_at: string;
-  entry_type: 'check-in' | 'temptation';
-  temptation_entries: TemptationEntry[];
-  checkin_entries: CheckInEntry[];
-}
+import { EntryRow } from "./EntryRow";
+import { Entry } from "./types";
 
 interface EntriesListProps {
   entries: Entry[];
   showCheckIn?: boolean;
+  onDelete?: (entries: Entry[]) => void;
 }
 
-const getTemptationLevelText = (level: number | null) => {
-  if (level === null) return "-";
-  if (level <= 25) return "Low";
-  if (level <= 50) return "Medium";
-  if (level <= 75) return "High";
-  return "Severe";
-};
-
-const getIntensityEmoji = (level: number | null) => {
-  if (level === null) return "⚪️";
-  if (level <= 25) return "🟢";
-  if (level <= 50) return "🟡";
-  if (level <= 75) return "🟠";
-  return "🔴";
-};
-
-export const EntriesList = ({ entries, showCheckIn = true }: EntriesListProps) => {
+export const EntriesList = ({ entries, showCheckIn = true, onDelete }: EntriesListProps) => {
   const [selectedEntry, setSelectedEntry] = useState<any>(null);
+  
   const sortedEntries = [...entries]
     .filter(entry => showCheckIn || entry.entry_type !== 'check-in')
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
-  const handleEntryClick = (entry: any) => {
+  const handleEntryClick = (entry: Entry) => {
     const entryData = {
       id: entry.id,
       date: new Date(entry.created_at),
@@ -84,38 +48,9 @@ export const EntriesList = ({ entries, showCheckIn = true }: EntriesListProps) =
 
   const handleDelete = (id: number) => {
     const updatedEntries = entries.filter(entry => entry.id !== id);
-    // This assumes the parent component is passing the entries as a prop
-    // and will handle the update when an entry is deleted
-    if (typeof onDelete === 'function') {
+    if (onDelete) {
       onDelete(updatedEntries);
     }
-  };
-
-  const getTemptationType = (entry: Entry) => {
-    if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {
-      return entry.temptation_entries[0].temptation_type;
-    }
-    if (entry.entry_type === 'check-in' && entry.checkin_entries?.[0]) {
-      return entry.checkin_entries[0].temptation_type;
-    }
-    return null;
-  };
-
-  const getIntensityLevel = (entry: Entry) => {
-    if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {
-      return entry.temptation_entries[0].intensity_level;
-    }
-    if (entry.entry_type === 'check-in' && entry.checkin_entries?.[0]) {
-      return entry.checkin_entries[0].intensity_level;
-    }
-    return null;
-  };
-
-  const getResisted = (entry: Entry) => {
-    if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {
-      return entry.temptation_entries[0].resisted;
-    }
-    return null;
   };
 
   return (
@@ -141,90 +76,13 @@ export const EntriesList = ({ entries, showCheckIn = true }: EntriesListProps) =
               </TableCell>
             </TableRow>
           ) : (
-            sortedEntries.map((entry) => {
-              const isCheckIn = entry.entry_type === "check-in";
-              const temptationType = getTemptationType(entry);
-              const sinEmoji = getSinEmoji(temptationType || undefined);
-              const intensityLevel = getIntensityLevel(entry);
-              const resisted = getResisted(entry);
-              const entryDate = new Date(entry.created_at);
-              
-              return (
-                <TableRow 
-                  key={entry.id}
-                  className="cursor-pointer hover:bg-muted/50"
-                  onClick={() => handleEntryClick(entry)}
-                >
-                  <TableCell>
-                    <div className="flex flex-col">
-                      <span className="font-medium">
-                        {format(entryDate, "MMM d, yyyy")}
-                      </span>
-                      <span className="text-sm text-muted-foreground">
-                        {getTimeEmoji(entryDate.getHours())}{" "}
-                        {format(entryDate, "h:mm a")}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <span className="font-medium">
-                      {isCheckIn ? "Check-in" : "Temptation"}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {temptationType ? (
-                      <div className="flex flex-col items-center">
-                        <span className="text-xl" title={temptationType}>
-                          {sinEmoji}
-                        </span>
-                        <span className="text-sm text-muted-foreground capitalize">
-                          {temptationType}
-                        </span>
-                      </div>
-                    ) : (
-                      <span className="text-muted-foreground">-</span>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {intensityLevel !== null ? (
-                      <div className="flex flex-col items-center">
-                        <span className="text-xl" title={`Level ${intensityLevel}`}>
-                          {getIntensityEmoji(intensityLevel)}
-                        </span>
-                        <span className="text-sm text-muted-foreground">
-                          {getTemptationLevelText(intensityLevel)}
-                        </span>
-                      </div>
-                    ) : (
-                      <span className="text-muted-foreground">-</span>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {!isCheckIn && resisted !== null ? (
-                      <div className="flex flex-col items-center">
-                        {resisted ? (
-                          <>
-                            <Check className="h-5 w-5 text-green-500" />
-                            <span className="text-sm text-muted-foreground">
-                              Resisted
-                            </span>
-                          </>
-                        ) : (
-                          <>
-                            <X className="h-5 w-5 text-red-500" />
-                            <span className="text-sm text-muted-foreground">
-                              Gave in
-                            </span>
-                          </>
-                        )}
-                      </div>
-                    ) : (
-                      <span className="text-muted-foreground">-</span>
-                    )}
-                  </TableCell>
-                </TableRow>
-              );
-            })
+            sortedEntries.map((entry) => (
+              <EntryRow 
+                key={entry.id} 
+                entry={entry} 
+                onClick={() => handleEntryClick(entry)}
+              />
+            ))
           )}
         </TableBody>
       </Table>

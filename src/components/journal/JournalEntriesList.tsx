@@ -1,18 +1,21 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { EntriesList } from "./EntriesList";
+import { Entry } from "./types";
 
 interface JournalEntriesListProps {
   showCalendar: boolean;
   isLoading: boolean;
-  entries: any[];
+  entries: Entry[];
   date?: Date;
+  onEntriesUpdate?: (entries: Entry[]) => void;
 }
 
 export const JournalEntriesList = ({ 
   showCalendar, 
   isLoading, 
   entries,
-  date 
+  date,
+  onEntriesUpdate
 }: JournalEntriesListProps) => {
   const filteredEntries = showCalendar && date
     ? entries.filter(entry => 
@@ -40,6 +43,7 @@ export const JournalEntriesList = ({
             <EntriesList 
               entries={filteredEntries} 
               showCheckIn={!showCalendar}
+              onDelete={onEntriesUpdate}
             />
           )}
         </div>
