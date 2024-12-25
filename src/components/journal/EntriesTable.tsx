@@ -23,10 +23,9 @@ interface Entry {
 
 interface EntriesTableProps {
   entries: Entry[];
-  onEntryClick: (entry: Entry) => void;
 }
 
-export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
+export const EntriesTable = ({ entries }: EntriesTableProps) => {
   const sortedEntries = [...entries].sort((a, b) => b.date.getTime() - a.date.getTime());
 
   return (
@@ -34,9 +33,9 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
       <TableHeader>
         <TableRow>
           <TableHead>Date & Time</TableHead>
-          <TableHead>Entry</TableHead>
+          <TableHead>Type</TableHead>
           <TableHead className="text-center">Sin</TableHead>
-          <TableHead className="text-center">Severity</TableHead>
+          <TableHead className="text-center">Intensity</TableHead>
           <TableHead className="text-center">Outcome</TableHead>
         </TableRow>
       </TableHeader>
@@ -44,8 +43,7 @@ export const EntriesTable = ({ entries, onEntryClick }: EntriesTableProps) => {
         {sortedEntries.map((entry) => (
           <EntryRow 
             key={entry.id} 
-            entry={entry} 
-            onClick={onEntryClick}
+            entry={entry}
           />
         ))}
         {entries.length === 0 && (

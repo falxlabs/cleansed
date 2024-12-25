@@ -19,17 +19,13 @@ interface Entry {
 
 interface EntryRowProps {
   entry: Entry;
-  onClick: (entry: Entry) => void;
 }
 
-export const EntryRow = ({ entry, onClick }: EntryRowProps) => {
-  const isCheckIn = entry.type.toLowerCase().includes("check-in");
+export const EntryRow = ({ entry }: EntryRowProps) => {
+  const isCheckIn = entry.type === 'checkin';
   
   return (
-    <TableRow
-      className="cursor-pointer hover:bg-muted/50"
-      onClick={() => onClick(entry)}
-    >
+    <TableRow className="hover:bg-muted/50">
       <TableCell>
         <DateDisplay date={entry.date} />
       </TableCell>
@@ -40,7 +36,7 @@ export const EntryRow = ({ entry, onClick }: EntryRowProps) => {
       </TableCell>
       <TableCell className="text-center">
         <span className="text-xl">
-          {getSinEmoji(isCheckIn ? entry.type : entry.temptation_type)}
+          {isCheckIn ? "📝" : getSinEmoji(entry.temptation_type)}
         </span>
       </TableCell>
       <TableCell className="text-center">
