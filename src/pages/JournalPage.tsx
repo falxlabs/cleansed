@@ -8,6 +8,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { JournalEntriesList } from "@/components/journal/JournalEntriesList";
+import { SampleDataAlert } from "@/components/auth/SampleDataAlert";
 
 export default function JournalPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -110,20 +111,24 @@ export default function JournalPage() {
 
   return (
     <div className="container max-w-7xl mx-auto p-2 sm:p-4 space-y-4 sm:space-y-8 pb-20 md:pb-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl sm:text-3xl font-bold">Journal</h1>
-        <Button 
-          variant="outline" 
-          size="sm"
-          onClick={() => setShowCalendar(!showCalendar)}
-          className="flex items-center gap-2"
-        >
-          {showCalendar ? (
-            <>View All Entries <ChevronUp className="h-4 w-4" /></>
-          ) : (
-            <>Filter by Date <ChevronDown className="h-4 w-4" /></>
-          )}
-        </Button>
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl sm:text-3xl font-bold">Journal</h1>
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => setShowCalendar(!showCalendar)}
+            className="flex items-center gap-2"
+          >
+            {showCalendar ? (
+              <>View All Entries <ChevronUp className="h-4 w-4" /></>
+            ) : (
+              <>Filter by Date <ChevronDown className="h-4 w-4" /></>
+            )}
+          </Button>
+        </div>
+        
+        {!user && isMobile && <SampleDataAlert />}
       </div>
       
       {!user && (
