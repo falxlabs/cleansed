@@ -17,7 +17,20 @@
       const script = document.createElement('script');
       script.src = 'https://cdn.gpteng.co/gptengineer.js';
       script.type = 'module';
-      script.setAttribute('data-origin', window.location.origin);
+      
+      // Get the current origin
+      const currentOrigin = window.location.origin;
+      
+      // Define allowed origins
+      const allowedOrigins = [
+        'https://preview--cleansed.lovable.app',
+        'https://cleansed.lovable.app'
+      ];
+      
+      // Use the current origin if it's in the allowed list, otherwise default to the first one
+      const origin = allowedOrigins.includes(currentOrigin) ? currentOrigin : allowedOrigins[0];
+      script.setAttribute('data-origin', origin);
+      
       document.body.appendChild(script);
     </script>
     <script type="module" src="/src/main.tsx"></script>
