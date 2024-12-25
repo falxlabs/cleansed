@@ -85,4 +85,9 @@
   [data-radix-toast-viewport] {
     @apply left-0 right-auto bottom-0 top-auto;
   }
+
+  /* Add padding to main content to prevent overlap with fixed elements */
+  main {
+    @apply pb-20 md:pb-6;
+  }
 }

@@ -21,13 +21,13 @@ export const BottomNav = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 shadow-lg">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
       {!user && (
-        <div className="px-4 py-2 border-b border-gray-200">
+        <div className="border-b border-gray-200">
           <SampleDataAlert />
         </div>
       )}
-      <div className="flex justify-around items-center h-16 max-w-lg mx-auto px-4">
+      <div className="flex justify-around items-center h-14 max-w-lg mx-auto px-4">
         {navItems.map(({ icon: Icon, label, path }) => (
           <button
             key={path}
