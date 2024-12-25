@@ -39,6 +39,22 @@ export function useReflectionState() {
     setTemptationLevel(TEMPTATION_LEVELS[Math.min(levelIndex, TEMPTATION_LEVELS.length - 1)]);
   };
 
+  const getValidationMessage = (step: number) => {
+    if (step === 1 && !selectedSin) {
+      return "Please select a type of temptation first.";
+    }
+    if (step === 2 && !temptationLevel) {
+      return "Please indicate how intense this temptation was.";
+    }
+    if (step === 3 && !trigger) {
+      return "You need to enter what triggered this temptation.";
+    }
+    if (step === 4 && outcome === "resisted" && !resistanceStrategy) {
+      return "You need to enter what helped you resist.";
+    }
+    return "";
+  };
+
   return {
     step,
     setStep,
@@ -56,6 +72,7 @@ export function useReflectionState() {
     mascotMessage,
     setMascotMessage,
     handleSliderChange,
+    getValidationMessage,
     navigate,
     location,
   };

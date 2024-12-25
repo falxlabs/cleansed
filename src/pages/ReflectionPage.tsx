@@ -32,6 +32,7 @@ export default function ReflectionPage() {
     mascotMessage,
     setMascotMessage,
     handleSliderChange,
+    getValidationMessage,
     navigate,
     location,
   } = useReflectionState();
@@ -58,20 +59,9 @@ export default function ReflectionPage() {
   const progress = (step / totalSteps) * 100;
 
   const handleNext = async () => {
-    if (step === 1 && !selectedSin) {
-      setMascotMessage("Please select a type of temptation first. This helps us understand your struggle better.");
-      return;
-    }
-    if (step === 2 && !temptationLevel) {
-      setMascotMessage("Could you help me understand how intense this temptation was? This information is really important for tracking your progress.");
-      return;
-    }
-    if (step === 3 && !trigger) {
-      setMascotMessage("Understanding what triggered this temptation will help you recognize and handle similar situations in the future. Could you share what happened?");
-      return;
-    }
-    if (step === 4 && isResisted && !resistanceStrategy) {
-      setMascotMessage("Your strategies for resisting temptation can inspire others. Please share what helped you stay strong!");
+    const validationMessage = getValidationMessage(step);
+    if (validationMessage) {
+      setMascotMessage(validationMessage);
       return;
     }
     
