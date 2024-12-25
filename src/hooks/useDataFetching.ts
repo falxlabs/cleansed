@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { Database } from '@/integrations/supabase/types';
+
+type TableName = keyof Database['public']['Tables'];
 
 export function useDataFetching<T>(
-  tableName: string,
+  tableName: TableName,
   options: {
     realtime?: boolean;
     cacheLocally?: boolean;
@@ -26,7 +29,9 @@ export function useDataFetching<T>(
         
         if (options.where) {
           Object.entries(options.where).forEach(([key, value]) => {
-            query = query.eq(key, value);
+            if (value !== undefined) {
+              query = query.eq(key, value);
+            }
           });
         }
         
@@ -34,14 +39,12 @@ export function useDataFetching<T>(
 
         if (error) throw error;
 
-        setData(fetchedData || []);
+        setData((fetchedData || []) as T[]);
         
-        // Cache locally if specified
         if (options.cacheLocally) {
           sessionStorage.setItem(`${tableName}_cache`, JSON.stringify(fetchedData));
         }
 
-        // Subscribe to real-time changes if specified
         if (options.realtime) {
           subscription = supabase
             .channel(`${tableName}_changes`)
@@ -49,7 +52,6 @@ export function useDataFetching<T>(
               { event: '*', schema: 'public', table: tableName },
               (payload) => {
                 console.log('Real-time update received:', payload);
-                // Refresh the data
                 fetchData();
               }
             )
@@ -68,18 +70,16 @@ export function useDataFetching<T>(
       }
     };
 
-    // Try to load from cache first if cacheLocally is enabled
     if (options.cacheLocally) {
       const cached = sessionStorage.getItem(`${tableName}_cache`);
       if (cached) {
-        setData(JSON.parse(cached));
+        setData(JSON.parse(cached) as T[]);
         setLoading(false);
       }
     }
 
     fetchData();
 
-    // Cleanup subscription
     return () => {
       if (subscription) {
         subscription.unsubscribe();
