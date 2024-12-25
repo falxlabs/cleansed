@@ -40,7 +40,7 @@ export const EntryRow = ({ entry, onClick }: EntryRowProps) => {
       </TableCell>
       <TableCell className="text-center">
         <span className="text-xl">
-          {getSinEmoji(entry.temptation_type || entry.type)}
+          {getSinEmoji(isCheckIn ? entry.type : entry.temptation_type)}
         </span>
       </TableCell>
       <TableCell className="text-center">

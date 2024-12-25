@@ -135,9 +135,9 @@ export default function JournalPage() {
           className="flex items-center gap-2"
         >
           {showCalendar ? (
-            <>Hide Calendar <ChevronUp className="h-4 w-4" /></>
+            <>View All Entries <ChevronUp className="h-4 w-4" /></>
           ) : (
-            <>Show Calendar <ChevronDown className="h-4 w-4" /></>
+            <>Filter by Date <ChevronDown className="h-4 w-4" /></>
           )}
         </Button>
       </div>

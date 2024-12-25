@@ -18,6 +18,7 @@ interface Entry {
   notes: string;
   mood?: number;
   affirmation?: string;
+  temptation_type?: string;
 }
 
 interface EntriesTableProps {

@@ -1,4 +1,5 @@
 import { getTemptationLevelText } from "./EntryDetailsDialog";
+import { getSinEmoji } from "@/utils/sinEmoji";
 
 interface TemptationDetailsProps {
   entry: {
@@ -18,7 +19,10 @@ export const TemptationDetails = ({ entry }: TemptationDetailsProps) => {
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="bg-white p-4 rounded-xl border shadow-sm">
           <p className="text-sm font-semibold text-primary mb-2">Type of Temptation</p>
-          <p className="capitalize">{entry.temptation_type || entry.type}</p>
+          <div className="flex items-center gap-2">
+            <span className="text-xl">{getSinEmoji(entry.temptation_type)}</span>
+            <p className="capitalize">{entry.temptation_type || entry.type}</p>
+          </div>
         </div>
         
         <div className={`bg-white p-4 rounded-xl border shadow-sm ${
