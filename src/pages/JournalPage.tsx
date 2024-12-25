@@ -25,10 +25,9 @@ export default function JournalPage() {
 
   useEffect(() => {
     const loadEntries = async () => {
-      setIsLoading(true);
       try {
+        // For unauthenticated users, show sample data
         if (!user) {
-          // Sample data for unauthenticated users
           const sampleEntries = [
             {
               id: 1,
@@ -52,9 +51,11 @@ export default function JournalPage() {
             }
           ];
           setEntries(sampleEntries);
+          setIsLoading(false);
           return;
         }
 
+        // For authenticated users, fetch real data
         const { data, error } = await supabase
           .from('journal_entries')
           .select(`
@@ -75,10 +76,15 @@ export default function JournalPage() {
           .eq('user_id', user.id)
           .order('created_at', { ascending: false });
 
-        if (error) throw error;
-        setEntries(data || []);
+        if (error) {
+          console.error('Error fetching entries:', error);
+          setEntries([]);
+        } else {
+          setEntries(data || []);
+        }
       } catch (error) {
-        console.error('Error loading entries:', error);
+        console.error('Error in loadEntries:', error);
+        setEntries([]);
       } finally {
         setIsLoading(false);
       }
