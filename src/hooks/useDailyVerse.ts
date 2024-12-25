@@ -18,11 +18,24 @@ export function useDailyVerse() {
         return SAMPLE_VERSE;
       }
 
-      // Get a random verse from the daily_verses table
+      // Get the total count of verses
+      const { count } = await supabase
+        .from('daily_verses')
+        .select('*', { count: 'exact', head: true });
+
+      if (!count) {
+        console.error('No verses found in the database');
+        return SAMPLE_VERSE;
+      }
+
+      // Get a random offset
+      const randomOffset = Math.floor(Math.random() * count);
+
+      // Get a random verse using offset
       const { data, error } = await supabase
         .from('daily_verses')
         .select('*')
-        .order('random()')
+        .range(randomOffset, randomOffset)
         .limit(1)
         .maybeSingle();
 
