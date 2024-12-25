@@ -1,3 +1,4 @@
+import { ThumbsUp, ThumbsDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface OutcomeStepProps {
@@ -25,7 +26,9 @@ export const OutcomeStep = ({ outcome, onOutcomeChange }: OutcomeStepProps) => {
           }`}
         >
           <div className="rounded-full bg-duo-100 p-4 mb-3">
-            <span className="text-4xl">👍</span>
+            <ThumbsUp className={`w-8 h-8 ${
+              outcome === "resisted" ? "text-duo-600" : "text-duo-400"
+            }`} />
           </div>
           <span className="font-semibold text-lg">I Resisted</span>
           <span className="text-sm text-muted-foreground mt-1">
@@ -42,7 +45,9 @@ export const OutcomeStep = ({ outcome, onOutcomeChange }: OutcomeStepProps) => {
           }`}
         >
           <div className="rounded-full bg-destructive/20 p-4 mb-3">
-            <span className="text-4xl">👎</span>
+            <ThumbsDown className={`w-8 h-8 ${
+              outcome === "gave-in" ? "text-destructive" : "text-destructive/60"
+            }`} />
           </div>
           <span className="font-semibold text-lg">I Gave In</span>
           <span className="text-sm text-muted-foreground mt-1">
