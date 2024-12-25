@@ -295,6 +295,7 @@ export type Database = {
           current_streak: number
           last_check_in: string | null
           longest_streak: number
+          total_checkins: number
           updated_at: string | null
           user_id: string
         }
@@ -303,6 +304,7 @@ export type Database = {
           current_streak?: number
           last_check_in?: string | null
           longest_streak?: number
+          total_checkins?: number
           updated_at?: string | null
           user_id: string
         }
@@ -311,6 +313,7 @@ export type Database = {
           current_streak?: number
           last_check_in?: string | null
           longest_streak?: number
+          total_checkins?: number
           updated_at?: string | null
           user_id?: string
         }

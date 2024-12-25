@@ -34,7 +34,11 @@ export function Mascot({
   
   useEffect(() => {
     const checkExistingCheckIn = async () => {
-      if (!user) return;
+      if (!user) {
+        // For unauthenticated users, show a simulated check-in state
+        setHasCompletedCheckIn(false);
+        return;
+      }
 
       const today = new Date();
       const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -54,7 +58,7 @@ export function Mascot({
     checkExistingCheckIn();
   }, [user]);
 
-  const displayMessage = (isDashboard && shouldShow && user && !hasCompletedCheckIn)
+  const displayMessage = (isDashboard && shouldShow && !hasCompletedCheckIn)
     ? `${personalizedGreeting}Time for your daily moment of reflection.`
     : hasCompletedCheckIn
     ? `${personalizedGreeting}Thank you for taking time to reflect today. Keep growing stronger! 🌱`
@@ -76,7 +80,7 @@ export function Mascot({
           </p>
         </div>
         
-        {showCheckInButton && isDashboard && shouldShow && user && !hasCompletedCheckIn && onCheckIn && (
+        {showCheckInButton && isDashboard && shouldShow && !hasCompletedCheckIn && onCheckIn && (
           <Button
             onClick={onCheckIn}
             className="bg-duo-100 text-duo-800 hover:bg-duo-200 w-full"
