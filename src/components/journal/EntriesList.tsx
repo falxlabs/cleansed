@@ -107,15 +107,27 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  {isCheckIn ? "Daily Check-in" : "Temptation"}
+                  <div className="flex flex-col">
+                    <span className="font-medium">
+                      {isCheckIn ? "Daily Check-in" : "Temptation"}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {format(entry.date, "EEEE")}
+                    </span>
+                  </div>
                 </TableCell>
                 <TableCell className="text-center">
                   {isCheckIn ? (
                     <span className="text-muted-foreground">-</span>
                   ) : sinEmoji ? (
-                    <span className="text-xl" title={temptationType}>
-                      {sinEmoji}
-                    </span>
+                    <div className="flex flex-col items-center">
+                      <span className="text-xl" title={temptationType}>
+                        {sinEmoji}
+                      </span>
+                      <span className="text-xs text-muted-foreground capitalize">
+                        {temptationType}
+                      </span>
+                    </div>
                   ) : (
                     <span className="text-muted-foreground">Unknown</span>
                   )}
@@ -124,20 +136,33 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
                   {isCheckIn ? (
                     <span className="text-muted-foreground">-</span>
                   ) : (
-                    <span className="text-xl" title={`Level: ${intensityLevel}`}>
-                      {getSeverityEmoji(intensityLevel)}
-                    </span>
+                    <div className="flex flex-col items-center">
+                      <span className="text-xl" title={`Level: ${intensityLevel}`}>
+                        {getSeverityEmoji(intensityLevel)}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        Level {intensityLevel}
+                      </span>
+                    </div>
                   )}
                 </TableCell>
                 <TableCell className="text-center">
                   {isCheckIn ? (
                     <span className="text-muted-foreground">-</span>
                   ) : resisted !== undefined ? (
-                    resisted ? (
-                      <Check className="inline h-5 w-5 text-green-500" />
-                    ) : (
-                      <X className="inline h-5 w-5 text-red-500" />
-                    )
+                    <div className="flex flex-col items-center">
+                      {resisted ? (
+                        <>
+                          <Check className="h-5 w-5 text-green-500" />
+                          <span className="text-xs text-muted-foreground">Resisted</span>
+                        </>
+                      ) : (
+                        <>
+                          <X className="h-5 w-5 text-red-500" />
+                          <span className="text-xs text-muted-foreground">Failed</span>
+                        </>
+                      )}
+                    </div>
                   ) : (
                     <span className="text-muted-foreground">-</span>
                   )}
