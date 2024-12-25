@@ -15,6 +15,10 @@ export function useJournalEntries(date?: Date) {
       yesterday.setDate(yesterday.getDate() - 1);
       const twoDaysAgo = new Date(now);
       twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+      const threeDaysAgo = new Date(now);
+      threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+      const fourDaysAgo = new Date(now);
+      fourDaysAgo.setDate(fourDaysAgo.getDate() - 4);
 
       return [
         {
@@ -31,6 +35,19 @@ export function useJournalEntries(date?: Date) {
         },
         {
           id: 2,
+          created_at: now.toISOString(),
+          entry_type: 'temptation' as const,
+          temptation_entries: [{
+            temptation_type: 'lust',
+            intensity_level: 85,
+            resisted: true,
+            temptation_details: 'Had strong urges but managed to resist through prayer',
+            resistance_strategy: 'Prayed and went for a walk'
+          }],
+          checkin_entries: []
+        },
+        {
+          id: 3,
           created_at: yesterday.toISOString(),
           entry_type: 'temptation' as const,
           temptation_entries: [{
@@ -43,14 +60,63 @@ export function useJournalEntries(date?: Date) {
           checkin_entries: []
         },
         {
-          id: 3,
-          created_at: twoDaysAgo.toISOString(),
+          id: 4,
+          created_at: yesterday.toISOString(),
           entry_type: 'check-in' as const,
           checkin_entries: [{
             mood_score: 40,
             temptation_type: 'lust',
             intensity_level: 60,
-            mood_description: 'Feeling weak and vulnerable'
+            mood_description: 'Feeling weak after yesterday\'s struggle'
+          }],
+          temptation_entries: []
+        },
+        {
+          id: 5,
+          created_at: twoDaysAgo.toISOString(),
+          entry_type: 'check-in' as const,
+          checkin_entries: [{
+            mood_score: 65,
+            temptation_type: 'pride',
+            intensity_level: 45,
+            mood_description: 'Doing better today, staying humble'
+          }],
+          temptation_entries: []
+        },
+        {
+          id: 6,
+          created_at: threeDaysAgo.toISOString(),
+          entry_type: 'check-in' as const,
+          checkin_entries: [{
+            mood_score: 80,
+            temptation_type: 'sloth',
+            intensity_level: 20,
+            mood_description: 'Feeling motivated and productive'
+          }],
+          temptation_entries: []
+        },
+        {
+          id: 7,
+          created_at: threeDaysAgo.toISOString(),
+          entry_type: 'temptation' as const,
+          temptation_entries: [{
+            temptation_type: 'wrath',
+            intensity_level: 70,
+            resisted: true,
+            temptation_details: 'Got very angry at work but managed to stay calm',
+            resistance_strategy: 'Took deep breaths and stepped away'
+          }],
+          checkin_entries: []
+        },
+        {
+          id: 8,
+          created_at: fourDaysAgo.toISOString(),
+          entry_type: 'check-in' as const,
+          checkin_entries: [{
+            mood_score: 55,
+            temptation_type: 'greed',
+            intensity_level: 40,
+            mood_description: 'Struggling with contentment today'
           }],
           temptation_entries: []
         }
