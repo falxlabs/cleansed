@@ -33,12 +33,12 @@ export function useCheckInCompletion() {
         return;
       }
 
-      // First, create or get user affirmation
+      // First, create or update user affirmation if provided
       let affirmationId = null;
       if (selectedStatement) {
         const { data: userAffirmation, error: affirmationError } = await supabase
           .from('user_affirmations')
-          .insert({
+          .upsert({
             user_id: user.id,
             content: selectedStatement
           })
@@ -50,7 +50,7 @@ export function useCheckInCompletion() {
           throw new Error('Failed to save affirmation');
         }
 
-        affirmationId = userAffirmation.id;
+        affirmationId = userAffirmation?.id;
       }
 
       // Create journal entry
