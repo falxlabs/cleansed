@@ -87,18 +87,18 @@ export default function ReflectionPage() {
       });
 
       if (success) {
-        setMascotMessage("Thank you for your honest reflection! Remember, every step forward, no matter how small, is progress. Keep going!");
+        setMascotMessage("Thank you for your honest reflection. Keep going!");
         navigate("/journal");
       }
       return;
     }
     
     if (step === 1) {
-      setMascotMessage("Great choice! Now, let's understand how strong this temptation was.");
+      setMascotMessage("Let's understand how strong this temptation was.");
     } else if (step === 2) {
-      setMascotMessage("You're doing great! Understanding what triggered this temptation will help you prepare better next time.");
+      setMascotMessage("Understanding what triggered this temptation will help you prepare better next time.");
     } else if (step === 3 && isResisted) {
-      setMascotMessage("You showed real strength! What strategies helped you resist? Your experience could help others too!");
+      setMascotMessage("What strategies helped you resist?");
     }
     
     setStep(step + 1);
@@ -108,7 +108,7 @@ export default function ReflectionPage() {
     if (step > 1) {
       setStep(step - 1);
       if (step === 2) {
-        setMascotMessage("Let's reflect on this temptation together. I'm here to help you through this process.");
+        setMascotMessage("Let's reflect on this temptation together.");
       } else if (step === 3) {
         setMascotMessage("Let's review how strong this temptation was.");
       } else if (step === 4) {
@@ -132,7 +132,7 @@ export default function ReflectionPage() {
     if (step === 2) {
       handleSliderChange([50]);
       setStep(step + 1);
-      setMascotMessage("You're doing great! Understanding what triggered this temptation will help you prepare better next time.");
+      setMascotMessage("Understanding what triggered this temptation will help you prepare better next time.");
     } else if (step === 3) {
       setTrigger("Not sure / Don't remember");
       if (!isResisted) {
@@ -146,12 +146,12 @@ export default function ReflectionPage() {
         });
 
         if (success) {
-          setMascotMessage("Thank you for your honest reflection! Remember, every step forward, no matter how small, is progress. Keep going!");
+          setMascotMessage("Thank you for your honest reflection. Keep going!");
           navigate("/journal");
         }
       } else {
         setStep(step + 1);
-        setMascotMessage("You showed real strength! What strategies helped you resist? Your experience could help others too!");
+        setMascotMessage("What strategies helped you resist?");
       }
     }
   };
