@@ -1,26 +1,20 @@
-import { useNavigate } from "react-router-dom";
 import { ActionButton } from "@/components/dashboard/ActionButton";
 import { DailyVerse } from "@/components/dashboard/DailyVerse";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { StreakDisplay } from "@/components/dashboard/StreakDisplay";
+import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useDailyVerse } from "@/hooks/useDailyVerse";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAuth } from "@/providers/AuthProvider";
-import { cn } from "@/lib/utils";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const { user } = useAuth();
   const { data: verse, isLoading: isVerseLoading } = useDailyVerse();
   const welcomeMessage = "Welcome back! Remember, each day is a new opportunity to grow stronger in your faith.";
 
   return (
-    <div className={cn(
-      "min-h-screen bg-[#F5F5F5] space-y-4 p-4 pb-20 md:pb-6",
-      !user && isMobile && "pt-16"
-    )}>
+    <div className="min-h-screen bg-[#F5F5F5] space-y-4 p-4 pb-20 md:pb-6">
       <div className="flex justify-end max-w-2xl mx-auto">
         <div onClick={() => navigate('/achievements')} className="cursor-pointer">
           <StreakDisplay />

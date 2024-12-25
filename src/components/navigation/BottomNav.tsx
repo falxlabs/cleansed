@@ -23,10 +23,8 @@ export const BottomNav = () => {
   return (
     <>
       {!user && (
-        <div className="fixed top-0 left-0 right-0 px-4 z-50">
-          <div className="py-2 bg-[#F5F5F5]">
-            <SampleDataAlert />
-          </div>
+        <div className="fixed top-0 left-0 right-0 px-4 pt-2 z-50 animate-fade-in-down">
+          <SampleDataAlert />
         </div>
       )}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 h-20 px-4 shadow-lg">
