@@ -1,8 +1,11 @@
 import { Home, PenTool, Settings } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
+import { useAuth } from "@/providers/AuthProvider";
+import { SampleDataAlert } from "@/components/auth/SampleDataAlert";
 
 export function DesktopNav() {
   const location = useLocation();
+  const { user } = useAuth();
   
   const navItems = [
     { icon: Home, label: "Home", path: "/dashboard" },
@@ -18,6 +21,8 @@ export function DesktopNav() {
         <div className="flex items-center gap-2 mb-8">
           <h1 className="text-2xl font-extrabold text-duo-500">Cleansed</h1>
         </div>
+
+        {!user && <SampleDataAlert />}
         
         {navItems.map((item) => {
           const Icon = item.icon;

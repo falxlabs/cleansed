@@ -15,7 +15,7 @@ export default function SettingsPage() {
     { title: "Profile", path: "/settings/profile", requiresAuth: true },
     { title: "Daily Check-in", path: "/settings/daily-checkin", requiresAuth: true },
     { title: "Affirmation Message", path: "/settings/affirmation", requiresAuth: true },
-    { title: "Temptation", path: "/settings/temptation", requiresAuth: true },
+    { title: "Temptation Defaults", path: "/settings/temptation", requiresAuth: true },
     { title: "Notifications", path: "/settings/notifications", requiresAuth: true },
     { title: "Support", path: "/settings/support", requiresAuth: false },
   ];
