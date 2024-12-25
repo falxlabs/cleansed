@@ -21,30 +21,28 @@ export const BottomNav = () => {
   ];
 
   return (
-    <>
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 shadow-lg">
       {!user && (
-        <div className="fixed top-0 left-0 right-0 px-4 pt-2 z-50 animate-fade-in-down">
+        <div className="px-4 py-2 border-b border-gray-200">
           <SampleDataAlert />
         </div>
       )}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 h-20 px-4 shadow-lg">
-        <div className="flex justify-around items-center h-full max-w-lg mx-auto">
-          {navItems.map(({ icon: Icon, label, path }) => (
-            <button
-              key={path}
-              onClick={() => navigate(path)}
-              className={cn(
-                "flex flex-col items-center justify-center w-20 h-full",
-                "text-gray-400 hover:text-duo-500 transition-colors",
-                (location.pathname === path || (path === "/dashboard" && location.pathname === "/")) && "text-duo-500 font-bold"
-              )}
-            >
-              <Icon className="h-6 w-6 mb-1" />
-              <span className="text-xs">{label}</span>
-            </button>
-          ))}
-        </div>
-      </nav>
-    </>
+      <div className="flex justify-around items-center h-16 max-w-lg mx-auto px-4">
+        {navItems.map(({ icon: Icon, label, path }) => (
+          <button
+            key={path}
+            onClick={() => navigate(path)}
+            className={cn(
+              "flex flex-col items-center justify-center w-20",
+              "text-gray-400 hover:text-duo-500 transition-colors",
+              (location.pathname === path || (path === "/dashboard" && location.pathname === "/")) && "text-duo-500 font-bold"
+            )}
+          >
+            <Icon className="h-5 w-5 mb-1" />
+            <span className="text-xs">{label}</span>
+          </button>
+        ))}
+      </div>
+    </nav>
   );
 };
