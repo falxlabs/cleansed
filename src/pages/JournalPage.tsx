@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { EntriesTable } from "@/components/journal/EntriesTable";
-import { EntryDetailsDialog } from "@/components/journal/EntryDetailsDialog";
+import { EntriesList } from "@/components/journal/EntriesList";
 import { DailyCheckInSummary } from "@/components/journal/DailyCheckInSummary";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -19,7 +18,6 @@ import {
 export default function JournalPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [showCalendar, setShowCalendar] = useState(true);
-  const [selectedEntry, setSelectedEntry] = useState<any | null>(null);
   const [entries, setEntries] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const isMobile = useIsMobile();
@@ -71,7 +69,7 @@ export default function JournalPage() {
         const isTemptation = entry.entry_type === 'temptation';
         const entryDetails = isTemptation ? entry.temptation_entries?.[0] : entry.checkin_entries?.[0];
         
-        const formatted = {
+        return {
           id: entry.id,
           date: new Date(entry.created_at),
           type: entry.entry_type,
@@ -79,12 +77,9 @@ export default function JournalPage() {
           level: entryDetails?.intensity_level?.toString() ?? "0",
           trigger: entryDetails?.trigger ?? "",
           notes: isTemptation ? entryDetails?.temptation_details ?? "" : "",
-          // Only set temptation_type for temptation entries
           temptation_type: isTemptation ? entryDetails?.temptation_type : undefined,
           mood: entry.checkin_entries?.[0]?.mood_score,
         };
-        console.log("Formatted entry:", formatted);
-        return formatted;
       });
 
       console.log("Final formatted entries:", formattedEntries);
@@ -100,12 +95,6 @@ export default function JournalPage() {
   const handleDateSelect = (newDate: Date | undefined) => {
     console.log("Date selected:", newDate);
     setDate(newDate);
-  };
-
-  const handleEntryDelete = (deletedEntryId: number) => {
-    console.log("Deleting entry:", deletedEntryId);
-    setEntries(prevEntries => prevEntries.filter(entry => entry.id !== deletedEntryId));
-    setSelectedEntry(null);
   };
 
   const filteredEntries = showCalendar && date
@@ -188,10 +177,7 @@ export default function JournalPage() {
                     Loading entries...
                   </div>
                 ) : (
-                  <EntriesTable 
-                    entries={filteredEntries} 
-                    onEntryClick={setSelectedEntry} 
-                  />
+                  <EntriesList entries={filteredEntries} />
                 )}
               </div>
             </CardContent>
@@ -225,12 +211,6 @@ export default function JournalPage() {
           )}
         </div>
       </div>
-
-      <EntryDetailsDialog 
-        entry={selectedEntry}
-        onOpenChange={() => setSelectedEntry(null)}
-        onDelete={handleEntryDelete}
-      />
     </div>
   );
 }
