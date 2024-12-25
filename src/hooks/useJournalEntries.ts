@@ -59,7 +59,14 @@ export function useJournalEntries(date?: Date) {
       return [];
     }
 
-    return data as JournalEntry[];
+    // Transform the data to match our expected structure
+    const transformedData = data.map(entry => ({
+      ...entry,
+      temptation_entries: entry.temptation_entries ? [entry.temptation_entries] : [],
+      checkin_entries: entry.checkin_entries ? [entry.checkin_entries] : []
+    }));
+
+    return transformedData as JournalEntry[];
   };
 
   return useQuery({
