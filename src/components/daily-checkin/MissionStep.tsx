@@ -19,7 +19,13 @@ export function MissionStep({
     const fetchUserAffirmation = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        
+        if (!user) {
+          // Set a sample affirmation for non-authenticated users
+          onStatementChange("Through Christ who strengthens me, I can overcome any challenge.");
+          setIsLoading(false);
+          return;
+        }
 
         const { data: userAffirmation, error } = await supabase
           .from('user_affirmations')
