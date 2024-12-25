@@ -33,11 +33,14 @@ interface EntriesListProps {
 }
 
 export const EntriesList = ({ entries }: EntriesListProps) => {
+  console.log('Entries received in EntriesList:', entries);
+  
   const sortedEntries = [...entries].sort(
     (a, b) => b.date.getTime() - a.date.getTime()
   );
 
   const getTemptationType = (entry: Entry) => {
+    console.log('Getting temptation type for entry:', entry);
     if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {
       return entry.temptation_entries[0].temptation_type;
     }
@@ -48,6 +51,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
   };
 
   const getIntensityLevel = (entry: Entry) => {
+    console.log('Getting intensity level for entry:', entry);
     if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {
       return entry.temptation_entries[0].intensity_level;
     }
@@ -58,6 +62,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
   };
 
   const getResisted = (entry: Entry) => {
+    console.log('Getting resisted status for entry:', entry);
     if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {
       return entry.temptation_entries[0].resisted;
     }
@@ -87,6 +92,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
           </TableRow>
         ) : (
           sortedEntries.map((entry) => {
+            console.log('Rendering entry:', entry);
             const isCheckIn = entry.entry_type === "check-in";
             const temptationType = getTemptationType(entry);
             const sinEmoji = getSinEmoji(temptationType);

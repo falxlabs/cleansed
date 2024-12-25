@@ -56,6 +56,8 @@ export default function JournalPage() {
 
       if (error) throw error;
 
+      console.log('Raw data from Supabase:', data);
+
       if (!data) {
         setEntries([]);
         setIsLoading(false);
@@ -71,6 +73,7 @@ export default function JournalPage() {
         checkin_entries: entry.checkin_entries || [],
       }));
 
+      console.log('Formatted entries:', formattedEntries);
       setEntries(formattedEntries);
     } catch (error) {
       console.error('Error in fetchEntries:', error);
