@@ -5,14 +5,11 @@ import { SettingsHeader } from "@/components/settings/SettingsHeader";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/providers/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { SampleDataAlert } from "@/components/auth/SampleDataAlert";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuth();
-  const isMobile = useIsMobile();
 
   const settingsCategories = [
     { title: "Profile", path: "/settings/profile", requiresAuth: true },
@@ -55,10 +52,7 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8">
       <div className="max-w-2xl mx-auto">
-        <div className="space-y-4">
-          <SettingsHeader />
-          {!user && isMobile && <SampleDataAlert />}
-        </div>
+        <SettingsHeader />
         <div className="space-y-2">
           {settingsCategories.map((category) => {
             const isLocked = !user && category.requiresAuth;
