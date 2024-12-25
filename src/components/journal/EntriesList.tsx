@@ -44,7 +44,6 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
   );
 
   const getTemptationType = (entry: Entry) => {
-    console.log('Getting temptation type for entry:', entry);
     if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {
       return entry.temptation_entries[0].temptation_type;
     }
@@ -55,18 +54,16 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
   };
 
   const getIntensityLevel = (entry: Entry) => {
-    console.log('Getting intensity level for entry:', entry);
     if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {
       return entry.temptation_entries[0].intensity_level;
     }
     if (entry.entry_type === 'check-in' && entry.checkin_entries?.[0]) {
       return entry.checkin_entries[0].intensity_level;
     }
-    return 0;
+    return undefined;
   };
 
   const getResisted = (entry: Entry) => {
-    console.log('Getting resisted status for entry:', entry);
     if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {
       return entry.temptation_entries[0].resisted;
     }
@@ -96,7 +93,6 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
           </TableRow>
         ) : (
           sortedEntries.map((entry) => {
-            console.log('Rendering entry:', entry);
             const isCheckIn = entry.entry_type === "check-in";
             const temptationType = getTemptationType(entry);
             const sinEmoji = getSinEmoji(temptationType);
@@ -128,29 +124,21 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
                   </div>
                 </TableCell>
                 <TableCell className="text-center">
-                  {isCheckIn ? (
-                    <span className="text-muted-foreground">-</span>
-                  ) : (
+                  {temptationType ? (
                     <div className="flex flex-col items-center">
-                      {sinEmoji ? (
-                        <>
-                          <span className="text-xl" title={temptationType}>
-                            {sinEmoji}
-                          </span>
-                          <span className="text-sm text-muted-foreground">
-                            {temptationType}
-                          </span>
-                        </>
-                      ) : (
-                        <span className="text-muted-foreground">Unknown</span>
-                      )}
+                      <span className="text-xl" title={temptationType}>
+                        {sinEmoji}
+                      </span>
+                      <span className="text-sm text-muted-foreground capitalize">
+                        {temptationType}
+                      </span>
                     </div>
+                  ) : (
+                    <span className="text-muted-foreground">-</span>
                   )}
                 </TableCell>
                 <TableCell className="text-center">
-                  {isCheckIn ? (
-                    <span className="text-muted-foreground">-</span>
-                  ) : (
+                  {intensityLevel ? (
                     <div className="flex flex-col items-center">
                       <span className="text-xl" title={`Level ${intensityLevel}`}>
                         {getSeverityEmoji(intensityLevel.toString())}
@@ -159,12 +147,12 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
                         Level {intensityLevel}
                       </span>
                     </div>
+                  ) : (
+                    <span className="text-muted-foreground">-</span>
                   )}
                 </TableCell>
                 <TableCell className="text-center">
-                  {isCheckIn ? (
-                    <span className="text-muted-foreground">-</span>
-                  ) : resisted !== undefined ? (
+                  {!isCheckIn && resisted !== undefined ? (
                     <div className="flex flex-col items-center">
                       {resisted ? (
                         <>
