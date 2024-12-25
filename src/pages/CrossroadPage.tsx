@@ -9,7 +9,7 @@ import { ChoiceButtons } from "@/components/crossroad/ChoiceButtons";
 
 export default function CrossroadPage() {
   const [isTimerComplete, setIsTimerComplete] = useState(false);
-  const [unlockTime, setUnlockTime] = useState(5);
+  const [unlockTime, setUnlockTime] = useState(3); // Changed from 5 to 3
   const navigate = useNavigate();
   const { toast } = useToast();
 

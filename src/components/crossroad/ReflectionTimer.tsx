@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { SuggestionCarousel } from "./SuggestionCarousel";
 
 const TIMER_DURATION = 300;
-const UNLOCK_DURATION = 5;
+const UNLOCK_DURATION = 3; // Changed from 5 to 3 seconds
 
 interface ReflectionTimerProps {
   onComplete?: () => void;

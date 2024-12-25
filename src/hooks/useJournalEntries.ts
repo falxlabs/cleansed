@@ -10,30 +10,49 @@ export function useJournalEntries(date?: Date) {
     const { data: sessionData } = await supabase.auth.getSession();
     if (!sessionData.session?.user) {
       // Return sample data for unauthenticated users
+      const now = new Date();
+      const yesterday = new Date(now);
+      yesterday.setDate(yesterday.getDate() - 1);
+      const twoDaysAgo = new Date(now);
+      twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
       return [
         {
           id: 1,
-          created_at: new Date().toISOString(),
+          created_at: now.toISOString(),
           entry_type: 'check-in' as const,
           checkin_entries: [{
-            mood_score: 4,
+            mood_score: 75,
             temptation_type: 'pride',
-            intensity_level: 3,
-            mood_description: 'Feeling good today'
+            intensity_level: 30,
+            mood_description: 'Feeling strong and focused today'
           }],
           temptation_entries: []
         },
         {
           id: 2,
-          created_at: new Date(Date.now() - 86400000).toISOString(),
+          created_at: yesterday.toISOString(),
           entry_type: 'temptation' as const,
           temptation_entries: [{
-            temptation_type: 'greed',
-            intensity_level: 2,
-            resisted: true,
-            temptation_details: 'Resisted successfully'
+            temptation_type: 'lust',
+            intensity_level: 85,
+            resisted: false,
+            temptation_details: 'Struggled with impure thoughts',
+            resistance_strategy: 'Tried to pray but gave in'
           }],
           checkin_entries: []
+        },
+        {
+          id: 3,
+          created_at: twoDaysAgo.toISOString(),
+          entry_type: 'check-in' as const,
+          checkin_entries: [{
+            mood_score: 40,
+            temptation_type: 'lust',
+            intensity_level: 60,
+            mood_description: 'Feeling weak and vulnerable'
+          }],
+          temptation_entries: []
         }
       ] as Entry[];
     }
