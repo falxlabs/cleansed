@@ -64,6 +64,7 @@ export default function JournalPage() {
         return;
       }
 
+      // Map the data to match the EntriesList component's expected format
       const formattedEntries = data.map(entry => ({
         id: entry.id,
         date: new Date(entry.created_at),
