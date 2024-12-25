@@ -2,7 +2,6 @@ import { format } from "date-fns";
 import { Check, X } from "lucide-react";
 import { getTimeEmoji } from "@/utils/timeEmoji";
 import { getSinEmoji } from "@/utils/sinEmoji";
-import { getSeverityEmoji } from "@/utils/severityEmoji";
 import {
   Table,
   TableBody,
@@ -44,6 +43,14 @@ const getTemptationLevelText = (level: number | null) => {
   return "Severe";
 };
 
+const getIntensityEmoji = (level: number | null) => {
+  if (level === null) return "⚪️";
+  if (level <= 25) return "🟢";
+  if (level <= 50) return "🟡";
+  if (level <= 75) return "🟠";
+  return "🔴";
+};
+
 export const EntriesList = ({ entries }: EntriesListProps) => {
   const sortedEntries = [...entries].sort(
     (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
@@ -76,19 +83,6 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
     return null;
   };
 
-  // Convert intensity level to a 0-100 scale for severity emoji
-  const getIntensityScale = (level: number | null) => {
-    if (level === null) return null;
-    // Map 1-4 scale to 0-100 scale
-    switch (level) {
-      case 1: return 25;  // Low
-      case 2: return 50;  // Medium
-      case 3: return 75;  // High
-      case 4: return 100; // Severe
-      default: return null;
-    }
-  };
-
   return (
     <Table>
       <TableHeader>
@@ -116,7 +110,6 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
             const temptationType = getTemptationType(entry);
             const sinEmoji = getSinEmoji(temptationType || undefined);
             const intensityLevel = getIntensityLevel(entry);
-            const intensityScale = getIntensityScale(intensityLevel);
             const resisted = getResisted(entry);
             const entryDate = new Date(entry.created_at);
             
@@ -153,10 +146,10 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
                   )}
                 </TableCell>
                 <TableCell className="text-center">
-                  {intensityLevel ? (
+                  {intensityLevel !== null ? (
                     <div className="flex flex-col items-center">
                       <span className="text-xl" title={`Level ${intensityLevel}`}>
-                        {intensityScale !== null ? getSeverityEmoji(intensityScale.toString()) : '-'}
+                        {getIntensityEmoji(intensityLevel)}
                       </span>
                       <span className="text-sm text-muted-foreground">
                         {getTemptationLevelText(intensityLevel)}

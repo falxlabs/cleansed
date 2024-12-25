@@ -9,7 +9,31 @@ export function useJournalEntries(date?: Date) {
   const fetchEntries = async () => {
     const { data: sessionData } = await supabase.auth.getSession();
     if (!sessionData.session?.user) {
-      return [];
+      // Return sample data for unauthenticated users
+      return [
+        {
+          id: 1,
+          created_at: new Date().toISOString(),
+          entry_type: 'check-in',
+          checkin_entries: [{
+            mood_score: 4,
+            temptation_type: 'pride',
+            intensity_level: 3
+          }],
+          temptation_entries: []
+        },
+        {
+          id: 2,
+          created_at: new Date(Date.now() - 86400000).toISOString(),
+          entry_type: 'temptation',
+          temptation_entries: [{
+            temptation_type: 'greed',
+            intensity_level: 2,
+            resisted: true
+          }],
+          checkin_entries: []
+        }
+      ];
     }
 
     const query = supabase
@@ -62,26 +86,23 @@ export function useJournalEntries(date?: Date) {
     if (!data) return [];
 
     // Transform the data to match our expected structure
-    const transformedData = data.map(entry => {
-      // Ensure temptation_entries and checkin_entries are always arrays
-      const transformedEntry = {
-        ...entry,
-        temptation_entries: Array.isArray(entry.temptation_entries) 
-          ? entry.temptation_entries 
-          : entry.temptation_entries 
-            ? [entry.temptation_entries] 
-            : [],
-        checkin_entries: Array.isArray(entry.checkin_entries)
-          ? entry.checkin_entries
-          : entry.checkin_entries
-            ? [entry.checkin_entries]
-            : []
-      };
+    const transformedData = data.map(entry => ({
+      ...entry,
+      // Ensure temptation_entries is always an array
+      temptation_entries: Array.isArray(entry.temptation_entries) 
+        ? entry.temptation_entries 
+        : entry.temptation_entries 
+          ? [entry.temptation_entries] 
+          : [],
+      // Ensure checkin_entries is always an array
+      checkin_entries: Array.isArray(entry.checkin_entries)
+        ? entry.checkin_entries
+        : entry.checkin_entries
+          ? [entry.checkin_entries]
+          : []
+    })) as JournalEntry[];
 
-      return transformedEntry;
-    });
-
-    return transformedData as unknown as JournalEntry[];
+    return transformedData;
   };
 
   return useQuery({
