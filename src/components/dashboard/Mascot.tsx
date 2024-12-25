@@ -14,8 +14,14 @@ interface MascotProps {
   showCheckInButton?: boolean;
 }
 
-const getUserFirstName = () => {
-  return localStorage.getItem("userFirstName") || "";
+const getUserFirstName = async (userId: string) => {
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('first_name')
+    .eq('id', userId)
+    .single();
+  
+  return profile?.first_name || "";
 };
 
 export function Mascot({ 
@@ -28,10 +34,19 @@ export function Mascot({
   const { user } = useAuth();
   const isDashboard = location.pathname === "/dashboard";
   const shouldShow = shouldShowCheckIn();
-  const firstName = getUserFirstName();
-  const personalizedGreeting = firstName ? `Hey ${firstName}! ` : "Hey! ";
+  const [firstName, setFirstName] = useState("");
   const [hasCompletedCheckIn, setHasCompletedCheckIn] = useState(false);
   
+  useEffect(() => {
+    const loadUserData = async () => {
+      if (user) {
+        const name = await getUserFirstName(user.id);
+        setFirstName(name);
+      }
+    };
+    loadUserData();
+  }, [user]);
+
   useEffect(() => {
     const checkExistingCheckIn = async () => {
       if (!user) {
@@ -59,9 +74,13 @@ export function Mascot({
 
   const displayMessage = isDashboard 
     ? (shouldShow && !hasCompletedCheckIn)
-      ? `${personalizedGreeting}Time for your daily moment of reflection.`
+      ? firstName
+        ? `${firstName}, time for your daily moment of reflection.`
+        : "Time for your daily moment of reflection."
       : hasCompletedCheckIn
-        ? `${personalizedGreeting}Thank you for taking time to reflect today. Keep growing stronger! 🌱`
+        ? firstName
+          ? `${firstName}, thank you for taking time to reflect today. Keep growing stronger! 🌱`
+          : "Thank you for taking time to reflect today. Keep growing stronger! 🌱"
         : message
     : message;
 
