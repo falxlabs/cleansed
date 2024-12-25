@@ -1,4 +1,4 @@
-import { Twitter } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -12,7 +12,7 @@ export function TwitterSupport() {
   return (
     <Card className="p-4">
       <div className="flex items-start space-x-4">
-        <Twitter className="h-5 w-5 mt-1 text-muted-foreground" />
+        <X className="h-5 w-5 mt-1 text-muted-foreground" />
         <div>
           <h3 className="font-medium">X (Twitter) Support</h3>
           <p className="text-sm text-muted-foreground mt-1">
