@@ -5,16 +5,15 @@ import { StreakDisplay } from "@/components/dashboard/StreakDisplay";
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { calculateStreak } from "@/utils/journalEntries";
+import { useDailyVerse } from "@/hooks/useDailyVerse";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const currentStreak = calculateStreak();
+  const { data: verse, isLoading: isVerseLoading } = useDailyVerse();
   const welcomeMessage = "Welcome back! Remember, each day is a new opportunity to grow stronger in your faith.";
-  const dailyVerse = {
-    verse: "No temptation has overtaken you except what is common to mankind. And God is faithful; he will not let you be tempted beyond what you can bear.",
-    reference: "1 Corinthians 10:13",
-  };
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] space-y-4 p-4 pb-20 md:pb-6">
@@ -56,7 +55,19 @@ const DashboardPage = () => {
       </div>
 
       <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-md p-6">
-        <DailyVerse verse={dailyVerse.verse} reference={dailyVerse.reference} />
+        {isVerseLoading ? (
+          <div className="space-y-4">
+            <Skeleton className="h-6 w-3/4" />
+            <Skeleton className="h-4 w-1/4" />
+          </div>
+        ) : verse ? (
+          <DailyVerse verse={verse.content_csb} reference={verse.reference} />
+        ) : (
+          <DailyVerse 
+            verse="No temptation has overtaken you except what is common to mankind. And God is faithful; he will not let you be tempted beyond what you can bear." 
+            reference="1 Corinthians 10:13" 
+          />
+        )}
       </div>
     </div>
   );

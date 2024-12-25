@@ -66,6 +66,30 @@ export type Database = {
           },
         ]
       }
+      daily_verses: {
+        Row: {
+          category: Database["public"]["Enums"]["verse_category"]
+          content_csb: string
+          created_at: string | null
+          id: number
+          reference: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["verse_category"]
+          content_csb: string
+          created_at?: string | null
+          id?: number
+          reference: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["verse_category"]
+          content_csb?: string
+          created_at?: string | null
+          id?: number
+          reference?: string
+        }
+        Relationships: []
+      }
       journal_entries: {
         Row: {
           created_at: string | null
@@ -283,6 +307,15 @@ export type Database = {
         | "gluttony"
         | "wrath"
         | "sloth"
+      verse_category:
+        | "lust"
+        | "gluttony"
+        | "greed"
+        | "sloth"
+        | "wrath"
+        | "envy"
+        | "pride"
+        | "general"
     }
     CompositeTypes: {
       [_ in never]: never
