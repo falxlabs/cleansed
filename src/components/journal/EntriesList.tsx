@@ -1,191 +1,41 @@
-import { format } from "date-fns";
-import { Check, X } from "lucide-react";
-import { getTimeEmoji } from "@/utils/timeEmoji";
-import { getSinEmoji } from "@/utils/sinEmoji";
-import { getSeverityEmoji } from "@/utils/severityEmoji";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { useDataFetching } from "@/hooks/useDataFetching";
+import { JournalEntry } from "@/types/database";
+import { EntryDetailsDialog } from "./EntryDetailsDialog";
+import { useState } from "react";
+import { useAuth } from "@/providers/AuthProvider";
 
-interface Entry {
-  id: number;
-  date: Date;
-  entry_type: string;
-  temptation_entries: {
-    temptation_type: string;
-    intensity_level: number;
-    resisted: boolean;
-  }[];
-  checkin_entries: {
-    mood_score: number;
-    temptation_type: string;
-    intensity_level: number;
-  }[];
-}
-
-interface EntriesListProps {
-  entries: Entry[];
-}
-
-export const EntriesList = ({ entries }: EntriesListProps) => {
-  console.log('Entries received in EntriesList:', entries);
+export function EntriesList() {
+  const [selectedEntry, setSelectedEntry] = useState<JournalEntry | null>(null);
+  const { user } = useAuth();
   
-  const sortedEntries = [...entries].sort(
-    (a, b) => b.date.getTime() - a.date.getTime()
-  );
+  const { data: entries, loading } = useDataFetching<JournalEntry>('journal_entries', {
+    realtime: true, // We want real-time updates for journal entries
+    where: { user_id: user?.id },
+  });
 
-  const getTemptationType = (entry: Entry) => {
-    console.log('Getting temptation type for entry:', entry);
-    if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {
-      return entry.temptation_entries[0].temptation_type;
-    }
-    if (entry.entry_type === 'check-in' && entry.checkin_entries?.[0]) {
-      return entry.checkin_entries[0].temptation_type;
-    }
-    return undefined;
-  };
+  console.log('Entries received in EntriesList:', entries);
 
-  const getIntensityLevel = (entry: Entry) => {
-    console.log('Getting intensity level for entry:', entry);
-    if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {
-      return entry.temptation_entries[0].intensity_level;
-    }
-    if (entry.entry_type === 'check-in' && entry.checkin_entries?.[0]) {
-      return entry.checkin_entries[0].intensity_level;
-    }
-    return 0;
-  };
-
-  const getResisted = (entry: Entry) => {
-    console.log('Getting resisted status for entry:', entry);
-    if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {
-      return entry.temptation_entries[0].resisted;
-    }
-    return undefined;
-  };
+  if (loading) {
+    return <div>Loading entries...</div>;
+  }
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Date & Time</TableHead>
-          <TableHead>Entry Type</TableHead>
-          <TableHead className="text-center">Sin Type</TableHead>
-          <TableHead className="text-center">Intensity</TableHead>
-          <TableHead className="text-center">Outcome</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {sortedEntries.length === 0 ? (
-          <TableRow>
-            <TableCell
-              colSpan={5}
-              className="text-center py-8 text-muted-foreground"
-            >
-              No entries found
-            </TableCell>
-          </TableRow>
-        ) : (
-          sortedEntries.map((entry) => {
-            console.log('Rendering entry:', entry);
-            const isCheckIn = entry.entry_type === "check-in";
-            const temptationType = getTemptationType(entry);
-            const sinEmoji = getSinEmoji(temptationType);
-            const intensityLevel = getIntensityLevel(entry);
-            const resisted = getResisted(entry);
-            
-            return (
-              <TableRow key={entry.id}>
-                <TableCell>
-                  <div className="flex flex-col">
-                    <span className="font-medium">
-                      {format(entry.date, "MMM d, yyyy")}
-                    </span>
-                    <span className="text-sm text-muted-foreground">
-                      {getTimeEmoji(entry.date.getHours())}{" "}
-                      {format(entry.date, "h:mm a")}
-                    </span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex flex-col">
-                    <span className="font-medium">
-                      {isCheckIn ? "Daily Check-in" : "Temptation"}
-                    </span>
-                    <span className="text-sm text-muted-foreground">
-                      {format(entry.date, "EEEE")}
-                    </span>
-                  </div>
-                </TableCell>
-                <TableCell className="text-center">
-                  {isCheckIn ? (
-                    <span className="text-muted-foreground">-</span>
-                  ) : (
-                    <div className="flex flex-col items-center">
-                      {sinEmoji ? (
-                        <>
-                          <span className="text-xl" title={temptationType}>
-                            {sinEmoji}
-                          </span>
-                          <span className="text-sm text-muted-foreground">
-                            {temptationType}
-                          </span>
-                        </>
-                      ) : (
-                        <span className="text-muted-foreground">Unknown</span>
-                      )}
-                    </div>
-                  )}
-                </TableCell>
-                <TableCell className="text-center">
-                  {isCheckIn ? (
-                    <span className="text-muted-foreground">-</span>
-                  ) : (
-                    <div className="flex flex-col items-center">
-                      <span className="text-xl" title={`Level ${intensityLevel}`}>
-                        {getSeverityEmoji(intensityLevel.toString())}
-                      </span>
-                      <span className="text-sm text-muted-foreground">
-                        Level {intensityLevel}
-                      </span>
-                    </div>
-                  )}
-                </TableCell>
-                <TableCell className="text-center">
-                  {isCheckIn ? (
-                    <span className="text-muted-foreground">-</span>
-                  ) : resisted !== undefined ? (
-                    <div className="flex flex-col items-center">
-                      {resisted ? (
-                        <>
-                          <Check className="h-5 w-5 text-green-500" />
-                          <span className="text-sm text-muted-foreground">
-                            Resisted
-                          </span>
-                        </>
-                      ) : (
-                        <>
-                          <X className="h-5 w-5 text-red-500" />
-                          <span className="text-sm text-muted-foreground">
-                            Failed
-                          </span>
-                        </>
-                      )}
-                    </div>
-                  ) : (
-                    <span className="text-muted-foreground">-</span>
-                  )}
-                </TableCell>
-              </TableRow>
-            );
-          })
-        )}
-      </TableBody>
-    </Table>
+    <div className="space-y-4">
+      {entries.map((entry) => (
+        <div
+          key={entry.id}
+          onClick={() => setSelectedEntry(entry)}
+          className="p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow cursor-pointer"
+        >
+          <h3 className="text-lg font-semibold">{entry.entry_type}</h3>
+          <p className="text-sm text-gray-500">{entry.created_at}</p>
+        </div>
+      ))}
+
+      <EntryDetailsDialog
+        entry={selectedEntry}
+        onClose={() => setSelectedEntry(null)}
+      />
+    </div>
   );
-};
+}
