@@ -43,10 +43,9 @@ const TypewriterText = ({ text }: { text: string }) => {
       if (!hasMoreCharacters) {
         clearInterval(typingInterval);
         setIsTyping(false);
-        // Hide cursor after typing is complete
         setTimeout(() => setShowCursor(false), 1000);
       }
-    }, 50); // Adjust typing speed here
+    }, 50);
 
     return () => clearInterval(typingInterval);
   }, [text]);
@@ -57,7 +56,7 @@ const TypewriterText = ({ text }: { text: string }) => {
         <span
           key={index}
           className={cn(
-            "inline-block animate-[bounce_0.3s_ease-in-out]",
+            "inline-block",
             "opacity-0 animate-[fadeIn_0.1s_ease-in-out_forwards]"
           )}
           style={{ 
@@ -139,9 +138,9 @@ export function Mascot({
           >
             <span className="text-3xl">🕊️</span>
           </div>
-          <p className="text-lg font-bold leading-relaxed text-gray-800">
+          <div className="text-lg font-bold leading-relaxed text-gray-800">
             <TypewriterText text={displayMessage} />
-          </p>
+          </div>
         </div>
         
         {showCheckInButton && isDashboard && shouldShow && user && !hasCompletedCheckIn && onCheckIn && (
