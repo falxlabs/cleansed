@@ -1,13 +1,14 @@
+import { Progress } from "@/components/ui/progress";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { TemptationTypeStep } from "@/components/reflection/TemptationTypeStep";
 import { TemptationLevelStep } from "@/components/reflection/TemptationLevelStep";
 import { TriggerStep } from "@/components/reflection/TriggerStep";
 import { ResistanceStep } from "@/components/reflection/ResistanceStep";
 import { NavigationButtons } from "@/components/reflection/NavigationButtons";
-import { ReflectionNavigation } from "@/components/reflection/ReflectionNavigation";
 import { useReflectionState } from "@/hooks/useReflectionState";
 import { useReflectionDatabase } from "@/hooks/useReflectionDatabase";
-import { useReflectionValidation } from "@/hooks/useReflectionValidation";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -28,6 +29,7 @@ export default function ReflectionPage() {
     resistanceStrategy,
     setResistanceStrategy,
     outcome,
+    mascotMessage,
     setMascotMessage,
     handleSliderChange,
     navigate,
@@ -35,7 +37,6 @@ export default function ReflectionPage() {
   } = useReflectionState();
 
   const { saveReflection } = useReflectionDatabase();
-  const { getValidationMessage, isStepValid } = useReflectionValidation();
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -56,25 +57,21 @@ export default function ReflectionPage() {
   const totalSteps = isResisted ? 4 : 3;
   const progress = (step / totalSteps) * 100;
 
-  const getStepMessage = () => {
-    const validationMessage = getValidationMessage();
-    if (validationMessage) return validationMessage;
-
-    switch (step) {
-      case 2:
-        return "Let's understand how strong this temptation was.";
-      case 3:
-        return "Understanding what triggered this temptation will help you prepare better next time.";
-      case 4:
-        return "What strategies helped you resist?";
-      default:
-        return "Let's reflect on this temptation together.";
-    }
-  };
-
   const handleNext = async () => {
-    if (!isStepValid()) {
-      setMascotMessage(getValidationMessage());
+    if (step === 1 && !selectedSin) {
+      setMascotMessage("Please select a type of temptation first. This helps us understand your struggle better.");
+      return;
+    }
+    if (step === 2 && !temptationLevel) {
+      setMascotMessage("Could you help me understand how intense this temptation was? This information is really important for tracking your progress.");
+      return;
+    }
+    if (step === 3 && !trigger) {
+      setMascotMessage("Understanding what triggered this temptation will help you recognize and handle similar situations in the future. Could you share what happened?");
+      return;
+    }
+    if (step === 4 && isResisted && !resistanceStrategy) {
+      setMascotMessage("Your strategies for resisting temptation can inspire others. Please share what helped you stay strong!");
       return;
     }
     
@@ -90,19 +87,33 @@ export default function ReflectionPage() {
       });
 
       if (success) {
+        setMascotMessage("Thank you for your honest reflection. Keep going!");
         navigate("/journal");
       }
       return;
     }
     
+    if (step === 1) {
+      setMascotMessage("Let's understand how strong this temptation was.");
+    } else if (step === 2) {
+      setMascotMessage("Understanding what triggered this temptation will help you prepare better next time.");
+    } else if (step === 3 && isResisted) {
+      setMascotMessage("What strategies helped you resist?");
+    }
+    
     setStep(step + 1);
-    setMascotMessage(getStepMessage());
   };
 
   const handleBack = () => {
     if (step > 1) {
       setStep(step - 1);
-      setMascotMessage(getStepMessage());
+      if (step === 2) {
+        setMascotMessage("Let's reflect on this temptation together.");
+      } else if (step === 3) {
+        setMascotMessage("Let's review how strong this temptation was.");
+      } else if (step === 4) {
+        setMascotMessage("Let's look back at what triggered this situation.");
+      }
     } else {
       if (location.state?.choice) {
         navigate("/crossroad");
@@ -117,10 +128,49 @@ export default function ReflectionPage() {
     }
   };
 
+  const handleSkip = async () => {
+    if (step === 2) {
+      handleSliderChange([50]);
+      setStep(step + 1);
+      setMascotMessage("Understanding what triggered this temptation will help you prepare better next time.");
+    } else if (step === 3) {
+      setTrigger("Not sure / Don't remember");
+      if (!isResisted) {
+        const success = await saveReflection({
+          selectedSin,
+          sliderValue,
+          trigger: "Not sure / Don't remember",
+          outcome: isResisted ? 'resisted' : 'gave-in',
+          resistanceStrategy,
+          customNote,
+        });
+
+        if (success) {
+          setMascotMessage("Thank you for your honest reflection. Keep going!");
+          navigate("/journal");
+        }
+      } else {
+        setStep(step + 1);
+        setMascotMessage("What strategies helped you resist?");
+      }
+    }
+  };
+
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
-      <ReflectionNavigation progress={progress} onBack={handleBack} />
-      <Mascot message={getStepMessage()} />
+      <div className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          className="-ml-2"
+          onClick={handleBack}
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back
+        </Button>
+        <Progress value={progress} className="flex-1" />
+      </div>
+
+      <Mascot message={mascotMessage} />
 
       <div className="space-y-6">
         {step === 1 && (
@@ -156,6 +206,7 @@ export default function ReflectionPage() {
 
         <NavigationButtons
           onNext={handleNext}
+          onSkip={handleSkip}
           step={step}
           isNextDisabled={false}
         />

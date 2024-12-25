@@ -15,24 +15,9 @@ export const NavigationButtons = ({
 }: NavigationButtonsProps) => {
   return (
     <div className="flex flex-col gap-2 pt-6">
-      <Button 
-        onClick={onNext} 
-        disabled={isNextDisabled} 
-        className="w-full"
-        type="button"
-      >
+      <Button onClick={onNext} disabled={isNextDisabled} className="w-full">
         {step === 4 ? "Complete" : "Next"}
       </Button>
-      {onSkip && (
-        <Button
-          variant="outline"
-          onClick={onSkip}
-          className="w-full"
-          type="button"
-        >
-          Skip
-        </Button>
-      )}
     </div>
   );
 };
