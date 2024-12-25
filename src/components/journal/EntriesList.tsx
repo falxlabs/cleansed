@@ -65,7 +65,7 @@ export const EntriesList = ({ entries, showCheckIn = true, onDelete }: EntriesLi
         <TableHeader>
           <TableRow>
             <TableHead>Date & Time</TableHead>
-            <TableHead>Type</TableHead>
+            <TableHead>Entry Type</TableHead>
             <TableHead className="text-center">Sin Type</TableHead>
             <TableHead className="text-center">Intensity</TableHead>
             <TableHead className="text-center">Outcome</TableHead>
