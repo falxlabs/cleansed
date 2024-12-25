@@ -11,31 +11,44 @@ export function useJournalEntries(date?: Date) {
     if (!sessionData.session?.user) {
       // Return sample data for unauthenticated users
       const now = new Date();
-      const yesterday = new Date(now);
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      
+      const yesterday = new Date(today);
       yesterday.setDate(yesterday.getDate() - 1);
-      const twoDaysAgo = new Date(now);
+      
+      const twoDaysAgo = new Date(today);
       twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-      const threeDaysAgo = new Date(now);
+      
+      const threeDaysAgo = new Date(today);
       threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-      const fourDaysAgo = new Date(now);
+      
+      const fourDaysAgo = new Date(today);
       fourDaysAgo.setDate(fourDaysAgo.getDate() - 4);
 
+      // Helper function to set time
+      const setTime = (date: Date, hours: number, minutes: number = 0) => {
+        const newDate = new Date(date);
+        newDate.setHours(hours, minutes);
+        return newDate;
+      };
+
       return [
+        // Today's entries
         {
           id: 1,
-          created_at: now.toISOString(),
+          created_at: setTime(today, 8, 30).toISOString(),
           entry_type: 'check-in' as const,
           checkin_entries: [{
             mood_score: 75,
             temptation_type: 'pride',
             intensity_level: 30,
-            mood_description: 'Feeling strong and focused today'
+            mood_description: 'Starting the day with prayer and gratitude'
           }],
           temptation_entries: []
         },
         {
           id: 2,
-          created_at: now.toISOString(),
+          created_at: setTime(today, 11, 15).toISOString(),
           entry_type: 'temptation' as const,
           temptation_entries: [{
             temptation_type: 'lust',
@@ -48,7 +61,33 @@ export function useJournalEntries(date?: Date) {
         },
         {
           id: 3,
-          created_at: yesterday.toISOString(),
+          created_at: setTime(today, 14, 45).toISOString(),
+          entry_type: 'temptation' as const,
+          temptation_entries: [{
+            temptation_type: 'pride',
+            intensity_level: 45,
+            resisted: true,
+            temptation_details: 'Caught myself being judgmental',
+            resistance_strategy: 'Practiced humility and prayed for guidance'
+          }],
+          checkin_entries: []
+        },
+        {
+          id: 4,
+          created_at: setTime(today, 16, 20).toISOString(),
+          entry_type: 'check-in' as const,
+          checkin_entries: [{
+            mood_score: 65,
+            temptation_type: 'sloth',
+            intensity_level: 40,
+            mood_description: 'Afternoon reflection, staying focused'
+          }],
+          temptation_entries: []
+        },
+        // Yesterday's entries
+        {
+          id: 5,
+          created_at: setTime(yesterday, 9, 45).toISOString(),
           entry_type: 'temptation' as const,
           temptation_entries: [{
             temptation_type: 'lust',
@@ -60,20 +99,21 @@ export function useJournalEntries(date?: Date) {
           checkin_entries: []
         },
         {
-          id: 4,
-          created_at: yesterday.toISOString(),
+          id: 6,
+          created_at: setTime(yesterday, 19, 30).toISOString(),
           entry_type: 'check-in' as const,
           checkin_entries: [{
             mood_score: 40,
             temptation_type: 'lust',
             intensity_level: 60,
-            mood_description: 'Feeling weak after yesterday\'s struggle'
+            mood_description: 'Feeling weak after today\'s struggle'
           }],
           temptation_entries: []
         },
+        // Two days ago
         {
-          id: 5,
-          created_at: twoDaysAgo.toISOString(),
+          id: 7,
+          created_at: setTime(twoDaysAgo, 10, 15).toISOString(),
           entry_type: 'check-in' as const,
           checkin_entries: [{
             mood_score: 65,
@@ -83,9 +123,10 @@ export function useJournalEntries(date?: Date) {
           }],
           temptation_entries: []
         },
+        // Three days ago
         {
-          id: 6,
-          created_at: threeDaysAgo.toISOString(),
+          id: 8,
+          created_at: setTime(threeDaysAgo, 7, 30).toISOString(),
           entry_type: 'check-in' as const,
           checkin_entries: [{
             mood_score: 80,
@@ -96,8 +137,8 @@ export function useJournalEntries(date?: Date) {
           temptation_entries: []
         },
         {
-          id: 7,
-          created_at: threeDaysAgo.toISOString(),
+          id: 9,
+          created_at: setTime(threeDaysAgo, 15, 45).toISOString(),
           entry_type: 'temptation' as const,
           temptation_entries: [{
             temptation_type: 'wrath',
@@ -108,9 +149,10 @@ export function useJournalEntries(date?: Date) {
           }],
           checkin_entries: []
         },
+        // Four days ago
         {
-          id: 8,
-          created_at: fourDaysAgo.toISOString(),
+          id: 10,
+          created_at: setTime(fourDaysAgo, 12, 0).toISOString(),
           entry_type: 'check-in' as const,
           checkin_entries: [{
             mood_score: 55,
