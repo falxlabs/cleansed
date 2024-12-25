@@ -35,7 +35,6 @@ export function Mascot({
   useEffect(() => {
     const checkExistingCheckIn = async () => {
       if (!user) {
-        // For unauthenticated users, show a simulated check-in state
         setHasCompletedCheckIn(false);
         return;
       }
@@ -58,10 +57,12 @@ export function Mascot({
     checkExistingCheckIn();
   }, [user]);
 
-  const displayMessage = (isDashboard && shouldShow && !hasCompletedCheckIn)
-    ? `${personalizedGreeting}Time for your daily moment of reflection.`
-    : hasCompletedCheckIn
-    ? `${personalizedGreeting}Thank you for taking time to reflect today. Keep growing stronger! 🌱`
+  const displayMessage = isDashboard 
+    ? (shouldShow && !hasCompletedCheckIn)
+      ? `${personalizedGreeting}Time for your daily moment of reflection.`
+      : hasCompletedCheckIn
+        ? `${personalizedGreeting}Thank you for taking time to reflect today. Keep growing stronger! 🌱`
+        : message
     : message;
 
   return (
