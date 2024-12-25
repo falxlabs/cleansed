@@ -33,6 +33,7 @@ interface Entry {
 
 interface EntriesListProps {
   entries: Entry[];
+  showCheckIn?: boolean;
 }
 
 const getTemptationLevelText = (level: number | null) => {
@@ -51,10 +52,10 @@ const getIntensityEmoji = (level: number | null) => {
   return "🔴";
 };
 
-export const EntriesList = ({ entries }: EntriesListProps) => {
-  const sortedEntries = [...entries].sort(
-    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-  );
+export const EntriesList = ({ entries, showCheckIn = true }: EntriesListProps) => {
+  const sortedEntries = [...entries]
+    .filter(entry => showCheckIn || entry.entry_type !== 'check-in')
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
   const getTemptationType = (entry: Entry) => {
     if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {

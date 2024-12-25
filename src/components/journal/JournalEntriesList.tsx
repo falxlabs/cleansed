@@ -37,7 +37,10 @@ export const JournalEntriesList = ({
               Loading entries...
             </div>
           ) : (
-            <EntriesList entries={filteredEntries} />
+            <EntriesList 
+              entries={filteredEntries} 
+              showCheckIn={!showCalendar}
+            />
           )}
         </div>
       </CardContent>
