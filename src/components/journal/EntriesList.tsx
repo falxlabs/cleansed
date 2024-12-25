@@ -28,8 +28,8 @@ interface Entry {
   id: number;
   created_at: string;
   entry_type: 'check-in' | 'temptation';
-  temptation_entries?: TemptationEntry[];
-  checkin_entries?: CheckInEntry[];
+  temptation_entries: TemptationEntry[];
+  checkin_entries: CheckInEntry[];
 }
 
 interface EntriesListProps {
@@ -48,7 +48,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
     if (entry.entry_type === 'check-in' && entry.checkin_entries?.[0]) {
       return entry.checkin_entries[0].temptation_type;
     }
-    return undefined;
+    return null;
   };
 
   const getIntensityLevel = (entry: Entry) => {
@@ -58,26 +58,26 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
     if (entry.entry_type === 'check-in' && entry.checkin_entries?.[0]) {
       return entry.checkin_entries[0].intensity_level;
     }
-    return undefined;
+    return null;
   };
 
   const getResisted = (entry: Entry) => {
     if (entry.entry_type === 'temptation' && entry.temptation_entries?.[0]) {
       return entry.temptation_entries[0].resisted;
     }
-    return undefined;
+    return null;
   };
 
   // Convert intensity level to a 0-100 scale for severity emoji
-  const getIntensityScale = (level: number | undefined) => {
-    if (level === undefined) return undefined;
+  const getIntensityScale = (level: number | null) => {
+    if (level === null) return null;
     // Map 1-4 scale to 0-100 scale
     switch (level) {
       case 1: return 25;  // Low
       case 2: return 50;  // Medium
       case 3: return 75;  // High
       case 4: return 100; // Severe
-      default: return undefined;
+      default: return null;
     }
   };
 
@@ -106,7 +106,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
           sortedEntries.map((entry) => {
             const isCheckIn = entry.entry_type === "check-in";
             const temptationType = getTemptationType(entry);
-            const sinEmoji = getSinEmoji(temptationType);
+            const sinEmoji = getSinEmoji(temptationType || undefined);
             const intensityLevel = getIntensityLevel(entry);
             const intensityScale = getIntensityScale(intensityLevel);
             const resisted = getResisted(entry);
@@ -153,7 +153,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
                   {intensityLevel ? (
                     <div className="flex flex-col items-center">
                       <span className="text-xl" title={`Level ${intensityLevel}`}>
-                        {intensityScale !== undefined ? getSeverityEmoji(intensityScale.toString()) : '-'}
+                        {intensityScale !== null ? getSeverityEmoji(intensityScale.toString()) : '-'}
                       </span>
                       <span className="text-sm text-muted-foreground">
                         Level {intensityLevel}
@@ -164,7 +164,7 @@ export const EntriesList = ({ entries }: EntriesListProps) => {
                   )}
                 </TableCell>
                 <TableCell className="text-center">
-                  {!isCheckIn && resisted !== undefined ? (
+                  {!isCheckIn && resisted !== null ? (
                     <div className="flex flex-col items-center">
                       {resisted ? (
                         <>
