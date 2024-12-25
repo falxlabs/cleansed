@@ -1,12 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import { ActionButton } from "@/components/dashboard/ActionButton";
 import { DailyVerse } from "@/components/dashboard/DailyVerse";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { StreakDisplay } from "@/components/dashboard/StreakDisplay";
-import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useDailyVerse } from "@/hooks/useDailyVerse";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/providers/AuthProvider";
+import { cn } from "@/lib/utils";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
