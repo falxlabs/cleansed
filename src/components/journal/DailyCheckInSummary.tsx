@@ -12,9 +12,10 @@ interface DailyCheckInSummaryProps {
     date: Date;
     trigger: string;
     level: string;
+    notes: string;
     mood?: number;
-    description?: string;
     affirmation?: string;
+    description?: string;
   };
   date: Date;
 }
@@ -76,7 +77,9 @@ export const DailyCheckInSummary = ({ entry, date }: DailyCheckInSummaryProps) =
       <div>
         <div className="flex items-center justify-between mb-2">
           <h3 className="font-semibold">Mood</h3>
-          <span className="text-2xl">{getMoodEmoji(entry.mood)}</span>
+          <span className="text-2xl" title={getMoodText(entry.mood)}>
+            {getMoodEmoji(entry.mood)}
+          </span>
         </div>
         <p className="text-sm text-muted-foreground mb-2">
           {getMoodText(entry.mood)}
