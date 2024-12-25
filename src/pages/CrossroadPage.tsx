@@ -6,12 +6,10 @@ import { useToast } from "@/hooks/use-toast";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { ReflectionTimer } from "@/components/crossroad/ReflectionTimer";
 import { ChoiceButtons } from "@/components/crossroad/ChoiceButtons";
-import { useAuthCheck } from "@/hooks/useAuthCheck";
 
 export default function CrossroadPage() {
-  useAuthCheck(); // Add this line
   const [isTimerComplete, setIsTimerComplete] = useState(false);
-  const [unlockTime, setUnlockTime] = useState(3);
+  const [unlockTime, setUnlockTime] = useState(3); // Changed from 5 to 3
   const navigate = useNavigate();
   const { toast } = useToast();
 

@@ -7,13 +7,11 @@ import { Progress } from "@/components/ui/progress";
 import { DateTimeStep } from "@/components/past-temptation/DateTimeStep";
 import { OutcomeStep } from "@/components/past-temptation/OutcomeStep";
 import { ArrowLeft } from "lucide-react";
-import { useAuthCheck } from "@/hooks/useAuthCheck";
 
 export default function PastTemptationPage() {
-  useAuthCheck(); // Add this line
   const [step, setStep] = useState(1);
   const [date, setDate] = useState<Date>(new Date());
-  const [timeValue, setTimeValue] = useState([12]);
+  const [timeValue, setTimeValue] = useState([12]); // Default to noon (12:00)
   const [outcome, setOutcome] = useState<"resisted" | "gave-in">();
   const navigate = useNavigate();
   const { toast } = useToast();
