@@ -5,7 +5,7 @@ import DailyCheckinPage from "./pages/DailyCheckinPage";
 import CrossroadPage from "./pages/CrossroadPage";
 import PastTemptationPage from "./pages/PastTemptationPage";
 import ReflectionPage from "./pages/ReflectionPage";
-import JournalPage from "./pages/JournalPage";
+import NewJournalPage from "./pages/NewJournalPage";
 import SettingsPage from "./pages/SettingsPage";
 import AchievementsPage from "./pages/AchievementsPage";
 import OnboardingPage from "./pages/OnboardingPage";
@@ -45,7 +45,7 @@ const AppContent = () => {
             <Route path="/crossroad" element={<ProtectedRoute><CrossroadPage /></ProtectedRoute>} />
             <Route path="/past-temptation" element={<ProtectedRoute><PastTemptationPage /></ProtectedRoute>} />
             <Route path="/reflection" element={<ProtectedRoute><ReflectionPage /></ProtectedRoute>} />
-            <Route path="/journal" element={<ProtectedRoute><JournalPage /></ProtectedRoute>} />
+            <Route path="/journal" element={<ProtectedRoute><NewJournalPage /></ProtectedRoute>} />
             <Route path="/achievements" element={<ProtectedRoute><AchievementsPage /></ProtectedRoute>} />
 
             {/* Settings Routes */}
