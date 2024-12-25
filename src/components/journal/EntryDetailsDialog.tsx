@@ -19,7 +19,7 @@ interface EntryDetailsDialogProps {
     notes: string;
     mood?: number;
     affirmation?: string;
-    customNote?: string;
+    description?: string;
   } | null;
   onOpenChange: (open: boolean) => void;
   onDelete?: (id: number) => void;
