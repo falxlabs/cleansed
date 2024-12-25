@@ -18,6 +18,67 @@ const getUserFirstName = () => {
   return localStorage.getItem("userFirstName") || "";
 };
 
+const TypewriterText = ({ text }: { text: string }) => {
+  const [displayedText, setDisplayedText] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+  const [isTyping, setIsTyping] = useState(true);
+
+  useEffect(() => {
+    let currentIndex = 0;
+    setDisplayedText("");
+    setIsTyping(true);
+    setShowCursor(true);
+
+    const typeNextCharacter = () => {
+      if (currentIndex < text.length) {
+        setDisplayedText(prev => prev + text[currentIndex]);
+        currentIndex++;
+        return true;
+      }
+      return false;
+    };
+
+    const typingInterval = setInterval(() => {
+      const hasMoreCharacters = typeNextCharacter();
+      if (!hasMoreCharacters) {
+        clearInterval(typingInterval);
+        setIsTyping(false);
+        // Hide cursor after typing is complete
+        setTimeout(() => setShowCursor(false), 1000);
+      }
+    }, 50); // Adjust typing speed here
+
+    return () => clearInterval(typingInterval);
+  }, [text]);
+
+  return (
+    <span className="inline-block">
+      {displayedText.split('').map((char, index) => (
+        <span
+          key={index}
+          className={cn(
+            "inline-block animate-[bounce_0.3s_ease-in-out]",
+            "opacity-0 animate-[fadeIn_0.1s_ease-in-out_forwards]"
+          )}
+          style={{ 
+            animationDelay: `${index * 0.05}s`,
+          }}
+        >
+          {char}
+        </span>
+      ))}
+      {showCursor && (
+        <span 
+          className={cn(
+            "inline-block w-0.5 h-4 bg-duo-500 ml-0.5 relative top-0.5",
+            "animate-[blink_1s_step-start_infinite]"
+          )}
+        />
+      )}
+    </span>
+  );
+};
+
 export function Mascot({ 
   message, 
   className, 
@@ -31,6 +92,7 @@ export function Mascot({
   const firstName = getUserFirstName();
   const personalizedGreeting = firstName ? `Hey ${firstName}! ` : "Hey! ";
   const [hasCompletedCheckIn, setHasCompletedCheckIn] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   
   useEffect(() => {
     const checkExistingCheckIn = async () => {
@@ -68,17 +130,26 @@ export function Mascot({
     )}>
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-6">
-          <div className="w-16 h-16 rounded-2xl bg-duo-100 flex items-center justify-center">
-            <span className="text-3xl animate-bounce">🕊️</span>
+          <div 
+            className={cn(
+              "w-16 h-16 rounded-2xl bg-duo-100 flex items-center justify-center",
+              isAnimating && "animate-bounce"
+            )}
+            onAnimationEnd={() => setIsAnimating(false)}
+          >
+            <span className="text-3xl">🕊️</span>
           </div>
           <p className="text-lg font-bold leading-relaxed text-gray-800">
-            {displayMessage}
+            <TypewriterText text={displayMessage} />
           </p>
         </div>
         
         {showCheckInButton && isDashboard && shouldShow && user && !hasCompletedCheckIn && onCheckIn && (
           <Button
-            onClick={onCheckIn}
+            onClick={() => {
+              setIsAnimating(true);
+              onCheckIn();
+            }}
             className="bg-duo-100 text-duo-800 hover:bg-duo-200 w-full"
           >
             Daily Check-in
