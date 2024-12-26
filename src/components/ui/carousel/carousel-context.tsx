@@ -1,12 +1,19 @@
 import * as React from "react"
-import useEmblaCarousel, { EmblaOptionsType, EmblaCarouselType } from "embla-carousel-react"
+import useEmblaCarousel, { UseEmblaCarouselType } from "embla-carousel-react"
 
-export interface CarouselOptions extends EmblaOptionsType {
-  autoplay?: boolean;
-  delay?: number;
+export interface CarouselOptions {
+  align?: "start" | "center" | "end"
+  axis?: "x" | "y"
+  loop?: boolean
+  dragFree?: boolean
+  duration?: number
+  jump?: boolean
+  skipSnaps?: boolean
+  autoplay?: boolean
+  delay?: number
 }
 
-export type CarouselApi = EmblaCarouselType
+export type CarouselApi = UseEmblaCarouselType[1]
 
 export interface CarouselProps {
   opts?: CarouselOptions
