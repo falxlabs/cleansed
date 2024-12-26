@@ -31,9 +31,9 @@ const AppContent = () => {
   return (
     <div className="bg-[#F5F5F5]">
       {showNav && <DesktopNav />}
-      <div className={`${showNav ? "md:flex" : ""} ${useFullHeight ? "min-h-[calc(100vh-4rem)]" : ""}`}>
+      <div className={showNav ? "md:flex" : ""}>
         {showNav && <div className="hidden md:block w-64 shrink-0" />}
-        <main className={`${showNav ? "md:flex-1" : ""} ${useFullHeight ? "md:pb-6" : ""}`}>
+        <main className={`${showNav ? "md:flex-1" : ""} ${useFullHeight ? "min-h-[calc(100vh-4rem)] md:pb-6" : ""}`}>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Index />} />

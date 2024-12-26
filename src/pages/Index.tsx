@@ -110,7 +110,7 @@ const Index = () => {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col items-center gap-4 sm:gap-6 px-4 pb-8">
+          <div className="flex flex-col items-center gap-4 sm:gap-6 pb-8">
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-lg mx-auto">
               <Button
                 className="duo-button text-lg sm:text-xl px-6 sm:px-8 py-4 sm:py-6 flex-1 hover:scale-105 transition-transform"
