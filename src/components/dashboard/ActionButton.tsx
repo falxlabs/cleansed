@@ -26,7 +26,7 @@ export function ActionButton({
       variant={variant}
       onClick={onClick}
       className={cn(
-        "flex flex-col items-center gap-6 text-lg h-auto py-6 px-8",
+        "flex flex-col sm:flex-row items-center gap-3 sm:gap-4 text-base sm:text-lg h-auto py-4 sm:py-6 px-6 sm:px-8",
         "rounded-2xl font-bold transition-all duration-300",
         "shadow-md hover:shadow-lg active:scale-95",
         variant === "default" && "bg-duo-500 hover:bg-duo-600 active:bg-duo-700",
@@ -35,11 +35,11 @@ export function ActionButton({
       )}
       disabled={disabled}
     >
-      <div className="flex flex-row sm:flex-col items-center gap-3 sm:gap-4">
+      <div className="flex items-center gap-3">
         {emoji ? (
-          <span className="emoji text-4xl">{emoji}</span>
+          <span className="text-2xl sm:text-4xl">{emoji}</span>
         ) : Icon && (
-          <Icon className="w-8 h-8 sm:w-12 sm:h-12 shrink-0" />
+          <Icon className="w-6 h-6 sm:w-8 sm:h-8 shrink-0" />
         )}
         <span>{label}</span>
       </div>

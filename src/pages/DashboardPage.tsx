@@ -14,7 +14,7 @@ const DashboardPage = () => {
   const welcomeMessage = "Welcome back! Remember, each day is a new opportunity to grow stronger in your faith.";
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] space-y-4 p-4 pb-20 md:pb-6">
+    <div className="min-h-screen bg-[#F5F5F5] p-4 sm:p-6 md:p-8 space-y-6">
       <div className="flex justify-end max-w-2xl mx-auto">
         <div onClick={() => navigate('/achievements')} className="cursor-pointer">
           <StreakDisplay />
@@ -52,20 +52,22 @@ const DashboardPage = () => {
         />
       </div>
 
-      <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-md p-6">
-        {isVerseLoading ? (
-          <div className="space-y-4">
-            <Skeleton className="h-6 w-3/4" />
-            <Skeleton className="h-4 w-1/4" />
-          </div>
-        ) : verse ? (
-          <DailyVerse verse={verse.content_csb} reference={verse.reference} />
-        ) : (
-          <DailyVerse 
-            verse="No temptation has overtaken you except what is common to mankind. And God is faithful; he will not let you be tempted beyond what you can bear." 
-            reference="1 Corinthians 10:13" 
-          />
-        )}
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-3xl shadow-md p-4 sm:p-6">
+          {isVerseLoading ? (
+            <div className="space-y-4">
+              <Skeleton className="h-6 w-3/4" />
+              <Skeleton className="h-4 w-1/4" />
+            </div>
+          ) : verse ? (
+            <DailyVerse verse={verse.content_csb} reference={verse.reference} />
+          ) : (
+            <DailyVerse 
+              verse="No temptation has overtaken you except what is common to mankind. And God is faithful; he will not let you be tempted beyond what you can bear." 
+              reference="1 Corinthians 10:13" 
+            />
+          )}
+        </div>
       </div>
     </div>
   );
