@@ -43,8 +43,8 @@ const Index = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-duo-50 flex flex-col pb-0">
-      <div className="flex-1 px-4 sm:px-6 md:px-8">
+    <div className="bg-gradient-to-b from-white to-duo-50">
+      <div className="px-4 sm:px-6 md:px-8">
         <div className="max-w-4xl mx-auto pt-4 sm:pt-6 md:pt-8">
           {/* Logo */}
           <h1 className="text-2xl sm:text-3xl font-bold text-duo-500 mb-6 sm:mb-8 md:mb-12 ml-2 sm:ml-4">
@@ -76,9 +76,7 @@ const Index = () => {
                 opts={{ 
                   align: "start", 
                   loop: true,
-                  duration: 20,
-                  autoplay: true as const,
-                  delay: 4000 as const
+                  duration: 20
                 }}
               >
                 <CarouselContent>
@@ -112,7 +110,7 @@ const Index = () => {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col items-center gap-4 sm:gap-6 px-4">
+          <div className="flex flex-col items-center gap-4 sm:gap-6 px-4 pb-8">
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-lg mx-auto">
               <Button
                 className="duo-button text-lg sm:text-xl px-6 sm:px-8 py-4 sm:py-6 flex-1 hover:scale-105 transition-transform"
