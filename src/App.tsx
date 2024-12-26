@@ -26,13 +26,14 @@ const AppContent = () => {
   const location = useLocation();
   const publicRoutes = ['/', '/onboarding', '/signin'];
   const showNav = !publicRoutes.includes(location.pathname);
+  const useFullHeight = !publicRoutes.includes(location.pathname);
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5]">
+    <div className="bg-[#F5F5F5]">
       {showNav && <DesktopNav />}
-      <div className={`${showNav ? "md:flex" : ""} min-h-[calc(100vh-4rem)]`}>
+      <div className={`${showNav ? "md:flex" : ""} ${useFullHeight ? "min-h-[calc(100vh-4rem)]" : ""}`}>
         {showNav && <div className="hidden md:block w-64 shrink-0" />}
-        <main className={`${showNav ? "md:flex-1" : ""} md:pb-6`}>
+        <main className={`${showNav ? "md:flex-1" : ""} ${useFullHeight ? "md:pb-6" : ""}`}>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Index />} />
