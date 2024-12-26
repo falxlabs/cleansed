@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useEffect } from "react";
 import { useAuth } from "@/providers/AuthProvider";
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { cn } from "@/lib/utils";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -70,7 +71,16 @@ const Index = () => {
           {/* Features - Grid on desktop, Carousel on mobile */}
           <div className="mb-6 sm:mb-8 md:mb-12">
             <div className="block sm:hidden">
-              <Carousel className="w-full" opts={{ align: "start", loop: true }}>
+              <Carousel 
+                className="w-full" 
+                opts={{ 
+                  align: "start", 
+                  loop: true,
+                  duration: 20,
+                  autoplay: true,
+                  delay: 4000 
+                }}
+              >
                 <CarouselContent>
                   {features.map((feature, index) => (
                     <CarouselItem key={index}>
@@ -79,8 +89,18 @@ const Index = () => {
                   ))}
                 </CarouselContent>
                 <div className="flex justify-center gap-2 mt-4">
-                  <CarouselPrevious className="static translate-y-0" />
-                  <CarouselNext className="static translate-y-0" />
+                  {features.map((_, index) => (
+                    <button
+                      key={index}
+                      className={cn(
+                        "w-2 h-2 rounded-full transition-all",
+                        "bg-duo-200 hover:bg-duo-300",
+                        "data-[active=true]:bg-duo-500"
+                      )}
+                      data-active={index === 0}
+                      onClick={() => {/* Carousel API will handle this */}}
+                    />
+                  ))}
                 </div>
               </Carousel>
             </div>
@@ -92,7 +112,7 @@ const Index = () => {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col items-center gap-6 sm:gap-8 mb-8 sm:mb-12 px-4">
+          <div className="flex flex-col items-center gap-4 sm:gap-6 px-4">
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-lg mx-auto">
               <Button
                 className="duo-button text-lg sm:text-xl px-6 sm:px-8 py-4 sm:py-6 flex-1 hover:scale-105 transition-transform"
@@ -110,7 +130,7 @@ const Index = () => {
             </div>
             <button
               onClick={() => navigate("/dashboard")}
-              className="text-gray-500 hover:text-gray-700 hover:underline transition-colors text-sm sm:text-base"
+              className="text-gray-500 hover:text-gray-700 hover:underline transition-colors text-sm sm:text-base mb-4"
             >
               Skip for now
             </button>
