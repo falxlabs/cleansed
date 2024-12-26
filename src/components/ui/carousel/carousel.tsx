@@ -1,8 +1,7 @@
 import * as React from "react"
 import useEmblaCarousel from "embla-carousel-react"
 import { cn } from "@/lib/utils"
-import { CarouselContext } from "./carousel-context"
-import type { CarouselProps } from "./carousel-context"
+import { CarouselContext, type CarouselProps } from "./carousel-context"
 
 const Carousel = React.forwardRef<
   HTMLDivElement,
@@ -78,7 +77,7 @@ const Carousel = React.forwardRef<
       <CarouselContext.Provider
         value={{
           carouselRef,
-          api: api,
+          api,
           opts,
           orientation:
             orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),

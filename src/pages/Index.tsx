@@ -77,8 +77,8 @@ const Index = () => {
                   align: "start", 
                   loop: true,
                   duration: 20,
-                  autoplay: true,
-                  delay: 4000 
+                  autoplay: true as const,
+                  delay: 4000 as const
                 }}
               >
                 <CarouselContent>
