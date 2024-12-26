@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useEffect } from "react";
 import { useAuth } from "@/providers/AuthProvider";
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -13,6 +14,32 @@ const Index = () => {
       navigate('/dashboard');
     }
   }, [user, navigate]);
+
+  const features = [
+    {
+      emoji: "📈",
+      title: "Track Progress",
+      description: "Daily check-ins to celebrate victories"
+    },
+    {
+      emoji: "💪",
+      title: "Get Support",
+      description: "Guided exercises and strategies"
+    },
+    {
+      emoji: "✝️",
+      title: "Faith Journey",
+      description: "Scripture-based guidance"
+    }
+  ];
+
+  const FeatureCard = ({ emoji, title, description }: { emoji: string; title: string; description: string }) => (
+    <Card className="p-4 sm:p-6 text-center bg-white/90">
+      <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">{emoji}</div>
+      <h3 className="text-base sm:text-lg font-bold mb-2">{title}</h3>
+      <p className="text-sm sm:text-base text-gray-600">{description}</p>
+    </Card>
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-duo-50 flex flex-col">
@@ -40,23 +67,28 @@ const Index = () => {
             </div>
           </Card>
 
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8 md:mb-12">
-            <Card className="p-4 sm:p-6 text-center bg-white/90">
-              <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">📈</div>
-              <h3 className="text-base sm:text-lg font-bold mb-2">Track Progress</h3>
-              <p className="text-sm sm:text-base text-gray-600">Daily check-ins to celebrate victories</p>
-            </Card>
-            <Card className="p-4 sm:p-6 text-center bg-white/90">
-              <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">💪</div>
-              <h3 className="text-base sm:text-lg font-bold mb-2">Get Support</h3>
-              <p className="text-sm sm:text-base text-gray-600">Guided exercises and strategies</p>
-            </Card>
-            <Card className="p-4 sm:p-6 text-center bg-white/90 sm:col-span-2 md:col-span-1">
-              <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">✝️</div>
-              <h3 className="text-base sm:text-lg font-bold mb-2">Faith Journey</h3>
-              <p className="text-sm sm:text-base text-gray-600">Scripture-based guidance</p>
-            </Card>
+          {/* Features - Grid on desktop, Carousel on mobile */}
+          <div className="mb-6 sm:mb-8 md:mb-12">
+            <div className="block sm:hidden">
+              <Carousel className="w-full" opts={{ align: "start", loop: true }}>
+                <CarouselContent>
+                  {features.map((feature, index) => (
+                    <CarouselItem key={index}>
+                      <FeatureCard {...feature} />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <div className="flex justify-center gap-2 mt-4">
+                  <CarouselPrevious className="static translate-y-0" />
+                  <CarouselNext className="static translate-y-0" />
+                </div>
+              </Carousel>
+            </div>
+            <div className="hidden sm:grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+              {features.map((feature, index) => (
+                <FeatureCard key={index} {...feature} />
+              ))}
+            </div>
           </div>
 
           {/* CTA Buttons */}
