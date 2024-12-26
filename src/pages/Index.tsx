@@ -43,7 +43,7 @@ const Index = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-duo-50 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-b from-white to-duo-50 flex flex-col pb-0">
       <div className="flex-1 px-4 sm:px-6 md:px-8">
         <div className="max-w-4xl mx-auto pt-4 sm:pt-6 md:pt-8">
           {/* Logo */}
@@ -130,7 +130,7 @@ const Index = () => {
             </div>
             <button
               onClick={() => navigate("/dashboard")}
-              className="text-gray-500 hover:text-gray-700 hover:underline transition-colors text-sm sm:text-base mb-4"
+              className="text-gray-500 hover:text-gray-700 hover:underline transition-colors text-sm sm:text-base"
             >
               Skip for now
             </button>
