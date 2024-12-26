@@ -5,8 +5,8 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  useCarousel,
 } from "@/components/ui/carousel";
-import { useCarousel } from "@/components/ui/carousel";
 
 const SUGGESTIONS = [
   "Take a walk",
@@ -25,7 +25,7 @@ export function SuggestionCarousel() {
 
     const interval = setInterval(() => {
       api.scrollNext();
-    }, 5000);
+    }, 8000); // Changed from 5000 to 8000 milliseconds
 
     return () => clearInterval(interval);
   }, [api]);

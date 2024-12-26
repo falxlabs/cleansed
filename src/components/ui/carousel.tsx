@@ -3,7 +3,6 @@ import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-
 import { cn } from "@/lib/utils"
 
 type CarouselApi = UseEmblaCarouselType[1]
@@ -252,4 +251,5 @@ export {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  useCarousel
 }
