@@ -66,7 +66,7 @@ export const EntryDetailsDialog = ({ entry, onOpenChange, onDelete, showDelete =
 
   return (
     <Dialog open={!!entry} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-duo-200 scrollbar-track-transparent hover:scrollbar-thumb-duo-300 transition-colors">
         <EntryDialogHeader 
           date={entry.date}
           isCheckIn={isCheckIn}
