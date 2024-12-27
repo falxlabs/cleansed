@@ -12,6 +12,8 @@ interface SignUpStepProps {
 export function SignUpStep({ email, password, onEmailChange, onPasswordChange }: SignUpStepProps) {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -39,6 +41,18 @@ export function SignUpStep({ email, password, onEmailChange, onPasswordChange }:
     return "";
   };
 
+  const validateConfirmPassword = (confirmPwd: string, password: string) => {
+    if (!confirmPwd) {
+      return "Please confirm your password";
+    }
+    
+    if (confirmPwd !== password) {
+      return "Passwords do not match";
+    }
+    
+    return "";
+  };
+
   const handleEmailChange = (value: string) => {
     const validationError = validateEmail(value);
     setEmailError(validationError);
@@ -48,7 +62,18 @@ export function SignUpStep({ email, password, onEmailChange, onPasswordChange }:
   const handlePasswordChange = (value: string) => {
     const validationError = validatePassword(value);
     setPasswordError(validationError);
+    
+    // Also validate confirm password when password changes
+    const confirmValidationError = validateConfirmPassword(confirmPassword, value);
+    setConfirmPasswordError(confirmValidationError);
+    
     onPasswordChange(value);
+  };
+
+  const handleConfirmPasswordChange = (value: string) => {
+    const validationError = validateConfirmPassword(value, password);
+    setConfirmPasswordError(validationError);
+    setConfirmPassword(value);
   };
 
   return (
@@ -91,6 +116,24 @@ export function SignUpStep({ email, password, onEmailChange, onPasswordChange }:
           {passwordError && (
             <p className="text-sm text-red-500">
               {passwordError}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="confirmPassword">Confirm Password</Label>
+          <Input
+            id="confirmPassword"
+            type="password"
+            placeholder="Confirm your password"
+            value={confirmPassword}
+            onChange={(e) => handleConfirmPasswordChange(e.target.value)}
+            required
+            className={confirmPasswordError ? "border-red-500" : ""}
+          />
+          {confirmPasswordError && (
+            <p className="text-sm text-red-500">
+              {confirmPasswordError}
             </p>
           )}
           <p className="text-sm text-muted-foreground">
