@@ -15,17 +15,42 @@ const ResetPasswordPage = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const [lastRequestTime, setLastRequestTime] = useState(0);
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check if enough time has passed since the last request (3 seconds minimum)
+    const now = Date.now();
+    if (now - lastRequestTime < 3000) {
+      toast({
+        title: "Please wait",
+        description: "For security purposes, please wait 3 seconds before trying again.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
+    setLastRequestTime(now);
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/reset-password`,
       });
 
-      if (error) throw error;
+      if (error) {
+        if (error.message.includes('rate_limit')) {
+          toast({
+            title: "Too many attempts",
+            description: "Please wait a few seconds before trying again.",
+            variant: "destructive",
+          });
+        } else {
+          throw error;
+        }
+        return;
+      }
 
       setEmailSent(true);
       toast({
@@ -73,7 +98,7 @@ const ResetPasswordPage = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 required
-                disabled={emailSent}
+                disabled={emailSent || loading}
               />
             </div>
 
