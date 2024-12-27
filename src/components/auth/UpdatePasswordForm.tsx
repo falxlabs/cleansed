@@ -34,7 +34,7 @@ export const UpdatePasswordForm = ({ loading }: { loading: boolean }) => {
     }
 
     try {
-      const { data, error } = await supabase.auth.updateUser({
+      const { error } = await supabase.auth.updateUser({
         password: password
       });
 

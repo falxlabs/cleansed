@@ -21,7 +21,22 @@ const ResetPasswordPage = () => {
       try {
         const hash = window.location.hash;
         if (hash && hash.includes('type=recovery')) {
-          setIsResetMode(true);
+          const hashParams = new URLSearchParams(hash.substring(1));
+          const token = hashParams.get('access_token');
+          
+          if (token) {
+            const { error } = await supabase.auth.exchangeCodeForSession(token);
+            if (error) {
+              console.error('Error exchanging token:', error);
+              toast({
+                title: "Error",
+                description: "Invalid or expired reset link. Please request a new one.",
+                variant: "destructive",
+              });
+              return;
+            }
+            setIsResetMode(true);
+          }
         }
       } catch (error: any) {
         console.error('Error checking reset token:', error);
