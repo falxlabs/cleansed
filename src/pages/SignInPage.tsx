@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,20 +12,10 @@ import { generateEncryptionKey, generateVerificationHash } from "@/utils/encrypt
 
 const SignInPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const handleBack = () => {
-    // If coming from reset-password, go to root, otherwise go back
-    if (location.state?.from === '/reset-password') {
-      navigate('/');
-    } else {
-      navigate(-1);
-    }
-  };
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,7 +88,7 @@ const SignInPage = () => {
       <div className="max-w-md mx-auto space-y-6">
         <Button
           variant="ghost"
-          onClick={handleBack}
+          onClick={() => navigate('/')}
           className="hover:bg-transparent"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
