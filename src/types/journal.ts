@@ -13,6 +13,7 @@ export interface TemptationEntryData {
   trigger?: string | null;
   resistance_strategy?: string | null;
   temptation_details?: string | null;
+  encrypted_details?: string | null;
 }
 
 export interface CheckInEntryData {

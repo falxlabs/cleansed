@@ -6,7 +6,7 @@ import { useOnboardingForm } from "./useOnboardingForm";
 import { useProfileManagement } from "./useProfileManagement";
 import { saveOnboardingDataToDatabase } from "./useOnboardingDatabase";
 import { useNavigate } from "react-router-dom";
-import type { AuthResponse } from "@supabase/supabase-js";
+import { generateEncryptionKey, generateVerificationHash } from "@/utils/encryption";
 
 export type { OnboardingFormData } from "./useOnboardingForm";
 
@@ -31,51 +31,66 @@ export function useOnboarding() {
     try {
       setLoading(true);
 
-      // First, sign up the user with magic link
-      const { data, error: signUpError } = await supabase.auth.signInWithOtp({
+      // Generate encryption key from password
+      const { key, salt } = await generateEncryptionKey(formData.password);
+      const verificationHash = await generateVerificationHash(key);
+
+      // Sign up with email and password
+      const { data, error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
+        password: formData.password,
         options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
           data: {
             first_name: formData.firstName,
             age: formData.age ? parseInt(formData.age) : null,
           }
         }
-      }) as AuthResponse;
+      });
 
       if (signUpError) throw signUpError;
 
-      // Save user affirmation if provided
-      if (formData.affirmation) {
-        const { error: affirmationError } = await supabase
-          .from('user_affirmations')
-          .insert({
-            content: formData.affirmation,
-            user_id: data.session?.user?.id
-          });
+      // Wait for the session to be established
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) throw sessionError;
 
-        if (affirmationError) {
-          console.error('Error saving affirmation:', affirmationError);
-          toast({
-            title: "Warning",
-            description: "Your affirmation might not have been saved. Please check your settings later.",
-            variant: "destructive",
-          });
-        }
+      if (!session) {
+        toast({
+          title: "Account created",
+          description: "Please check your email to confirm your account before proceeding.",
+        });
+        handleNext();
+        return;
       }
 
-      // Save other onboarding data
-      const userId = data.session?.user?.id;
-      if (userId) {
-        await saveOnboardingDataToDatabase(userId, formData);
+      if (!data.user) {
+        throw new Error("No user data returned from signup");
       }
 
+      // Save encryption verification hash
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ encryption_key_verification: verificationHash })
+        .eq('id', data.user.id);
+
+      if (profileError) {
+        console.error('Error saving encryption verification:', profileError);
+        toast({
+          title: "Warning",
+          description: "Your encryption setup might not have been saved correctly. Please check your settings later.",
+          variant: "destructive",
+        });
+      }
+
+      // Save onboarding data to database
+      await saveOnboardingDataToDatabase(data.user.id, formData);
+      
+      // Save to local storage
       saveOnboardingData(formData);
       handleNext();
 
       toast({
-        title: "Check your email",
-        description: "We've sent you a magic link to complete your signup.",
+        title: "Account created",
+        description: "Please check your email to confirm your account.",
       });
     } catch (error) {
       console.error('Error during onboarding:', error);

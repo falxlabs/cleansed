@@ -4,7 +4,6 @@ import { Card } from "@/components/ui/card";
 import { useEffect } from "react";
 import { useAuth } from "@/providers/AuthProvider";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import { CarouselDots } from "@/components/ui/carousel/carousel-dots";
 import { cn } from "@/lib/utils";
 
 const Index = () => {
@@ -51,14 +50,16 @@ const Index = () => {
     <div className="bg-gradient-to-b from-white to-duo-50 min-h-screen">
       <div className="px-4 sm:px-6 md:px-8 min-h-screen flex flex-col">
         <div className="max-w-5xl mx-auto pt-8 sm:pt-12 md:pt-16 flex-1 flex flex-col">
+          {/* Logo */}
           <h1 className="text-2xl sm:text-3xl font-bold text-duo-500 mb-12 sm:mb-16 md:mb-20 ml-2 sm:ml-4">
             Cleansed
           </h1>
 
+          {/* Features - Grid on desktop, Carousel on mobile */}
           <div className="mb-12 sm:mb-16 md:mb-20 flex-1">
             <div className="block sm:hidden">
               <Carousel 
-                className="w-full relative pb-12" 
+                className="w-full" 
                 opts={{ 
                   align: "start",
                   loop: true,
@@ -72,7 +73,20 @@ const Index = () => {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselDots count={features.length} />
+                <div className="flex justify-center gap-2 mt-6">
+                  {features.map((_, index) => (
+                    <button
+                      key={index}
+                      className={cn(
+                        "w-2 h-2 rounded-full transition-all",
+                        "bg-duo-200 hover:bg-duo-300",
+                        "data-[active=true]:bg-duo-500"
+                      )}
+                      data-active={index === 0}
+                      onClick={() => {/* Carousel API will handle this */}}
+                    />
+                  ))}
+                </div>
               </Carousel>
             </div>
             <div className="hidden sm:grid sm:grid-cols-3 gap-8">
@@ -82,6 +96,7 @@ const Index = () => {
             </div>
           </div>
 
+          {/* CTA Buttons */}
           <div className="flex flex-col items-center gap-6 pb-12">
             <div className="flex flex-col sm:flex-row gap-4 w-full max-w-lg mx-auto">
               <Button

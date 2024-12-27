@@ -14,20 +14,15 @@ export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
     React.useEffect(() => {
       if (!api) return
 
-      const onSelect = () => {
+      api.on("select", () => {
         setSelectedIndex(api.selectedScrollSnap())
-      }
-
-      api.on("select", onSelect)
-      return () => {
-        api.off("select", onSelect)
-      }
+      })
     }, [api])
 
     return (
       <div
         ref={ref}
-        className={cn("absolute bottom-0 left-0 right-0 flex justify-center gap-2 pb-4", className)}
+        className={cn("flex justify-center gap-2 mt-4", className)}
         {...props}
       >
         {Array.from({ length: count }).map((_, index) => (
@@ -39,7 +34,6 @@ export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
               selectedIndex === index && "bg-duo-500"
             )}
             onClick={() => api?.scrollTo(index)}
-            aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>

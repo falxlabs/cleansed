@@ -6,6 +6,7 @@ interface OnboardingFormData {
   firstName: string;
   age: string;
   email: string;
+  password: string;
 }
 
 export const validateStep = (step: number, formData: OnboardingFormData): boolean => {
@@ -21,7 +22,10 @@ export const validateStep = (step: number, formData: OnboardingFormData): boolea
     case 5:
       return formData.firstName.length >= 2;
     case 6:
-      return formData.email === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+      return (
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) &&
+        formData.password.length >= 6
+      );
     default:
       return true;
   }
