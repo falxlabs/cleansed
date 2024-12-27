@@ -1,4 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { AuthProvider } from "./providers/AuthProvider";
+import { ProtectedRoute } from "./components/auth/ProtectedRoute";
+import { BottomNav } from "./components/navigation/BottomNav";
+import { DesktopNav } from "./components/navigation/DesktopNav";
+import { Toaster } from "@/components/ui/toaster";
+
+// Pages
 import Index from "./pages/Index";
 import DashboardPage from "./pages/DashboardPage";
 import DailyCheckinPage from "./pages/DailyCheckinPage";
@@ -10,17 +17,14 @@ import SettingsPage from "./pages/SettingsPage";
 import AchievementsPage from "./pages/AchievementsPage";
 import OnboardingPage from "./pages/OnboardingPage";
 import SignInPage from "./pages/SignInPage";
+
+// Settings Pages
 import ProfileSettingsPage from "./pages/settings/ProfileSettingsPage";
 import DailyCheckInSettingsPage from "./pages/settings/DailyCheckInSettingsPage";
 import AffirmationSettingsPage from "./pages/settings/AffirmationSettingsPage";
 import TemptationSettingsPage from "./pages/settings/TemptationSettingsPage";
 import NotificationsSettingsPage from "./pages/settings/NotificationsSettingsPage";
 import SupportSettingsPage from "./pages/settings/SupportSettingsPage";
-import { BottomNav } from "./components/navigation/BottomNav";
-import { DesktopNav } from "./components/navigation/DesktopNav";
-import { Toaster } from "@/components/ui/toaster";
-import { AuthProvider } from "./providers/AuthProvider";
-import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 
 const AppContent = () => {
   const location = useLocation();
@@ -29,11 +33,11 @@ const AppContent = () => {
   const useFullHeight = !publicRoutes.includes(location.pathname) && !location.pathname.includes('/settings');
 
   return (
-    <div className="bg-[#F5F5F5]">
+    <div className="bg-[#F5F5F5] min-h-screen">
       {showNav && <DesktopNav />}
       <div className={showNav ? "md:flex" : ""}>
         {showNav && <div className="hidden md:block w-64 shrink-0" />}
-        <main className={`${showNav ? "" : ""} ${useFullHeight ? "min-h-[calc(100vh-4rem)]" : ""}`}>
+        <main className={`flex-1 ${useFullHeight ? "min-h-[calc(100vh-4rem)]" : ""}`}>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Index />} />
