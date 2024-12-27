@@ -10,7 +10,6 @@ import SettingsPage from "./pages/SettingsPage";
 import AchievementsPage from "./pages/AchievementsPage";
 import OnboardingPage from "./pages/OnboardingPage";
 import SignInPage from "./pages/SignInPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
 import ProfileSettingsPage from "./pages/settings/ProfileSettingsPage";
 import DailyCheckInSettingsPage from "./pages/settings/DailyCheckInSettingsPage";
 import AffirmationSettingsPage from "./pages/settings/AffirmationSettingsPage";
@@ -25,7 +24,7 @@ import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 
 const AppContent = () => {
   const location = useLocation();
-  const publicRoutes = ['/', '/onboarding', '/signin', '/reset-password'];
+  const publicRoutes = ['/', '/onboarding', '/signin'];
   const showNav = !publicRoutes.includes(location.pathname);
   const useFullHeight = !publicRoutes.includes(location.pathname) && !location.pathname.includes('/settings');
 
@@ -40,7 +39,6 @@ const AppContent = () => {
             <Route path="/" element={<Index />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/signin" element={<SignInPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
 
             {/* Protected Routes */}
             <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />

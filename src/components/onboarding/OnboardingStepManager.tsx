@@ -14,7 +14,6 @@ interface OnboardingFormData {
   firstName: string;
   age: string;
   email: string;
-  password: string;
 }
 
 interface OnboardingStepManagerProps {
@@ -70,9 +69,7 @@ export function OnboardingStepManager({
       return (
         <SignUpStep
           email={formData.email}
-          password={formData.password}
           onEmailChange={(value) => onFormDataChange({ email: value })}
-          onPasswordChange={(value) => onFormDataChange({ password: value })}
         />
       );
     case 7:

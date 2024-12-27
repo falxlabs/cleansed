@@ -9,7 +9,6 @@ export interface OnboardingFormData {
   firstName: string;
   age: string;
   email: string;
-  password: string;
 }
 
 export const TOTAL_STEPS = 7;
@@ -24,7 +23,6 @@ export function useOnboardingForm() {
     firstName: "",
     age: "",
     email: "",
-    password: "",
   });
 
   const handleFormDataChange = (updates: Partial<OnboardingFormData>) => {

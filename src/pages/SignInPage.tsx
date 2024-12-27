@@ -8,13 +8,11 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Mascot } from "@/components/dashboard/Mascot";
-import { generateEncryptionKey, generateVerificationHash } from "@/utils/encryption";
 
 const SignInPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -22,62 +20,26 @@ const SignInPage = () => {
     setLoading(true);
 
     try {
-      // First, sign in the user
-      const { error: signInError } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithOtp({
         email,
-        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/dashboard`,
+        },
       });
 
-      if (signInError) throw signInError;
-
-      // Get the user's profile to check if they have a verification hash
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('encryption_key_verification')
-        .single();
-
-      if (profile?.encryption_key_verification) {
-        // Verify the encryption password
-        const { key } = await generateEncryptionKey(password);
-        const verificationHash = await generateVerificationHash(key);
-
-        if (verificationHash !== profile.encryption_key_verification) {
-          throw new Error("Incorrect password");
-        }
-      } else {
-        // First time setup - generate and store verification hash
-        const { key } = await generateEncryptionKey(password);
-        const verificationHash = await generateVerificationHash(key);
-
-        const { error: updateError } = await supabase
-          .from('profiles')
-          .update({ encryption_key_verification: verificationHash })
-          .eq('id', (await supabase.auth.getUser()).data.user?.id);
-
-        if (updateError) throw updateError;
-      }
-
-      // Store encryption key in memory (never in localStorage)
-      window.sessionStorage.setItem('temp_encryption_key', password);
+      if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "You have been signed in successfully.",
+        title: "Check your email",
+        description: "We've sent you a magic link to sign in.",
       });
-      
-      navigate("/dashboard");
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error:', error);
       toast({
         title: "Error",
-        description: error.message || "An error occurred while signing in.",
+        description: "An error occurred while signing in.",
         variant: "destructive",
       });
-
-      // If password is wrong, clear it
-      if (error.message === "Incorrect password") {
-        setPassword("");
-      }
     } finally {
       setLoading(false);
     }
@@ -88,7 +50,7 @@ const SignInPage = () => {
       <div className="max-w-md mx-auto space-y-6">
         <Button
           variant="ghost"
-          onClick={() => navigate('/')}
+          onClick={() => navigate(-1)}
           className="hover:bg-transparent"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
@@ -96,7 +58,7 @@ const SignInPage = () => {
         </Button>
 
         <Mascot
-          message="Welcome back! Enter your credentials to continue your journey."
+          message="Welcome back! Enter your email to continue your journey."
           className="mb-6"
         />
 
@@ -113,38 +75,13 @@ const SignInPage = () => {
                 required
               />
             </div>
-
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <Label htmlFor="password">Password</Label>
-                <Button
-                  type="button"
-                  variant="link"
-                  className="px-0 font-normal text-sm"
-                  onClick={() => navigate("/reset-password")}
-                >
-                  Forgot password?
-                </Button>
-              </div>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                required
-              />
-              <p className="text-xs text-muted-foreground">
-                Your password is used both for authentication and to encrypt your sensitive journal data.
-              </p>
-            </div>
             
             <Button 
               type="submit" 
               className="w-full duo-button"
               disabled={loading}
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? "Sending..." : "Continue"}
             </Button>
           </form>
 
