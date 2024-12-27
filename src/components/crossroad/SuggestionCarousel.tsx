@@ -7,7 +7,6 @@ import {
   CarouselPrevious,
   useCarousel,
 } from "@/components/ui/carousel";
-import { CarouselDots } from "@/components/ui/carousel/carousel-dots";
 
 const SUGGESTIONS = [
   "Take a walk",
@@ -26,7 +25,7 @@ export function SuggestionCarousel() {
 
     const interval = setInterval(() => {
       api.scrollNext();
-    }, 8000);
+    }, 8000); // Changed from 5000 to 8000 milliseconds
 
     return () => clearInterval(interval);
   }, [api]);
@@ -37,7 +36,7 @@ export function SuggestionCarousel() {
         These activities will help you overcome this moment:
       </h4>
       <Carousel 
-        className="w-full max-w-xs mx-auto relative" 
+        className="w-full max-w-xs mx-auto" 
         opts={{ 
           loop: true,
           align: "center",
@@ -56,7 +55,6 @@ export function SuggestionCarousel() {
         </CarouselContent>
         <CarouselPrevious className="hidden sm:flex -left-4 text-gray-600 hover:text-duo-500 transition-colors" />
         <CarouselNext className="hidden sm:flex -right-4 text-gray-600 hover:text-duo-500 transition-colors" />
-        <CarouselDots count={SUGGESTIONS.length} />
       </Carousel>
     </div>
   );
