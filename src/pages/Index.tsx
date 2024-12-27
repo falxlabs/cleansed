@@ -1,11 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { useEffect } from "react";
+import { useAuth } from "@/providers/AuthProvider";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
-import { FeatureCard } from "@/components/landing/FeatureCard";
-import { useLandingNavigation } from "@/hooks/use-landing-navigation";
 
 const Index = () => {
-  const { goToOnboarding, goToSignIn, goToDashboard } = useLandingNavigation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
 
   const features = [
     {
@@ -25,6 +34,18 @@ const Index = () => {
     }
   ];
 
+  const FeatureCard = ({ icon, title, description }: { icon: string; title: string; description: string }) => (
+    <Card className="p-8 text-center bg-white shadow-lg border-0">
+      <div className="text-4xl mb-6 flex justify-center">
+        <div className="w-16 h-16 rounded-2xl bg-duo-50 flex items-center justify-center">
+          {icon}
+        </div>
+      </div>
+      <h3 className="text-2xl font-bold mb-4">{title}</h3>
+      <p className="text-gray-600 text-lg">{description}</p>
+    </Card>
+  );
+
   return (
     <div className="bg-gradient-to-b from-white to-duo-50 min-h-screen">
       <div className="px-4 sm:px-6 md:px-8 min-h-screen flex flex-col">
@@ -38,10 +59,11 @@ const Index = () => {
           <div className="mb-12 sm:mb-16 md:mb-20 flex-1">
             <div className="block sm:hidden">
               <Carousel 
-                className="w-full relative pb-12" 
+                className="w-full" 
                 opts={{ 
                   align: "start",
                   loop: true,
+                  duration: 20
                 }}
               >
                 <CarouselContent>
@@ -51,7 +73,7 @@ const Index = () => {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-2">
+                <div className="flex justify-center gap-2 mt-6">
                   {features.map((_, index) => (
                     <button
                       key={index}
@@ -61,6 +83,7 @@ const Index = () => {
                         "data-[active=true]:bg-duo-500"
                       )}
                       data-active={index === 0}
+                      onClick={() => {/* Carousel API will handle this */}}
                     />
                   ))}
                 </div>
@@ -78,20 +101,20 @@ const Index = () => {
             <div className="flex flex-col sm:flex-row gap-4 w-full max-w-lg mx-auto">
               <Button
                 className="duo-button text-xl px-8 py-6 flex-1 shadow-lg hover:shadow-xl"
-                onClick={goToOnboarding}
+                onClick={() => navigate("/onboarding")}
               >
                 Start Your Journey
               </Button>
               <Button
                 variant="outline"
                 className="text-xl px-8 py-6 flex-1 bg-white hover:bg-gray-50 border-2"
-                onClick={goToSignIn}
+                onClick={() => navigate("/signin")}
               >
                 Sign In
               </Button>
             </div>
             <button
-              onClick={goToDashboard}
+              onClick={() => navigate("/dashboard")}
               className="text-gray-500 hover:text-gray-700 hover:underline transition-colors text-base"
             >
               Skip for now
