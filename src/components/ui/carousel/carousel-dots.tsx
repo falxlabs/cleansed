@@ -34,7 +34,6 @@ export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
               selectedIndex === index && "bg-duo-500"
             )}
             onClick={() => api?.scrollTo(index)}
-            aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>

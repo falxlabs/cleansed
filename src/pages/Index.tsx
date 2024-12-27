@@ -4,7 +4,6 @@ import { Card } from "@/components/ui/card";
 import { useEffect } from "react";
 import { useAuth } from "@/providers/AuthProvider";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import { CarouselDots } from "@/components/ui/carousel/carousel-dots";
 import { cn } from "@/lib/utils";
 
 const Index = () => {
@@ -74,7 +73,20 @@ const Index = () => {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselDots count={features.length} />
+                <div className="flex justify-center gap-2 mt-6">
+                  {features.map((_, index) => (
+                    <button
+                      key={index}
+                      className={cn(
+                        "w-2 h-2 rounded-full transition-all",
+                        "bg-duo-200 hover:bg-duo-300",
+                        "data-[active=true]:bg-duo-500"
+                      )}
+                      data-active={index === 0}
+                      onClick={() => {/* Carousel API will handle this */}}
+                    />
+                  ))}
+                </div>
               </Carousel>
             </div>
             <div className="hidden sm:grid sm:grid-cols-3 gap-8">
