@@ -26,16 +26,16 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-duo-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 min-h-screen flex flex-col">
-        <div className="max-w-7xl mx-auto w-full pt-8 sm:pt-12 lg:pt-16 flex-1 flex flex-col">
+    <div className="bg-gradient-to-b from-white to-duo-50 min-h-screen">
+      <div className="px-4 sm:px-6 md:px-8 min-h-screen flex flex-col">
+        <div className="max-w-5xl mx-auto pt-8 sm:pt-12 md:pt-16 flex-1 flex flex-col">
           {/* Logo */}
-          <h1 className="text-2xl sm:text-3xl font-bold text-duo-500 mb-12 sm:mb-16 lg:mb-20">
+          <h1 className="text-2xl sm:text-3xl font-bold text-duo-500 mb-12 sm:mb-16 md:mb-20 ml-2 sm:ml-4">
             Cleansed
           </h1>
 
           {/* Features - Grid on desktop, Carousel on mobile */}
-          <div className="mb-12 sm:mb-16 lg:mb-20 flex-1">
+          <div className="mb-12 sm:mb-16 md:mb-20 flex-1">
             <div className="block sm:hidden">
               <Carousel 
                 className="w-full relative pb-12" 
@@ -46,7 +46,7 @@ const Index = () => {
               >
                 <CarouselContent>
                   {features.map((feature, index) => (
-                    <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                    <CarouselItem key={index}>
                       <FeatureCard {...feature} />
                     </CarouselItem>
                   ))}
@@ -66,7 +66,7 @@ const Index = () => {
                 </div>
               </Carousel>
             </div>
-            <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
+            <div className="hidden sm:grid sm:grid-cols-3 gap-8">
               {features.map((feature, index) => (
                 <FeatureCard key={index} {...feature} />
               ))}
@@ -74,17 +74,17 @@ const Index = () => {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col items-center gap-6 pb-12 sm:pb-16 lg:pb-20">
+          <div className="flex flex-col items-center gap-6 pb-12">
             <div className="flex flex-col sm:flex-row gap-4 w-full max-w-lg mx-auto">
               <Button
-                className="duo-button text-lg sm:text-xl px-6 sm:px-8 py-4 sm:py-6 flex-1 shadow-lg hover:shadow-xl"
+                className="duo-button text-xl px-8 py-6 flex-1 shadow-lg hover:shadow-xl"
                 onClick={goToOnboarding}
               >
                 Start Your Journey
               </Button>
               <Button
                 variant="outline"
-                className="text-lg sm:text-xl px-6 sm:px-8 py-4 sm:py-6 flex-1 bg-white hover:bg-gray-50 border-2"
+                className="text-xl px-8 py-6 flex-1 bg-white hover:bg-gray-50 border-2"
                 onClick={goToSignIn}
               >
                 Sign In
