@@ -30,7 +30,6 @@ export type Database = {
       checkin_entries: {
         Row: {
           affirmation_content: string | null
-          encrypted_content: Json | null
           id: number
           intensity_level: number | null
           mood_description: string | null
@@ -39,7 +38,6 @@ export type Database = {
         }
         Insert: {
           affirmation_content?: string | null
-          encrypted_content?: Json | null
           id: number
           intensity_level?: number | null
           mood_description?: string | null
@@ -50,7 +48,6 @@ export type Database = {
         }
         Update: {
           affirmation_content?: string | null
-          encrypted_content?: Json | null
           id?: number
           intensity_level?: number | null
           mood_description?: string | null
@@ -193,7 +190,7 @@ export type Database = {
       temptation_entries: {
         Row: {
           created_at: string | null
-          encrypted_content: Json | null
+          encrypted_details: string | null
           id: number
           intensity_level: number
           resistance_strategy: string | null
@@ -204,7 +201,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
-          encrypted_content?: Json | null
+          encrypted_details?: string | null
           id: number
           intensity_level: number
           resistance_strategy?: string | null
@@ -215,7 +212,7 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
-          encrypted_content?: Json | null
+          encrypted_details?: string | null
           id?: number
           intensity_level?: number
           resistance_strategy?: string | null

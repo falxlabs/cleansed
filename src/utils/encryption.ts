@@ -73,6 +73,20 @@ export async function decrypt(data: Uint8Array, key: CryptoKey): Promise<Uint8Ar
   return new Uint8Array(decrypted);
 }
 
+export async function encryptText(text: string, key: CryptoKey): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(text);
+  const encrypted = await encrypt(data, key);
+  return arrayBufferToBase64(encrypted);
+}
+
+export async function decryptText(encryptedText: string, key: CryptoKey): Promise<string> {
+  const data = base64ToArrayBuffer(encryptedText);
+  const decrypted = await decrypt(new Uint8Array(data), key);
+  const decoder = new TextDecoder();
+  return decoder.decode(decrypted);
+}
+
 // Helper functions for base64 encoding/decoding
 function arrayBufferToBase64(buffer: ArrayBuffer): string {
   const bytes = new Uint8Array(buffer);
