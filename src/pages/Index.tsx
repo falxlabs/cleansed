@@ -58,7 +58,7 @@ const Index = () => {
           <div className="mb-12 sm:mb-16 md:mb-20 flex-1">
             <div className="block sm:hidden">
               <Carousel 
-                className="w-full relative pb-8" 
+                className="w-full relative pb-12" 
                 opts={{ 
                   align: "start",
                   loop: true,
