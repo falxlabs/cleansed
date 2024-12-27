@@ -46,7 +46,8 @@ export function useReflectionDatabase() {
       let encryptedDetails = null;
       if (customNote) {
         try {
-          encryptedDetails = await encryptText(customNote, /* need encryption key */);
+          // For now, pass null as the encryption key - this will need to be properly implemented
+          encryptedDetails = await encryptText(customNote, null);
         } catch (error) {
           console.error('Error encrypting details:', error);
         }

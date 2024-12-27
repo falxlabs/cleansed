@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Entry } from "@/components/journal/types";
 import { useToast } from "@/hooks/use-toast";
 import { transformJournalData } from "./journalTransforms";
+import { getSampleData } from "./journalTransforms";
 
 export function useJournalQueries(date?: Date) {
   const { toast } = useToast();

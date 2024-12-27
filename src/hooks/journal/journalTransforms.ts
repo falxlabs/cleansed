@@ -10,7 +10,8 @@ export async function transformJournalData(data: any[]): Promise<Entry[]> {
         ? await Promise.all(entry.temptation_entries.map(async (te: any) => {
             if (te.encrypted_details) {
               try {
-                const decryptedDetails = await decryptText(te.encrypted_details, /* need encryption key */);
+                // For now, pass null as the encryption key - this will need to be properly implemented
+                const decryptedDetails = await decryptText(te.encrypted_details, null);
                 return {
                   ...te,
                   temptation_details: decryptedDetails
@@ -37,7 +38,7 @@ export async function transformJournalData(data: any[]): Promise<Entry[]> {
   }));
 }
 
-function getSampleData(): Entry[] {
+export function getSampleData(): Entry[] {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   
