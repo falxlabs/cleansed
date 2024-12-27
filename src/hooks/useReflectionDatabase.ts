@@ -46,8 +46,9 @@ export function useReflectionDatabase() {
       let encryptedDetails = null;
       if (customNote) {
         try {
-          // For now, pass null as the encryption key - this will need to be properly implemented
-          encryptedDetails = await encryptText(customNote, null);
+          // Get encryption key from session storage
+          const encryptionKey = window.sessionStorage.getItem('temp_encryption_key');
+          encryptedDetails = await encryptText(customNote, encryptionKey);
         } catch (error) {
           console.error('Error encrypting details:', error);
         }

@@ -10,8 +10,9 @@ export async function transformJournalData(data: any[]): Promise<Entry[]> {
         ? await Promise.all(entry.temptation_entries.map(async (te: any) => {
             if (te.encrypted_details) {
               try {
-                // For now, pass null as the encryption key - this will need to be properly implemented
-                const decryptedDetails = await decryptText(te.encrypted_details, null);
+                // Get encryption key from session storage
+                const encryptionKey = window.sessionStorage.getItem('temp_encryption_key');
+                const decryptedDetails = await decryptText(te.encrypted_details, encryptionKey);
                 return {
                   ...te,
                   temptation_details: decryptedDetails
