@@ -15,7 +15,6 @@ const SignInPage = () => {
   const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [encryptionPassword, setEncryptionPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -39,15 +38,15 @@ const SignInPage = () => {
 
       if (profile?.encryption_key_verification) {
         // Verify the encryption password
-        const { key } = await generateEncryptionKey(encryptionPassword);
+        const { key } = await generateEncryptionKey(password);
         const verificationHash = await generateVerificationHash(key);
 
         if (verificationHash !== profile.encryption_key_verification) {
-          throw new Error("Incorrect encryption password");
+          throw new Error("Incorrect password");
         }
       } else {
         // First time setup - generate and store verification hash
-        const { key } = await generateEncryptionKey(encryptionPassword);
+        const { key } = await generateEncryptionKey(password);
         const verificationHash = await generateVerificationHash(key);
 
         const { error: updateError } = await supabase
@@ -58,8 +57,8 @@ const SignInPage = () => {
         if (updateError) throw updateError;
       }
 
-      // Store encryption password in memory (never in localStorage)
-      window.sessionStorage.setItem('temp_encryption_key', encryptionPassword);
+      // Store encryption key in memory (never in localStorage)
+      window.sessionStorage.setItem('temp_encryption_key', password);
 
       toast({
         title: "Success",
@@ -75,9 +74,9 @@ const SignInPage = () => {
         variant: "destructive",
       });
 
-      // If encryption password is wrong, clear it but keep other fields
-      if (error.message === "Incorrect encryption password") {
-        setEncryptionPassword("");
+      // If password is wrong, clear it
+      if (error.message === "Incorrect password") {
+        setPassword("");
       }
     } finally {
       setLoading(false);
@@ -125,20 +124,8 @@ const SignInPage = () => {
                 placeholder="Enter your password"
                 required
               />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="encryptionPassword">Encryption Password</Label>
-              <Input
-                id="encryptionPassword"
-                type="password"
-                value={encryptionPassword}
-                onChange={(e) => setEncryptionPassword(e.target.value)}
-                placeholder="Enter encryption password"
-                required
-              />
               <p className="text-xs text-muted-foreground">
-                This password encrypts your sensitive journal data. Keep it safe - it cannot be recovered if lost.
+                Your password is used both for authentication and to encrypt your sensitive journal data. Keep it safe - it cannot be recovered if lost.
               </p>
             </div>
             
