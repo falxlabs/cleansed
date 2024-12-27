@@ -1,5 +1,3 @@
-import { Buffer } from 'buffer';
-
 // Constants for encryption
 const SALT_LENGTH = 16;
 const IV_LENGTH = 12;
@@ -39,7 +37,7 @@ export async function generateEncryptionKey(password: string, salt?: Uint8Array)
 export async function generateVerificationHash(key: CryptoKey): Promise<string> {
   const testData = new Uint8Array(32);
   const encrypted = await encrypt(testData, key);
-  return Buffer.from(encrypted).toString('base64');
+  return arrayBufferToBase64(encrypted);
 }
 
 export async function encrypt(data: Uint8Array, key: CryptoKey): Promise<Uint8Array> {
@@ -73,4 +71,23 @@ export async function decrypt(data: Uint8Array, key: CryptoKey): Promise<Uint8Ar
   );
 
   return new Uint8Array(decrypted);
+}
+
+// Helper functions for base64 encoding/decoding
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer);
+  let binary = '';
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
+export function base64ToArrayBuffer(base64: string): ArrayBuffer {
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes.buffer;
 }
