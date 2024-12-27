@@ -25,7 +25,6 @@ export interface TemptationEntry extends JournalEntry {
   resisted: boolean;
   resistance_strategy: string | null;
   temptation_details: string | null;
-  encrypted_details: string | null;
 }
 
 export interface CheckInEntry extends JournalEntry {

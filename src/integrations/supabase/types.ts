@@ -161,7 +161,6 @@ export type Database = {
         Row: {
           age: number | null
           created_at: string | null
-          encryption_key_verification: string | null
           first_name: string | null
           id: string
           last_seen_at: string | null
@@ -170,7 +169,6 @@ export type Database = {
         Insert: {
           age?: number | null
           created_at?: string | null
-          encryption_key_verification?: string | null
           first_name?: string | null
           id: string
           last_seen_at?: string | null
@@ -179,7 +177,6 @@ export type Database = {
         Update: {
           age?: number | null
           created_at?: string | null
-          encryption_key_verification?: string | null
           first_name?: string | null
           id?: string
           last_seen_at?: string | null
@@ -190,7 +187,6 @@ export type Database = {
       temptation_entries: {
         Row: {
           created_at: string | null
-          encrypted_details: string | null
           id: number
           intensity_level: number
           resistance_strategy: string | null
@@ -201,7 +197,6 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
-          encrypted_details?: string | null
           id: number
           intensity_level: number
           resistance_strategy?: string | null
@@ -212,7 +207,6 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
-          encrypted_details?: string | null
           id?: number
           intensity_level?: number
           resistance_strategy?: string | null

@@ -1,24 +1,9 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 import type { OnboardingFormData } from "./useOnboardingForm";
-import type { TemptationType } from "@/types/database";
-
-const validateTemptationType = (type: string): TemptationType => {
-  const validTypes = ["pride", "greed", "lust", "envy", "gluttony", "wrath", "sloth"] as const;
-  const normalizedType = type.toLowerCase() as TemptationType;
-  if (!validTypes.includes(normalizedType)) {
-    throw new Error(`Invalid temptation type: ${type}`);
-  }
-  return normalizedType;
-};
 
 export async function saveOnboardingDataToDatabase(userId: string, formData: OnboardingFormData) {
   try {
-    // Ensure we have a valid session
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      throw new Error("No active session found");
-    }
-
     // Save notification settings
     const { error: notificationError } = await supabase
       .from('notification_settings')
@@ -27,25 +12,19 @@ export async function saveOnboardingDataToDatabase(userId: string, formData: Onb
         check_in_time: formData.checkInTime,
       });
 
-    if (notificationError) {
-      console.error('Error saving notification settings:', notificationError);
-      throw notificationError;
-    }
+    if (notificationError) throw notificationError;
 
-    // Validate and save temptation settings
-    const temptationType = validateTemptationType(formData.temptationType);
+    // Save temptation settings
+    const temptationType = formData.temptationType?.toLowerCase() as Database["public"]["Enums"]["temptation_type"];
     const { error: temptationError } = await supabase
       .from('temptation_settings')
       .upsert({
         user_id: userId,
         default_type: temptationType,
-        default_intensity: formData.temptationLevel[0],
+        default_intensity: formData.temptationLevel?.[0] ?? 50,
       });
 
-    if (temptationError) {
-      console.error('Error saving temptation settings:', temptationError);
-      throw temptationError;
-    }
+    if (temptationError) throw temptationError;
 
     // Save profile data
     const { error: profileError } = await supabase
@@ -56,24 +35,18 @@ export async function saveOnboardingDataToDatabase(userId: string, formData: Onb
         age: formData.age ? parseInt(formData.age) : null,
       });
 
-    if (profileError) {
-      console.error('Error saving profile:', profileError);
-      throw profileError;
-    }
+    if (profileError) throw profileError;
 
-    // Save user affirmation if provided
+    // Save custom affirmation if provided
     if (formData.affirmation) {
       const { error: affirmationError } = await supabase
         .from('user_affirmations')
-        .insert({
+        .upsert({
           user_id: userId,
           content: formData.affirmation,
         });
 
-      if (affirmationError) {
-        console.error('Error saving affirmation:', affirmationError);
-        throw affirmationError;
-      }
+      if (affirmationError) throw affirmationError;
     }
   } catch (error) {
     console.error('Error saving onboarding data:', error);
