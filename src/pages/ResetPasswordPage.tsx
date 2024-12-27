@@ -17,18 +17,20 @@ const ResetPasswordPage = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const init = async () => {
-      setLoading(true);
+    const checkResetToken = async () => {
       try {
-        // Sign out first to ensure we're starting fresh
-        await supabase.auth.signOut();
-        
         const { data: { session } } = await supabase.auth.getSession();
+        const hash = window.location.hash;
         
-        if (session?.access_token) {
+        // Check if we're in password reset mode
+        if (hash && hash.includes('type=recovery')) {
           setIsResetMode(true);
+        } else if (session?.user) {
+          // If user is already logged in and not in reset mode, redirect to dashboard
+          navigate('/dashboard');
         }
       } catch (error: any) {
+        console.error('Error checking reset token:', error);
         toast({
           title: "Error",
           description: "Failed to initialize password reset. Please try again.",
@@ -39,8 +41,8 @@ const ResetPasswordPage = () => {
       }
     };
     
-    init();
-  }, [toast]);
+    checkResetToken();
+  }, [navigate, toast]);
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] px-4 py-8">
