@@ -36,30 +36,28 @@ export function SuggestionCarousel() {
       <h4 className="text-base sm:text-lg font-medium text-center text-gray-700">
         These activities will help you overcome this moment:
       </h4>
-      <div className="relative">
-        <Carousel 
-          className="w-full max-w-xs mx-auto" 
-          opts={{ 
-            loop: true,
-            align: "center",
-            containScroll: "trimSnaps"
-          }}
-          setApi={setApi}
-        >
-          <CarouselContent>
-            {SUGGESTIONS.map((suggestion, index) => (
-              <CarouselItem key={index}>
-                <div className="p-6 rounded-xl bg-white shadow-md border-2 border-gray-100 text-gray-800 text-center min-h-[100px] flex items-center justify-center font-medium hover:border-duo-300 transition-colors duration-300">
-                  {suggestion}
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="hidden sm:flex -left-4 text-gray-600 hover:text-duo-500 transition-colors" />
-          <CarouselNext className="hidden sm:flex -right-4 text-gray-600 hover:text-duo-500 transition-colors" />
-        </Carousel>
+      <Carousel 
+        className="w-full max-w-xs mx-auto relative" 
+        opts={{ 
+          loop: true,
+          align: "center",
+          containScroll: "trimSnaps"
+        }}
+        setApi={setApi}
+      >
+        <CarouselContent>
+          {SUGGESTIONS.map((suggestion, index) => (
+            <CarouselItem key={index}>
+              <div className="p-6 rounded-xl bg-white shadow-md border-2 border-gray-100 text-gray-800 text-center min-h-[100px] flex items-center justify-center font-medium hover:border-duo-300 transition-colors duration-300">
+                {suggestion}
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="hidden sm:flex -left-4 text-gray-600 hover:text-duo-500 transition-colors" />
+        <CarouselNext className="hidden sm:flex -right-4 text-gray-600 hover:text-duo-500 transition-colors" />
         <CarouselDots count={SUGGESTIONS.length} />
-      </div>
+      </Carousel>
     </div>
   );
 }

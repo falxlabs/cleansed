@@ -30,33 +30,31 @@ export function DailyVerse({ verse, reference }: DailyVerseProps) {
   ];
 
   return (
-    <div className="relative">
-      <Carousel
-        opts={{
-          loop: true,
-          align: "start",
-        }}
-        className="w-full"
-        setApi={setApi}
-      >
-        <CarouselContent>
-          {verses.map((item, index) => (
-            <CarouselItem key={index}>
-              <Card className="border-none shadow-none">
-                <CardContent className="flex flex-col gap-4 p-0">
-                  <p className="text-gray-700 text-lg leading-relaxed">
-                    {item.verse}
-                  </p>
-                  <p className="text-gray-500 font-medium">{item.reference}</p>
-                </CardContent>
-              </Card>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="hidden sm:flex -left-4 text-gray-600 hover:text-duo-500 transition-colors" />
-        <CarouselNext className="hidden sm:flex -right-4 text-gray-600 hover:text-duo-500 transition-colors" />
-      </Carousel>
+    <Carousel
+      opts={{
+        loop: true,
+        align: "start",
+      }}
+      className="w-full relative"
+      setApi={setApi}
+    >
+      <CarouselContent>
+        {verses.map((item, index) => (
+          <CarouselItem key={index}>
+            <Card className="border-none shadow-none">
+              <CardContent className="flex flex-col gap-4 p-0">
+                <p className="text-gray-700 text-lg leading-relaxed">
+                  {item.verse}
+                </p>
+                <p className="text-gray-500 font-medium">{item.reference}</p>
+              </CardContent>
+            </Card>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious className="hidden sm:flex -left-4 text-gray-600 hover:text-duo-500 transition-colors" />
+      <CarouselNext className="hidden sm:flex -right-4 text-gray-600 hover:text-duo-500 transition-colors" />
       <CarouselDots count={verses.length} />
-    </div>
+    </Carousel>
   );
 }
