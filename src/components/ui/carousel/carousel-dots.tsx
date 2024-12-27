@@ -8,16 +8,23 @@ export interface CarouselDotsProps extends React.HTMLAttributes<HTMLDivElement> 
 
 export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
   ({ className, count, ...props }, ref) => {
-    const { api } = useCarousel()
+    const carousel = useCarousel()
     const [selectedIndex, setSelectedIndex] = React.useState(0)
 
     React.useEffect(() => {
-      if (!api) return
+      if (!carousel.api) return
 
-      api.on("select", () => {
-        setSelectedIndex(api.selectedScrollSnap())
+      carousel.api.on("select", () => {
+        setSelectedIndex(carousel.api.selectedScrollSnap())
       })
-    }, [api])
+
+      // Cleanup listener on unmount
+      return () => {
+        carousel.api?.off("select", () => {
+          setSelectedIndex(carousel.api!.selectedScrollSnap())
+        })
+      }
+    }, [carousel.api])
 
     return (
       <div
@@ -33,7 +40,8 @@ export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
               "bg-duo-200 hover:bg-duo-300",
               selectedIndex === index && "bg-duo-500"
             )}
-            onClick={() => api?.scrollTo(index)}
+            onClick={() => carousel.api?.scrollTo(index)}
+            aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
