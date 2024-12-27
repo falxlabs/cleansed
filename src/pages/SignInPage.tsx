@@ -16,6 +16,7 @@ const SignInPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resetEmailSent, setResetEmailSent] = useState(false);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,6 +84,40 @@ const SignInPage = () => {
     }
   };
 
+  const handleResetPassword = async () => {
+    if (!email) {
+      toast({
+        title: "Error",
+        description: "Please enter your email address first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+
+      if (error) throw error;
+
+      setResetEmailSent(true);
+      toast({
+        title: "Success",
+        description: "Password reset instructions have been sent to your email.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to send reset email.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#F5F5F5] px-4 py-8">
       <div className="max-w-md mx-auto space-y-6">
@@ -115,7 +150,18 @@ const SignInPage = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <div className="flex justify-between items-center">
+                <Label htmlFor="password">Password</Label>
+                <Button
+                  type="button"
+                  variant="link"
+                  className="px-0 font-normal text-sm"
+                  onClick={handleResetPassword}
+                  disabled={loading || resetEmailSent}
+                >
+                  {resetEmailSent ? "Check your email" : "Forgot password?"}
+                </Button>
+              </div>
               <Input
                 id="password"
                 type="password"
@@ -125,7 +171,7 @@ const SignInPage = () => {
                 required
               />
               <p className="text-xs text-muted-foreground">
-                Your password is used both for authentication and to encrypt your sensitive journal data. Keep it safe - it cannot be recovered if lost.
+                Your password is used both for authentication and to encrypt your sensitive journal data.
               </p>
             </div>
             
