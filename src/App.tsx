@@ -4,10 +4,6 @@ import DashboardPage from "@/pages/DashboardPage";
 import SignInPage from "@/pages/SignInPage";
 import SignUpPage from "@/pages/SignUpPage";
 import SettingsPage from "@/pages/SettingsPage";
-import SettingsAccountPage from "@/pages/SettingsAccountPage";
-import SettingsAppearancePage from "@/pages/SettingsAppearancePage";
-import SettingsNotificationsPage from "@/pages/SettingsNotificationsPage";
-import SettingsPrivacyPage from "@/pages/SettingsPrivacyPage";
 import ResetPasswordPage from "@/pages/ResetPasswordPage";
 
 function App() {
@@ -20,13 +16,6 @@ function App() {
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/settings/account" element={<SettingsAccountPage />} />
-        <Route path="/settings/appearance" element={<SettingsAppearancePage />} />
-        <Route
-          path="/settings/notifications"
-          element={<SettingsNotificationsPage />}
-        />
-        <Route path="/settings/privacy" element={<SettingsPrivacyPage />} />
       </Routes>
       <Toaster />
     </>
