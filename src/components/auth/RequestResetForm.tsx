@@ -20,45 +20,34 @@ export const RequestResetForm = ({ loading, emailSent, setEmailSent }: RequestRe
     e.preventDefault();
     
     const now = Date.now();
-    if (now - lastRequestTime < 30000) { // 30 seconds cooldown
+    if (now - lastRequestTime < 60000) { // 60 seconds cooldown
       toast({
         title: "Please wait",
-        description: "For security purposes, please wait 30 seconds before trying again.",
+        description: "Please wait a minute before requesting another reset link.",
         variant: "destructive",
       });
       return;
     }
 
-    setLastRequestTime(now);
-
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password#type=recovery`
+        redirectTo: `${window.location.origin}/reset-password`,
       });
 
-      if (error) {
-        if (error.message.includes('rate_limit') || error.message.includes('security purposes')) {
-          toast({
-            title: "Too many attempts",
-            description: "Please wait 30 seconds before trying again.",
-            variant: "destructive",
-          });
-        } else {
-          throw error;
-        }
-        return;
-      }
+      if (error) throw error;
 
+      setLastRequestTime(now);
       setEmailSent(true);
       toast({
         title: "Success",
-        description: "Password reset instructions have been sent to your email.",
+        description: "If an account exists with this email, you will receive reset instructions shortly.",
       });
     } catch (error: any) {
+      console.error('Reset request error:', error);
+      // Don't reveal if the email exists or not for security
       toast({
-        title: "Error",
-        description: error.message || "Failed to send reset email.",
-        variant: "destructive",
+        title: "Success",
+        description: "If an account exists with this email, you will receive reset instructions shortly.",
       });
     }
   };

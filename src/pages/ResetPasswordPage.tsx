@@ -17,40 +17,36 @@ const ResetPasswordPage = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const checkResetToken = async () => {
+    const handlePasswordReset = async () => {
       try {
-        const hash = window.location.hash;
-        if (hash && hash.includes('type=recovery')) {
-          const hashParams = new URLSearchParams(hash.substring(1));
-          const token = hashParams.get('access_token');
-          
-          if (token) {
-            const { error } = await supabase.auth.exchangeCodeForSession(token);
-            if (error) {
-              console.error('Error exchanging token:', error);
-              toast({
-                title: "Error",
-                description: "Invalid or expired reset link. Please request a new one.",
-                variant: "destructive",
-              });
-              return;
-            }
-            setIsResetMode(true);
+        setLoading(true);
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        // Check if we're in recovery mode
+        if (window.location.hash && window.location.hash.includes('type=recovery')) {
+          if (!session) {
+            toast({
+              title: "Error",
+              description: "Invalid or expired reset link. Please request a new one.",
+              variant: "destructive",
+            });
+            return;
           }
+          setIsResetMode(true);
         }
-      } catch (error: any) {
-        console.error('Error checking reset token:', error);
+      } catch (error) {
+        console.error('Error checking reset mode:', error);
         toast({
           title: "Error",
-          description: "Failed to initialize password reset. Please try again.",
+          description: "Something went wrong. Please try again.",
           variant: "destructive",
         });
       } finally {
         setLoading(false);
       }
     };
-    
-    checkResetToken();
+
+    handlePasswordReset();
   }, [toast]);
 
   return (

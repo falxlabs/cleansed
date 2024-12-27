@@ -45,11 +45,14 @@ export const UpdatePasswordForm = ({ loading }: { loading: boolean }) => {
         description: "Your password has been updated successfully.",
       });
       
+      // Sign out the user and redirect to sign in
+      await supabase.auth.signOut();
       navigate("/signin");
     } catch (error: any) {
+      console.error('Password update error:', error);
       toast({
         title: "Error",
-        description: error.message || "Failed to update password.",
+        description: "Failed to update password. Please try again.",
         variant: "destructive",
       });
     }
@@ -67,6 +70,7 @@ export const UpdatePasswordForm = ({ loading }: { loading: boolean }) => {
           placeholder="Enter your new password"
           required
           disabled={loading}
+          minLength={6}
         />
       </div>
 
@@ -80,6 +84,7 @@ export const UpdatePasswordForm = ({ loading }: { loading: boolean }) => {
           placeholder="Confirm your new password"
           required
           disabled={loading}
+          minLength={6}
         />
       </div>
 
