@@ -20,10 +20,10 @@ export const RequestResetForm = ({ loading, emailSent, setEmailSent }: RequestRe
     e.preventDefault();
     
     const now = Date.now();
-    if (now - lastRequestTime < 3000) {
+    if (now - lastRequestTime < 30000) { // 30 seconds cooldown
       toast({
         title: "Please wait",
-        description: "For security purposes, please wait 3 seconds before trying again.",
+        description: "For security purposes, please wait 30 seconds before trying again.",
         variant: "destructive",
       });
       return;
@@ -37,10 +37,10 @@ export const RequestResetForm = ({ loading, emailSent, setEmailSent }: RequestRe
       });
 
       if (error) {
-        if (error.message.includes('rate_limit')) {
+        if (error.message.includes('rate_limit') || error.message.includes('security purposes')) {
           toast({
             title: "Too many attempts",
-            description: "Please wait a few seconds before trying again.",
+            description: "Please wait 30 seconds before trying again.",
             variant: "destructive",
           });
         } else {
