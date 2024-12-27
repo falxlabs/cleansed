@@ -7,38 +7,40 @@ import { supabase } from "@/integrations/supabase/client";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { RequestResetForm } from "@/components/auth/RequestResetForm";
 import { UpdatePasswordForm } from "@/components/auth/UpdatePasswordForm";
+import { useToast } from "@/hooks/use-toast";
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [isResetMode, setIsResetMode] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const init = async () => {
-      // Sign out first to ensure we're starting fresh
-      await supabase.auth.signOut();
-      
-      // Check if we're in password reset mode by looking for the token in the URL
-      const hashParams = new URLSearchParams(window.location.hash.substring(1));
-      const type = hashParams.get('type');
-      const accessToken = hashParams.get('access_token');
-      
-      if (type === 'recovery' && accessToken) {
-        // Set the session with the recovery token
-        const { error } = await supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: '',
-        });
+      setLoading(true);
+      try {
+        // Sign out first to ensure we're starting fresh
+        await supabase.auth.signOut();
         
-        if (!error) {
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session?.access_token) {
           setIsResetMode(true);
         }
+      } catch (error: any) {
+        toast({
+          title: "Error",
+          description: "Failed to initialize password reset. Please try again.",
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
       }
     };
     
     init();
-  }, []);
+  }, [toast]);
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] px-4 py-8">
