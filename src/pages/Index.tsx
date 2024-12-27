@@ -51,16 +51,14 @@ const Index = () => {
     <div className="bg-gradient-to-b from-white to-duo-50 min-h-screen">
       <div className="px-4 sm:px-6 md:px-8 min-h-screen flex flex-col">
         <div className="max-w-5xl mx-auto pt-8 sm:pt-12 md:pt-16 flex-1 flex flex-col">
-          {/* Logo */}
           <h1 className="text-2xl sm:text-3xl font-bold text-duo-500 mb-12 sm:mb-16 md:mb-20 ml-2 sm:ml-4">
             Cleansed
           </h1>
 
-          {/* Features - Grid on desktop, Carousel on mobile */}
           <div className="mb-12 sm:mb-16 md:mb-20 flex-1">
             <div className="block sm:hidden">
               <Carousel 
-                className="w-full relative" 
+                className="w-full relative pb-8" 
                 opts={{ 
                   align: "start",
                   loop: true,
@@ -84,7 +82,6 @@ const Index = () => {
             </div>
           </div>
 
-          {/* CTA Buttons */}
           <div className="flex flex-col items-center gap-6 pb-12">
             <div className="flex flex-col sm:flex-row gap-4 w-full max-w-lg mx-auto">
               <Button

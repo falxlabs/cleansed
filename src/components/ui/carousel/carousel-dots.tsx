@@ -14,15 +14,20 @@ export const CarouselDots = React.forwardRef<HTMLDivElement, CarouselDotsProps>(
     React.useEffect(() => {
       if (!api) return
 
-      api.on("select", () => {
+      const onSelect = () => {
         setSelectedIndex(api.selectedScrollSnap())
-      })
+      }
+
+      api.on("select", onSelect)
+      return () => {
+        api.off("select", onSelect)
+      }
     }, [api])
 
     return (
       <div
         ref={ref}
-        className={cn("flex justify-center gap-2 mt-4", className)}
+        className={cn("absolute bottom-0 left-0 right-0 flex justify-center gap-2 pb-4", className)}
         {...props}
       >
         {Array.from({ length: count }).map((_, index) => (
