@@ -1,5 +1,4 @@
 import { supabase } from "@/integrations/supabase/client";
-import type { Database } from "@/integrations/supabase/types";
 import type { OnboardingFormData } from "./useOnboardingForm";
 
 export async function saveOnboardingDataToDatabase(userId: string, formData: OnboardingFormData) {
@@ -12,19 +11,24 @@ export async function saveOnboardingDataToDatabase(userId: string, formData: Onb
         check_in_time: formData.checkInTime,
       });
 
-    if (notificationError) throw notificationError;
+    if (notificationError) {
+      console.error('Error saving notification settings:', notificationError);
+      throw notificationError;
+    }
 
     // Save temptation settings
-    const temptationType = formData.temptationType?.toLowerCase() as Database["public"]["Enums"]["temptation_type"];
     const { error: temptationError } = await supabase
       .from('temptation_settings')
       .upsert({
         user_id: userId,
-        default_type: temptationType,
-        default_intensity: formData.temptationLevel?.[0] ?? 50,
+        default_type: formData.temptationType.toLowerCase(),
+        default_intensity: formData.temptationLevel[0],
       });
 
-    if (temptationError) throw temptationError;
+    if (temptationError) {
+      console.error('Error saving temptation settings:', temptationError);
+      throw temptationError;
+    }
 
     // Save profile data
     const { error: profileError } = await supabase
@@ -35,18 +39,9 @@ export async function saveOnboardingDataToDatabase(userId: string, formData: Onb
         age: formData.age ? parseInt(formData.age) : null,
       });
 
-    if (profileError) throw profileError;
-
-    // Save custom affirmation if provided
-    if (formData.affirmation) {
-      const { error: affirmationError } = await supabase
-        .from('user_affirmations')
-        .upsert({
-          user_id: userId,
-          content: formData.affirmation,
-        });
-
-      if (affirmationError) throw affirmationError;
+    if (profileError) {
+      console.error('Error saving profile:', profileError);
+      throw profileError;
     }
   } catch (error) {
     console.error('Error saving onboarding data:', error);

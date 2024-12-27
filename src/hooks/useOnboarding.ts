@@ -49,6 +49,19 @@ export function useOnboarding() {
 
       if (signUpError) throw signUpError;
 
+      // Wait for the session to be established
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) throw sessionError;
+
+      if (!session) {
+        toast({
+          title: "Account created",
+          description: "Please check your email to confirm your account before proceeding.",
+        });
+        handleNext();
+        return;
+      }
+
       // Save encryption verification hash
       if (data.user) {
         const { error: profileError } = await supabase
@@ -64,31 +77,28 @@ export function useOnboarding() {
             variant: "destructive",
           });
         }
-      }
 
-      // Save user affirmation if provided
-      if (formData.affirmation && data.user) {
-        const { error: affirmationError } = await supabase
-          .from('user_affirmations')
-          .insert({
-            content: formData.affirmation,
-            user_id: data.user.id
-          });
+        // Save user affirmation if provided
+        if (formData.affirmation) {
+          const { error: affirmationError } = await supabase
+            .from('user_affirmations')
+            .insert({
+              content: formData.affirmation,
+              user_id: data.user.id
+            });
 
-        if (affirmationError) {
-          console.error('Error saving affirmation:', affirmationError);
-          toast({
-            title: "Warning",
-            description: "Your affirmation might not have been saved. Please check your settings later.",
-            variant: "destructive",
-          });
+          if (affirmationError) {
+            console.error('Error saving affirmation:', affirmationError);
+            toast({
+              title: "Warning",
+              description: "Your affirmation might not have been saved. Please check your settings later.",
+              variant: "destructive",
+            });
+          }
         }
-      }
 
-      // Save other onboarding data
-      const userId = data.user?.id;
-      if (userId) {
-        await saveOnboardingDataToDatabase(userId, formData);
+        // Save other onboarding data
+        await saveOnboardingDataToDatabase(data.user.id, formData);
       }
 
       saveOnboardingData(formData);
