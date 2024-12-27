@@ -1,6 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import type { Database } from "@/integrations/supabase/types";
+import { encryptText } from "@/utils/encryption";
 
 type TemptationType = Database["public"]["Enums"]["temptation_type"];
 
@@ -41,6 +42,16 @@ export function useReflectionDatabase() {
 
       if (journalError) throw journalError;
 
+      // Encrypt sensitive details if present
+      let encryptedDetails = null;
+      if (customNote) {
+        try {
+          encryptedDetails = await encryptText(customNote, /* need encryption key */);
+        } catch (error) {
+          console.error('Error encrypting details:', error);
+        }
+      }
+
       // Then create the temptation entry with all fields
       const { error: temptationError } = await supabase
         .from('temptation_entries')
@@ -52,6 +63,7 @@ export function useReflectionDatabase() {
           resisted: outcome === 'resisted',
           resistance_strategy: outcome === 'resisted' ? resistanceStrategy : null,
           temptation_details: customNote || null,
+          encrypted_details: encryptedDetails
         });
 
       if (temptationError) throw temptationError;
