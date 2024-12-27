@@ -43,9 +43,9 @@ const Index = () => {
   );
 
   return (
-    <div className="bg-gradient-to-b from-white to-duo-50">
-      <div className="px-4 sm:px-6 md:px-8">
-        <div className="max-w-4xl mx-auto pt-4 sm:pt-6 md:pt-8">
+    <div className="bg-gradient-to-b from-white to-duo-50 min-h-screen">
+      <div className="px-4 sm:px-6 md:px-8 min-h-screen flex flex-col">
+        <div className="max-w-4xl mx-auto pt-4 sm:pt-6 md:pt-8 flex-1">
           {/* Logo */}
           <h1 className="text-2xl sm:text-3xl font-bold text-duo-500 mb-6 sm:mb-8 md:mb-12 ml-2 sm:ml-4">
             Cleansed
