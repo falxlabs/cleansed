@@ -9,36 +9,50 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Mascot } from "@/components/dashboard/Mascot";
 
-const SignInPage = () => {
+const SignUpPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSignIn = async (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (password !== confirmPassword) {
+      toast({
+        title: "Error",
+        description: "Passwords do not match",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/dashboard`,
+        },
       });
 
       if (error) throw error;
 
       toast({
         title: "Success",
-        description: "You have been signed in successfully.",
+        description: "Please check your email to confirm your account.",
       });
       
-      navigate("/dashboard");
+      navigate("/signin");
     } catch (error: any) {
       console.error('Error:', error);
       toast({
         title: "Error",
-        description: error.message || "An error occurred while signing in.",
+        description: error.message || "An error occurred while signing up.",
         variant: "destructive",
       });
     } finally {
@@ -59,12 +73,12 @@ const SignInPage = () => {
         </Button>
 
         <Mascot
-          message="Welcome back! Enter your credentials to continue your journey."
+          message="Create an account to start your journey!"
           className="mb-6"
         />
 
         <Card className="p-6">
-          <form onSubmit={handleSignIn} className="space-y-6">
+          <form onSubmit={handleSignUp} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -84,8 +98,22 @@ const SignInPage = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
+                placeholder="Create a password"
                 required
+                minLength={6}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm your password"
+                required
+                minLength={6}
               />
             </div>
             
@@ -94,32 +122,24 @@ const SignInPage = () => {
               className="w-full duo-button"
               disabled={loading}
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? "Creating account..." : "Create Account"}
             </Button>
           </form>
 
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-muted-foreground">
-                Or continue without account
-              </span>
-            </div>
+          <div className="mt-4 text-center text-sm text-muted-foreground">
+            Already have an account?{" "}
+            <Button
+              variant="link"
+              className="p-0 h-auto font-semibold"
+              onClick={() => navigate("/signin")}
+            >
+              Sign in
+            </Button>
           </div>
-
-          <Button
-            variant="outline"
-            onClick={() => navigate("/dashboard")}
-            className="w-full"
-          >
-            Skip for now
-          </Button>
         </Card>
       </div>
     </div>
   );
 };
 
-export default SignInPage;
+export default SignUpPage;
