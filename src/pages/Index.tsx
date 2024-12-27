@@ -74,7 +74,9 @@ const Index = () => {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselDots count={features.length} />
+                <div className="mt-4">
+                  <CarouselDots count={features.length} />
+                </div>
               </Carousel>
             </div>
             <div className="hidden sm:grid sm:grid-cols-3 gap-8">
