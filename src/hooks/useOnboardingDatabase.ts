@@ -1,15 +1,14 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { OnboardingFormData } from "./useOnboardingForm";
-
-type TemptationType = "pride" | "greed" | "lust" | "envy" | "gluttony" | "wrath" | "sloth";
+import type { TemptationType } from "@/types/database";
 
 const validateTemptationType = (type: string): TemptationType => {
-  const validTypes = ["pride", "greed", "lust", "envy", "gluttony", "wrath", "sloth"];
-  const normalizedType = type.toLowerCase();
+  const validTypes = ["pride", "greed", "lust", "envy", "gluttony", "wrath", "sloth"] as const;
+  const normalizedType = type.toLowerCase() as TemptationType;
   if (!validTypes.includes(normalizedType)) {
     throw new Error(`Invalid temptation type: ${type}`);
   }
-  return normalizedType as TemptationType;
+  return normalizedType;
 };
 
 export async function saveOnboardingDataToDatabase(userId: string, formData: OnboardingFormData) {
