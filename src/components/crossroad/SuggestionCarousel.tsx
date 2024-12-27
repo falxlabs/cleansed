@@ -7,6 +7,7 @@ import {
   CarouselPrevious,
   useCarousel,
 } from "@/components/ui/carousel";
+import { CarouselDots } from "@/components/ui/carousel/carousel-dots";
 
 const SUGGESTIONS = [
   "Take a walk",
@@ -25,7 +26,7 @@ export function SuggestionCarousel() {
 
     const interval = setInterval(() => {
       api.scrollNext();
-    }, 8000); // Changed from 5000 to 8000 milliseconds
+    }, 8000);
 
     return () => clearInterval(interval);
   }, [api]);
@@ -35,27 +36,30 @@ export function SuggestionCarousel() {
       <h4 className="text-base sm:text-lg font-medium text-center text-gray-700">
         These activities will help you overcome this moment:
       </h4>
-      <Carousel 
-        className="w-full max-w-xs mx-auto" 
-        opts={{ 
-          loop: true,
-          align: "center",
-          containScroll: "trimSnaps"
-        }}
-        setApi={setApi}
-      >
-        <CarouselContent>
-          {SUGGESTIONS.map((suggestion, index) => (
-            <CarouselItem key={index}>
-              <div className="p-6 rounded-xl bg-white shadow-md border-2 border-gray-100 text-gray-800 text-center min-h-[100px] flex items-center justify-center font-medium hover:border-duo-300 transition-colors duration-300">
-                {suggestion}
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="hidden sm:flex -left-4 text-gray-600 hover:text-duo-500 transition-colors" />
-        <CarouselNext className="hidden sm:flex -right-4 text-gray-600 hover:text-duo-500 transition-colors" />
-      </Carousel>
+      <div className="relative">
+        <Carousel 
+          className="w-full max-w-xs mx-auto" 
+          opts={{ 
+            loop: true,
+            align: "center",
+            containScroll: "trimSnaps"
+          }}
+          setApi={setApi}
+        >
+          <CarouselContent>
+            {SUGGESTIONS.map((suggestion, index) => (
+              <CarouselItem key={index}>
+                <div className="p-6 rounded-xl bg-white shadow-md border-2 border-gray-100 text-gray-800 text-center min-h-[100px] flex items-center justify-center font-medium hover:border-duo-300 transition-colors duration-300">
+                  {suggestion}
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="hidden sm:flex -left-4 text-gray-600 hover:text-duo-500 transition-colors" />
+          <CarouselNext className="hidden sm:flex -right-4 text-gray-600 hover:text-duo-500 transition-colors" />
+        </Carousel>
+        <CarouselDots count={SUGGESTIONS.length} />
+      </div>
     </div>
   );
 }
