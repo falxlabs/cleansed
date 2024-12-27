@@ -21,8 +21,19 @@ const ResetPasswordPage = () => {
       
       // Check if we're in password reset mode by looking for the token in the URL
       const hashParams = new URLSearchParams(window.location.hash.substring(1));
-      if (hashParams.get('type') === 'recovery') {
-        setIsResetMode(true);
+      const type = hashParams.get('type');
+      const accessToken = hashParams.get('access_token');
+      
+      if (type === 'recovery' && accessToken) {
+        // Set the session with the recovery token
+        const { error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: '',
+        });
+        
+        if (!error) {
+          setIsResetMode(true);
+        }
       }
     };
     

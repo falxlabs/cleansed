@@ -34,8 +34,8 @@ export function SignUpStep({ email, password, onEmailChange, onPasswordChange }:
       return "Password is required";
     }
     
-    if (password.length < 6) {
-      return "Password must be at least 6 characters long";
+    if (password.length < 12) {
+      return "Password must be at least 12 characters long";
     }
     
     return "";
@@ -107,7 +107,7 @@ export function SignUpStep({ email, password, onEmailChange, onPasswordChange }:
           <Input
             id="password"
             type="password"
-            placeholder="Create a password"
+            placeholder="Create a password (min. 12 characters)"
             value={password}
             onChange={(e) => handlePasswordChange(e.target.value)}
             required
