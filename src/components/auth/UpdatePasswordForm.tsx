@@ -34,7 +34,7 @@ export const UpdatePasswordForm = ({ loading }: { loading: boolean }) => {
     }
 
     try {
-      const { error } = await supabase.auth.updateUser({
+      const { data, error } = await supabase.auth.updateUser({
         password: password
       });
 
@@ -45,8 +45,6 @@ export const UpdatePasswordForm = ({ loading }: { loading: boolean }) => {
         description: "Your password has been updated successfully.",
       });
       
-      // Sign out and redirect to sign in page
-      await supabase.auth.signOut();
       navigate("/signin");
     } catch (error: any) {
       toast({

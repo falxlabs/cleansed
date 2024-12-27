@@ -19,15 +19,9 @@ const ResetPasswordPage = () => {
   useEffect(() => {
     const checkResetToken = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
         const hash = window.location.hash;
-        
-        // Check if we're in password reset mode
         if (hash && hash.includes('type=recovery')) {
           setIsResetMode(true);
-        } else if (session?.user) {
-          // If user is already logged in and not in reset mode, redirect to dashboard
-          navigate('/dashboard');
         }
       } catch (error: any) {
         console.error('Error checking reset token:', error);
@@ -42,7 +36,7 @@ const ResetPasswordPage = () => {
     };
     
     checkResetToken();
-  }, [navigate, toast]);
+  }, [toast]);
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] px-4 py-8">
