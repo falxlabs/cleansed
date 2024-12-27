@@ -62,45 +62,29 @@ export function useOnboarding() {
         return;
       }
 
-      // Save encryption verification hash
-      if (data.user) {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .update({ encryption_key_verification: verificationHash })
-          .eq('id', data.user.id);
-
-        if (profileError) {
-          console.error('Error saving encryption verification:', profileError);
-          toast({
-            title: "Warning",
-            description: "Your encryption setup might not have been saved correctly. Please check your settings later.",
-            variant: "destructive",
-          });
-        }
-
-        // Save user affirmation if provided
-        if (formData.affirmation) {
-          const { error: affirmationError } = await supabase
-            .from('user_affirmations')
-            .insert({
-              content: formData.affirmation,
-              user_id: data.user.id
-            });
-
-          if (affirmationError) {
-            console.error('Error saving affirmation:', affirmationError);
-            toast({
-              title: "Warning",
-              description: "Your affirmation might not have been saved. Please check your settings later.",
-              variant: "destructive",
-            });
-          }
-        }
-
-        // Save other onboarding data
-        await saveOnboardingDataToDatabase(data.user.id, formData);
+      if (!data.user) {
+        throw new Error("No user data returned from signup");
       }
 
+      // Save encryption verification hash
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ encryption_key_verification: verificationHash })
+        .eq('id', data.user.id);
+
+      if (profileError) {
+        console.error('Error saving encryption verification:', profileError);
+        toast({
+          title: "Warning",
+          description: "Your encryption setup might not have been saved correctly. Please check your settings later.",
+          variant: "destructive",
+        });
+      }
+
+      // Save onboarding data to database
+      await saveOnboardingDataToDatabase(data.user.id, formData);
+      
+      // Save to local storage
       saveOnboardingData(formData);
       handleNext();
 

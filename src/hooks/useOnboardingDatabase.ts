@@ -1,8 +1,25 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { OnboardingFormData } from "./useOnboardingForm";
 
+type TemptationType = "pride" | "greed" | "lust" | "envy" | "gluttony" | "wrath" | "sloth";
+
+const validateTemptationType = (type: string): TemptationType => {
+  const validTypes = ["pride", "greed", "lust", "envy", "gluttony", "wrath", "sloth"];
+  const normalizedType = type.toLowerCase();
+  if (!validTypes.includes(normalizedType)) {
+    throw new Error(`Invalid temptation type: ${type}`);
+  }
+  return normalizedType as TemptationType;
+};
+
 export async function saveOnboardingDataToDatabase(userId: string, formData: OnboardingFormData) {
   try {
+    // Ensure we have a valid session
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      throw new Error("No active session found");
+    }
+
     // Save notification settings
     const { error: notificationError } = await supabase
       .from('notification_settings')
@@ -16,12 +33,13 @@ export async function saveOnboardingDataToDatabase(userId: string, formData: Onb
       throw notificationError;
     }
 
-    // Save temptation settings
+    // Validate and save temptation settings
+    const temptationType = validateTemptationType(formData.temptationType);
     const { error: temptationError } = await supabase
       .from('temptation_settings')
       .upsert({
         user_id: userId,
-        default_type: formData.temptationType.toLowerCase(),
+        default_type: temptationType,
         default_intensity: formData.temptationLevel[0],
       });
 
@@ -42,6 +60,21 @@ export async function saveOnboardingDataToDatabase(userId: string, formData: Onb
     if (profileError) {
       console.error('Error saving profile:', profileError);
       throw profileError;
+    }
+
+    // Save user affirmation if provided
+    if (formData.affirmation) {
+      const { error: affirmationError } = await supabase
+        .from('user_affirmations')
+        .insert({
+          user_id: userId,
+          content: formData.affirmation,
+        });
+
+      if (affirmationError) {
+        console.error('Error saving affirmation:', affirmationError);
+        throw affirmationError;
+      }
     }
   } catch (error) {
     console.error('Error saving onboarding data:', error);
