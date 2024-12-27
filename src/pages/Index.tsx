@@ -60,7 +60,7 @@ const Index = () => {
           <div className="mb-12 sm:mb-16 md:mb-20 flex-1">
             <div className="block sm:hidden">
               <Carousel 
-                className="w-full" 
+                className="w-full relative" 
                 opts={{ 
                   align: "start",
                   loop: true,
@@ -74,9 +74,7 @@ const Index = () => {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <div className="mt-4">
-                  <CarouselDots count={features.length} />
-                </div>
+                <CarouselDots count={features.length} />
               </Carousel>
             </div>
             <div className="hidden sm:grid sm:grid-cols-3 gap-8">
