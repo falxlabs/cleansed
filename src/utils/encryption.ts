@@ -73,15 +73,17 @@ export async function decrypt(data: Uint8Array, key: CryptoKey): Promise<Uint8Ar
   return new Uint8Array(decrypted);
 }
 
-export async function encryptText(text: string, key: CryptoKey): Promise<string> {
+export async function encryptText(text: string, password: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(text);
+  const { key } = await generateEncryptionKey(password);
   const encrypted = await encrypt(data, key);
   return arrayBufferToBase64(encrypted);
 }
 
-export async function decryptText(encryptedText: string, key: CryptoKey): Promise<string> {
+export async function decryptText(encryptedText: string, password: string): Promise<string> {
   const data = base64ToArrayBuffer(encryptedText);
+  const { key } = await generateEncryptionKey(password);
   const decrypted = await decrypt(new Uint8Array(data), key);
   const decoder = new TextDecoder();
   return decoder.decode(decrypted);

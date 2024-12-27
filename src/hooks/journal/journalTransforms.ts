@@ -11,8 +11,12 @@ export async function transformJournalData(data: any[]): Promise<Entry[]> {
             if (te.encrypted_details) {
               try {
                 // Get encryption key from session storage
-                const encryptionKey = window.sessionStorage.getItem('temp_encryption_key');
-                const decryptedDetails = await decryptText(te.encrypted_details, encryptionKey);
+                const key = window.sessionStorage.getItem('temp_encryption_key');
+                if (!key) {
+                  console.error('No encryption key found in session storage');
+                  return te;
+                }
+                const decryptedDetails = await decryptText(te.encrypted_details, key);
                 return {
                   ...te,
                   temptation_details: decryptedDetails

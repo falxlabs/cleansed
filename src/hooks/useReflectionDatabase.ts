@@ -47,8 +47,11 @@ export function useReflectionDatabase() {
       if (customNote) {
         try {
           // Get encryption key from session storage
-          const encryptionKey = window.sessionStorage.getItem('temp_encryption_key');
-          encryptedDetails = await encryptText(customNote, encryptionKey);
+          const key = window.sessionStorage.getItem('temp_encryption_key');
+          if (!key) {
+            throw new Error('No encryption key found in session storage');
+          }
+          encryptedDetails = await encryptText(customNote, key);
         } catch (error) {
           console.error('Error encrypting details:', error);
         }
