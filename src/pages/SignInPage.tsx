@@ -99,7 +99,7 @@ const SignInPage = () => {
           <Button
             variant="outline"
             onClick={() => navigate("/dashboard")}
-            className="w-full"
+            className="w-full bg-white text-gray-700 hover:bg-[#F2FCE2] hover:text-gray-700 hover:shadow-xl border-0 hover:border-0"
           >
             Skip for now
           </Button>
