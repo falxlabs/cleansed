@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const SINS = [
-  { name: "Pride", emoji: "👑", description: "Excessive self-focus and social media validation seeking" },
+  { name: "Pride", emoji: "👑", description: "Excessive self-focus and validation seeking" },
   { name: "Greed", emoji: "💵", description: "Desire for material possessions" },
   { name: "Lust", emoji: "👄", description: "Sexual immorality and impure thoughts" },
   { name: "Envy", emoji: "👀", description: "Desire for others' traits or possessions" },
