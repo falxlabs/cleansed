@@ -14,7 +14,7 @@ export function PageContainer({
   return (
     <div 
       className={cn(
-        "w-full max-w-5xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8",
+        "w-full max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6",
         fullHeight && "h-full",
         className
       )}
