@@ -118,6 +118,34 @@ export default function ReflectionPage() {
     }
   };
 
+  const handleSkip = async () => {
+    if (step === 2) {
+      handleSliderChange([50]);
+      setStep(step + 1);
+      setMascotMessage("Understanding what triggered this temptation will help you prepare better next time.");
+    } else if (step === 3) {
+      setTrigger("Not sure / Don't remember");
+      if (!isResisted) {
+        const success = await saveReflection({
+          selectedSin,
+          sliderValue,
+          trigger: "Not sure / Don't remember",
+          outcome: isResisted ? 'resisted' : 'gave-in',
+          resistanceStrategy,
+          customNote,
+        });
+
+        if (success) {
+          setMascotMessage("Thank you for your honest reflection. Keep going!");
+          navigate("/journal");
+        }
+      } else {
+        setStep(step + 1);
+        setMascotMessage("What strategies helped you resist?");
+      }
+    }
+  };
+
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
       <div className="flex items-center gap-4">
@@ -168,6 +196,7 @@ export default function ReflectionPage() {
 
         <NavigationButtons
           onNext={handleNext}
+          onSkip={handleSkip}
           step={step}
           isNextDisabled={false}
         />

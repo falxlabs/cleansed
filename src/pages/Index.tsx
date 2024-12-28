@@ -51,7 +51,7 @@ const Index = () => {
   }, [user, navigate]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-duo-50 overflow-y-auto">
+    <div className="bg-gradient-to-b from-white to-duo-50 min-h-screen">
       <PageContainer>
         {/* Logo */}
         <ContentSection>
@@ -137,6 +137,12 @@ const Index = () => {
                 Sign In
               </Button>
             </div>
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="text-gray-500 hover:text-gray-700 hover:underline transition-colors text-sm sm:text-base"
+            >
+              Skip for now
+            </button>
           </div>
         </ContentSection>
       </PageContainer>
