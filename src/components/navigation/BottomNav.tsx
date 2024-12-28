@@ -21,25 +21,26 @@ export const BottomNav = () => {
   ];
 
   return (
-    <nav className="flex flex-col shrink-0 bg-white border-t border-gray-200 shadow-lg">
+    <nav className="flex flex-col shrink-0 bg-white border-t border-gray-200 shadow-lg w-full">
       {!user && (
         <div className="border-b border-gray-200">
           <SampleDataAlert />
         </div>
       )}
-      <div className="flex justify-around items-center h-14 max-w-lg mx-auto px-2 sm:px-4">
+      <div className="flex justify-around items-center h-14 max-w-lg mx-auto w-full px-4 sm:px-6">
         {navItems.map(({ icon: Icon, label, path }) => (
           <button
             key={path}
             onClick={() => navigate(path)}
             className={cn(
-              "flex flex-col items-center justify-center w-16 sm:w-20",
+              "flex flex-col items-center justify-center",
+              "w-[calc(100%/3-1rem)] sm:w-24 py-2", // Responsive width
               "text-gray-400 hover:text-duo-500 transition-colors",
               (location.pathname === path || (path === "/dashboard" && location.pathname === "/")) && "text-duo-500 font-bold"
             )}
           >
-            <Icon className="h-4 w-4 sm:h-5 sm:w-5 mb-1" />
-            <span className="text-[10px] sm:text-xs">{label}</span>
+            <Icon className="h-5 w-5 mb-1" />
+            <span className="text-xs">{label}</span>
           </button>
         ))}
       </div>

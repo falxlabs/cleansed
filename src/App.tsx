@@ -37,7 +37,7 @@ const AppContent = () => {
       {showNav && <DesktopNav />}
       <div className={showNav ? "md:flex flex-1 overflow-hidden" : "flex-1 overflow-hidden"}>
         {showNav && <div className="hidden md:block w-64 shrink-0" />}
-        <main className={`flex-1 overflow-y-auto scrollbar-none ${useFullHeight ? "min-h-[calc(100dvh-4rem)]" : ""}`}>
+        <main className={`flex-1 overflow-y-auto scrollbar-none ${useFullHeight ? "min-h-[calc(100dvh-4rem)]" : ""} pb-16 md:pb-6`}>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Index />} />
