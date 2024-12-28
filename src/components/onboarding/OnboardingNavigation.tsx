@@ -26,7 +26,7 @@ export function OnboardingNavigation({
           <Button 
             onClick={onNext}
             disabled={!isStepValid}
-            className="w-full duo-button"
+            className="w-full"
           >
             Continue
           </Button>
@@ -34,7 +34,7 @@ export function OnboardingNavigation({
           <Button 
             onClick={onComplete}
             disabled={!isStepValid || loading}
-            className="w-full duo-button"
+            className="w-full"
           >
             {loading ? "Signing up..." : "Complete"}
           </Button>
@@ -43,8 +43,8 @@ export function OnboardingNavigation({
 
       {currentStep < totalSteps && (
         <Button
-          variant="outline"
-          className="w-full mt-4 bg-white text-gray-700 hover:bg-[#F2FCE2] hover:text-gray-700 hover:shadow-xl border-0 hover:border-0"
+          variant="ghost"
+          className="w-full mt-4"
           onClick={onSkip}
           disabled={loading}
         >
