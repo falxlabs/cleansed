@@ -39,7 +39,7 @@ export const TemptationTypeSelector = ({ value, onChange, showText = true }: Tem
             onClick={() => onChange(sin.name.toLowerCase())}
             className={cn(
               "h-auto aspect-square flex flex-col items-center justify-center gap-2 p-2 transition-all hover:bg-primary/10",
-              value.toLowerCase() === sin.name.toLowerCase() && "bg-primary text-primary-foreground hover:bg-primary/90"
+              value.toLowerCase() === sin.name.toLowerCase() && "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground"
             )}
           >
             <span className="text-2xl">{sin.emoji}</span>
