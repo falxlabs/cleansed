@@ -28,7 +28,14 @@ export function FormBottomNav({
         <Button
           variant="outline"
           onClick={onSkip}
-          className="flex-1"
+          className={cn(
+            "flex-1 text-base h-auto py-4 px-6",
+            "sm:text-lg sm:py-5 sm:px-8",
+            "rounded-2xl font-bold transition-all duration-300",
+            "shadow-md hover:shadow-lg active:scale-95",
+            "transform-gpu will-change-transform hover:translate-y-[-2px]",
+            "bg-white text-gray-700 hover:bg-[#F2FCE2] hover:text-gray-700 hover:shadow-xl border-0 hover:border-0"
+          )}
         >
           Skip
         </Button>
@@ -36,7 +43,14 @@ export function FormBottomNav({
       <Button
         onClick={onNext}
         disabled={isNextDisabled}
-        className="flex-1"
+        className={cn(
+          "flex-1 text-base h-auto py-4 px-6",
+          "sm:text-lg sm:py-5 sm:px-8",
+          "rounded-2xl font-bold transition-all duration-300",
+          "shadow-md hover:shadow-lg active:scale-95",
+          "transform-gpu will-change-transform hover:translate-y-[-2px]",
+          "bg-duo-500 hover:bg-duo-600 active:bg-duo-700"
+        )}
       >
         {nextLabel}
       </Button>
