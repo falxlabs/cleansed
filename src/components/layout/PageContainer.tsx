@@ -14,13 +14,13 @@ export function PageContainer({
   return (
     <div 
       className={cn(
-        "flex-1 overflow-y-auto pb-20 md:pb-8",
+        "flex-1 overflow-y-auto pb-16 md:pb-6",
         fullHeight && "min-h-full",
         className
       )}
       {...props}
     >
-      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
+      <div className="w-full max-w-3xl mx-auto px-3 py-3 sm:px-4 sm:py-4">
         {children}
       </div>
     </div>

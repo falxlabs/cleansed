@@ -70,15 +70,17 @@
 @layer components {
   .duo-button {
     @apply bg-duo-500 text-white hover:bg-duo-600 active:bg-duo-700 
-           px-6 py-3 text-lg font-bold rounded-2xl shadow-md 
-           hover:shadow-lg transition-all duration-200;
+           px-4 py-2 text-base font-bold rounded-2xl shadow-md 
+           hover:shadow-lg transition-all duration-200
+           md:px-5 md:py-2.5;
   }
   .duo-card {
-    @apply bg-white rounded-3xl border-2 border-gray-200 shadow-lg p-6;
+    @apply bg-white rounded-3xl border-2 border-gray-200 shadow-lg p-4 md:p-5;
   }
   .duo-input {
     @apply rounded-2xl border-2 border-gray-200 
-           focus:border-duo-500 focus:ring-duo-500 px-4 py-3;
+           focus:border-duo-500 focus:ring-duo-500 px-3 py-2
+           md:px-4 md:py-2.5;
   }
   
   /* Toast viewport position */
@@ -93,6 +95,6 @@
 
   /* Container for step-based pages */
   .step-container {
-    @apply container max-w-2xl mx-auto p-4 space-y-6 pb-32 md:pb-8;
+    @apply container max-w-xl mx-auto p-3 space-y-4 pb-24 md:pb-6 md:p-4 md:space-y-5;
   }
 }
