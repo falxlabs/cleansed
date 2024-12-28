@@ -36,7 +36,7 @@ export function CheckInTimeStep({ value, onChange }: CheckInTimeStepProps) {
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-center">Daily check-in time</h2>
       
-      <div className="space-y-6">
+      <div className="space-y-8">
         <div className="text-center">
           <span className="text-6xl mb-4 block animate-breathe" role="img" aria-label="alarm clock">⏰</span>
         </div>
