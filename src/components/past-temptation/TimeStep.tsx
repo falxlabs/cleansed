@@ -1,14 +1,11 @@
-import { Calendar } from "@/components/ui/calendar";
 import { Slider } from "@/components/ui/slider";
 
-interface DateTimeStepProps {
-  date: Date | undefined;
+interface TimeStepProps {
   timeValue: number[];
-  onDateChange: (date: Date | undefined) => void;
   onTimeChange: (value: number[]) => void;
 }
 
-export const DateTimeStep = ({ date, timeValue, onDateChange, onTimeChange }: DateTimeStepProps) => {
+export const TimeStep = ({ timeValue, onTimeChange }: TimeStepProps) => {
   const formatTime = (value: number) => {
     const hours = Math.floor(value);
     const minutes = Math.round((value - hours) * 60);
@@ -26,20 +23,9 @@ export const DateTimeStep = ({ date, timeValue, onDateChange, onTimeChange }: Da
 
   return (
     <>
-      <h2 className="text-2xl font-bold text-center">When did this happen?</h2>
+      <h2 className="text-2xl font-bold text-center">What time of day?</h2>
       
-      <div className="flex justify-center">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={onDateChange}
-          disabled={{ after: new Date() }}
-          className="rounded-md border"
-        />
-      </div>
-
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-center">Time of day</h3>
         <div className="px-4">
           <div className="text-center mb-4">
             <span className="text-2xl">{timeInfo.emoji}</span>

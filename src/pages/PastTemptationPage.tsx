@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/dashboard/Mascot";
 import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
-import { DateTimeStep } from "@/components/past-temptation/DateTimeStep";
+import { DateStep } from "@/components/past-temptation/DateStep";
+import { TimeStep } from "@/components/past-temptation/TimeStep";
 import { OutcomeStep } from "@/components/past-temptation/OutcomeStep";
 import { ArrowLeft } from "lucide-react";
 import { FormBottomNav } from "@/components/navigation/FormBottomNav";
@@ -31,8 +32,8 @@ export default function PastTemptationPage() {
     setOutcome(newOutcome);
   };
 
-  const handleDateTimeContinue = () => {
-    if (!date) {
+  const handleNext = () => {
+    if (!date && step === 1) {
       toast({
         title: "Please select a date",
         description: "Choose when this temptation occurred",
@@ -40,7 +41,7 @@ export default function PastTemptationPage() {
       });
       return;
     }
-    setStep(2);
+    setStep(step + 1);
   };
 
   const handleBack = () => {
@@ -51,17 +52,24 @@ export default function PastTemptationPage() {
     }
   };
 
-  const progress = (step / 2) * 100;
+  const getMascotMessage = () => {
+    switch (step) {
+      case 1:
+        return "Select the date when this temptation occurred";
+      case 2:
+        return "What time of day did this happen?";
+      case 3:
+        return "How did you handle this situation?";
+      default:
+        return "Let's reflect on this temptation together";
+    }
+  };
+
+  const progress = (step / 3) * 100;
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8 pb-24 md:pb-6">
-      <Mascot 
-        message={
-          step === 1 
-            ? "Select the date and time when this temptation occurred" 
-            : "How did you handle this situation?"
-        } 
-      />
+      <Mascot message={getMascotMessage()} />
 
       <div className="flex items-center gap-4 mb-6">
         <Button
@@ -76,14 +84,19 @@ export default function PastTemptationPage() {
       </div>
       
       <div className="bg-card rounded-lg p-6 space-y-6">
-        {step === 1 ? (
-          <DateTimeStep
+        {step === 1 && (
+          <DateStep
             date={date}
-            timeValue={timeValue}
             onDateChange={setDate}
+          />
+        )}
+        {step === 2 && (
+          <TimeStep
+            timeValue={timeValue}
             onTimeChange={setTimeValue}
           />
-        ) : (
+        )}
+        {step === 3 && (
           <OutcomeStep
             outcome={outcome}
             onOutcomeChange={handleOutcomeChange}
@@ -91,11 +104,11 @@ export default function PastTemptationPage() {
         )}
       </div>
 
-      {step === 1 && (
+      {step !== 3 && (
         <FormBottomNav
-          onNext={handleDateTimeContinue}
+          onNext={handleNext}
           nextLabel="Continue"
-          isNextDisabled={!date}
+          isNextDisabled={step === 1 && !date}
         />
       )}
     </div>
