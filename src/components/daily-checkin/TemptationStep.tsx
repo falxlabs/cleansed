@@ -14,7 +14,7 @@ export function TemptationStep({
   
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-center text-black">What challenge are you seeking guidance with today?</h2>
+      <h2 className="text-2xl font-bold text-center text-black">Choose Your Challenge</h2>
       <TemptationTypeSelector
         value={selectedTemptation}
         onChange={onTemptationChange}
