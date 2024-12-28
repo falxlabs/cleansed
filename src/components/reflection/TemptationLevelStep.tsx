@@ -23,7 +23,6 @@ export const TemptationLevelStep = ({
 }: TemptationLevelStepProps) => {
   useEffect(() => {
     const loadDefaultSettings = async () => {
-      // Only load default settings if no value is set (slider is at 0)
       if (sliderValue[0] !== 0) {
         return;
       }
@@ -47,7 +46,7 @@ export const TemptationLevelStep = ({
     };
 
     loadDefaultSettings();
-  }, []); // Only run on mount
+  }, []); 
 
   const getTemptationLevelDescription = (value: number) => {
     if (value <= 25) return TEMPTATION_LEVELS[0];
@@ -58,8 +57,8 @@ export const TemptationLevelStep = ({
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Temptation Level</h2>
       <Card className="p-6">
+        <h2 className="text-2xl font-bold mb-6">Temptation Level</h2>
         <div className="space-y-8">
           <div className="text-center">
             <span className="text-6xl mb-4 block">{

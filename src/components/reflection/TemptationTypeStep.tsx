@@ -44,8 +44,8 @@ export const TemptationTypeStep = ({
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Type of Temptation</h2>
       <Card className="p-6">
+        <h2 className="text-2xl font-bold mb-6">Type of Temptation</h2>
         <TemptationTypeSelector
           value={selectedSin}
           onChange={onSinChange}
