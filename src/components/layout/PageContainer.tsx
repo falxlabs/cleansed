@@ -14,13 +14,13 @@ export function PageContainer({
   return (
     <div 
       className={cn(
-        "page-container",
-        fullHeight && "min-h-[calc(100dvh-5rem)]",
+        "page-container min-h-[100dvh] pb-24 md:pb-8",
+        fullHeight && "flex flex-col",
         className
       )}
       {...props}
     >
-      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
+      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-6 flex-1">
         {children}
       </div>
     </div>

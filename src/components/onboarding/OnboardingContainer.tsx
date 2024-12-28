@@ -43,39 +43,43 @@ export function OnboardingContainer() {
   };
 
   return (
-    <div className="step-container">
-      <div className="flex items-center gap-4">
-        {currentStep > 1 && (
-          <Button
-            variant="ghost"
-            className="-ml-2"
-            onClick={handleBack}
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back
-          </Button>
-        )}
-        <Progress value={progress} className="flex-1" />
+    <div className="min-h-[100dvh] flex flex-col pb-24 md:pb-8">
+      <div className="sticky top-0 z-10 bg-[#F5F5F5] pt-4 px-4">
+        <div className="flex items-center gap-4">
+          {currentStep > 1 && (
+            <Button
+              variant="ghost"
+              className="-ml-2"
+              onClick={handleBack}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back
+            </Button>
+          )}
+          <Progress value={progress} className="flex-1" />
+        </div>
       </div>
 
-      <Mascot message={getMascotMessage(currentStep)} />
+      <div className="container max-w-2xl mx-auto p-4 flex-1">
+        <Mascot message={getMascotMessage(currentStep)} />
 
-      <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
-        <OnboardingStepManager
-          currentStep={currentStep}
-          formData={formData}
-          onFormDataChange={handleFormDataChange}
-        />
-        
-        <OnboardingNavigation
-          currentStep={currentStep}
-          totalSteps={totalSteps}
-          loading={loading}
-          isStepValid={isCurrentStepValid()}
-          onNext={handleNext}
-          onSkip={handleSkip}
-          onComplete={handleComplete}
-        />
+        <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
+          <OnboardingStepManager
+            currentStep={currentStep}
+            formData={formData}
+            onFormDataChange={handleFormDataChange}
+          />
+          
+          <OnboardingNavigation
+            currentStep={currentStep}
+            totalSteps={totalSteps}
+            loading={loading}
+            isStepValid={isCurrentStepValid()}
+            onNext={handleNext}
+            onSkip={handleSkip}
+            onComplete={handleComplete}
+          />
+        </div>
       </div>
     </div>
   );
