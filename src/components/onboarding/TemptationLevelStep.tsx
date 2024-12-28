@@ -25,7 +25,7 @@ export function TemptationLevelStep({
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-center">How Intense was the Temptation?</h2>
+      <h2 className="text-2xl font-bold text-center">How intense was the temptation?</h2>
 
       <div className="space-y-8">
         <div className="text-center">
