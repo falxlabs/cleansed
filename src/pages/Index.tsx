@@ -7,6 +7,7 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import { cn } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { ContentSection } from "@/components/layout/ContentSection";
+import { ActionButton } from "@/components/dashboard/ActionButton";
 
 interface FeatureCardProps {
   emoji: string;
@@ -123,19 +124,17 @@ const Index = () => {
         <ContentSection className="pb-8">
           <div className="flex flex-col items-center gap-4 sm:gap-6">
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-lg mx-auto">
-              <Button
-                className="duo-button text-lg sm:text-xl px-6 sm:px-8 py-4 sm:py-6 flex-1 hover:scale-105 transition-transform"
+              <ActionButton
+                label="Start Your Journey"
                 onClick={() => navigate("/onboarding")}
-              >
-                Start Your Journey
-              </Button>
-              <Button
+                className="flex-1"
+              />
+              <ActionButton
                 variant="outline"
-                className="text-lg sm:text-xl px-6 sm:px-8 py-4 sm:py-6 border-2 flex-1 hover:scale-105 transition-transform"
+                label="Sign In"
                 onClick={() => navigate("/signin")}
-              >
-                Sign In
-              </Button>
+                className="flex-1"
+              />
             </div>
             <button
               onClick={() => navigate("/dashboard")}
