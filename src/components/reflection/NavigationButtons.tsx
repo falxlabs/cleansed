@@ -4,17 +4,25 @@ interface NavigationButtonsProps {
   onNext: () => void;
   step: number;
   isNextDisabled: boolean;
+  outcome?: "resisted" | "gave-in";
 }
 
 export const NavigationButtons = ({
   onNext,
   step,
   isNextDisabled,
+  outcome,
 }: NavigationButtonsProps) => {
+  const getNextLabel = () => {
+    if (step === 3 && outcome === "gave-in") return "Complete";
+    if (step === 4) return "Complete";
+    return "Continue";
+  };
+
   return (
     <FormBottomNav
       onNext={onNext}
-      nextLabel={step === 4 ? "Complete" : "Continue"}
+      nextLabel={getNextLabel()}
       isNextDisabled={isNextDisabled}
       showSkip={false}
     />

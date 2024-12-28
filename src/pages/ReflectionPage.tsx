@@ -170,6 +170,7 @@ export default function ReflectionPage() {
           onNext={handleNext}
           step={step}
           isNextDisabled={false}
+          outcome={outcome}
         />
       </div>
     </div>
