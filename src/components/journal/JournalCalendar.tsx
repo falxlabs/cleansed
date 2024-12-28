@@ -5,14 +5,16 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/providers/AuthProvider";
 import { CheckInDetails } from "./CheckInDetails";
+import { Entry } from "./types";
 
 interface JournalCalendarProps {
   date: Date | undefined;
   onDateSelect: (date: Date | undefined) => void;
   dailyCheckIn: any;
+  entries?: Entry[];
 }
 
-export const JournalCalendar = ({ date, onDateSelect, dailyCheckIn }: JournalCalendarProps) => {
+export const JournalCalendar = ({ date, onDateSelect, dailyCheckIn, entries = [] }: JournalCalendarProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -26,6 +28,26 @@ export const JournalCalendar = ({ date, onDateSelect, dailyCheckIn }: JournalCal
     description: dailyCheckIn.checkin_entries[0]?.mood_description,
   } : null;
 
+  // Create a Set of dates that have entries (in YYYY-MM-DD format)
+  const datesWithEntries = new Set(
+    entries.map(entry => 
+      new Date(entry.created_at).toISOString().split('T')[0]
+    )
+  );
+
+  // Custom modifier for the calendar
+  const modifiers = {
+    hasEntries: (day: Date) => 
+      datesWithEntries.has(day.toISOString().split('T')[0])
+  };
+
+  // Custom modifier styles
+  const modifiersStyles = {
+    hasEntries: {
+      backgroundColor: "#F2FCE2"
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 gap-4">
       <Card>
@@ -35,6 +57,9 @@ export const JournalCalendar = ({ date, onDateSelect, dailyCheckIn }: JournalCal
             selected={date}
             onSelect={onDateSelect}
             className="rounded-md"
+            modifiers={modifiers}
+            modifiersStyles={modifiersStyles}
+            disabled={{ after: new Date() }}
           />
         </div>
       </Card>

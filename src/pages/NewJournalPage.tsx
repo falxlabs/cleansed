@@ -61,6 +61,7 @@ export default function NewJournalPage() {
               date={date}
               onDateSelect={handleDateSelect}
               dailyCheckIn={dailyCheckIn}
+              entries={localEntries}
             />
           </div>
         )}
@@ -80,6 +81,7 @@ export default function NewJournalPage() {
                 date={date}
                 onDateSelect={handleDateSelect}
                 dailyCheckIn={dailyCheckIn}
+                entries={localEntries}
               />
             </div>
           )}
