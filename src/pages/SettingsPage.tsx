@@ -5,6 +5,8 @@ import { SettingsHeader } from "@/components/settings/SettingsHeader";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/providers/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
+import { PageContainer } from "@/components/layout/PageContainer";
+import { ContentSection } from "@/components/layout/ContentSection";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -50,8 +52,8 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="bg-background p-4 sm:p-6 md:p-8">
-      <div className="max-w-2xl mx-auto">
+    <PageContainer fullHeight className="py-4 sm:py-6 md:py-8">
+      <ContentSection className="max-w-2xl mx-auto">
         <SettingsHeader />
         <div className="space-y-2">
           {settingsCategories.map((category) => {
@@ -106,7 +108,7 @@ export default function SettingsPage() {
             </>
           )}
         </div>
-      </div>
-    </div>
+      </ContentSection>
+    </PageContainer>
   );
 }

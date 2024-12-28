@@ -8,6 +8,8 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { JournalEntriesList } from "@/components/journal/JournalEntriesList";
+import { PageContainer } from "@/components/layout/PageContainer";
+import { ContentSection } from "@/components/layout/ContentSection";
 
 export default function JournalPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -109,55 +111,38 @@ export default function JournalPage() {
     : null;
 
   return (
-    <div className="container max-w-7xl mx-auto p-2 sm:p-4 space-y-4 sm:space-y-8 pb-20 md:pb-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl sm:text-3xl font-bold">Journal</h1>
-        <Button 
-          variant="outline" 
-          size="sm"
-          onClick={() => setShowCalendar(!showCalendar)}
-          className="flex items-center gap-2"
-        >
-          {showCalendar ? (
-            <>View All Entries <ChevronUp className="h-4 w-4" /></>
-          ) : (
-            <>Filter by Date <ChevronDown className="h-4 w-4" /></>
-          )}
-        </Button>
-      </div>
-      
-      {!user && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Sample Data</CardTitle>
-            <CardDescription>
-              You're viewing sample data. Sign in to track your own journal entries.
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      )}
-
-      <div className="grid grid-cols-1 gap-4 sm:gap-8">
-        {showCalendar && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:hidden gap-4">
-            <JournalCalendar
-              date={date}
-              onDateSelect={handleDateSelect}
-              dailyCheckIn={dailyCheckIn}
-            />
-          </div>
+    <PageContainer fullHeight className="py-4 sm:py-6 md:py-8">
+      <ContentSection className="max-w-7xl mx-auto">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl sm:text-3xl font-bold">Journal</h1>
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => setShowCalendar(!showCalendar)}
+            className="flex items-center gap-2"
+          >
+            {showCalendar ? (
+              <>View All Entries <ChevronUp className="h-4 w-4" /></>
+            ) : (
+              <>Filter by Date <ChevronDown className="h-4 w-4" /></>
+            )}
+          </Button>
+        </div>
+        
+        {!user && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Sample Data</CardTitle>
+              <CardDescription>
+                You're viewing sample data. Sign in to track your own journal entries.
+              </CardDescription>
+            </CardHeader>
+          </Card>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-4 sm:gap-8">
-          <JournalEntriesList 
-            showCalendar={showCalendar}
-            isLoading={isLoading}
-            entries={entries}
-            date={date}
-          />
-
+        <div className="grid grid-cols-1 gap-4 sm:gap-8">
           {showCalendar && (
-            <div className="hidden lg:block">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:hidden gap-4">
               <JournalCalendar
                 date={date}
                 onDateSelect={handleDateSelect}
@@ -165,8 +150,27 @@ export default function JournalPage() {
               />
             </div>
           )}
+
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-4 sm:gap-8">
+            <JournalEntriesList 
+              showCalendar={showCalendar}
+              isLoading={isLoading}
+              entries={entries}
+              date={date}
+            />
+
+            {showCalendar && (
+              <div className="hidden lg:block">
+                <JournalCalendar
+                  date={date}
+                  onDateSelect={handleDateSelect}
+                  dailyCheckIn={dailyCheckIn}
+                />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </div>
+      </ContentSection>
+    </PageContainer>
   );
 }
