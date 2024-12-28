@@ -27,7 +27,7 @@ export const TimeStep = ({ timeValue, onTimeChange }: TimeStepProps) => {
       
       <div className="space-y-8">
         <div className="text-center">
-          <span className="text-4xl mb-4 block">{timeInfo.emoji}</span>
+          <span className="text-6xl mb-4 block">{timeInfo.emoji}</span>
           <p className="text-muted-foreground">{timeInfo.description}</p>
         </div>
 
