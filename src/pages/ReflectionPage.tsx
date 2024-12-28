@@ -86,9 +86,7 @@ export default function ReflectionPage() {
     if (step === 1) {
       setMascotMessage("Let's understand how strong this temptation was.");
     } else if (step === 2) {
-      setMascotMessage(isResisted 
-        ? "Understanding what triggered this temptation will help you prepare better next time."
-        : "Understanding what led to this moment will help you grow stronger.");
+      setMascotMessage("Understanding what triggered this temptation will help you prepare better next time.");
     } else if (step === 3 && isResisted) {
       setMascotMessage("What strategies helped you resist?");
     }
@@ -158,7 +156,6 @@ export default function ReflectionPage() {
           <TriggerStep
             trigger={trigger}
             onTriggerChange={setTrigger}
-            isResisted={isResisted}
           />
         )}
 
