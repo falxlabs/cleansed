@@ -18,34 +18,34 @@ export const OutcomeStep = ({ outcome, onOutcomeChange }: OutcomeStepProps) => {
       <div className="grid grid-cols-2 gap-4">
         <button
           onClick={() => handleOutcomeSelect("resisted")}
-          className={`flex flex-col items-center justify-center p-6 rounded-2xl border-4 transition-all duration-500 h-[200px] sm:h-[300px] hover:-translate-y-2 shadow-lg hover:shadow-xl ${
+          className={`flex flex-col items-center justify-center p-6 rounded-lg border-2 transition-all ${
             outcome === "resisted"
-              ? "border-duo-700 bg-duo-500 text-white"
-              : "border-duo-700 bg-white hover:bg-duo-50"
+              ? "border-duo-500 bg-duo-50"
+              : "border-gray-200 hover:border-duo-300"
           }`}
         >
-          <div className="rounded-full bg-white/20 p-4 mb-4">
+          <div className="rounded-full bg-duo-100 p-4 mb-3">
             <span className="text-4xl">👍</span>
           </div>
-          <span className="font-bold text-lg sm:text-xl">I Resisted</span>
-          <span className="text-sm mt-2 opacity-90">
+          <span className="font-semibold text-lg">I Resisted</span>
+          <span className="text-sm text-muted-foreground mt-1">
             Stayed strong against temptation
           </span>
         </button>
 
         <button
           onClick={() => handleOutcomeSelect("gave-in")}
-          className={`flex flex-col items-center justify-center p-6 rounded-2xl border-4 transition-all duration-500 h-[200px] sm:h-[300px] hover:-translate-y-2 shadow-lg hover:shadow-xl ${
+          className={`flex flex-col items-center justify-center p-6 rounded-lg border-2 transition-all ${
             outcome === "gave-in"
-              ? "border-red-700 bg-destructive text-white"
-              : "border-red-700 bg-white hover:bg-red-50"
+              ? "border-destructive bg-destructive/10"
+              : "border-gray-200 hover:border-destructive/50"
           }`}
         >
-          <div className="rounded-full bg-white/20 p-4 mb-4">
+          <div className="rounded-full bg-destructive/20 p-4 mb-3">
             <span className="text-4xl">👎</span>
           </div>
-          <span className="font-bold text-lg sm:text-xl">I Gave In</span>
-          <span className="text-sm mt-2 opacity-90">
+          <span className="font-semibold text-lg">I Gave In</span>
+          <span className="text-sm text-muted-foreground mt-1">
             Struggled with the challenge
           </span>
         </button>
