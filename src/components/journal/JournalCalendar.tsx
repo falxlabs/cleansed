@@ -30,15 +30,17 @@ export const JournalCalendar = ({ date, onDateSelect, dailyCheckIn, entries = []
 
   // Create a Set of dates that have entries (in YYYY-MM-DD format)
   const datesWithEntries = new Set(
-    entries.map(entry => 
+    entries.filter(entry => entry.created_at).map(entry => 
       new Date(entry.created_at).toISOString().split('T')[0]
     )
   );
 
   // Custom modifier for the calendar
   const modifiers = {
-    hasEntries: (day: Date) => 
-      datesWithEntries.has(day.toISOString().split('T')[0])
+    hasEntries: (day: Date) => {
+      const dateStr = day.toISOString().split('T')[0];
+      return datesWithEntries.has(dateStr) && (!date || dateStr !== date.toISOString().split('T')[0]);
+    }
   };
 
   // Custom modifier styles
