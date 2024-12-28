@@ -19,7 +19,7 @@ export function ChoiceButtons({
         emoji="🙏"
         label="Choose God"
         onClick={onSubmitToGod}
-        className="bg-white hover:bg-duo-50 text-duo-500 shadow-lg hover:shadow-xl 
+        className="bg-white hover:bg-duo-50 text-black shadow-lg hover:shadow-xl 
                   transition-all duration-500 py-4 sm:py-6 text-lg sm:text-xl font-bold 
                   h-[200px] sm:h-[300px] hover:-translate-y-2 px-4 sm:px-8 
                   [&_span.emoji]:text-4xl [&_span.emoji]:mb-4
@@ -31,7 +31,7 @@ export function ChoiceButtons({
         label="Give In"
         onClick={onFallToSin}
         variant="destructive"
-        className="bg-white hover:bg-red-50 text-red-500 h-[200px] sm:h-[300px] hover:-translate-y-2 
+        className="bg-white hover:bg-red-50 text-black h-[200px] sm:h-[300px] hover:-translate-y-2 
                   transition-all duration-500 text-lg sm:text-xl px-4 sm:px-8 
                   shadow-lg hover:shadow-xl
                   [&_span.emoji]:text-4xl [&_span.emoji]:mb-4
