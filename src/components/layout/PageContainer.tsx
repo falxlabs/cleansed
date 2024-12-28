@@ -14,14 +14,15 @@ export function PageContainer({
   return (
     <div 
       className={cn(
-        "w-full max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-6",
-        "overflow-y-auto scrollbar-none",
-        fullHeight && "h-full",
+        "page-container",
+        fullHeight && "min-h-[calc(100dvh-5rem)]",
         className
       )}
       {...props}
     >
-      {children}
+      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
+        {children}
+      </div>
     </div>
   );
 }

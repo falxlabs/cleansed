@@ -43,7 +43,7 @@ export function OnboardingContainer() {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6 space-y-6">
+    <div className="step-container">
       <div className="flex items-center gap-4">
         {currentStep > 1 && (
           <Button

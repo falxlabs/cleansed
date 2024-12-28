@@ -54,7 +54,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-[#F5F5F5] text-foreground antialiased;
+    @apply bg-[#F5F5F5] text-foreground antialiased min-h-[100dvh] flex flex-col;
   }
   button {
     @apply rounded-2xl font-bold transition-all duration-200 active:scale-95;
@@ -87,7 +87,12 @@
   }
 
   /* Add padding to main content to prevent overlap with fixed elements */
-  main {
-    @apply pb-20 md:pb-6;
+  .page-container {
+    @apply flex-1 overflow-y-auto pb-24 md:pb-8;
+  }
+
+  /* Container for step-based pages */
+  .step-container {
+    @apply container max-w-2xl mx-auto p-4 space-y-6 min-h-[calc(100dvh-5rem)] md:min-h-0;
   }
 }
