@@ -48,7 +48,7 @@ export function SignUpStep({ email, onEmailChange }: SignUpStepProps) {
             {error}
           </p>
         )}
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground text-center">
           We'll never share your email with anyone else
         </p>
       </div>
