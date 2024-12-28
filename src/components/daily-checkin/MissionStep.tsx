@@ -82,9 +82,6 @@ export function MissionStep({
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-center text-black">Daily Affirmation</h2>
-      <p className="text-center text-muted-foreground mb-6">
-        Try saying it out loud - speaking affirmations has the strongest impact
-      </p>
       
       <Card className="p-6">
         <p className="text-lg text-center font-medium">{selectedStatement}</p>
