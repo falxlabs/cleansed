@@ -11,7 +11,7 @@ export const TriggerStep = ({ trigger, onTriggerChange, isResisted = true }: Tri
   return (
     <div className="space-y-6">
       <Card className="p-6">
-        <h2 className="text-2xl font-bold mb-6">
+        <h2 className="text-2xl font-bold mb-6 text-center">
           {isResisted 
             ? "What triggered this temptation?" 
             : "What led to giving in to this temptation?"}

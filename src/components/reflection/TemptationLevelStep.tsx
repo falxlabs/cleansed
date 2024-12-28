@@ -58,7 +58,7 @@ export const TemptationLevelStep = ({
   return (
     <div className="space-y-6">
       <Card className="p-6">
-        <h2 className="text-2xl font-bold mb-6">Temptation Level</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Temptation Level</h2>
         <div className="space-y-8">
           <div className="text-center">
             <span className="text-6xl mb-4 block">{

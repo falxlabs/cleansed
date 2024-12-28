@@ -13,7 +13,7 @@ export const ResistanceStep = ({
   return (
     <div className="space-y-6">
       <Card className="p-6">
-        <h2 className="text-2xl font-bold mb-6">What helped you resist?</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">What helped you resist?</h2>
         <p className="text-muted-foreground mb-4">
           Share the strategies, thoughts, or support that helped you overcome this temptation
         </p>
