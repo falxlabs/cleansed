@@ -12,7 +12,7 @@ export function ContentSection({
   return (
     <section 
       className={cn(
-        "mb-4 sm:mb-6",
+        "mb-4 sm:mb-6 relative",
         className
       )}
       {...props}

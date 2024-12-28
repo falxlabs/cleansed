@@ -54,7 +54,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-[#F5F5F5] text-foreground antialiased;
+    @apply bg-[#F5F5F5] text-foreground antialiased overflow-y-auto;
   }
   button {
     @apply rounded-2xl font-bold transition-all duration-200 active:scale-95;
