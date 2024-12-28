@@ -31,7 +31,7 @@ export function ActionButton({
         "rounded-2xl font-bold transition-all duration-300",
         "shadow-md hover:shadow-lg active:scale-95",
         variant === "default" && "bg-duo-500 hover:bg-duo-600 active:bg-duo-700",
-        variant === "outline" && "hover:bg-gray-50 border-gray-300 hover:border-gray-400 hover:shadow-xl hover:scale-[1.02] text-gray-700",
+        variant === "outline" && "hover:bg-[#F2FCE2] text-gray-700 hover:text-gray-700 hover:shadow-xl hover:scale-[1.02]",
         className
       )}
       disabled={disabled}
