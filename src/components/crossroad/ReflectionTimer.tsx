@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { SuggestionCarousel } from "./SuggestionCarousel";
 
 const TIMER_DURATION = 300;
-const UNLOCK_DURATION = 3; // Changed from 5 to 3 seconds
+const UNLOCK_DURATION = 3;
 
 interface ReflectionTimerProps {
   onComplete?: () => void;
@@ -54,30 +53,19 @@ export function ReflectionTimer({ onComplete, onUnlockTimeChange }: ReflectionTi
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const progressPercentage = ((TIMER_DURATION - timeLeft) / TIMER_DURATION) * 100;
-
   return (
-    <Card className="p-6 sm:p-8 bg-white/90 backdrop-blur-sm border-2 border-gray-200 shadow-lg">
-      <div className="space-y-6 sm:space-y-8">
-        <div className="space-y-2">
-          <h3 className="text-xl sm:text-2xl font-bold text-center text-gray-900">
-            The 5 Minute Rule
+    <Card className="p-4 sm:p-6 bg-white/90 backdrop-blur-sm border-2 border-gray-200 shadow-lg">
+      <div className="flex flex-col items-center gap-4">
+        <div className="flex items-center gap-3">
+          <h3 className="text-lg sm:text-xl font-medium text-gray-700">
+            Take 5 Minutes
           </h3>
-          
-          <div className="text-3xl sm:text-4xl font-bold text-center text-gray-900 font-mono tracking-wider">
+          <div className="text-2xl sm:text-3xl font-bold text-duo-500 font-mono">
             {formatTime(timeLeft)}
           </div>
         </div>
         
-        <Progress 
-          value={progressPercentage} 
-          className="h-2.5 sm:h-3 bg-gray-100" 
-          indicatorClassName="bg-duo-500"
-        />
-
-        <div className="pt-2">
-          <SuggestionCarousel />
-        </div>
+        <SuggestionCarousel />
       </div>
     </Card>
   );

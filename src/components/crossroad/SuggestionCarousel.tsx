@@ -25,16 +25,13 @@ export function SuggestionCarousel() {
 
     const interval = setInterval(() => {
       api.scrollNext();
-    }, 8000); // Changed from 5000 to 8000 milliseconds
+    }, 8000);
 
     return () => clearInterval(interval);
   }, [api]);
 
   return (
-    <div className="space-y-4">
-      <h4 className="text-base sm:text-lg font-medium text-center text-gray-700">
-        These activities will help you overcome this moment:
-      </h4>
+    <div className="w-full">
       <Carousel 
         className="w-full max-w-xs mx-auto" 
         opts={{ 
@@ -47,14 +44,14 @@ export function SuggestionCarousel() {
         <CarouselContent>
           {SUGGESTIONS.map((suggestion, index) => (
             <CarouselItem key={index}>
-              <div className="p-6 rounded-xl bg-white shadow-md border-2 border-gray-100 text-gray-800 text-center min-h-[100px] flex items-center justify-center font-medium hover:border-duo-300 transition-colors duration-300">
+              <div className="text-center text-sm sm:text-base text-gray-600 font-medium py-2">
                 {suggestion}
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="hidden sm:flex -left-4 text-gray-600 hover:text-duo-500 transition-colors" />
-        <CarouselNext className="hidden sm:flex -right-4 text-gray-600 hover:text-duo-500 transition-colors" />
+        <CarouselPrevious className="hidden sm:flex -left-2 h-6 w-6 text-gray-400 hover:text-duo-500 transition-colors" />
+        <CarouselNext className="hidden sm:flex -right-2 h-6 w-6 text-gray-400 hover:text-duo-500 transition-colors" />
       </Carousel>
     </div>
   );
