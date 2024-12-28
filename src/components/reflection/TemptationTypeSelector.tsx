@@ -24,8 +24,9 @@ export const TemptationTypeSelector = ({ value, onChange, showText = true }: Tem
   
   return (
     <div className="space-y-8">
-      <div className="text-center">
+      <div className="text-center space-y-2">
         <span className="text-6xl mb-4 block animate-breathe">{selectedSin.emoji}</span>
+        <span className="text-lg font-medium block">{selectedSin.name}</span>
         {showText && selectedSin.description && (
           <p className="text-muted-foreground">{selectedSin.description}</p>
         )}
