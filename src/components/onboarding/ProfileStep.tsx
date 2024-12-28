@@ -17,9 +17,6 @@ export function ProfileStep({
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-center">Tell Us About Yourself</h2>
-      <p className="text-center text-muted-foreground">
-        This helps us personalize your experience
-      </p>
       
       <div className="space-y-4">
         <div className="space-y-2">

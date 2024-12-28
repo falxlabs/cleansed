@@ -26,9 +26,6 @@ export function TemptationLevelStep({
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-center">How Strong is the Temptation?</h2>
-      <p className="text-center text-muted-foreground">
-        This helps us understand your struggle level and provide appropriate support
-      </p>
 
       <div className="space-y-8">
         <div className="text-center">

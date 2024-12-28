@@ -11,7 +11,6 @@ export function SignUpStep({ email, onEmailChange }: SignUpStepProps) {
   const [error, setError] = useState("");
 
   const validateEmail = (email: string) => {
-    // More comprehensive email validation
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     
     if (!email) {
@@ -34,9 +33,6 @@ export function SignUpStep({ email, onEmailChange }: SignUpStepProps) {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-center">Almost Done!</h2>
-      <p className="text-center text-muted-foreground">
-        Sign up to save your progress and settings
-      </p>
       
       <div className="space-y-2">
         <Label htmlFor="email">Email Address</Label>
