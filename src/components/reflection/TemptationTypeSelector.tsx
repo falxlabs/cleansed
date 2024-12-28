@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 const SINS = [
   { name: "Pride", emoji: "👑", description: "Excessive self-focus and social media validation seeking" },
   { name: "Greed", emoji: "💵", description: "Desire for material possessions" },
-  { name: "Lust", emoji: "👄", description: "Struggles with sexual immorality and impure thoughts" },
+  { name: "Lust", emoji: "👄", description: "Sexual immorality and impure thoughts" },
   { name: "Envy", emoji: "👀", description: "Desire for others' traits or possessions" },
   { name: "Gluttony", emoji: "🍽️", description: "Overindulgence or overconsumption" },
   { name: "Wrath", emoji: "🤬", description: "Uncontrolled feelings of anger" },
