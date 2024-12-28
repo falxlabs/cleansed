@@ -15,6 +15,7 @@ export const OutcomeStep = ({ outcome, onOutcomeChange }: OutcomeStepProps) => {
 
   return (
     <div className="space-y-6">
+      <h2 className="text-2xl font-bold text-center mb-6">Your Decision</h2>
       <div className="grid grid-cols-2 gap-4">
         <button
           onClick={() => handleOutcomeSelect("resisted")}
@@ -50,7 +51,7 @@ export const OutcomeStep = ({ outcome, onOutcomeChange }: OutcomeStepProps) => {
         >
           <div className="flex flex-col items-center gap-4">
             <span className="text-4xl mb-4">👎</span>
-            <span className="font-bold text-lg sm:text-xl">I Gave In</span>
+            <span className="font-bold text-lg sm:text-xl">I Stumbled</span>
           </div>
         </button>
       </div>
