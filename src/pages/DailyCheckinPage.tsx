@@ -72,7 +72,7 @@ export default function DailyCheckinPage() {
       case 3:
         return "Understanding your temptation level helps us support you better.";
       case 4:
-        return "Let's end with your daily affirmation. You're doing great!";
+        return "Try saying it out loud - speaking affirmations has the strongest impact";
       default:
         return "Let's do your daily check-in together!";
     }
