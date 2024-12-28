@@ -43,9 +43,9 @@ export function OnboardingContainer() {
   };
 
   return (
-    <div className="min-h-[100dvh] flex flex-col pb-24 md:pb-8">
-      <div className="sticky top-0 z-10 bg-[#F5F5F5] pt-4 px-4">
-        <div className="flex items-center gap-4">
+    <div className="min-h-[100dvh] flex flex-col">
+      <div className="step-container">
+        <div className="flex items-center gap-4 sticky top-0 bg-[#F5F5F5] py-2 z-10">
           {currentStep > 1 && (
             <Button
               variant="ghost"
@@ -58,27 +58,29 @@ export function OnboardingContainer() {
           )}
           <Progress value={progress} className="flex-1" />
         </div>
-      </div>
 
-      <div className="container max-w-2xl mx-auto p-4 flex-1">
         <Mascot message={getMascotMessage(currentStep)} />
 
-        <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-24 md:mb-8">
           <OnboardingStepManager
             currentStep={currentStep}
             formData={formData}
             onFormDataChange={handleFormDataChange}
           />
-          
-          <OnboardingNavigation
-            currentStep={currentStep}
-            totalSteps={totalSteps}
-            loading={loading}
-            isStepValid={isCurrentStepValid()}
-            onNext={handleNext}
-            onSkip={handleSkip}
-            onComplete={handleComplete}
-          />
+        </div>
+        
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t md:relative md:border-t-0 md:bg-transparent">
+          <div className="container max-w-2xl mx-auto px-4">
+            <OnboardingNavigation
+              currentStep={currentStep}
+              totalSteps={totalSteps}
+              loading={loading}
+              isStepValid={isCurrentStepValid()}
+              onNext={handleNext}
+              onSkip={handleSkip}
+              onComplete={handleComplete}
+            />
+          </div>
         </div>
       </div>
     </div>
