@@ -44,9 +44,7 @@ export function OnboardingContainer() {
 
   return (
     <div className="max-w-xl mx-auto p-6 space-y-6">
-      <Mascot message={getMascotMessage(currentStep)} />
-
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex items-center gap-4">
         {currentStep > 1 && (
           <Button
             variant="ghost"
@@ -59,6 +57,8 @@ export function OnboardingContainer() {
         )}
         <Progress value={progress} className="flex-1" />
       </div>
+
+      <Mascot message={getMascotMessage(currentStep)} />
 
       <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
         <OnboardingStepManager
