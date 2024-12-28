@@ -94,16 +94,16 @@ export function Mascot({
 
   return (
     <Card className={cn(
-      "p-4 sm:p-6 relative overflow-hidden",
+      "p-3 sm:p-4 md:p-6 relative overflow-hidden",
       "bg-white rounded-3xl border-2 border-gray-200 shadow-lg",
       className
     )}>
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-duo-100 flex items-center justify-center shrink-0">
-            <span className="text-2xl sm:text-3xl animate-bounce">🕊️</span>
+      <div className="flex flex-col gap-3 sm:gap-4">
+        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-2xl bg-duo-100 flex items-center justify-center shrink-0">
+            <span className="text-xl sm:text-2xl md:text-3xl animate-bounce">🕊️</span>
           </div>
-          <p className="text-base sm:text-lg font-bold leading-relaxed text-gray-800 text-center sm:text-left">
+          <p className="text-sm sm:text-base md:text-lg font-bold leading-relaxed text-gray-800 text-center sm:text-left">
             {displayMessage}
           </p>
         </div>
@@ -111,7 +111,7 @@ export function Mascot({
         {showCheckInButton && isDashboard && shouldShowCheckInState && !hasCompletedCheckIn && onCheckIn && (
           <Button
             onClick={onCheckIn}
-            className="bg-duo-100 text-duo-800 hover:bg-duo-200 w-full text-sm sm:text-base py-2 sm:py-3"
+            className="bg-duo-100 text-duo-800 hover:bg-duo-200 w-full text-xs sm:text-sm md:text-base py-2 sm:py-3"
           >
             Daily Check-in
           </Button>
