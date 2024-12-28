@@ -7,6 +7,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { JournalEntriesList } from "@/components/journal/JournalEntriesList";
 import { useJournalEntries } from "@/hooks/useJournalEntries";
 import { Entry } from "@/components/journal/types";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 export default function NewJournalPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -37,8 +38,8 @@ export default function NewJournalPage() {
     : null;
 
   return (
-    <div className="page-container">
-      <div className="container max-w-7xl mx-auto p-2 sm:p-4 space-y-4 sm:space-y-8">
+    <PageContainer>
+      <div className="space-y-4 sm:space-y-8">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl sm:text-3xl font-bold">Journal</h1>
           <Button 
@@ -89,6 +90,6 @@ export default function NewJournalPage() {
           </div>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }
