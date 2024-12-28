@@ -49,7 +49,7 @@ export function ReflectionTimer({ onComplete, onUnlockTimeChange }: ReflectionTi
 
   return (
     <Card className="p-4 sm:p-6 bg-white/90 backdrop-blur-sm border-2 border-gray-200 shadow-lg">
-      <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-col items-center gap-4">
         <div className="space-y-4 text-center">
           <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
             The 5 Minute Rule
