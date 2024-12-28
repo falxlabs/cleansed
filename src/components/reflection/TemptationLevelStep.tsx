@@ -3,10 +3,10 @@ import { Slider } from "@/components/ui/slider";
 import { supabase } from "@/integrations/supabase/client";
 
 const TEMPTATION_LEVELS = [
-  "Low - I can resist easily",
-  "Medium - It's challenging but manageable",
-  "High - I struggle significantly",
-  "Severe - Almost impossible to resist"
+  "I can resist easily",
+  "It's challenging but manageable",
+  "I struggle significantly",
+  "Almost impossible to resist"
 ] as const;
 
 interface TemptationLevelStepProps {
@@ -65,10 +65,7 @@ export const TemptationLevelStep = ({
             sliderValue[0] <= 50 ? "🟡" :
             sliderValue[0] <= 75 ? "🟠" : "🔴"
           }</span>
-          <h3 className="text-xl font-semibold mb-2">{getTemptationLevelDescription(sliderValue[0])}</h3>
-          <p className="text-muted-foreground">
-            This helps us understand your struggle
-          </p>
+          <p className="text-xl font-semibold mb-2">{getTemptationLevelDescription(sliderValue[0])}</p>
         </div>
         <Slider
           value={sliderValue}
