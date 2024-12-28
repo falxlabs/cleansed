@@ -60,12 +60,12 @@ export const TemptationLevelStep = ({
       <h2 className="text-2xl font-bold">Temptation Level</h2>
       <div className="space-y-8">
         <div className="text-center">
-          <span className="text-4xl mb-4 block">{
+          <span className="text-6xl mb-4 block">{
             sliderValue[0] <= 25 ? "🟢" :
             sliderValue[0] <= 50 ? "🟡" :
             sliderValue[0] <= 75 ? "🟠" : "🔴"
           }</span>
-          <p className="text-xl font-semibold mb-2">{getTemptationLevelDescription(sliderValue[0])}</p>
+          <p className="text-lg">{getTemptationLevelDescription(sliderValue[0])}</p>
         </div>
         <Slider
           value={sliderValue}
