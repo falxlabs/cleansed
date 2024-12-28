@@ -46,9 +46,11 @@ export const TemptationTypeSelector = ({ value, onChange, showText = true }: Tem
               "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground"
             )}
           >
-            <span className="text-sm xs:text-base sm:text-xl md:text-2xl flex items-center justify-center">
-              {sin.emoji}
-            </span>
+            <div className="flex-1 flex items-center justify-center">
+              <span className="text-sm xs:text-base sm:text-xl md:text-2xl">
+                {sin.emoji}
+              </span>
+            </div>
             <span className="text-[0.5rem] xs:text-[0.6rem] sm:text-xs font-medium line-clamp-1 px-0.5 text-center">
               {sin.name}
             </span>
