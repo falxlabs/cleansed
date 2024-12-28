@@ -1,10 +1,8 @@
 import { Mascot } from "@/components/dashboard/Mascot";
 import { CheckInContainer } from "@/components/daily-checkin/CheckInContainer";
+import { CheckInHeader } from "@/components/daily-checkin/CheckInHeader";
 import { CheckInStepContent } from "@/components/daily-checkin/CheckInStepContent";
 import { useCheckInState } from "@/components/daily-checkin/useCheckInState";
-import { Progress } from "@/components/ui/progress";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -83,18 +81,8 @@ export default function DailyCheckinPage() {
   return (
     <div className="min-h-screen bg-[#F5F5F5] p-4 sm:p-6 md:p-8">
       <div className="max-w-2xl mx-auto space-y-6">
-        <div className="flex items-center gap-4 sticky top-0 bg-[#F5F5F5] py-2 z-10">
-          <Button
-            variant="ghost"
-            className="shrink-0"
-            onClick={() => navigate(-1)}
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back
-          </Button>
-          <Progress value={progress} className="flex-1" />
-        </div>
-
+        <CheckInHeader progress={progress} />
+        
         <Mascot 
           message={getMascotMessage()} 
           className="mb-6"
