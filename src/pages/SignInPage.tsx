@@ -101,7 +101,7 @@ const SignInPage = () => {
             variant="ghost"
             onClick={() => navigate("/dashboard")}
             className="w-full text-gray-500 hover:text-gray-800 hover:underline hover:bg-transparent
-                     px-6 py-3 text-lg font-bold rounded-2xl
+                     px-6 py-3 text-sm font-medium rounded-2xl
                      transition-colors duration-200"
           >
             Skip for now
