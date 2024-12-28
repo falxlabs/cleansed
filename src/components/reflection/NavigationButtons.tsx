@@ -14,10 +14,10 @@ export const NavigationButtons = ({
   outcome,
 }: NavigationButtonsProps) => {
   const getNextLabel = () => {
-    // Only show "Complete" on the final step when the outcome is "gave-in"
-    if (outcome === "gave-in") {
-      if (step === 3 || step === 4) return "Complete";
-    }
+    // Show "Complete" on step 4 (resistance strategy) since it's only shown when user resisted
+    if (step === 4) return "Complete";
+    // Show "Complete" on step 3 only when user gave in
+    if (step === 3 && outcome === "gave-in") return "Complete";
     return "Continue";
   };
 
