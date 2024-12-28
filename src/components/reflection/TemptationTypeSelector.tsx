@@ -7,7 +7,7 @@ const SINS = [
   { name: "Lust", emoji: "👄", description: "Struggles with sexual immorality and impure thoughts" },
   { name: "Envy", emoji: "👀", description: "Desire for others' traits or possessions" },
   { name: "Gluttony", emoji: "🍽️", description: "Overindulgence or overconsumption" },
-  { name: "Wrath", emoji: "😡", description: "Uncontrolled feelings of anger" },
+  { name: "Wrath", emoji: "🤬", description: "Uncontrolled feelings of anger" },
   { name: "Sloth", emoji: "🦥", description: "Failure to act and utilize talents" }
 ] as const;
 
