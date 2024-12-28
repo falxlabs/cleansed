@@ -73,7 +73,7 @@ export function MissionStep({
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <h2 className="text-2xl font-bold text-center text-primary">Daily Affirmation</h2>
+        <h2 className="text-2xl font-bold text-center text-black">Daily Affirmation</h2>
         <p className="text-center text-muted-foreground mb-6">Loading your affirmation...</p>
       </div>
     );
@@ -81,7 +81,7 @@ export function MissionStep({
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-center text-primary">Daily Affirmation</h2>
+      <h2 className="text-2xl font-bold text-center text-black">Daily Affirmation</h2>
       <p className="text-center text-muted-foreground mb-6">
         Try saying it out loud - speaking affirmations has the strongest impact
       </p>
