@@ -31,10 +31,12 @@ export function OnboardingContainer() {
         return "This affirmation will be shown to you daily to strengthen your resolve.";
       case 4:
         return "When would you like me to check in with you each day? I'll send you a gentle reminder to reflect on your journey.";
-      case 7:
-        return "Great! Check your email for the magic link to complete your signup.";
+      case 5:
+        return "I'd love to get to know you better! What's your name and age? This helps me personalize your journey towards freedom.";
       case 6:
         return "Almost there! Sign up to save your progress and settings. We'll never share your email with anyone else.";
+      case 7:
+        return "Great! Check your email for the magic link to complete your signup.";
       default:
         return "I'm here to help you every step of the way. Take your time to answer honestly.";
     }
