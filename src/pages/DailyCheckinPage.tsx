@@ -81,23 +81,24 @@ export default function DailyCheckinPage() {
   const progress = (step / TOTAL_STEPS) * 100;
 
   return (
-    <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8">
+    <div className="min-h-screen bg-gradient-to-b from-primary/5 to-primary/10 p-4 sm:p-6 md:p-8">
       <div className="max-w-2xl mx-auto space-y-6">
-        <Button
-          variant="ghost"
-          className="mb-4"
-          onClick={() => navigate(-1)}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back
-        </Button>
-
         <Mascot 
           message={getMascotMessage()} 
           className="mb-6"
         />
 
-        <Progress value={progress} className="mb-6" />
+        <div className="flex items-center gap-4 mb-6">
+          <Button
+            variant="ghost"
+            className="-ml-2"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back
+          </Button>
+          <Progress value={progress} className="flex-1" />
+        </div>
         
         <CheckInContainer
           currentStep={step}

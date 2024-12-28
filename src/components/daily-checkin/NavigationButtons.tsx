@@ -12,13 +12,13 @@ export function NavigationButtons({
   onNext 
 }: NavigationButtonsProps) {
   return (
-    <div className="flex justify-end mt-6 pt-6 border-t">
+    <div className="flex justify-end mt-6 pt-6 border-t border-primary/20">
       <Button 
         onClick={onNext} 
         disabled={isNextDisabled}
-        className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-6"
+        className="w-full bg-primary hover:bg-primary/90"
       >
-        {step === 4 ? "Complete" : "Continue"}
+        {step === 4 ? "Complete" : "Next"}
       </Button>
     </div>
   );
