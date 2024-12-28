@@ -12,9 +12,11 @@ import { ArrowLeft } from "lucide-react";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function ReflectionPage() {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const {
     step,
     setStep,
@@ -33,8 +35,6 @@ export default function ReflectionPage() {
     setMascotMessage,
     handleSliderChange,
     getValidationMessage,
-    navigate,
-    location,
   } = useReflectionState();
 
   const { saveReflection } = useReflectionDatabase();
@@ -54,7 +54,7 @@ export default function ReflectionPage() {
     checkAuthStatus();
   }, [toast]);
 
-  const isResisted = location.state?.choice === "submitted" || outcome === "resisted";
+  const isResisted = sessionStorage.getItem('pastTemptationOutcome') === 'resisted';
   const totalSteps = isResisted ? 4 : 3;
   const progress = (step / totalSteps) * 100;
 
@@ -105,21 +105,19 @@ export default function ReflectionPage() {
         setMascotMessage("Let's look back at what triggered this situation.");
       }
     } else {
-      if (location.state?.choice) {
-        navigate("/crossroad");
+      const pastTemptationDate = sessionStorage.getItem('pastTemptationDate');
+      if (pastTemptationDate) {
+        navigate("/past-temptation");
       } else {
-        const pastTemptationDate = sessionStorage.getItem('pastTemptationDate');
-        if (pastTemptationDate) {
-          navigate("/past-temptation");
-        } else {
-          navigate("/");
-        }
+        navigate("/");
       }
     }
   };
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8">
+      <Mascot message={mascotMessage} />
+
       <div className="flex items-center gap-4">
         <Button
           variant="ghost"
@@ -131,8 +129,6 @@ export default function ReflectionPage() {
         </Button>
         <Progress value={progress} className="flex-1" />
       </div>
-
-      <Mascot message={mascotMessage} />
 
       <div className="space-y-6">
         {step === 1 && (

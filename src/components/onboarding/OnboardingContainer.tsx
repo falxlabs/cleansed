@@ -46,7 +46,7 @@ export function OnboardingContainer() {
     <div className="max-w-xl mx-auto p-6 space-y-6">
       <Mascot message={getMascotMessage(currentStep)} />
 
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex items-center gap-4">
         {currentStep > 1 && (
           <Button
             variant="ghost"
