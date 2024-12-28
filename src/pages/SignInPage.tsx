@@ -80,7 +80,7 @@ const SignInPage = () => {
               type="submit" 
               className="w-full bg-duo-500 text-white hover:bg-duo-600 active:bg-duo-700 
                        px-6 py-3 text-lg font-bold rounded-2xl shadow-md 
-                       hover:shadow-lg transition-all duration-200"
+                       hover:shadow-lg transition-all duration-200 hover:translate-y-[-2px]"
               disabled={loading}
             >
               {loading ? "Sending..." : "Continue"}

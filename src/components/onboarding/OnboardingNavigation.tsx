@@ -28,7 +28,7 @@ export function OnboardingNavigation({
             disabled={!isStepValid}
             className="w-full bg-duo-500 text-white hover:bg-duo-600 active:bg-duo-700 
                      px-6 py-3 text-lg font-bold rounded-2xl shadow-md 
-                     hover:shadow-lg transition-all duration-200"
+                     hover:shadow-lg transition-all duration-200 hover:translate-y-[-2px]"
           >
             Continue
           </Button>
@@ -38,7 +38,7 @@ export function OnboardingNavigation({
             disabled={!isStepValid || loading}
             className="w-full bg-duo-500 text-white hover:bg-duo-600 active:bg-duo-700 
                      px-6 py-3 text-lg font-bold rounded-2xl shadow-md 
-                     hover:shadow-lg transition-all duration-200"
+                     hover:shadow-lg transition-all duration-200 hover:translate-y-[-2px]"
           >
             {loading ? "Signing up..." : "Complete"}
           </Button>
@@ -48,10 +48,9 @@ export function OnboardingNavigation({
       {currentStep < totalSteps && (
         <Button
           variant="outline"
-          className="w-full mt-4 bg-white text-gray-700 hover:bg-[#F2FCE2] hover:text-gray-700 
-                   hover:shadow-xl hover:translate-y-[-2px] border-0 hover:border-0
-                   px-6 py-3 text-lg font-bold rounded-2xl shadow-md 
-                   transition-all duration-200"
+          className="w-full mt-4 text-gray-500 hover:text-gray-800 hover:underline hover:bg-transparent
+                   px-6 py-3 text-lg font-bold rounded-2xl
+                   transition-colors duration-200"
           onClick={onSkip}
           disabled={loading}
         >
