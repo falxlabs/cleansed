@@ -37,14 +37,16 @@ export default function CrossroadPage() {
 
   return (
     <PageContainer fullHeight className="flex flex-col h-full">
-      <Button 
-        variant="ghost" 
-        className="mb-2 -ml-2" 
-        onClick={() => navigate('/dashboard')}
-      >
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to Dashboard
-      </Button>
+      <div className="flex justify-start">
+        <Button 
+          variant="ghost" 
+          className="mb-2" 
+          onClick={() => navigate('/dashboard')}
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Dashboard
+        </Button>
+      </div>
 
       <ContentSection className="flex-1 flex flex-col gap-4 sm:gap-6">
         <Mascot 
