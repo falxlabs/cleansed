@@ -28,7 +28,7 @@ export function FormBottomNav({
         <Button
           variant="outline"
           onClick={onSkip}
-          className="flex-1 md:flex-none"
+          className="flex-1"
         >
           Skip
         </Button>
@@ -36,7 +36,7 @@ export function FormBottomNav({
       <Button
         onClick={onNext}
         disabled={isNextDisabled}
-        className="flex-1 md:flex-none"
+        className="flex-1"
       >
         {nextLabel}
       </Button>
