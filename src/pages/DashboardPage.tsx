@@ -19,47 +19,49 @@ const DashboardPage = () => {
     <PageContainer fullHeight>
       <div className="h-full flex flex-col max-w-2xl mx-auto">
         {/* Top Section with Streak */}
-        <div className="flex justify-end mb-4 sm:mb-6">
+        <ContentSection className="flex justify-end">
           <div onClick={() => navigate('/achievements')} className="cursor-pointer">
             <StreakDisplay />
           </div>
-        </div>
+        </ContentSection>
 
         {/* Mascot Section */}
-        <div className="mb-6 sm:mb-8">
+        <ContentSection>
           <Mascot 
             message={welcomeMessage}
             className="animate-fade-in"
             onCheckIn={() => navigate('/daily-checkin')}
             showCheckInButton={true}
           />
-        </div>
+        </ContentSection>
 
         {/* Action Buttons */}
-        <div className="space-y-4 sm:space-y-5 mb-6 sm:mb-8">
-          <ActionButton
-            emoji="⚠️"
-            label="I'm Being Tempted"
-            onClick={() => navigate('/crossroad')}
-            variant="destructive"
-            className="w-full bg-red-500 hover:bg-red-600 active:bg-red-700 
-                     transform transition-all duration-200 hover:scale-[1.02] 
-                     shadow-lg hover:shadow-xl border-2 border-red-400"
-          />
-          <ActionButton
-            emoji="📝"
-            label="Log Past Temptation"
-            onClick={() => navigate('/past-temptation')}
-            variant="outline"
-            className="w-full bg-white hover:bg-gray-50 active:bg-gray-100 
-                     border-2 border-gray-300 hover:border-gray-400
-                     transform transition-all duration-200 hover:scale-[1.02] 
-                     shadow-md hover:shadow-lg text-gray-700"
-          />
-        </div>
+        <ContentSection>
+          <div className="space-y-3 sm:space-y-4">
+            <ActionButton
+              emoji="⚠️"
+              label="I'm Being Tempted"
+              onClick={() => navigate('/crossroad')}
+              variant="destructive"
+              className="w-full bg-red-500 hover:bg-red-600 active:bg-red-700 
+                       transform transition-all duration-200 hover:scale-[1.02] 
+                       shadow-lg hover:shadow-xl border-2 border-red-400"
+            />
+            <ActionButton
+              emoji="📝"
+              label="Log Past Temptation"
+              onClick={() => navigate('/past-temptation')}
+              variant="outline"
+              className="w-full bg-white hover:bg-gray-50 active:bg-gray-100 
+                       border-2 border-gray-300 hover:border-gray-400
+                       transform transition-all duration-200 hover:scale-[1.02] 
+                       shadow-md hover:shadow-lg text-gray-700"
+            />
+          </div>
+        </ContentSection>
 
         {/* Daily Verse Section */}
-        <div className="mt-auto">
+        <ContentSection className="mt-auto pb-safe">
           <div className="bg-white rounded-3xl shadow-md p-4 sm:p-6">
             {isVerseLoading ? (
               <div className="space-y-4">
@@ -75,7 +77,7 @@ const DashboardPage = () => {
               />
             )}
           </div>
-        </div>
+        </ContentSection>
       </div>
     </PageContainer>
   );
