@@ -68,7 +68,7 @@ export default function DailyCheckinPage() {
       case 1:
         return "How are you feeling today? Let's start with your mood.";
       case 2:
-        return "What type of temptation are you struggling with the most today?";
+        return "What challenges are you facing? I'm here to support you.";
       case 3:
         return "Understanding your temptation level helps us support you better.";
       case 4:
