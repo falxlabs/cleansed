@@ -14,8 +14,10 @@ export const NavigationButtons = ({
   outcome,
 }: NavigationButtonsProps) => {
   const getNextLabel = () => {
-    if (step === 3 && outcome === "gave-in") return "Complete";
-    if (step === 4 && outcome === "gave-in") return "Complete";
+    // Only show "Complete" on the final step when the outcome is "gave-in"
+    if (outcome === "gave-in") {
+      if (step === 3 || step === 4) return "Complete";
+    }
     return "Continue";
   };
 
