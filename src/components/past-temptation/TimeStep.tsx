@@ -25,12 +25,13 @@ export const TimeStep = ({ timeValue, onTimeChange }: TimeStepProps) => {
     <>
       <h2 className="text-2xl font-bold text-center">What time of day?</h2>
       
-      <div className="space-y-4">
+      <div className="space-y-8">
+        <div className="text-center">
+          <span className="text-4xl mb-4 block">{timeInfo.emoji}</span>
+          <p className="text-muted-foreground">{timeInfo.description}</p>
+        </div>
+
         <div className="px-4">
-          <div className="text-center mb-4">
-            <span className="text-2xl">{timeInfo.emoji}</span>
-            <span className="ml-2 text-muted-foreground">{timeInfo.description}</span>
-          </div>
           <Slider
             value={timeValue}
             onValueChange={onTimeChange}
