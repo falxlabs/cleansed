@@ -44,7 +44,7 @@ export default function CrossroadPage() {
 
       <ContentSection className="flex-1 flex flex-col gap-4 sm:gap-6">
         <Mascot 
-          message="Try one of the suggested activities below. They can help you overcome this moment of temptation. Remember, you're not alone in this." 
+          message="Try an activity below to help overcome temptation. God is with you in this moment." 
           className="animate-fade-in"
         />
 
