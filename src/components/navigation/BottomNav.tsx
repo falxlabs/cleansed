@@ -47,8 +47,7 @@ export const BottomNav = () => {
               )}
             >
               <Icon className={cn(
-                "h-5 w-5 mb-0.5",
-                isActive && "animate-float"
+                "h-5 w-5 mb-0.5"
               )} />
               <span className={cn(
                 "text-xs font-medium",
