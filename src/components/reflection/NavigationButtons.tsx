@@ -14,7 +14,7 @@ export const NavigationButtons = ({
   return (
     <FormBottomNav
       onNext={onNext}
-      nextLabel={step === 4 ? "Complete" : "Next"}
+      nextLabel={step === 4 ? "Complete" : "Continue"}
       isNextDisabled={isNextDisabled}
       showSkip={false}
     />
