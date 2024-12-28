@@ -29,12 +29,14 @@ export const JournalCalendar = ({ date, onDateSelect, dailyCheckIn }: JournalCal
   return (
     <div className="grid grid-cols-1 gap-4">
       <Card>
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={onDateSelect}
-          className="rounded-md"
-        />
+        <div className="flex justify-center">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={onDateSelect}
+            className="rounded-md"
+          />
+        </div>
       </Card>
       
       {date && (
