@@ -1,5 +1,4 @@
 import { Label } from "@/components/ui/label";
-import { Clock } from "lucide-react";
 import { Select } from "@/components/ui/select";
 import {
   SelectContent,
@@ -39,7 +38,7 @@ export function CheckInTimeStep({ value, onChange }: CheckInTimeStepProps) {
       
       <div className="space-y-6">
         <div className="flex justify-center mb-6">
-          <Clock className="w-16 h-16 text-duo-500" />
+          <span className="text-6xl" role="img" aria-label="alarm clock">⏰</span>
         </div>
 
         <div className="relative max-w-xs mx-auto">
