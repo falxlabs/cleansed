@@ -55,13 +55,13 @@ export default function PastTemptationPage() {
   const getMascotMessage = () => {
     switch (step) {
       case 1:
-        return "Select the date when this temptation occurred";
+        return "Thank you for taking the time to reflect. Recording past experiences helps us learn and grow stronger. When did this happen?";
       case 2:
-        return "What time of day did this happen?";
+        return "Understanding the timing helps identify patterns. What time of day was it?";
       case 3:
-        return "How did you handle this situation?";
+        return "Every experience is a chance to learn, whether we succeeded or stumbled. Let's record what happened.";
       default:
-        return "Let's reflect on this temptation together";
+        return "Let's reflect on this experience together. Your honesty helps build a stronger foundation.";
     }
   };
 
@@ -69,19 +69,18 @@ export default function PastTemptationPage() {
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-8 pb-24 md:pb-6">
+      <Button
+        variant="ghost"
+        className="-ml-2"
+        onClick={handleBack}
+      >
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Back
+      </Button>
+
       <Mascot message={getMascotMessage()} />
 
-      <div className="flex items-center gap-4 mb-6">
-        <Button
-          variant="ghost"
-          className="-ml-2"
-          onClick={handleBack}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back
-        </Button>
-        <Progress value={progress} className="flex-1" />
-      </div>
+      <Progress value={progress} className="flex-1" />
       
       <div className="bg-card rounded-lg p-6 space-y-6">
         {step === 1 && (

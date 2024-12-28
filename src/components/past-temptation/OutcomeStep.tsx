@@ -15,7 +15,7 @@ export const OutcomeStep = ({ outcome, onOutcomeChange }: OutcomeStepProps) => {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-center mb-6">How did you decide?</h2>
+      <h2 className="text-2xl font-bold text-center mb-6">What was your decision?</h2>
       <div className="grid grid-cols-2 gap-4">
         <button
           onClick={() => handleOutcomeSelect("resisted")}
