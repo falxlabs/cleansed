@@ -32,10 +32,10 @@ export function CheckInStepContent({
   onStatementChange,
 }: CheckInStepContentProps) {
   const getTemptationLevelText = (value: number) => {
-    if (value <= 25) return "Manageable - I feel confident in my ability to resist";
-    if (value <= 50) return "Challenging - I could use some encouragement";
-    if (value <= 75) return "Difficult - I need extra support and prayer";
-    return "Intense - I'm seeking strength and guidance";
+    if (value <= 25) return "I feel grounded and at peace with God's presence";
+    if (value <= 50) return "I'm seeking His guidance and strength";
+    if (value <= 75) return "I'm leaning on His grace and support";
+    return "I'm surrendering this struggle to God's love";
   };
 
   switch(step) {
