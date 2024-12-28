@@ -3,12 +3,17 @@ import { Textarea } from "@/components/ui/textarea";
 interface TriggerStepProps {
   trigger: string;
   onTriggerChange: (trigger: string) => void;
+  isResisted?: boolean;
 }
 
-export const TriggerStep = ({ trigger, onTriggerChange }: TriggerStepProps) => {
+export const TriggerStep = ({ trigger, onTriggerChange, isResisted = true }: TriggerStepProps) => {
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">What triggered this temptation?</h2>
+      <h2 className="text-2xl font-bold">
+        {isResisted 
+          ? "What triggered this temptation?" 
+          : "What led to giving in to this temptation?"}
+      </h2>
       <Textarea
         placeholder="Describe what led to this temptation (e.g., specific situations, emotions, or events)"
         value={trigger}
