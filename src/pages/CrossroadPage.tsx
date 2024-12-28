@@ -55,16 +55,16 @@ export default function CrossroadPage() {
         />
 
         <div className="flex-1 flex flex-col justify-center gap-4 sm:gap-6">
+          <ReflectionTimer 
+            onComplete={() => setIsTimerComplete(true)} 
+            onUnlockTimeChange={setUnlockTime}
+          />
+          
           <ChoiceButtons
             onSubmitToGod={handleSubmitToGod}
             onFallToSin={handleFallToSin}
             isTimerComplete={isTimerComplete}
             unlockTime={unlockTime}
-          />
-
-          <ReflectionTimer 
-            onComplete={() => setIsTimerComplete(true)} 
-            onUnlockTimeChange={setUnlockTime}
           />
         </div>
       </ContentSection>
