@@ -1,4 +1,3 @@
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
 interface ProfileStepProps {
@@ -19,28 +18,22 @@ export function ProfileStep({
       <h2 className="text-2xl font-bold text-center">Tell Us About Yourself</h2>
       
       <div className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="firstName">First Name</Label>
-          <Input
-            id="firstName"
-            placeholder="Enter your first name"
-            value={firstName}
-            onChange={(e) => onFirstNameChange(e.target.value)}
-          />
-        </div>
+        <Input
+          id="firstName"
+          placeholder="First Name"
+          value={firstName}
+          onChange={(e) => onFirstNameChange(e.target.value)}
+        />
         
-        <div className="space-y-2">
-          <Label htmlFor="age">Age</Label>
-          <Input
-            id="age"
-            type="number"
-            placeholder="Enter your age"
-            min="0"
-            max="120"
-            value={age}
-            onChange={(e) => onAgeChange(e.target.value)}
-          />
-        </div>
+        <Input
+          id="age"
+          type="number"
+          placeholder="Age"
+          min="0"
+          max="120"
+          value={age}
+          onChange={(e) => onAgeChange(e.target.value)}
+        />
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
@@ -35,11 +34,10 @@ export function SignUpStep({ email, onEmailChange }: SignUpStepProps) {
       <h2 className="text-2xl font-bold text-center">Almost Done!</h2>
       
       <div className="space-y-2">
-        <Label htmlFor="email">Email Address</Label>
         <Input
           id="email"
           type="email"
-          placeholder="Enter your email"
+          placeholder="Email Address"
           value={email}
           onChange={(e) => handleEmailChange(e.target.value)}
           required
