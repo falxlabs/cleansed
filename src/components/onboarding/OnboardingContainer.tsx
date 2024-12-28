@@ -24,19 +24,19 @@ export function OnboardingContainer() {
   const getMascotMessage = (step: number) => {
     switch (step) {
       case 1:
-        return "Hi there, I'm Grace! Let's start by understanding what you're struggling with.";
+        return "Welcome! I'm Grace, your companion on this journey. Let's start by understanding what you're facing so I can better support you.";
       case 2:
-        return "This helps me understand your struggle level so I can provide appropriate support.";
+        return "Understanding the intensity of your struggle helps me provide more personalized guidance and support for your journey.";
       case 3:
-        return "This affirmation will be shown to you daily to strengthen your resolve.";
+        return "Let's choose a powerful affirmation that will strengthen your spirit daily and remind you of God's presence in your life.";
       case 4:
-        return "When would you like me to check in with you each day? I'll send you a gentle reminder to reflect on your journey.";
+        return "When would you like your daily reflection time? This quiet moment will help you stay focused on your path to freedom.";
       case 7:
-        return "Great! Check your email for the magic link to complete your signup.";
+        return "Perfect! Check your email for the magic link to begin your journey toward freedom and growth.";
       case 6:
-        return "Almost there! Sign up to save your progress and settings. We'll never share your email with anyone else.";
+        return "You're almost ready to begin! Let's create your secure account to keep track of your progress. Your information stays private.";
       default:
-        return "I'm here to help you every step of the way. Take your time to answer honestly.";
+        return "Take your time to reflect honestly. Every step forward, no matter how small, is progress toward freedom.";
     }
   };
 
