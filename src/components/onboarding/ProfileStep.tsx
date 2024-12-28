@@ -15,7 +15,7 @@ export function ProfileStep({
 }: ProfileStepProps) {
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-center">Tell Us About Yourself</h2>
+      <h2 className="text-2xl font-bold text-center">Tell us about yourself</h2>
       
       <div className="space-y-4">
         <Input

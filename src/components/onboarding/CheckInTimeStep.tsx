@@ -9,7 +9,7 @@ interface CheckInTimeStepProps {
 export function CheckInTimeStep({ value, onChange }: CheckInTimeStepProps) {
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-center">Daily Check-in Time</h2>
+      <h2 className="text-2xl font-bold text-center">Daily check-in time</h2>
       
       <div className="space-y-4">
         <div className="relative">
