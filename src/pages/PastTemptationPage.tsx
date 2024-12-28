@@ -68,17 +68,17 @@ export default function PastTemptationPage() {
   const progress = (step / 3) * 100;
 
   return (
-    <div className="container max-w-2xl mx-auto p-4 space-y-8 pb-24 md:pb-6">
+    <div className="container max-w-2xl mx-auto p-4 space-y-4 pb-24 md:pb-6">
+      <Mascot message={getMascotMessage()} />
+
       <Button
         variant="ghost"
-        className="-ml-2"
-        onClick={handleBack}
+        className="-ml-2 mb-2"
+        onClick={() => step === 1 ? navigate('/') : setStep(step - 1)}
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
-        Back
+        {step === 1 ? 'Back to Dashboard' : 'Back'}
       </Button>
-
-      <Mascot message={getMascotMessage()} />
 
       <Progress value={progress} className="flex-1" />
       
