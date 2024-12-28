@@ -50,7 +50,7 @@ const SignInPage = () => {
       <div className="max-w-md mx-auto space-y-6">
         <Button
           variant="ghost"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('/dashboard')}
           className="hover:bg-transparent"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
