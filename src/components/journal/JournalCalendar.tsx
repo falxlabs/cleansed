@@ -47,18 +47,17 @@ export const JournalCalendar = ({ date, onDateSelect, dailyCheckIn, entries = []
   const modifiersStyles = {
     hasEntries: {
       backgroundColor: "#F2FCE2",
-      color: "#000000" // Ensure consistent text color
+      color: "inherit" // Ensure text color remains visible
     },
     today: {
-      backgroundColor: "#E5E7EB",
-      color: "#000000", // Ensure consistent text color
+      backgroundColor: "#E5E7EB", // Light gray background for today
+      color: "inherit", // Ensure text color remains visible
       fontWeight: "bold"
     },
     selected: {
-      backgroundColor: "#38B94A",
-      color: "white",
-      fontWeight: "bold",
-      borderRadius: "100%"
+      backgroundColor: "#38B94A", // Duolingo green for selected date
+      color: "white", // White text for contrast
+      fontWeight: "bold"
     }
   };
 
