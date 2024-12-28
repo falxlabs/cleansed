@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
 import { SuggestionCarousel } from "./SuggestionCarousel";
 
 const TIMER_DURATION = 300;
@@ -14,16 +13,9 @@ interface ReflectionTimerProps {
 export function ReflectionTimer({ onComplete, onUnlockTimeChange }: ReflectionTimerProps) {
   const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
   const [unlockTime, setUnlockTime] = useState(UNLOCK_DURATION);
-  const [hasShownToast, setHasShownToast] = useState(false);
-  const { toast } = useToast();
   
   useEffect(() => {
-    if (timeLeft <= 0 && !hasShownToast) {
-      toast({
-        title: "Great job!",
-        description: "You've waited 5 minutes - that's strength! Keep going, you're doing great.",
-      });
-      setHasShownToast(true);
+    if (timeLeft <= 0) {
       onComplete?.();
       return;
     }
@@ -33,7 +25,7 @@ export function ReflectionTimer({ onComplete, onUnlockTimeChange }: ReflectionTi
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft, toast, onComplete, hasShownToast]);
+  }, [timeLeft, onComplete]);
 
   useEffect(() => {
     if (unlockTime <= 0) return;

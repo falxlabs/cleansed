@@ -31,6 +31,10 @@ export default function CrossroadPage() {
     navigate("/reflection", { state: { choice: "fell" } });
   };
 
+  const mascotMessage = isTimerComplete
+    ? "Great job! You've waited 5 minutes - that's strength! Keep going, you're doing great. God is with you in this moment."
+    : "Try an activity below to help overcome temptation. God is with you in this moment.";
+
   return (
     <PageContainer fullHeight className="flex flex-col h-full">
       <Button 
@@ -44,7 +48,7 @@ export default function CrossroadPage() {
 
       <ContentSection className="flex-1 flex flex-col gap-4 sm:gap-6">
         <Mascot 
-          message="Try an activity below to help overcome temptation. God is with you in this moment." 
+          message={mascotMessage}
           className="animate-fade-in"
         />
 
