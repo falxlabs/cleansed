@@ -19,7 +19,7 @@ interface AffirmationStepProps {
 export function AffirmationStep({ value, onChange }: AffirmationStepProps) {
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-center">Choose Your Daily Affirmation</h2>
+      <h2 className="text-2xl font-bold text-center">Choose your daily affirmation</h2>
 
       <div className="grid gap-4">
         {PRESET_AFFIRMATIONS.map((affirmation, index) => (
