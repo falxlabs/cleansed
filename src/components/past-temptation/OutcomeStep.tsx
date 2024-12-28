@@ -20,21 +20,18 @@ export const OutcomeStep = ({ outcome, onOutcomeChange }: OutcomeStepProps) => {
           onClick={() => handleOutcomeSelect("resisted")}
           className={`
             flex flex-col items-center justify-center p-6 h-[200px] sm:h-[300px]
-            rounded-2xl border-4 transition-all duration-500
+            rounded-2xl transition-all duration-500
             hover:-translate-y-2 shadow-lg hover:shadow-xl
             ${
               outcome === "resisted"
-                ? "border-duo-700 bg-duo-500 text-white"
-                : "border-duo-500 hover:border-duo-600 bg-white hover:bg-duo-50"
+                ? "bg-duo-500 text-white"
+                : "bg-white hover:bg-duo-50"
             }
           `}
         >
           <div className="flex flex-col items-center gap-4">
             <span className="text-4xl mb-4">👍</span>
             <span className="font-bold text-lg sm:text-xl">I Resisted</span>
-            <span className="text-sm text-center">
-              Stayed strong against temptation
-            </span>
           </div>
         </button>
 
@@ -42,21 +39,18 @@ export const OutcomeStep = ({ outcome, onOutcomeChange }: OutcomeStepProps) => {
           onClick={() => handleOutcomeSelect("gave-in")}
           className={`
             flex flex-col items-center justify-center p-6 h-[200px] sm:h-[300px]
-            rounded-2xl border-4 transition-all duration-500
+            rounded-2xl transition-all duration-500
             hover:-translate-y-2 shadow-lg hover:shadow-xl
             ${
               outcome === "gave-in"
-                ? "border-red-700 bg-destructive text-white"
-                : "border-red-500 hover:border-red-600 bg-white hover:bg-red-50"
+                ? "bg-destructive text-white"
+                : "bg-white hover:bg-red-50"
             }
           `}
         >
           <div className="flex flex-col items-center gap-4">
             <span className="text-4xl mb-4">👎</span>
             <span className="font-bold text-lg sm:text-xl">I Gave In</span>
-            <span className="text-sm text-center">
-              Struggled with the challenge
-            </span>
           </div>
         </button>
       </div>
