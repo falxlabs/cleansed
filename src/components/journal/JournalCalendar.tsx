@@ -47,17 +47,18 @@ export const JournalCalendar = ({ date, onDateSelect, dailyCheckIn, entries = []
   const modifiersStyles = {
     hasEntries: {
       backgroundColor: "#F2FCE2",
-      color: "inherit" // Ensure text color remains visible
+      color: "#000000" // Ensure consistent black text color
     },
     today: {
-      backgroundColor: "#E5E7EB", // Light gray background for today
-      color: "inherit", // Ensure text color remains visible
+      backgroundColor: "#E5E7EB",
+      color: "#000000", // Ensure consistent black text color
       fontWeight: "bold"
     },
     selected: {
-      backgroundColor: "#38B94A", // Duolingo green for selected date
-      color: "white", // White text for contrast
-      fontWeight: "bold"
+      backgroundColor: "#38B94A",
+      color: "white",
+      fontWeight: "bold",
+      borderRadius: "9999px" // Make it perfectly circular
     }
   };
 
@@ -69,7 +70,7 @@ export const JournalCalendar = ({ date, onDateSelect, dailyCheckIn, entries = []
             mode="single"
             selected={date}
             onSelect={onDateSelect}
-            className="rounded-md"
+            className="rounded-md [&_.rdp-day]:text-black [&_.rdp-day_button]:rounded-full"
             modifiers={modifiers}
             modifiersStyles={modifiersStyles}
             disabled={{ after: new Date() }}
