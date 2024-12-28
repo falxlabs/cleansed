@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { FormBottomNav } from "@/components/navigation/FormBottomNav";
 
 interface NavigationButtonsProps {
   onNext: () => void;
@@ -14,10 +14,12 @@ export const NavigationButtons = ({
   isNextDisabled,
 }: NavigationButtonsProps) => {
   return (
-    <div className="flex flex-col gap-2 pt-6">
-      <Button onClick={onNext} disabled={isNextDisabled} className="w-full">
-        {step === 4 ? "Complete" : "Next"}
-      </Button>
-    </div>
+    <FormBottomNav
+      onNext={onNext}
+      nextLabel={step === 4 ? "Complete" : "Next"}
+      isNextDisabled={isNextDisabled}
+      showSkip={!!onSkip}
+      onSkip={onSkip}
+    />
   );
 };

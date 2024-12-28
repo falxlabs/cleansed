@@ -101,7 +101,7 @@ export function Mascot({
       className
     )}>
       <div className="flex flex-col gap-3 sm:gap-4">
-        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+        <div className="flex items-start gap-3 sm:gap-4">
           <MascotIcon />
           <MascotMessage message={displayMessage} />
         </div>

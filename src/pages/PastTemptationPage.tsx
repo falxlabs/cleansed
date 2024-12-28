@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { DateTimeStep } from "@/components/past-temptation/DateTimeStep";
 import { OutcomeStep } from "@/components/past-temptation/OutcomeStep";
 import { ArrowLeft } from "lucide-react";
+import { FormBottomNav } from "@/components/navigation/FormBottomNav";
 
 export default function PastTemptationPage() {
   const [step, setStep] = useState(1);
@@ -53,7 +54,7 @@ export default function PastTemptationPage() {
   const progress = (step / 2) * 100;
 
   return (
-    <div className="container max-w-2xl mx-auto p-4 space-y-8">
+    <div className="container max-w-2xl mx-auto p-4 space-y-8 pb-24 md:pb-6">
       <Mascot 
         message={
           step === 1 
@@ -76,20 +77,12 @@ export default function PastTemptationPage() {
       
       <div className="bg-card rounded-lg p-6 space-y-6">
         {step === 1 ? (
-          <>
-            <DateTimeStep
-              date={date}
-              timeValue={timeValue}
-              onDateChange={setDate}
-              onTimeChange={setTimeValue}
-            />
-            <Button 
-              onClick={handleDateTimeContinue}
-              className="w-full"
-            >
-              Continue
-            </Button>
-          </>
+          <DateTimeStep
+            date={date}
+            timeValue={timeValue}
+            onDateChange={setDate}
+            onTimeChange={setTimeValue}
+          />
         ) : (
           <OutcomeStep
             outcome={outcome}
@@ -97,6 +90,14 @@ export default function PastTemptationPage() {
           />
         )}
       </div>
+
+      {step === 1 && (
+        <FormBottomNav
+          onNext={handleDateTimeContinue}
+          nextLabel="Continue"
+          isNextDisabled={!date}
+        />
+      )}
     </div>
   );
 }
