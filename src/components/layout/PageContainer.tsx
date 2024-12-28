@@ -14,7 +14,7 @@ export function PageContainer({
   return (
     <div 
       className={cn(
-        "flex-1 overflow-y-auto pb-32 md:pb-8",
+        "flex-1 h-[calc(100dvh-4rem)] overflow-y-auto pb-32 md:pb-8",
         fullHeight && "min-h-[calc(100dvh-5rem)]",
         className
       )}
