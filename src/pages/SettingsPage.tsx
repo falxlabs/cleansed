@@ -7,6 +7,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { ContentSection } from "@/components/layout/ContentSection";
+import { ActionButton } from "@/components/dashboard/ActionButton";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -84,29 +85,26 @@ export default function SettingsPage() {
           
           <div className="space-y-2 mt-auto pb-6">
             {user ? (
-              <Button 
-                variant="destructive" 
-                className="w-full"
+              <ActionButton 
+                variant="destructive"
+                label="Sign Out"
                 onClick={handleSignOut}
-              >
-                Sign Out
-              </Button>
+                className="w-full"
+              />
             ) : (
               <>
-                <Button 
-                  variant="default" 
-                  className="w-full"
+                <ActionButton 
+                  variant="default"
+                  label="Get Started"
                   onClick={handleGetStarted}
-                >
-                  Get Started
-                </Button>
-                <Button 
-                  variant="outline" 
                   className="w-full"
+                />
+                <ActionButton 
+                  variant="outline"
+                  label="Sign In"
                   onClick={handleSignIn}
-                >
-                  Sign In
-                </Button>
+                  className="w-full"
+                />
               </>
             )}
           </div>
