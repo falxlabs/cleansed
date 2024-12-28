@@ -20,9 +20,6 @@ export function AffirmationStep({ value, onChange }: AffirmationStepProps) {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-center">Choose Your Daily Affirmation</h2>
-      <p className="text-center text-muted-foreground">
-        This affirmation will be shown to you daily to strengthen your resolve
-      </p>
 
       <div className="grid gap-4">
         {PRESET_AFFIRMATIONS.map((affirmation, index) => (

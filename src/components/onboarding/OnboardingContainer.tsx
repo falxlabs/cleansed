@@ -28,7 +28,7 @@ export function OnboardingContainer() {
       case 2:
         return "This helps me understand your struggle level so I can provide appropriate support.";
       case 3:
-        return "I'd love to get to know you better! This helps me personalize your experience.";
+        return "This affirmation will be shown to you daily to strengthen your resolve.";
       case 7:
         return "Great! Check your email for the magic link to complete your signup.";
       case 6:
