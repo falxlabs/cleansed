@@ -14,14 +14,16 @@ interface ReflectionTimerProps {
 export function ReflectionTimer({ onComplete, onUnlockTimeChange }: ReflectionTimerProps) {
   const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
   const [unlockTime, setUnlockTime] = useState(UNLOCK_DURATION);
+  const [hasShownToast, setHasShownToast] = useState(false);
   const { toast } = useToast();
   
   useEffect(() => {
-    if (timeLeft <= 0) {
+    if (timeLeft <= 0 && !hasShownToast) {
       toast({
-        title: "Time's up!",
-        description: "Your 5 minutes are up. Make your choice.",
+        title: "Great job!",
+        description: "You've waited 5 minutes - that's strength! Keep going, you're doing great.",
       });
+      setHasShownToast(true);
       onComplete?.();
       return;
     }
@@ -31,7 +33,7 @@ export function ReflectionTimer({ onComplete, onUnlockTimeChange }: ReflectionTi
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft, toast, onComplete]);
+  }, [timeLeft, toast, onComplete, hasShownToast]);
 
   useEffect(() => {
     if (unlockTime <= 0) return;
