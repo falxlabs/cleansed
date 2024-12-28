@@ -32,7 +32,7 @@ export const OutcomeStep = ({ outcome, onOutcomeChange }: OutcomeStepProps) => {
         >
           <div className="flex flex-col items-center gap-4">
             <span className="text-4xl mb-4">👍</span>
-            <span className="font-bold text-lg sm:text-xl">I Resisted</span>
+            <span className="font-bold text-lg sm:text-xl">Resisted</span>
           </div>
         </button>
 
@@ -51,7 +51,7 @@ export const OutcomeStep = ({ outcome, onOutcomeChange }: OutcomeStepProps) => {
         >
           <div className="flex flex-col items-center gap-4">
             <span className="text-4xl mb-4">👎</span>
-            <span className="font-bold text-lg sm:text-xl">I Stumbled</span>
+            <span className="font-bold text-lg sm:text-xl">Stumbled</span>
           </div>
         </button>
       </div>
