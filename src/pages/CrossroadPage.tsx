@@ -32,7 +32,7 @@ export default function CrossroadPage() {
   };
 
   const mascotMessage = isTimerComplete
-    ? "Great job! You've waited 5 minutes - that's strength! Keep going, you're doing great."
+    ? "You've waited more than 5 minutes - that's incredible strength! Keep going, you're doing amazing."
     : "Take a moment to try one of these activities. Remember, God is with you, guiding and strengthening you right now";
 
   return (

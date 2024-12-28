@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { SuggestionCarousel } from "./SuggestionCarousel";
 
-const TIMER_DURATION = 300;
-const UNLOCK_DURATION = 3;
+const FIVE_MINUTES = 300; // 5 minutes in seconds
 
 interface ReflectionTimerProps {
   onComplete?: () => void;
@@ -11,21 +10,20 @@ interface ReflectionTimerProps {
 }
 
 export function ReflectionTimer({ onComplete, onUnlockTimeChange }: ReflectionTimerProps) {
-  const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
-  const [unlockTime, setUnlockTime] = useState(UNLOCK_DURATION);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+  const [unlockTime, setUnlockTime] = useState(3);
   
   useEffect(() => {
-    if (timeLeft <= 0) {
+    if (timeElapsed === FIVE_MINUTES) {
       onComplete?.();
-      return;
     }
 
     const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
+      setTimeElapsed((prev) => prev + 1);
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft, onComplete]);
+  }, [timeElapsed, onComplete]);
 
   useEffect(() => {
     if (unlockTime <= 0) return;
@@ -55,7 +53,7 @@ export function ReflectionTimer({ onComplete, onUnlockTimeChange }: ReflectionTi
             The 5 Minute Rule
           </h3>
           <div className="text-3xl sm:text-4xl font-bold text-duo-500 font-mono">
-            {formatTime(timeLeft)}
+            {formatTime(timeElapsed)}
           </div>
         </div>
         
