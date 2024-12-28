@@ -37,8 +37,8 @@ export function CheckInTimeStep({ value, onChange }: CheckInTimeStepProps) {
       <h2 className="text-2xl font-bold text-center">Daily check-in time</h2>
       
       <div className="space-y-6">
-        <div className="flex justify-center mb-6">
-          <span className="text-6xl" role="img" aria-label="alarm clock">⏰</span>
+        <div className="text-center">
+          <span className="text-6xl mb-4 block animate-breathe" role="img" aria-label="alarm clock">⏰</span>
         </div>
 
         <div className="relative max-w-xs mx-auto">
