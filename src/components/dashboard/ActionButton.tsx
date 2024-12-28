@@ -30,9 +30,9 @@ export function ActionButton({
         "sm:text-lg sm:py-5 sm:px-8",
         "rounded-2xl font-bold transition-all duration-300",
         "shadow-md hover:shadow-lg active:scale-95",
-        "hover:scale-[1.02]",
+        "transform-gpu will-change-transform hover:translate-y-[-2px]",
         variant === "default" && "bg-duo-500 hover:bg-duo-600 active:bg-duo-700",
-        variant === "outline" && "bg-white text-gray-700 hover:bg-[#F2FCE2] hover:text-gray-700 hover:shadow-xl hover:scale-[1.02] hover:!bg-[#F2FCE2] border-0 hover:border-0",
+        variant === "outline" && "bg-white text-gray-700 hover:bg-[#F2FCE2] hover:text-gray-700 hover:shadow-xl hover:translate-y-[-2px] hover:!bg-[#F2FCE2] border-0 hover:border-0",
         className
       )}
       disabled={disabled}
