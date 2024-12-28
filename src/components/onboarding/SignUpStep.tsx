@@ -41,10 +41,10 @@ export function SignUpStep({ email, onEmailChange }: SignUpStepProps) {
           value={email}
           onChange={(e) => handleEmailChange(e.target.value)}
           required
-          className={error ? "border-red-500" : ""}
+          className={`rounded-2xl ${error ? "border-red-500" : ""}`}
         />
         {error && (
-          <p className="text-sm text-red-500">
+          <p className="text-sm text-red-500 text-center">
             {error}
           </p>
         )}
