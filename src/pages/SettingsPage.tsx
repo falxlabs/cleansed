@@ -52,61 +52,64 @@ export default function SettingsPage() {
   };
 
   return (
-    <PageContainer fullHeight className="py-4 sm:py-6 md:py-8">
-      <ContentSection className="max-w-2xl mx-auto">
-        <SettingsHeader />
-        <div className="space-y-2">
-          {settingsCategories.map((category) => {
-            const isLocked = !user && category.requiresAuth;
-            
-            return (
-              <Button
-                key={category.path}
-                variant="ghost"
-                className="w-full justify-between hover:bg-muted"
-                onClick={() => !isLocked && navigate(category.path)}
-                disabled={isLocked}
-              >
-                <span>{category.title}</span>
-                <div className="flex items-center">
-                  {isLocked ? (
-                    <Lock className="h-4 w-4 text-muted-foreground" />
-                  ) : (
-                    <ChevronRight className="h-4 w-4" />
-                  )}
-                </div>
-              </Button>
-            );
-          })}
-        </div>
-        
-        <div className="mt-8 space-y-2">
-          {user ? (
-            <Button 
-              variant="destructive" 
-              className="w-full"
-              onClick={handleSignOut}
-            >
-              Sign Out
-            </Button>
-          ) : (
-            <>
+    <PageContainer fullHeight className="min-h-screen flex flex-col">
+      <ContentSection className="flex-1 max-w-2xl mx-auto w-full">
+        <div className="space-y-6 h-full flex flex-col">
+          <SettingsHeader />
+          
+          <div className="flex-1 space-y-2">
+            {settingsCategories.map((category) => {
+              const isLocked = !user && category.requiresAuth;
+              
+              return (
+                <Button
+                  key={category.path}
+                  variant="ghost"
+                  className="w-full justify-between hover:bg-muted"
+                  onClick={() => !isLocked && navigate(category.path)}
+                  disabled={isLocked}
+                >
+                  <span>{category.title}</span>
+                  <div className="flex items-center">
+                    {isLocked ? (
+                      <Lock className="h-4 w-4 text-muted-foreground" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4" />
+                    )}
+                  </div>
+                </Button>
+              );
+            })}
+          </div>
+          
+          <div className="space-y-2 mt-auto pb-6">
+            {user ? (
               <Button 
-                variant="default" 
+                variant="destructive" 
                 className="w-full"
-                onClick={handleGetStarted}
+                onClick={handleSignOut}
               >
-                Get Started
+                Sign Out
               </Button>
-              <Button 
-                variant="outline" 
-                className="w-full"
-                onClick={handleSignIn}
-              >
-                Sign In
-              </Button>
-            </>
-          )}
+            ) : (
+              <>
+                <Button 
+                  variant="default" 
+                  className="w-full"
+                  onClick={handleGetStarted}
+                >
+                  Get Started
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={handleSignIn}
+                >
+                  Sign In
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </ContentSection>
     </PageContainer>
