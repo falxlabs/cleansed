@@ -1,3 +1,4 @@
+import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider";
 
@@ -26,7 +27,7 @@ export function MoodStep({
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-center text-gray-900">How was your day?</h2>
       
-      <div className="p-6 bg-white rounded-3xl">
+      <Card className="p-6 bg-white">
         <div className="text-center space-y-8">
           <span className="text-6xl block animate-breathe">{getMoodEmoji()}</span>
           <Slider
@@ -41,7 +42,7 @@ export function MoodStep({
             <span>Amazing!</span>
           </div>
         </div>
-      </div>
+      </Card>
 
       <div className="space-y-2">
         <label className="text-sm font-medium text-gray-900">
