@@ -6,8 +6,8 @@ interface SettingsDetailLayoutProps {
 
 export function SettingsDetailLayout({ children }: SettingsDetailLayoutProps) {
   return (
-    <div className="bg-background p-4 sm:p-6 md:p-8">
-      <div className="max-w-2xl mx-auto space-y-6">
+    <div className="h-[100dvh] flex flex-col">
+      <div className="flex-1 flex flex-col overflow-hidden">
         {children}
       </div>
     </div>
