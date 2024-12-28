@@ -65,7 +65,7 @@ export const TemptationLevelStep = ({
             sliderValue[0] <= 50 ? "🟡" :
             sliderValue[0] <= 75 ? "🟠" : "🔴"
           }</span>
-          <p className="text-lg">{getTemptationLevelDescription(sliderValue[0])}</p>
+          <p className="text-muted-foreground">{getTemptationLevelDescription(sliderValue[0])}</p>
         </div>
         <Slider
           value={sliderValue}
