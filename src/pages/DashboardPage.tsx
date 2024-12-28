@@ -35,6 +35,25 @@ const DashboardPage = () => {
           />
         </ContentSection>
 
+        {/* Daily Verse Section - Moved above Action Buttons */}
+        <ContentSection>
+          <div className="bg-white rounded-3xl shadow-md p-4 sm:p-6">
+            {isVerseLoading ? (
+              <div className="space-y-4">
+                <Skeleton className="h-6 w-3/4" />
+                <Skeleton className="h-4 w-1/4" />
+              </div>
+            ) : verse ? (
+              <DailyVerse verse={verse.content_csb} reference={verse.reference} />
+            ) : (
+              <DailyVerse 
+                verse="No temptation has overtaken you except what is common to mankind. And God is faithful; he will not let you be tempted beyond what you can bear." 
+                reference="1 Corinthians 10:13" 
+              />
+            )}
+          </div>
+        </ContentSection>
+
         {/* Action Buttons */}
         <ContentSection>
           <div className="space-y-3 sm:space-y-4">
@@ -57,25 +76,6 @@ const DashboardPage = () => {
                        transform transition-all duration-200 hover:scale-[1.02] 
                        shadow-md hover:shadow-lg text-gray-700"
             />
-          </div>
-        </ContentSection>
-
-        {/* Daily Verse Section */}
-        <ContentSection className="mt-auto pb-safe">
-          <div className="bg-white rounded-3xl shadow-md p-4 sm:p-6">
-            {isVerseLoading ? (
-              <div className="space-y-4">
-                <Skeleton className="h-6 w-3/4" />
-                <Skeleton className="h-4 w-1/4" />
-              </div>
-            ) : verse ? (
-              <DailyVerse verse={verse.content_csb} reference={verse.reference} />
-            ) : (
-              <DailyVerse 
-                verse="No temptation has overtaken you except what is common to mankind. And God is faithful; he will not let you be tempted beyond what you can bear." 
-                reference="1 Corinthians 10:13" 
-              />
-            )}
           </div>
         </ContentSection>
       </div>
