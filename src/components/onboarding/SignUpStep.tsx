@@ -31,7 +31,7 @@ export function SignUpStep({ email, onEmailChange }: SignUpStepProps) {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-center">Almost Done!</h2>
+      <h2 className="text-2xl font-bold text-center">Sign up</h2>
       
       <div className="space-y-2">
         <Input
