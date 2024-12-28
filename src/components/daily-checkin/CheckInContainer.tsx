@@ -17,7 +17,7 @@ export function CheckInContainer({
   onNext,
 }: CheckInContainerProps) {
   return (
-    <div className="bg-white/40 backdrop-blur-sm rounded-3xl p-6 shadow-xl border-2 border-primary/20">
+    <div className="bg-white/40 backdrop-blur-sm rounded-3xl p-6 shadow-xl border-2 border-gray-200">
       <div className="space-y-6">
         {children}
       </div>

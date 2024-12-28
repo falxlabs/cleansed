@@ -25,11 +25,11 @@ export function MoodStep({
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-center text-primary">How was your day?</h2>
+      <h2 className="text-2xl font-bold text-center text-gray-900">How was your day?</h2>
       
-      <Card className="p-6 bg-white/50 backdrop-blur-sm border-2 border-primary/20">
-        <div className="text-center space-y-4">
-          <span className="text-6xl block">{getMoodEmoji()}</span>
+      <Card className="p-6 bg-white">
+        <div className="text-center space-y-8">
+          <span className="text-6xl block animate-breathe">{getMoodEmoji()}</span>
           <Slider
             value={mood}
             onValueChange={onMoodChange}
@@ -37,7 +37,7 @@ export function MoodStep({
             step={1}
             className="w-full"
           />
-          <div className="flex justify-between text-sm text-muted-foreground">
+          <div className="flex justify-between text-sm text-gray-600">
             <span>Not Great</span>
             <span>Amazing!</span>
           </div>
@@ -45,14 +45,14 @@ export function MoodStep({
       </Card>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium text-primary">
+        <label className="text-sm font-medium text-gray-900">
           Want to describe your day? (Optional)
         </label>
         <Textarea
           placeholder="Share your thoughts..."
           value={description}
           onChange={(e) => onDescriptionChange(e.target.value)}
-          className="min-h-[100px] bg-white/50 backdrop-blur-sm border-2 border-primary/20"
+          className="min-h-[100px] bg-white"
         />
       </div>
     </div>
