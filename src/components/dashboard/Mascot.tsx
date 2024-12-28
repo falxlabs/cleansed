@@ -6,6 +6,8 @@ import { useLocation } from "react-router-dom";
 import { useAuth } from "@/providers/AuthProvider";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { MascotIcon } from "./MascotIcon";
+import { MascotMessage } from "./MascotMessage";
 
 interface MascotProps {
   message: string;
@@ -100,18 +102,15 @@ export function Mascot({
     )}>
       <div className="flex flex-col gap-3 sm:gap-4">
         <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-2xl bg-duo-100 flex items-center justify-center shrink-0">
-            <span className="text-xl sm:text-2xl md:text-3xl animate-bounce">🕊️</span>
-          </div>
-          <p className="text-sm sm:text-base md:text-lg font-bold leading-relaxed text-gray-800 text-center sm:text-left">
-            {displayMessage}
-          </p>
+          <MascotIcon />
+          <MascotMessage message={displayMessage} />
         </div>
         
         {showCheckInButton && isDashboard && shouldShowCheckInState && !hasCompletedCheckIn && onCheckIn && (
           <Button
             onClick={onCheckIn}
-            className="bg-duo-100 text-duo-800 hover:bg-duo-200 w-full text-xs sm:text-sm md:text-base py-2 sm:py-3"
+            className="bg-duo-100 text-duo-800 hover:bg-duo-200 w-full 
+                     text-xs sm:text-sm md:text-base py-2 sm:py-3"
           >
             Daily Check-in
           </Button>

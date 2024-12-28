@@ -16,8 +16,8 @@ const DashboardPage = () => {
   const welcomeMessage = "Welcome back! Remember, each day is a new opportunity to grow stronger in your faith.";
 
   return (
-    <PageContainer fullHeight className="py-4 sm:py-6 md:py-8">
-      <ContentSection className="max-w-4xl mx-auto space-y-6 md:space-y-8">
+    <PageContainer fullHeight className="flex flex-col h-full">
+      <ContentSection className="flex-1 flex flex-col gap-4 sm:gap-6 md:gap-8">
         <div className="flex justify-end">
           <div onClick={() => navigate('/achievements')} className="cursor-pointer">
             <StreakDisplay />
@@ -33,7 +33,7 @@ const DashboardPage = () => {
           />
         </div>
 
-        <div className="space-y-4 md:space-y-6">
+        <div className="space-y-3 sm:space-y-4 md:space-y-6">
           <ActionButton
             emoji="⚠️"
             label="I'm Being Tempted"
@@ -55,8 +55,8 @@ const DashboardPage = () => {
           />
         </div>
 
-        <div>
-          <div className="bg-white rounded-3xl shadow-md p-4 sm:p-6 md:p-8">
+        <div className="mt-auto">
+          <div className="bg-white rounded-3xl shadow-md p-3 sm:p-4 md:p-6">
             {isVerseLoading ? (
               <div className="space-y-4">
                 <Skeleton className="h-6 w-3/4" />
