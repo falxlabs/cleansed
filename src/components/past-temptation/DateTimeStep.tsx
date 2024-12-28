@@ -26,6 +26,7 @@ export const DateTimeStep = ({ date, timeValue, onDateChange, onTimeChange }: Da
 
   return (
     <>
+      <h1 className="text-2xl font-bold text-center mb-6">Past Temptation</h1>
       <h2 className="text-2xl font-bold text-center">When did this happen?</h2>
       
       <div className="flex justify-center">
