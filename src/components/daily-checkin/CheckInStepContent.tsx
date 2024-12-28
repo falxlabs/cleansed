@@ -31,13 +31,6 @@ export function CheckInStepContent({
   onTemptationLevelChange,
   onStatementChange,
 }: CheckInStepContentProps) {
-  const getTemptationLevelText = (value: number) => {
-    if (value <= 25) return "Low - I can resist easily";
-    if (value <= 50) return "Medium - It's challenging but manageable";
-    if (value <= 75) return "High - I struggle significantly";
-    return "Severe - Almost impossible to resist";
-  };
-
   switch(step) {
     case 1:
       return (
@@ -59,7 +52,6 @@ export function CheckInStepContent({
       return (
         <TemptationLevelStep
           sliderValue={temptationLevel}
-          temptationLevel={getTemptationLevelText(temptationLevel[0])}
           onSliderChange={onTemptationLevelChange}
         />
       );
