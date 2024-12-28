@@ -19,7 +19,9 @@ export default function NewJournalPage() {
   const [localEntries, setLocalEntries] = useState<Entry[]>([]);
 
   useEffect(() => {
-    setLocalEntries(entries);
+    if (entries) {
+      setLocalEntries(entries);
+    }
   }, [entries]);
 
   const handleDateSelect = (newDate: Date | undefined) => {
