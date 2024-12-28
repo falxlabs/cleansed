@@ -18,36 +18,46 @@ export const OutcomeStep = ({ outcome, onOutcomeChange }: OutcomeStepProps) => {
       <div className="grid grid-cols-2 gap-4">
         <button
           onClick={() => handleOutcomeSelect("resisted")}
-          className={`flex flex-col items-center justify-center p-6 rounded-lg border-2 transition-all ${
-            outcome === "resisted"
-              ? "border-duo-500 bg-duo-50"
-              : "border-gray-200 hover:border-duo-300"
-          }`}
+          className={`
+            flex flex-col items-center justify-center p-6 h-[200px] sm:h-[300px]
+            rounded-2xl border-4 transition-all duration-500
+            hover:-translate-y-2 shadow-lg hover:shadow-xl
+            ${
+              outcome === "resisted"
+                ? "border-duo-700 bg-duo-500 text-white"
+                : "border-duo-500 hover:border-duo-600 bg-white hover:bg-duo-50"
+            }
+          `}
         >
-          <div className="rounded-full bg-duo-100 p-4 mb-3">
-            <span className="text-4xl">👍</span>
+          <div className="flex flex-col items-center gap-4">
+            <span className="text-4xl mb-4">👍</span>
+            <span className="font-bold text-lg sm:text-xl">I Resisted</span>
+            <span className="text-sm text-center">
+              Stayed strong against temptation
+            </span>
           </div>
-          <span className="font-semibold text-lg">I Resisted</span>
-          <span className="text-sm text-muted-foreground mt-1">
-            Stayed strong against temptation
-          </span>
         </button>
 
         <button
           onClick={() => handleOutcomeSelect("gave-in")}
-          className={`flex flex-col items-center justify-center p-6 rounded-lg border-2 transition-all ${
-            outcome === "gave-in"
-              ? "border-destructive bg-destructive/10"
-              : "border-gray-200 hover:border-destructive/50"
-          }`}
+          className={`
+            flex flex-col items-center justify-center p-6 h-[200px] sm:h-[300px]
+            rounded-2xl border-4 transition-all duration-500
+            hover:-translate-y-2 shadow-lg hover:shadow-xl
+            ${
+              outcome === "gave-in"
+                ? "border-red-700 bg-destructive text-white"
+                : "border-red-500 hover:border-red-600 bg-white hover:bg-red-50"
+            }
+          `}
         >
-          <div className="rounded-full bg-destructive/20 p-4 mb-3">
-            <span className="text-4xl">👎</span>
+          <div className="flex flex-col items-center gap-4">
+            <span className="text-4xl mb-4">👎</span>
+            <span className="font-bold text-lg sm:text-xl">I Gave In</span>
+            <span className="text-sm text-center">
+              Struggled with the challenge
+            </span>
           </div>
-          <span className="font-semibold text-lg">I Gave In</span>
-          <span className="text-sm text-muted-foreground mt-1">
-            Struggled with the challenge
-          </span>
         </button>
       </div>
     </div>
