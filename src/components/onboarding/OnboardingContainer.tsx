@@ -21,17 +21,26 @@ export function OnboardingContainer() {
     isCurrentStepValid,
   } = useOnboarding();
 
+  const getMascotMessage = (step: number) => {
+    switch (step) {
+      case 1:
+        return "Hi there, I'm Grace! Let's start by understanding what you're struggling with.";
+      case 2:
+        return "This helps me understand your struggle level so I can provide appropriate support.";
+      case 3:
+        return "I'd love to get to know you better! This helps me personalize your experience.";
+      case 7:
+        return "Great! Check your email for the magic link to complete your signup.";
+      case 6:
+        return "Almost there! Sign up to save your progress and settings.";
+      default:
+        return "I'm here to help you every step of the way. Take your time to answer honestly.";
+    }
+  };
+
   return (
     <div className="max-w-xl mx-auto p-6 space-y-6">
-      <Mascot
-        message={
-          currentStep === 1
-            ? "Hi there, I'm Grace! Let's start by understanding what you're struggling with."
-            : currentStep === 7
-            ? "Great! Check your email for the magic link to complete your signup."
-            : "I'm here to help you every step of the way. Take your time to answer honestly."
-        }
-      />
+      <Mascot message={getMascotMessage(currentStep)} />
 
       <div className="flex items-center gap-4 mb-6">
         {currentStep > 1 && (
