@@ -52,12 +52,12 @@ export default function SettingsPage() {
   };
 
   return (
-    <PageContainer fullHeight className="min-h-screen flex flex-col">
-      <ContentSection className="flex-1 max-w-2xl mx-auto w-full">
-        <div className="space-y-6 h-full flex flex-col">
+    <PageContainer className="h-[100dvh] flex flex-col">
+      <ContentSection className="flex-1 flex flex-col max-w-2xl mx-auto w-full py-4">
+        <div className="flex-1 flex flex-col h-full max-h-full">
           <SettingsHeader />
           
-          <div className="flex-1 space-y-2">
+          <div className="flex-1 space-y-2 overflow-y-auto scrollbar-none">
             {settingsCategories.map((category) => {
               const isLocked = !user && category.requiresAuth;
               
@@ -82,7 +82,7 @@ export default function SettingsPage() {
             })}
           </div>
           
-          <div className="space-y-2 mt-auto pb-6">
+          <div className="space-y-2 pt-4">
             {user ? (
               <Button 
                 variant="destructive" 

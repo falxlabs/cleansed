@@ -12,7 +12,7 @@ export function SettingsHeader({ title = "Settings" }: SettingsHeaderProps) {
   const isSettingsDetailPage = location.pathname !== '/settings';
 
   return (
-    <div className="flex items-center gap-4 mb-6">
+    <div className="flex items-center gap-4 mb-4">
       {isSettingsDetailPage && (
         <Button
           variant="ghost"
