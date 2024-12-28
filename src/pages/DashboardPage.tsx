@@ -17,14 +17,14 @@ const DashboardPage = () => {
 
   return (
     <PageContainer fullHeight className="flex flex-col h-full">
-      <ContentSection className="flex-1 flex flex-col gap-4 sm:gap-6 md:gap-8">
-        <div className="flex justify-end">
+      <ContentSection className="flex-1 flex flex-col gap-6 sm:gap-8 md:gap-10 max-w-2xl mx-auto w-full">
+        <div className="flex justify-end pt-2">
           <div onClick={() => navigate('/achievements')} className="cursor-pointer">
             <StreakDisplay />
           </div>
         </div>
 
-        <div className="flex-1">
+        <div className="flex-1 flex items-center justify-center min-h-[200px] sm:min-h-[240px] md:min-h-[280px]">
           <Mascot 
             message={welcomeMessage} 
             className="animate-fade-in" 
@@ -33,7 +33,7 @@ const DashboardPage = () => {
           />
         </div>
 
-        <div className="space-y-3 sm:space-y-4 md:space-y-6">
+        <div className="space-y-4 sm:space-y-5 md:space-y-6 w-full">
           <ActionButton
             emoji="⚠️"
             label="I'm Being Tempted"
@@ -55,8 +55,8 @@ const DashboardPage = () => {
           />
         </div>
 
-        <div className="mt-auto">
-          <div className="bg-white rounded-3xl shadow-md p-3 sm:p-4 md:p-6">
+        <div className="mt-auto pb-4 sm:pb-6">
+          <div className="bg-white rounded-3xl shadow-md p-4 sm:p-5 md:p-6">
             {isVerseLoading ? (
               <div className="space-y-4">
                 <Skeleton className="h-6 w-3/4" />
