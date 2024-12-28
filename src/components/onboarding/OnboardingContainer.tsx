@@ -43,39 +43,45 @@ export function OnboardingContainer() {
   };
 
   return (
-    <div className="step-container">
-      <div className="flex items-center gap-4">
-        {currentStep > 1 && (
-          <Button
-            variant="ghost"
-            className="-ml-2"
-            onClick={handleBack}
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back
-          </Button>
-        )}
-        <Progress value={progress} className="flex-1" />
-      </div>
+    <div className="min-h-[100dvh] flex flex-col">
+      <div className="step-container">
+        <div className="flex items-center gap-4 sticky top-0 bg-[#F5F5F5] py-2 z-10">
+          {currentStep > 1 && (
+            <Button
+              variant="ghost"
+              className="-ml-2"
+              onClick={handleBack}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back
+            </Button>
+          )}
+          <Progress value={progress} className="flex-1" />
+        </div>
 
-      <Mascot message={getMascotMessage(currentStep)} />
+        <Mascot message={getMascotMessage(currentStep)} />
 
-      <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
-        <OnboardingStepManager
-          currentStep={currentStep}
-          formData={formData}
-          onFormDataChange={handleFormDataChange}
-        />
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-24 md:mb-8">
+          <OnboardingStepManager
+            currentStep={currentStep}
+            formData={formData}
+            onFormDataChange={handleFormDataChange}
+          />
+        </div>
         
-        <OnboardingNavigation
-          currentStep={currentStep}
-          totalSteps={totalSteps}
-          loading={loading}
-          isStepValid={isCurrentStepValid()}
-          onNext={handleNext}
-          onSkip={handleSkip}
-          onComplete={handleComplete}
-        />
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t md:relative md:border-t-0 md:bg-transparent">
+          <div className="container max-w-2xl mx-auto px-4">
+            <OnboardingNavigation
+              currentStep={currentStep}
+              totalSteps={totalSteps}
+              loading={loading}
+              isStepValid={isCurrentStepValid()}
+              onNext={handleNext}
+              onSkip={handleSkip}
+              onComplete={handleComplete}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ export function PageContainer({
       )}
       {...props}
     >
-      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
+      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-6 pb-32 md:pb-8">
         {children}
       </div>
     </div>
