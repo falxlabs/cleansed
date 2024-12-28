@@ -33,11 +33,11 @@ const AppContent = () => {
   const useFullHeight = !publicRoutes.includes(location.pathname) && !location.pathname.includes('/settings');
 
   return (
-    <div className="flex flex-col h-[100dvh] bg-[#F5F5F5]">
+    <div className="bg-[#F5F5F5] min-h-screen">
       {showNav && <DesktopNav />}
-      <div className={`flex-1 flex ${showNav ? "md:flex" : ""} overflow-hidden`}>
+      <div className={showNav ? "md:flex" : ""}>
         {showNav && <div className="hidden md:block w-64 shrink-0" />}
-        <main className={`flex-1 flex flex-col overflow-y-auto scrollbar-none ${useFullHeight ? "min-h-[calc(100dvh-4rem)]" : ""}`}>
+        <main className={`flex-1 ${useFullHeight ? "min-h-[calc(100vh-4rem)]" : ""}`}>
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Index />} />

@@ -8,8 +8,8 @@ interface SettingsSectionProps {
 
 export function SettingsSection({ title, children }: SettingsSectionProps) {
   return (
-    <Card className="mb-4">
-      <CardHeader className="pb-3">
+    <Card className="mb-6">
+      <CardHeader>
         <CardTitle className="text-lg">{title}</CardTitle>
       </CardHeader>
       <CardContent>{children}</CardContent>
