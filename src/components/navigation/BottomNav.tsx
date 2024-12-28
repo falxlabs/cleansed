@@ -21,28 +21,44 @@ export const BottomNav = () => {
   ];
 
   return (
-    <nav className="flex flex-col shrink-0 bg-white border-t border-gray-200 shadow-lg w-full">
+    <nav className="flex flex-col shrink-0 bg-white border-t border-gray-100 shadow-lg w-full">
       {!user && (
-        <div className="border-b border-gray-200">
+        <div className="border-b border-gray-100">
           <SampleDataAlert />
         </div>
       )}
-      <div className="flex justify-around items-center h-14 max-w-lg mx-auto w-full px-4 sm:px-6">
-        {navItems.map(({ icon: Icon, label, path }) => (
-          <button
-            key={path}
-            onClick={() => navigate(path)}
-            className={cn(
-              "flex flex-col items-center justify-center",
-              "w-[calc(100%/3-1rem)] sm:w-24 py-2", // Responsive width
-              "text-gray-400 hover:text-duo-500 transition-colors",
-              (location.pathname === path || (path === "/dashboard" && location.pathname === "/")) && "text-duo-500 font-bold"
-            )}
-          >
-            <Icon className="h-5 w-5 mb-1" />
-            <span className="text-xs">{label}</span>
-          </button>
-        ))}
+      <div className="flex justify-around items-center h-16 max-w-lg mx-auto w-full px-4 sm:px-6">
+        {navItems.map(({ icon: Icon, label, path }) => {
+          const isActive = location.pathname === path || (path === "/dashboard" && location.pathname === "/");
+          
+          return (
+            <button
+              key={path}
+              onClick={() => navigate(path)}
+              className={cn(
+                "flex flex-col items-center justify-center gap-1",
+                "w-[calc(100%/3-1rem)] sm:w-24 py-1.5",
+                "transition-all duration-300 transform",
+                isActive ? (
+                  "text-duo-500 translate-y-[-2px]"
+                ) : (
+                  "text-gray-400 hover:text-duo-400"
+                )
+              )}
+            >
+              <Icon className={cn(
+                "h-5 w-5 mb-0.5",
+                isActive && "animate-float"
+              )} />
+              <span className={cn(
+                "text-xs font-medium",
+                isActive && "font-bold"
+              )}>
+                {label}
+              </span>
+            </button>
+          );
+        })}
       </div>
     </nav>
   );
