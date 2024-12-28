@@ -33,7 +33,7 @@ export default function CrossroadPage() {
 
   const mascotMessage = isTimerComplete
     ? "Great job! You've waited 5 minutes - that's strength! Keep going, you're doing great. God is with you in this moment."
-    : "Try an activity below to help overcome temptation. God is with you in this moment.";
+    : "Take a moment to try one of these activities. Remember, God is with you, guiding and strengthening you right now";
 
   return (
     <PageContainer fullHeight className="flex flex-col h-full">
