@@ -31,19 +31,20 @@ export const TemptationTypeSelector = ({ value, onChange, showText = true }: Tem
         )}
       </div>
       
-      <div className="grid grid-cols-4 gap-2 sm:grid-cols-7">
+      <div className="grid grid-cols-7 gap-1 xs:gap-2">
         {SINS.map((sin) => (
           <Button
             key={sin.name}
             variant="outline"
             onClick={() => onChange(sin.name.toLowerCase())}
             className={cn(
-              "h-auto aspect-square flex flex-col items-center justify-center gap-2 p-2 transition-all hover:bg-primary/10",
+              "h-auto aspect-square flex flex-col items-center justify-center p-1 xs:p-2 transition-all hover:bg-primary/10",
+              "min-w-0",
               value.toLowerCase() === sin.name.toLowerCase() && "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground"
             )}
           >
-            <span className="text-2xl">{sin.emoji}</span>
-            <span className="text-xs font-medium line-clamp-1">{sin.name}</span>
+            <span className="text-base xs:text-2xl">{sin.emoji}</span>
+            <span className="text-[0.6rem] xs:text-xs font-medium line-clamp-1">{sin.name}</span>
           </Button>
         ))}
       </div>
