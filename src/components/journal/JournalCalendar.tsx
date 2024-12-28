@@ -46,7 +46,18 @@ export const JournalCalendar = ({ date, onDateSelect, dailyCheckIn, entries = []
   // Custom modifier styles
   const modifiersStyles = {
     hasEntries: {
-      backgroundColor: "#F2FCE2"
+      backgroundColor: "#F2FCE2",
+      color: "inherit" // Ensure text color remains visible
+    },
+    today: {
+      backgroundColor: "#E5E7EB", // Light gray background for today
+      color: "inherit", // Ensure text color remains visible
+      fontWeight: "bold"
+    },
+    selected: {
+      backgroundColor: "#38B94A", // Duolingo green for selected date
+      color: "white", // White text for contrast
+      fontWeight: "bold"
     }
   };
 
