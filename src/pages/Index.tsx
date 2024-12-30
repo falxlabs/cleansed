@@ -37,7 +37,7 @@ const features: FeatureCardProps[] = [
   {
     emoji: "✝️",
     title: "Grow Your Faith",
-    description: "Find peace and clarity with uplifting scriptures"
+    description: "Find peace and clarity with uplifting bible verses"
   }
 ];
 
