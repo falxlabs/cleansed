@@ -16,21 +16,21 @@ interface FeatureCardProps {
 }
 
 const FeatureCard = ({ emoji, title, description }: FeatureCardProps) => (
-  <Card className="p-3 sm:p-4 text-center bg-white/90">
-    <div className="text-2xl sm:text-3xl mb-2 sm:mb-3">{emoji}</div>
-    <h3 className="text-base font-bold mb-1.5">{title}</h3>
-    <p className="text-sm text-gray-600">{description}</p>
+  <Card className="p-3 sm:p-4 bg-white/90">
+    <div className="text-2xl sm:text-3xl mb-2 sm:mb-3 text-center">{emoji}</div>
+    <h3 className="text-base font-bold mb-1.5 text-center">{title}</h3>
+    <p className="text-sm text-gray-600 text-left">{description}</p>
   </Card>
 );
 
 const features: FeatureCardProps[] = [
   {
-    emoji: "🎯",
+    emoji: "💪",
     title: "Break Free",
     description: "Overcome challenges with actionable insights and guidance"
   },
   {
-    emoji: "👁️",
+    emoji: "➡️",
     title: "Stay Focused",
     description: "Develop discipline through tailored reminders and encouragement"
   },
