@@ -25,19 +25,19 @@ const FeatureCard = ({ emoji, title, description }: FeatureCardProps) => (
 
 const features: FeatureCardProps[] = [
   {
-    emoji: "📈",
-    title: "Track Progress",
-    description: "Daily check-ins to celebrate victories"
+    emoji: "🎯",
+    title: "Break Free",
+    description: "Overcome challenges with actionable insights and guidance"
   },
   {
-    emoji: "💪",
-    title: "Get Support",
-    description: "Guided exercises and strategies"
+    emoji: "👁️",
+    title: "Stay Focused",
+    description: "Develop discipline through tailored reminders and encouragement"
   },
   {
     emoji: "✝️",
-    title: "Faith Journey",
-    description: "Scripture-based guidance"
+    title: "Strengthen Your Spirit",
+    description: "Find peace and clarity with uplifting scriptures and reflections"
   }
 ];
 
