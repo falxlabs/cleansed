@@ -1,43 +1,43 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useAuth } from "@/providers/AuthProvider";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { ContentSection } from "@/components/layout/ContentSection";
 import { ActionButton } from "@/components/dashboard/ActionButton";
-import { BicepsFlexed, Target } from "lucide-react";
 
 interface FeatureCardProps {
-  icon: React.ReactNode;
+  emoji: string;
   title: string;
   description: string;
 }
 
-const FeatureCard = ({ icon, title, description }: FeatureCardProps) => (
-  <Card className="p-3 sm:p-4 bg-white/90">
-    <div className="text-2xl sm:text-3xl mb-2 sm:mb-3 text-center">{icon}</div>
-    <h3 className="text-base font-bold mb-1.5 text-center">{title}</h3>
-    <p className="text-sm text-gray-600 text-left">{description}</p>
+const FeatureCard = ({ emoji, title, description }: FeatureCardProps) => (
+  <Card className="p-3 sm:p-4 text-center bg-white/90">
+    <div className="text-2xl sm:text-3xl mb-2 sm:mb-3">{emoji}</div>
+    <h3 className="text-base font-bold mb-1.5">{title}</h3>
+    <p className="text-sm text-gray-600">{description}</p>
   </Card>
 );
 
 const features: FeatureCardProps[] = [
   {
-    icon: <BicepsFlexed className="mx-auto h-8 w-8" />,
-    title: "Break Free",
-    description: "Overcome challenges with actionable insights"
+    emoji: "📈",
+    title: "Track Progress",
+    description: "Daily check-ins to celebrate victories"
   },
   {
-    icon: <Target className="mx-auto h-8 w-8" />,
-    title: "Stay Focused",
-    description: "Develop discipline through tailored reminders"
+    emoji: "💪",
+    title: "Get Support",
+    description: "Guided exercises and strategies"
   },
   {
-    icon: <span className="text-2xl">✝️</span>,
-    title: "Grow Your Faith",
-    description: "Find peace and clarity with uplifting scriptures"
+    emoji: "✝️",
+    title: "Faith Journey",
+    description: "Scripture-based guidance"
   }
 ];
 
