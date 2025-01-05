@@ -12,26 +12,30 @@ export function useUserProgress() {
   const { data: progress, isLoading, error } = useQuery({
     queryKey: ['userProgress'],
     queryFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        // Return sample data for unauthenticated users
-        return {
-          current_streak: 0,
-          longest_streak: 0,
-          last_check_in: null,
-          total_checkins: 0
-        } as UserProgress;
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (!user) {
+          return {
+            current_streak: 0,
+            longest_streak: 0,
+            last_check_in: null,
+            total_checkins: 0
+          } as UserProgress;
+        }
+
+        const { data, error } = await supabase
+          .from('user_progress')
+          .select('current_streak, longest_streak, last_check_in, total_checkins')
+          .eq('user_id', user.id)
+          .single();
+
+        if (error) throw error;
+        return data as UserProgress;
+      } catch (error) {
+        console.error('Error fetching user progress:', error);
+        throw error;
       }
-
-      const { data, error } = await supabase
-        .from('user_progress')
-        .select('current_streak, longest_streak, last_check_in, total_checkins')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error) throw error;
-      return data as UserProgress;
     },
   });
 
