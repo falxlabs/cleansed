@@ -189,10 +189,10 @@ export type Database = {
       }
       temptation_entries: {
         Row: {
-          created_at: string | null
           encrypted_details: string | null
           id: number
           intensity_level: number
+          occurred_at: string | null
           resistance_strategy: string | null
           resisted: boolean
           temptation_details: string | null
@@ -200,10 +200,10 @@ export type Database = {
           trigger: string | null
         }
         Insert: {
-          created_at?: string | null
           encrypted_details?: string | null
           id: number
           intensity_level: number
+          occurred_at?: string | null
           resistance_strategy?: string | null
           resisted?: boolean
           temptation_details?: string | null
@@ -211,10 +211,10 @@ export type Database = {
           trigger?: string | null
         }
         Update: {
-          created_at?: string | null
           encrypted_details?: string | null
           id?: number
           intensity_level?: number
+          occurred_at?: string | null
           resistance_strategy?: string | null
           resisted?: boolean
           temptation_details?: string | null

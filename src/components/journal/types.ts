@@ -13,6 +13,7 @@ export interface TemptationEntry {
   temptation_details?: string;
   trigger?: string;
   resistance_strategy?: string;
+  occurred_at?: string;
 }
 
 export interface CheckInEntry {

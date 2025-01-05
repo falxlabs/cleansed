@@ -28,6 +28,7 @@ export default function PastTemptationPage() {
     // Store the outcome and date in sessionStorage for the reflection page
     sessionStorage.setItem('pastTemptationOutcome', newOutcome);
     sessionStorage.setItem('pastTemptationDate', selectedDateTime.toISOString());
+    sessionStorage.setItem('pastTemptationOccurredAt', selectedDateTime.toISOString());
     
     setOutcome(newOutcome);
   };

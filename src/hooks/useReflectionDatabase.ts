@@ -1,75 +1,79 @@
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import type { Database } from "@/integrations/supabase/types";
-
-type TemptationType = Database["public"]["Enums"]["temptation_type"];
-
-interface SaveReflectionParams {
-  selectedSin: string;
-  sliderValue: number[];
-  trigger: string;
-  outcome: "resisted" | "gave-in";
-  resistanceStrategy: string;
-  customNote: string;
-}
 
 export function useReflectionDatabase() {
+  const navigate = useNavigate();
   const { toast } = useToast();
 
-  const saveReflection = async ({
-    selectedSin,
-    sliderValue,
-    trigger,
-    outcome,
-    resistanceStrategy,
-    customNote,
-  }: SaveReflectionParams) => {
+  const saveReflection = async (
+    type: string,
+    level: number,
+    details: string,
+    trigger: string,
+    resisted: boolean,
+    strategy?: string
+  ) => {
     try {
-      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
-      if (sessionError) throw sessionError;
-      if (!sessionData.session?.user) throw new Error("Please sign in to save your reflection");
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session?.user) {
+        toast({
+          title: "Not logged in",
+          description: "Please log in to save your reflection",
+          variant: "destructive",
+        });
+        return;
+      }
 
-      // First create the journal entry
+      // Get the occurred_at time from sessionStorage if it exists (for past temptations)
+      const occurredAt = sessionStorage.getItem('pastTemptationOccurredAt');
+      
+      // Insert the journal entry first
       const { data: journalEntry, error: journalError } = await supabase
         .from('journal_entries')
         .insert({
-          entry_type: 'temptation',
           user_id: sessionData.session.user.id,
+          entry_type: 'temptation',
         })
         .select()
         .single();
 
       if (journalError) throw journalError;
 
-      // Then create the temptation entry with all fields
+      // Then insert the temptation entry
       const { error: temptationError } = await supabase
         .from('temptation_entries')
         .insert({
           id: journalEntry.id,
-          temptation_type: selectedSin.toLowerCase() as TemptationType,
-          intensity_level: Math.floor((sliderValue[0] / 100) * 100),
-          trigger: trigger || null,
-          resisted: outcome === 'resisted',
-          resistance_strategy: outcome === 'resisted' ? resistanceStrategy : null,
-          temptation_details: customNote || null,
+          temptation_type: type,
+          intensity_level: level,
+          temptation_details: details,
+          trigger: trigger,
+          resisted: resisted,
+          resistance_strategy: strategy,
+          occurred_at: occurredAt || new Date().toISOString(), // Use the stored date or current date
         });
 
       if (temptationError) throw temptationError;
 
+      // Clear the sessionStorage
+      sessionStorage.removeItem('pastTemptationOutcome');
+      sessionStorage.removeItem('pastTemptationDate');
+      sessionStorage.removeItem('pastTemptationOccurredAt');
+
       toast({
-        title: "Entry saved",
-        description: "Your reflection has been saved successfully.",
+        title: "Reflection saved",
+        description: "Your reflection has been saved successfully",
       });
 
-      return true;
+      navigate('/');
     } catch (error) {
-      console.error('Error saving entry:', error);
+      console.error('Error saving reflection:', error);
       toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to save your reflection. Please try again.",
+        title: "Error saving reflection",
+        description: "There was an error saving your reflection. Please try again.",
         variant: "destructive",
       });
-      return false;
     }
   };
 
