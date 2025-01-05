@@ -11,6 +11,7 @@ const queryClient = new QueryClient({
       retry: 1,
       refetchOnWindowFocus: false, // Prevent unnecessary refetches
       refetchOnReconnect: false, // Prevent unnecessary refetches on reconnect
+      useErrorBoundary: true, // Use error boundary for query errors
     },
   },
 })

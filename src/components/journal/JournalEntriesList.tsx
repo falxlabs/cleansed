@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { EntriesList } from "./EntriesList";
 import { Entry } from "./types";
+import { JournalSkeleton } from "../loading/JournalSkeleton";
 
 interface JournalEntriesListProps {
   showCalendar: boolean;
@@ -29,6 +30,10 @@ export function JournalEntriesList({
     }
   };
 
+  if (isLoading) {
+    return <JournalSkeleton />;
+  }
+
   return (
     <Card className={`${showCalendar ? "" : "lg:col-span-2"}`}>
       <CardHeader className="p-4">
@@ -41,17 +46,11 @@ export function JournalEntriesList({
       </CardHeader>
       <CardContent className="p-0">
         <div className="overflow-x-auto">
-          {isLoading ? (
-            <div className="text-center py-8 text-muted-foreground">
-              Loading entries...
-            </div>
-          ) : (
-            <EntriesList 
-              entries={filteredEntries} 
-              showCheckIn={!showCalendar}
-              onDelete={handleDelete}
-            />
-          )}
+          <EntriesList 
+            entries={filteredEntries} 
+            showCheckIn={!showCalendar}
+            onDelete={handleDelete}
+          />
         </div>
       </CardContent>
     </Card>
