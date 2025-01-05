@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useAuth } from "@/providers/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { ContentSection } from "@/components/layout/ContentSection";
 import { ActionButton } from "@/components/dashboard/ActionButton";
+import { IndexSkeleton } from "@/components/loading/IndexSkeleton";
 
 interface FeatureCardProps {
   emoji: string;
@@ -41,7 +42,7 @@ const features: FeatureCardProps[] = [
   }
 ];
 
-const Index = () => {
+const IndexContent = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -142,6 +143,14 @@ const Index = () => {
         </ContentSection>
       </PageContainer>
     </div>
+  );
+};
+
+const Index = () => {
+  return (
+    <Suspense fallback={<IndexSkeleton />}>
+      <IndexContent />
+    </Suspense>
   );
 };
 
