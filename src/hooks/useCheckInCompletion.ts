@@ -19,8 +19,7 @@ export function useCheckInCompletion() {
 
   const updateUserProgress = async (userId: string) => {
     const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
+    today.setHours(0, 0, 0, 0); // Reset time to start of day
 
     // Get current user progress
     const { data: progress, error: progressError } = await supabase
@@ -34,16 +33,23 @@ export function useCheckInCompletion() {
       return;
     }
 
-    let newStreak = 1;
+    let newStreak = 1; // Default to 1 for first check-in
+    
     if (progress?.last_check_in) {
       const lastCheckIn = new Date(progress.last_check_in);
-      if (lastCheckIn.toDateString() === yesterday.toDateString()) {
-        // If last check-in was yesterday, increment streak
-        newStreak = (progress.current_streak || 0) + 1;
-      } else if (lastCheckIn.toDateString() === today.toDateString()) {
+      lastCheckIn.setHours(0, 0, 0, 0); // Reset time to start of day
+      
+      const timeDifference = today.getTime() - lastCheckIn.getTime();
+      const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+      if (daysDifference === 0) {
         // If already checked in today, maintain current streak
         newStreak = progress.current_streak || 1;
+      } else if (daysDifference === 1) {
+        // If last check-in was yesterday, increment streak
+        newStreak = (progress.current_streak || 0) + 1;
       }
+      // If more than 1 day has passed, streak resets to 1 (default value)
     }
 
     // Update user progress
@@ -52,7 +58,8 @@ export function useCheckInCompletion() {
       .update({
         current_streak: newStreak,
         longest_streak: Math.max(newStreak, progress?.longest_streak || 0),
-        last_check_in: today.toISOString()
+        last_check_in: today.toISOString(),
+        total_checkins: (progress?.total_checkins || 0) + 1
       })
       .eq('user_id', userId);
 
