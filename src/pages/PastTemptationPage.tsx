@@ -19,15 +19,15 @@ export default function PastTemptationPage() {
   const { toast } = useToast();
 
   const handleOutcomeChange = (newOutcome: "resisted" | "gave-in") => {
-    // Create a new date with the selected time
-    const selectedDate = new Date(date!);
+    // Create a new date with the selected date and time
+    const selectedDateTime = new Date(date);
     const hours = Math.floor(timeValue[0]);
     const minutes = Math.round((timeValue[0] - hours) * 60);
-    selectedDate.setHours(hours, minutes);
+    selectedDateTime.setHours(hours, minutes, 0, 0); // Set hours and minutes, reset seconds and milliseconds
 
     // Store the outcome and date in sessionStorage for the reflection page
     sessionStorage.setItem('pastTemptationOutcome', newOutcome);
-    sessionStorage.setItem('pastTemptationDate', selectedDate.toISOString());
+    sessionStorage.setItem('pastTemptationDate', selectedDateTime.toISOString());
     
     setOutcome(newOutcome);
   };
