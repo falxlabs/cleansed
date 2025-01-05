@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from "./providers/AuthProvider";
+import { JournalProvider } from "./providers/JournalProvider";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { BottomNav } from "./components/navigation/BottomNav";
 import { DesktopNav } from "./components/navigation/DesktopNav";
 import { Toaster } from "@/components/ui/toaster";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Pages
 import Index from "./pages/Index";
@@ -26,8 +26,6 @@ import AffirmationSettingsPage from "./pages/settings/AffirmationSettingsPage";
 import TemptationSettingsPage from "./pages/settings/TemptationSettingsPage";
 import NotificationsSettingsPage from "./pages/settings/NotificationsSettingsPage";
 import SupportSettingsPage from "./pages/settings/SupportSettingsPage";
-
-const queryClient = new QueryClient();
 
 const AppContent = () => {
   const location = useLocation();
@@ -75,13 +73,13 @@ const AppContent = () => {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
-        <AuthProvider>
+    <Router>
+      <AuthProvider>
+        <JournalProvider>
           <AppContent />
-        </AuthProvider>
-      </Router>
-    </QueryClientProvider>
+        </JournalProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 
