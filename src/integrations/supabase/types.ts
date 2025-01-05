@@ -189,7 +189,6 @@ export type Database = {
       }
       temptation_entries: {
         Row: {
-          encrypted_details: string | null
           id: number
           intensity_level: number
           occurred_at: string | null
@@ -200,7 +199,6 @@ export type Database = {
           trigger: string | null
         }
         Insert: {
-          encrypted_details?: string | null
           id: number
           intensity_level: number
           occurred_at?: string | null
@@ -211,7 +209,6 @@ export type Database = {
           trigger?: string | null
         }
         Update: {
-          encrypted_details?: string | null
           id?: number
           intensity_level?: number
           occurred_at?: string | null

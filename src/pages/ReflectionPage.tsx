@@ -12,6 +12,7 @@ import { ArrowLeft } from "lucide-react";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { TemptationType } from "@/types/database";
 
 export default function ReflectionPage() {
   const { toast } = useToast();
@@ -67,19 +68,16 @@ export default function ReflectionPage() {
     
     const isLastStep = step === totalSteps;
     if (isLastStep) {
-      const success = await saveReflection({
-        selectedSin,
-        sliderValue,
+      await saveReflection(
+        selectedSin as TemptationType,
+        Math.round((sliderValue[0] / 100) * 10), // Convert slider value to 0-10 scale
+        customNote || "",
         trigger,
-        outcome: isResisted ? 'resisted' : 'gave-in',
-        resistanceStrategy,
-        customNote,
-      });
-
-      if (success) {
-        setMascotMessage("Thank you for your honest reflection. Keep going!");
-        navigate("/journal");
-      }
+        isResisted,
+        isResisted ? resistanceStrategy : undefined
+      );
+      
+      setMascotMessage("Thank you for your honest reflection. Keep going!");
       return;
     }
     

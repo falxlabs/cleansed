@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { TemptationType } from "@/types/database";
 
 export function useReflectionDatabase() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const saveReflection = async (
-    type: string,
+    type: TemptationType,
     level: number,
     details: string,
     trigger: string,
@@ -22,7 +23,7 @@ export function useReflectionDatabase() {
           description: "Please log in to save your reflection",
           variant: "destructive",
         });
-        return;
+        return false;
       }
 
       // Get the occurred_at time from sessionStorage if it exists (for past temptations)
@@ -51,7 +52,7 @@ export function useReflectionDatabase() {
           trigger: trigger,
           resisted: resisted,
           resistance_strategy: strategy,
-          occurred_at: occurredAt || new Date().toISOString(), // Use the stored date or current date
+          occurred_at: occurredAt || new Date().toISOString(),
         });
 
       if (temptationError) throw temptationError;
@@ -67,6 +68,7 @@ export function useReflectionDatabase() {
       });
 
       navigate('/');
+      return true;
     } catch (error) {
       console.error('Error saving reflection:', error);
       toast({
@@ -74,6 +76,7 @@ export function useReflectionDatabase() {
         description: "There was an error saving your reflection. Please try again.",
         variant: "destructive",
       });
+      return false;
     }
   };
 
