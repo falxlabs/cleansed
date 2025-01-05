@@ -15,7 +15,13 @@ interface EntriesListProps {
 
 export const EntriesList = ({ entries, showCheckIn = true, onDelete }: EntriesListProps) => {
   const { user } = useAuth();
-  const { selectedEntry, setSelectedEntry, handleEntryClick, handleDelete } = useEntrySelection(onDelete);
+  const { selectedEntry, setSelectedEntry, handleEntryClick, handleDelete } = useEntrySelection((deletedId: number) => {
+    if (onDelete) {
+      // Filter out the deleted entry from the current entries list
+      const updatedEntries = entries.filter(entry => entry.id !== deletedId);
+      onDelete(updatedEntries);
+    }
+  });
   
   const sortedEntries = [...entries]
     .filter(entry => showCheckIn || entry.entry_type !== 'check-in')

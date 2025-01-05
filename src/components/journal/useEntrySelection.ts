@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Entry } from "./types";
 
-export const useEntrySelection = (onDelete?: (entries: Entry[]) => void) => {
+export const useEntrySelection = (onDelete?: (id: number) => void) => {
   const [selectedEntry, setSelectedEntry] = useState<any>(null);
 
   const handleEntryClick = (entry: Entry) => {
@@ -33,7 +33,7 @@ export const useEntrySelection = (onDelete?: (entries: Entry[]) => void) => {
 
   const handleDelete = (id: number) => {
     if (onDelete) {
-      onDelete([]);
+      onDelete(id);
     }
     setSelectedEntry(null);
   };
