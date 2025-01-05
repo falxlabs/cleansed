@@ -17,14 +17,26 @@ export function useCheckInCompletion() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const updateUserProgress = async (userId: string) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time to start of day
+  const getUserLocalDate = () => {
+    const now = new Date();
+    // Get the user's local date at midnight
+    const localDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    return localDate;
+  };
 
+  const getDateFromUTC = (utcString: string) => {
+    const date = new Date(utcString);
+    // Convert to local date at midnight
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  };
+
+  const updateUserProgress = async (userId: string) => {
+    const localToday = getUserLocalDate();
+    
     // Get current user progress
     const { data: progress, error: progressError } = await supabase
       .from('user_progress')
-      .select('current_streak, longest_streak, last_check_in')
+      .select('current_streak, longest_streak, last_check_in, total_checkins')
       .eq('user_id', userId)
       .single();
 
@@ -36,11 +48,14 @@ export function useCheckInCompletion() {
     let newStreak = 1; // Default to 1 for first check-in
     
     if (progress?.last_check_in) {
-      const lastCheckIn = new Date(progress.last_check_in);
-      lastCheckIn.setHours(0, 0, 0, 0); // Reset time to start of day
+      const lastCheckInLocal = getDateFromUTC(progress.last_check_in);
       
-      const timeDifference = today.getTime() - lastCheckIn.getTime();
+      const timeDifference = localToday.getTime() - lastCheckInLocal.getTime();
       const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+      console.log('Days since last check-in:', daysDifference);
+      console.log('Last check-in (local):', lastCheckInLocal.toLocaleString());
+      console.log('Today (local):', localToday.toLocaleString());
 
       if (daysDifference === 0) {
         // If already checked in today, maintain current streak
@@ -58,7 +73,7 @@ export function useCheckInCompletion() {
       .update({
         current_streak: newStreak,
         longest_streak: Math.max(newStreak, progress?.longest_streak || 0),
-        last_check_in: today.toISOString(),
+        last_check_in: new Date().toISOString(), // Store in UTC
         total_checkins: (progress?.total_checkins || 0) + 1
       })
       .eq('user_id', userId);
