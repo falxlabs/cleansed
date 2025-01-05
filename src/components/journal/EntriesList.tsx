@@ -6,14 +6,16 @@ import { useAuth } from "@/providers/AuthProvider";
 import { EmptyEntriesState } from "./EmptyEntriesState";
 import { EntriesTableHeader } from "./EntriesTableHeader";
 import { useEntrySelection } from "./useEntrySelection";
+import { JournalEntriesSkeleton } from "@/components/loading/JournalEntriesSkeleton";
 
 interface EntriesListProps {
   entries: Entry[];
   showCheckIn?: boolean;
   onDelete?: (entries: Entry[]) => void;
+  isLoading?: boolean;
 }
 
-export const EntriesList = ({ entries, showCheckIn = true, onDelete }: EntriesListProps) => {
+export const EntriesList = ({ entries, showCheckIn = true, onDelete, isLoading = false }: EntriesListProps) => {
   const { user } = useAuth();
   const { selectedEntry, setSelectedEntry, handleEntryClick, handleDelete } = useEntrySelection((deletedId: number) => {
     if (onDelete) {
@@ -32,7 +34,9 @@ export const EntriesList = ({ entries, showCheckIn = true, onDelete }: EntriesLi
       <Table>
         <EntriesTableHeader />
         <TableBody>
-          {sortedEntries.length === 0 ? (
+          {isLoading ? (
+            <JournalEntriesSkeleton />
+          ) : sortedEntries.length === 0 ? (
             <EmptyEntriesState />
           ) : (
             sortedEntries.map((entry) => (
