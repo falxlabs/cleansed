@@ -35,6 +35,7 @@ export function useReflectionDatabase() {
         .insert({
           user_id: sessionData.session.user.id,
           entry_type: 'temptation',
+          created_at: occurredAt || new Date().toISOString(),
         })
         .select()
         .single();

@@ -70,7 +70,7 @@ export default function ReflectionPage() {
     if (isLastStep) {
       await saveReflection(
         selectedSin as TemptationType,
-        Math.round((sliderValue[0] / 100) * 10), // Convert slider value to 0-10 scale
+        sliderValue[0], // Keep the original 0-100 scale
         customNote || "",
         trigger,
         isResisted,
