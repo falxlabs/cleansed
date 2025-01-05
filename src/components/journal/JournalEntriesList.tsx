@@ -30,10 +30,6 @@ export function JournalEntriesList({
     }
   };
 
-  if (isLoading) {
-    return <JournalSkeleton />;
-  }
-
   return (
     <Card className={`${showCalendar ? "" : "lg:col-span-2"}`}>
       <CardHeader className="p-4">
@@ -50,6 +46,7 @@ export function JournalEntriesList({
             entries={filteredEntries} 
             showCheckIn={!showCalendar}
             onDelete={handleDelete}
+            isLoading={isLoading}
           />
         </div>
       </CardContent>

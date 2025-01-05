@@ -6,15 +6,27 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/providers/AuthProvider";
 import { CheckInDetails } from "./CheckInDetails";
 import { Entry } from "./types";
+import { JournalCalendarSkeleton } from "../loading/JournalCalendarSkeleton";
 
 interface JournalCalendarProps {
   date: Date | undefined;
   onDateSelect: (date: Date | undefined) => void;
   dailyCheckIn: any;
   entries?: Entry[];
+  isLoading?: boolean;
 }
 
-export const JournalCalendar = ({ date, onDateSelect, dailyCheckIn, entries = [] }: JournalCalendarProps) => {
+export const JournalCalendar = ({ 
+  date, 
+  onDateSelect, 
+  dailyCheckIn, 
+  entries = [],
+  isLoading = false
+}: JournalCalendarProps) => {
+  if (isLoading) {
+    return <JournalCalendarSkeleton />;
+  }
+
   const navigate = useNavigate();
   const { user } = useAuth();
 
