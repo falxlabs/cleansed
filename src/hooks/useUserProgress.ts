@@ -17,10 +17,10 @@ export function useUserProgress() {
       if (!user) {
         // Return sample data for unauthenticated users
         return {
-          current_streak: 3,
-          longest_streak: 5,
-          last_check_in: new Date().toISOString(),
-          total_checkins: 12
+          current_streak: 0,
+          longest_streak: 0,
+          last_check_in: null,
+          total_checkins: 0
         } as UserProgress;
       }
 
