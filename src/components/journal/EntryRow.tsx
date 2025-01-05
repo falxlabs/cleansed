@@ -31,7 +31,13 @@ export const EntryRow = ({ entry, onClick }: EntryRowProps) => {
     ? entry.checkin_entries[0]?.intensity_level
     : entry.temptation_entries[0]?.intensity_level;
   const resisted = !isCheckIn ? entry.temptation_entries[0]?.resisted : null;
-  const entryDate = new Date(entry.created_at);
+  
+  // Use occurred_at for temptation entries, created_at for check-ins
+  const entryDate = new Date(
+    !isCheckIn && entry.temptation_entries[0]?.occurred_at
+      ? entry.temptation_entries[0].occurred_at
+      : entry.created_at
+  );
 
   return (
     <TableRow 

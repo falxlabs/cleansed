@@ -7,7 +7,11 @@ export const useEntrySelection = (onDelete?: (entries: Entry[]) => void) => {
   const handleEntryClick = (entry: Entry) => {
     const entryData = {
       id: entry.id,
-      date: new Date(entry.created_at),
+      date: new Date(
+        entry.entry_type === 'temptation' && entry.temptation_entries[0]?.occurred_at
+          ? entry.temptation_entries[0].occurred_at
+          : entry.created_at
+      ),
       type: entry.entry_type,
       level: entry.entry_type === 'check-in' 
         ? entry.checkin_entries[0]?.intensity_level?.toString() 
